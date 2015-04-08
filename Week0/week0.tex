@@ -6,49 +6,93 @@
 \subtitle[]{Week 0 - Introduction}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
+\date{2015/4/10\\{\smaller(last updated: \today)}}
 
 \begin{document}
+
+\section{Introduction}
+\subsection{Course Outline}
 
 \begin{frame}
 \maketitle
 \end{frame}
 
-
-%%%%%%%
-\section{Introduction}
-\subsection{Course Description}
-
 \begin{frame}
   \frametitle{What is this course about?}
-  \begin{block}{A ``Strange'' Course}
-    {\bf Goal}: Improve the understanding of algorithms and programming techniques.\\
-    {\bf Method}: Solve short and hard problems using well known algorithms 
+  \begin{block}{Course Goal}
+    Improve programming abilities and familiarity with algorithms and techniques.
   \end{block}
+  \begin{block}{Course Method}
+    Every week you have to solve many hard, difficult \structure{Programming Challenges}    
+  \end{block}
+  
+  \bigskip
+  
+   In short: Learn by Practice!
 \end{frame}
 
 \begin{frame}
-  \frametitle{Course Outline}
+  \frametitle{Important Notice: Languages}
+  
+  This course uses both English and Japanese. This year we will try the following division:
+      
+  \begin{alertblock}{Japanese}
+  \begin{itemize}
+    \item Friday's Classes (Problem Review)
+    \item Questions (Any classes)
+    \item Mail Communication
+  \end{itemize}
+  \end{alertblock}
+  
+  \begin{block}{English}
+  \begin{itemize}
+    \item Monday Classes (Algorithm Review)
+    \item Lecture Notes
+  \end{itemize}
+  \end{block}
+  
+  \begin{exampleblock}{Programming Language for Assignments}
+    C, C++, Java and Pascal
+  \end{exampleblock}
+\end{frame}
+
+
+
+
+\section{Course Outline}
+\subsection{Course Structure}
+
+\begin{frame}
+    \frametitle{Outline}
+    
+    \begin{block}{Two classes per week}
+        \begin{itemize}   
+        \item Each week has a theme (see Manaba Syllabus)
+        \item Monday Class: Theme Explanation (English)
+        \item Friday Class: Problem Solving and Q\&A
+        \end{itemize}
+    \end{block}
+    
+    \begin{block}{Solving Problems}
+        \begin{itemize}
+        \item Every week there are four programming assignments;
+        \item Assignments follow the weekly theme;
+        \item Automatic Submission and Evaluation System;
+        \item Deadline is Sunday 23:59
+        \end{itemize}   
+    \end{block}
+\end{frame}
+    
+\begin{frame}
+  \frametitle{Outline}
   \begin{center}
     \includegraphics[width=1\textwidth]{classoutline}
   \end{center}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Course Languages}
-  
-  \begin{center}
-    \begin{itemize}
-    \item\structure{Program Language}: C, C++, Java, {\tiny Pascal}
-    \item\structure{Spoken Language}: Japanese
-    \item\structure{Materials and Problems}: English
-    \item\structure{Reports and Questions}: Both!
-    \end{itemize}
-  \end{center}
-\end{frame}
+\subsection{What is a Programming Challenge?}
 
-\section{Programming Challenges}
-\subsection{What is a programming challenge}
-
+% TODO: Break prog challenge description into pages
 \begin{frame}
   \frametitle{What are programming challenges?}
   \begin{center}
@@ -118,45 +162,44 @@
   \end{columns}
 \end{frame}
 
-\section{System}
-\subsection{Class Structure}
-\begin{frame}
-  \frametitle{How the Classes will work}
-  \begin{block}{Monday}
-    \structure{Problem presentation}: The week theme will be
-    presented, and 4 problems regarding that theme will be shown.
-  \end{block}
-  \begin{block}{Friday}
-    \structure{Problem discussion}: Students discuss together
-    questions about problems and how to solve them.
-  \end{block}
-  \begin{block}{Deadline}
-    Deadline for program submission is \alert{Sunday, Midnight}\\
-    Programs submitted after the deadline are accepted with penalty.
-  \end{block}
-\end{frame}
+\subsection{Grading}
 
-\subsection{Evaluation}
 \begin{frame}
-  \frametitle{Evaluation and Grading}
-  \begin{center}
-    Evaluation is based on solving the programs, and participation in class.
-  \end{center}
+  \frametitle{Evaluation and Grading (1)}
+
+  Evaluation Criteria: \structure{Problems solved} and \structure{Participation}
+  
+  \begin{block}{Evaluation Base}
   \begin{itemize}
   \item \structure{C}: One problem per class;
-  \item \structure{B}: Two problems per class, or 20 problems;
-  \item \structure{A}: Three problems per class, or 30 problems;
+  \item \structure{B}: Two problems per class,\\
+    or One problem per class and 21 problems total;
+  \item \structure{A}: Three problems per class,\\
+    or One problem per class and 30 problems total;
   \end{itemize}
-  \medskip
-  \begin{block}{Bonus: Grade Up}
-    Good participation in class and good Comments in code.
-  \end{block}
-  \begin{block}{Penalty: Grade Down}
-    More than 25\% late problems.
   \end{block}
 \end{frame}
 
-\section{Solving Problems}
+\begin{frame}
+  \frametitle{Evaluation and Grading (2)}
+  
+  A \structure{Bonus} or \structure{Penalty} will be added to the base grade.
+  \begin{itemize}
+    \item Bonus: Change grade one step up (C->B, A->A+)
+    \item Penalty: Change grade one step down (A+->A, B->C, \alert{C->C})
+  \end{itemize}
+  
+  \medskip
+  \begin{exampleblock}{Bonus: Grade Up}
+    Good participation in class and good Comments in code.
+  \end{exampleblock}
+  \begin{alertblock}{Penalty: Grade Down}
+    More than \alert{8} late problems.
+  \end{alertblock}
+\end{frame}
+
+% TODO: Rewrite assignment system. Add warning to make backups. Add 1st week programs
+\section{Assignment System}
 \subsection{How to submit problems}
 \begin{frame}
   \frametitle{How to submit problems - 1}
@@ -188,18 +231,7 @@
   \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Some notes about program submission}
-  Please Keep in Mind:
-  \medskip
-  \begin{itemize}
-  \item Don't copy programs from the internet, or from your friends;
-  \item It is okay to copy \underline{ideas} from the internet or your friends;\\
-    {\small If you do, mention it in the comments}
-  \item Add some commentary on top of the program, explaining what you
-    did, what went right, or what went wrong.    
-  \end{itemize}
-\end{frame}
+
 
 \begin{frame}[simple,fragile]
   \frametitle{Some notes about program submission}
@@ -242,32 +274,71 @@
   % Accepted, Rejected, TLE, Presentation Error
 \end{frame}
 
-\section{Extra Content}
-
-\subsection{What are programming contests}
 \begin{frame}
-  \frametitle{OMAKE I: Programming Contests}
+  \frametitle{Very Important!}
+  
+  The assignments are \alert{individual}. Use your own strength to solve the programs.
 
+  \medskip
+  
   \begin{itemize}
-    \item What are Programming Contests?
-    \item Examples: ACM-ICPC, TOPCODER, ATCODER, \ldots
-  \end{itemize}
-\end{frame}
-
-\subsection{Introductory problems}
-\begin{frame}
-  \frametitle{OMAKE II: Next week's problems}
-  \begin{itemize}
-  \item 3n+1 Problem
-  \item Minesweeper
-  \item The Trip
-  \item Interpreter
+  \item Do not copy solutions from the internet;
+  \item Do not copy solutions from your friends;
+  
+  \medskip
+  
+  \item It is okay to use for \underline{ideas} from others or online;
+  \item If you use an idea from someone else, \alert{make sure to give proper attribution} in the program comments
   \end{itemize}
   
   \begin{block}{}
-    A proper introduction to these problems will be made next week!
+    Plagiarism leads to course failure
   \end{block}
+\end{frame}
 
+\section{Resources}
+\subsection{Resources}
+
+\begin{frame}
+    \frametitle{Useful Links}
+    \begin{itemize}
+        \item {\bf Manaba: } 
+        {\smaller \url{https://manaba.tsukuba.ac.jp/ct/course_427760}}\\
+        Manaba Code: 1962775
+
+        \item {\bf Lecture Notes: } 
+        {\smaller \url{https://github.com/caranha/ProgrammingChallengesLectureNotes}}\\
+        Feel free to fork/pull!
+        
+        \item {\bf Professor Page: } 
+        {\smaller \url{http://conclave.cs.tsukuba.ac.jp/?page_id=128}}\\
+        Lecture notes and Announcements (please use manaba)
+        
+        \item {\bf Submission System: } 
+        {\smaller \url{http://www.programming-challenges.com/pg.php?page=showclassroom&classid=1474}}
+    \end{itemize}
+\end{frame}
+
+% TODO: Add information about books
+\begin{frame}
+    \frametitle{Reference Books}
+    \begin{itemize}
+        \item "Programming Challenges", Steven S. Skiena, Miguel A. Revilla
+        \item "Competitive Programming"
+        \item "Ant Book"
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Contact Information}
+    \begin{itemize}
+    \item {\bf E-mail:} caranha@cs.tsukuba.ac.jp
+    \item {\bf twitter:} caranha
+    \end{itemize}
+
+    \bigskip
+    
+    Feel free to contact me in English or Japanese!    
 \end{frame}
 
 \end{document}
