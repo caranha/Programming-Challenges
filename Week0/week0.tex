@@ -56,7 +56,25 @@
   \end{exampleblock}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Important Notice 2: This document}
 
+  This presentation is available online on the MANABA page: 
+
+  \medskip
+
+  \url{https://manaba.tsukuba.ac.jp/ct/course_427760}
+
+  \medskip
+
+  You can register to the course using the code:
+
+  \medskip
+
+  1962775
+
+
+\end{frame}
 
 
 \section{Course Outline}
@@ -68,8 +86,8 @@
     \begin{block}{Two classes per week}
         \begin{itemize}   
         \item Each week has a theme (see Manaba Syllabus)
-        \item Monday Class: Theme Explanation (English)
-        \item Friday Class: Problem Solving and Q\&A
+        \item Monday Class: Theme Explanation (\structure{English})
+        \item Friday Class: Problem Solving and Q\&A (\alert{Japanese})
         \end{itemize}
     \end{block}
     
@@ -198,45 +216,69 @@
   \end{alertblock}
 \end{frame}
 
-% TODO: Rewrite assignment system. Add warning to make backups. Add 1st week programs
 \section{Assignment System}
 \subsection{How to submit problems}
 \begin{frame}
-  \frametitle{How to submit problems - 1}
+  \frametitle{How to submit problems -- 1}
 
-  \begin{block}{Problem Submission System}
-    \begin{enumerate}
-      \item Make an account at \url{http://www.programming-challenges.com};\\ 
-        {\small (If possible use your Student Number as ID)}
-      \item Send your ID to the professor by e-mail;\\
-        {\small \url{mailto:caranha@cs.tsukuba.ac.jp}}
-      \item You will be added to the classroom
-        \structure{Tsukuba~Programming~Challenges~2015};        
-    \end{enumerate}
-  \end{block}
+  Problem submission and evaluation will be done throught the
+
+  \medskip
+
+  \emph{Programming Challenges} website.
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{pcwebsite}
+  \end{center}
+
+  \medskip
+
+  Access it at \url{http://www.programming-challenges.com/}
 \end{frame}
 
 \begin{frame}
-  \frametitle{How to submit problems - 2}
-
-  \begin{block}{Problem Submission System}
-    \begin{enumerate}
-      \setcounter{enumi}{3}
-      \item Click ``Joined Classrooms'', select
-        \structure{Tsukuba~Programming~Challenges~2015};
-      \item Click the name of the problem for a description, then ``Submit'' to send your code.
-      \item Choose the language; upload a file or paste your code.
-      \item Wait for the response from the Judge!
-    \end{enumerate}
-  \end{block}
+  \frametitle{How to submit problems -- 2}
+  \begin{enumerate}
+      \item Make an account at \url{http://www.programming-challenges.com};\\ 
+      \item Send your ID to me:
+        \begin{itemize}
+        \item Manaba Form\\
+          or
+        \item e-mail (caranha@cs.tsukuba.ac.jp)\\
+          send your student number, name and ID
+        \end{itemize}
+      \item You will be added to the classroom\\
+        \structure{Tsukuba~Programming~Challenges~2015}; 
+  \end{enumerate}
 \end{frame}
 
 
+\begin{frame}
+  \frametitle{How to submit problems -- 3}
+
+  \begin{center}
+    \includegraphics[height=0.4\textheight]{pcwebsite}
+  \end{center}
+
+  \begin{enumerate}
+    \setcounter{enumi}{3}
+  \item Click ``Joined Classrooms'', select
+    \structure{Tsukuba~Programming~Challenges~2015};
+  \item Click the name of the problem for a description, then ``Submit'' to send your code.
+  \item Choose the language; upload a file or paste your code.
+  \end{enumerate}
+\end{frame}
 
 \begin{frame}[simple,fragile]
-  \frametitle{Some notes about program submission}
-  \begin{block}{Good Comment}
-{\small
+  \frametitle{How to submit problems -- 4}
+
+  Some notes about writing programs:
+  
+  \begin{block}{Input and Output}
+    Input comes from the \structure{STDIN}, output comes from the \structure{STDOUT}.
+  \end{block}
+
+  \begin{exampleblock}{Good Comment}
+    {\smaller
 \begin{verbatim}
 /**
  * I used quicksort to solve this problem. 
@@ -245,16 +287,34 @@
  * removed from the data.
  */
 \end{verbatim}}
-  \end{block}
-  \begin{block}{Bad Comment}
-{\small
+  \end{exampleblock}
+  \begin{alertblock}{Bad Comment}
+{\smaller
 \begin{verbatim}
 /**
  * Quicksort.
  */
 \end{verbatim}}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How to submit problems -- 5}
+  \begin{block}{A warning about Java}
+    \begin{itemize}
+    \item Very high number of runtime problems -- beware!
+      \medskip
+
+    \item Main class MUST be named ``Main''
+      \medskip
+
+    \item Read the example code at:\\
+      \url{http://www.programming-challenges.com/pg.php?page=javainfo}
+    \end{itemize}
   \end{block}
 \end{frame}
+
+\subsection{Judge Evaluation}
 
 \begin{frame}
   \frametitle{How the Judge Works}
@@ -262,14 +322,16 @@
     Congratulations!
   \end{block}
   \begin{block}{\alert{Wrong Answer}}
-    Your answer does not match with the judge's answer. Remember to
-    check for worst-case scenarios!
+    \begin{itemize}
+    \item Is your answer EXACTLY the same as expected?
+    \item Check worst-case scenarios!
+    \end{itemize}
   \end{block}
   \begin{block}{\alert{Time Limited Exceeded}}
-    Your algorithm is too slow. Think about computational efficiency.
+    You need a more efficient algorithm.
   \end{block}
-  \begin{block}{}
-    Compilation Error, Runtime Error, etc.
+  \begin{block}{Compilation Error, Runtime Error}
+    Check your Code!
   \end{block}
   % Accepted, Rejected, TLE, Presentation Error
 \end{frame}
@@ -327,6 +389,9 @@
         \item "Competitive Programming"
         \item "Ant Book"
     \end{itemize}
+
+    (I will add more information in manaba page later)
+
 \end{frame}
 
 \begin{frame}
