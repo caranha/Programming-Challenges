@@ -1,0 +1,375 @@
+\documentclass{beamer}
+\input{beamerpreamble.tex}
+
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 1 - Basic Problem Solving}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-04-13\\{\tiny Last updated \today}}
+
+\begin{document}
+
+\section{Prologue}
+\subsection{Title}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\subsection{Notes and Warnings}
+
+\begin{frame}
+  \frametitle{Some Notes Before the Class}
+  \begin{block}{Please check your ``Programming Challenge'' username!}
+    Some people submitted me invalid usernames:
+    \begin{itemize}
+    \item ``Oda''
+    \end{itemize}
+    Everyone else, please don't forget to send your usernames!
+  \end{block}
+
+  \begin{block}{Early submissions}
+    We already had some early submissions -- fantastic!
+  \end{block}
+\end{frame}
+
+
+
+\subsection{Initial Questions}
+\begin{frame}
+  \frametitle{How was your weekend?}  
+
+  If a few of you tried to play with the submission site this weekend,
+  let us know about it!
+
+  \bigskip
+
+  \begin{itemize}
+    \item Did anyone solve a problem during this weekend?
+    \item<2-> Did anyone try to solve a problem?
+    \item<3-> Did anyone read some problems?
+    \item<4-> Did anyone had problems accessing the submission page?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary for Last Class}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary for This Class}
+
+  \begin{block}{General Problem Solving}
+    What are the basic strategies that differentiate an ``Excercise''
+    from a ``Challenge''. How should we approach a programming
+    challenge?
+  \end{block}
+
+  \begin{block}{Data Structures for Programming Challenges}
+    The choice of data structure can have a deep effect on how the
+    problem is solved, we will see a bit of that.
+  \end{block}
+  \begin{block}{Discussing this week's problems}
+    Description and hints for this week's problems
+  \end{block}
+
+  % TODO: Don't worry about the english! chance to learn!
+\end{frame}
+
+\section{Problem Solving}
+\subsection{What is problem solving skill?}
+
+\begin{frame}
+  \frametitle{What is problem solving skill?}
+  % Theme for this course -- it is not enough to ``know'' the
+  % algorithm, you need to ``understand'' it. 
+
+  % Be able to think when to use an algorithm, instead of being
+  % pointed to it.
+
+  % Identify the key points that need to be solved in a problem.
+
+\end{frame}
+
+\subsection{Steps to solve a problem}
+\begin{frame}
+  \frametitle{Steps to solve a problem} 
+
+  Don't know where to begin?  Don't panic, keep calm, and try to
+  follow these steps.
+
+  \begin{enumerate}
+  \item Read the input and output
+  \item Summarize the problem
+  \item Check for traps
+  \item Write the program
+  \item Test/Debug
+  \item Submit!
+  \end{enumerate}
+\end{frame}
+
+  % Read the input very briefly first
+  % Read problem and Define the goal (usually done after input/output)
+
+  % Re-read the input: Pay attention to what is stated and what is not stated
+
+
+\begin{frame}
+  \frametitle{Problem Traps}
+  % TODO: improve this slide
+  % Traps - Examples of traps: negative coordinates, graphs with loops
+  % (djykstra), missing/repeated values
+  Programming Challenges are (in)famous for including traps or
+  ``gotcha's'' in their design.
+
+  \includegraphics[width=0.3\textwidth]{img/graph1}    
+  \structure{Graphs}: Connected? Directed? Redundant Edges? Negative weights?
+
+  \includegraphics[width=0.3\textwidth]{img/polygon} 
+  \structure{Geometry}: Overlapping? Concave? Negative coordinates? Collinear?
+
+  \begin{itemize}
+  \item Maximum number of entries;
+  \item Zero entries;
+  \item ``Wrong'' sort order;
+  \item Unsolvable Entries;
+  \item Empty sets;
+  \item Duplicate items;
+  \item Big Numbers ($>$ Long Long);
+  \end{itemize}
+
+\end{frame}
+
+\subsection{programming}
+
+\begin{frame}
+  \frametitle{NOW you can start to code}
+  % TODO: Improve this slide
+
+  You should have done all of the previous steps in writing only!
+  Programming distracts from understanding the problem.
+  
+  \includegraphics[width=0.6\textwidth]{img/writing}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Steps for writing the solution}
+  \begin{itemize}
+    \item Write the input/output first % they are often the same across problems
+      % You can't do anything else without I/O
+      % Input end condition: EOF, or special cases?
+      % Output conditions: precision, newlines, upper/lower case
+      
+    \item Make the program % Language gimmics: C/C++ pointers, java --
+                           % not really designed for programming
+                           % contests, you won't be using a lot of
+                           % objects - everything is in one file. But
+                           % some libraries can be useful. Pascal: WOW-dog
+    \item Release often philosophy %TODO:
+    \item Testing/Debugging
+      % You may be failing on a hard test - write your own secret tests
+      % try tests with limit conditions, try tests with random data
+      % what are the assumptions of your code? of the problem?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Speed and Memory Limits}
+  Defining speed and memory limits
+
+  Algorithmic efficiency, Memory Efficiency, Programmer efficiency
+
+  % Programming efficiency is useful not only for programming
+  % challenges, but also to save you time on more important tasks.
+
+  % Search on 100 elements vs using quicksort for 100 elements
+\end{frame}
+
+
+
+\subsection{Problem solving example}
+\begin{frame}
+  \frametitle{Let's apply these steps to a simple problem}
+  % Include one error from missing the input
+\end{frame}
+
+%%%%%% Week 2 -- Data structures %%%%%%%%%
+
+\section{Data Structures}
+\subsection{Introduction}
+
+\begin{frame}
+  \begin{center}
+    {\bf Data Structures}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data Structures}
+
+  \begin{block}{Data structures are the heart of a program}
+    \begin{itemize}
+      {\small
+      \item Using the correct data type can make a problem much easier;
+      \item Using the incorrect data type can make a problem much harder;
+      }
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{The towers of Hanoi}
+    \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/hanoi}
+    \end{center}
+    \medskip
+    QUIZ: How do you represent the data in this problem? 
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{An easy way to visualize the Towers of Hanoi}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/hanoi_graph}
+  \end{center}
+  {\smaller Image created by nonenmac}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Explaining the Tower of Hanoi Data Structure}
+  \begin{columns}[c]
+    \column{0.7\textwidth}
+    \begin{itemize}
+    \item Each node identifies an state in the problem;
+    \item Each character in the string represents one disk and its
+      position;
+    \item We can have at most 3 state transitions at each state (can
+      you prove it?)
+    \item To solve the Towers of Hanoi problem, we find the path
+      between the start and end states.
+    \item (just beware of state explosion)
+    \end{itemize}
+    \column{0.3\textwidth}    
+    \includegraphics[width=0.9\textwidth]{img/hanoi_graph}
+    \vfill
+  \end{columns}
+\end{frame}
+
+\subsection{Data Structure Library}
+
+\begin{frame}
+  \frametitle{Know your data structures!}
+  %TODO: Complete this
+  %% KNOW your data structures
+  % time complexity
+  % programming complexity (as we talked before!)
+  % common uses
+  % common bugs
+\end{frame}
+
+\begin{frame}
+  \frametitle{Let's talk about libraries}
+% It is important then to remember a LIBRARY of interfaces:
+% Library: the languages library: How do you use a dictionary in your language of choice?
+% Library: your programming portfolio: How many data structures can you remember when you are 
+%          thinking about a program? A physical library can be very useful
+\end{frame}
+
+%%% Low level data structures
+% Array
+% Linked List
+
+%%% Medium level data structures
+% Stack
+% Queue
+
+%%% High level data structures
+% Sets, Dictionaries, Priority queues (Dictionary where the keys are orderable)
+% Definitions and limitations for each
+% Uses and interfaces
+% How would you implement them? 
+
+%% Other data structures
+% Trees, Graphs, we will talk about these later
+
+%% String
+% Strings: computers don't know anything about letters
+% String representation: Index x Glyphs
+% Encoding: transformation from encoding to glyph.
+% Example: ASCII encoding - allows characters to be stored as numbers or as chars
+% Why when you write ls -l, the numbers and symbols are first?
+% As encoders get bigger and not unified, this starts to get hard
+
+
+% String structures x string operators (concatenate, set, change order, search -- next week)
+
+%%%%%%%%%%%%%%%%%%
+
+\section{Closing Points}
+\subsection{Closing Points}
+\begin{frame}
+  \frametitle{This week's problems}
+  \begin{block}{List of Problems}
+    \begin{itemize}
+    \item The 3n+1 Problem
+    \item Check the Check
+    \item Erdos Numbers
+    \item Contest Scoreboard
+    \end{itemize}
+  \end{block}
+  \medskip
+  Let's give a quick look on each problem
+\end{frame}
+
+\begin{frame}
+  \frametitle{For the rest of the week:}
+  \begin{itemize}
+  \item Next class: Bring your solutions and questions!
+    \vfill
+  \item Submission deadline is 04-19 23:59:59 (Sunday)
+    \vfill
+  \item Have a nice week!
+  \end{itemize}
+\end{frame}
+
+
+% TODO: Complete Friday Class (by friday)
+\section{Friday}
+\subsection{Friday Class}
+\begin{frame}
+  \begin{center}
+  {\bf Welcome to Friday Class!}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Current Solving Stats}
+  \begin{itemize}
+  \item The 3n+1 Problem -- Solved:
+  \item Check the Check -- Solved:
+  \item Erdos Numbers -- Solved:
+  \item Contest Scoreboard -- Solved:
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Question and hint time!}
+  \begin{itemize}
+  \item<1> The 3n+1 Problem
+  \item<2> Check the Check
+  \item<3> Erdos Numbers
+  \item<4> Contest Scoreboard
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Let's solve some different problems}
+  % TODO: Problem description
+  % TODO: Give students 10 minutes to solve the problem
+  % TODO: STEP 1 - understanding the problem
+  % TODO: STEP 2 - Input/Output, stop conditions
+  % TODO: STEP 3 - Problem calculation
+  % TODO: STEP 4 - Testing
+  % TODO: STEP 5 - Submission
+
+  % TODO: Problem 2
+\end{frame}
+
+\end{document}
