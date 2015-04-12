@@ -23,8 +23,9 @@
     Some people submitted me invalid usernames:
     \begin{itemize}
     \item ``Oda''
+    \item ``dai''
     \end{itemize}
-    Everyone else, please don't forget to send your usernames!
+    Everyone, please don't forget to send your usernames!
   \end{exampleblock}
   \vfill
   \begin{exampleblock}{Early submissions}
@@ -90,20 +91,92 @@
 \subsection{What is problem solving skill?}
 
 \begin{frame}
-  \frametitle{What is problem solving skill?}
-  % Theme for this course -- it is not enough to ``know'' the
-  % algorithm, you need to ``understand'' it. 
+  \begin{center}
+    {\bf Problem Solving Skills}
+  \end{center}
+\end{frame}
 
-  % Be able to think when to use an algorithm, instead of being
-  % pointed to it.
+\begin{frame}
+  \frametitle{What are problem solving skills? (1)}
+  
+  \begin{columns}
+    \column{0.3\textwidth}
+    \includegraphics[width=1\textwidth]{img/toolbox}
+    \column{0.7\textwidth} 
+    I'm sure you are all very good programmers. You all know many
+    techniques.
+  \end{columns}
 
-  % Identify the key points that need to be solved in a problem.
+  \medskip
 
+  \begin{itemize}
+    \item Data Structures
+    \item Languages and Libraries
+    \item Sorting Algorithms
+    \item Script Tools
+    \item Etc...
+  \end{itemize}
+  
+  \begin{center}
+    But choosing the right technique for a problem is a \alert{hard}
+    skill.
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{What are problem solving skills? (2)}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    
+    {\small
+    Some people don't know what method to solve a problem, unless they
+    are told.} 
+
+    \vspace{0.5cm}
+    
+    {\small
+    Other people always use their favorite technique, no matter what
+    is the problem.}
+    
+    \vspace{0.5cm}
+
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{img/powerpoint}
+    \end{center}
+    \column{0.4\textwidth}
+    \includegraphics[height=0.8\textheight]{img/hammer}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+
+  A \structure{Problem} can be solved \structure{Any way} we want. But
+  our brains don't like that:
+
+  \begin{exampleblock}{Difficulty 1: Irrelevant Information}
+    Problems usually have information that is not necessary. If we
+    don't identify this information and erase it, the problem may be
+    impossible.
+  \end{exampleblock}
+
+  \begin{exampleblock}{Difficulty 2: Functional Fixedness}
+    We learn that some tools are for some functions. Sometimes they
+    can be used for other goals (for example, glue and paper for a
+    message)
+  \end{exampleblock}
+
+
+  \begin{block}{}
+    One of the goals of this course is to help you develop
+    \structure{Problem Solving Skills}. It will be important for your
+    entire life.
+  \end{block}
 \end{frame}
 
 \subsection{Steps to solve a problem}
 \begin{frame}
-  \frametitle{Steps to solve a problem} 
+  \frametitle{Steps to solve a (Programming) problem} 
 
   Don't know where to begin?  Don't panic, keep calm, and try to
   follow these steps.
@@ -118,89 +191,197 @@
   \end{enumerate}
 \end{frame}
 
-  % Read the input very briefly first
-  % Read problem and Define the goal (usually done after input/output)
+\begin{frame}
+  \frametitle{Step 1: Input and Output}
 
-  % Re-read the input: Pay attention to what is stated and what is not stated
-
+  \begin{block}{First read the input and output quickly}
+    Reading the desired input and output gives you a general idea of
+    what is expected. It helps \structure{put your mind in the right
+      mood}.
+  \end{block}
+  
+  \medskip
+  
+  \begin{itemize}
+  \item Are you dealing with integers or floats?
+  \item Are strings necessary?
+  \item How big is the input?
+  \item Is the input ordered?
+  \end{itemize}
+  
+  \begin{block}{}
+    ``What does this problem wants from me?''
+  \end{block}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Problem Traps}
-  % TODO: improve this slide
-  % Traps - Examples of traps: negative coordinates, graphs with loops
-  % (djykstra), missing/repeated values
-  Programming Challenges are (in)famous for including traps or
-  ``gotcha's'' in their design.
+  \frametitle{Step 2: Problem Summary}
+  
+  \begin{block}{Read the entire problem and discover the goal}
+    Find out what is the relationship between the \structure{Input}
+    and the \structure{Output}.
+  \end{block}
+  \begin{itemize}
+  \item Print out the Problem!
+  \item Cross out \alert{irrelevant information}
+  \item \alert{Mark down} important information.
 
-  \includegraphics[width=0.3\textwidth]{img/graph1}    
-  \structure{Graphs}: Connected? Directed? Redundant Edges? Negative weights?
+    \bigskip
+    
+  \item Write down an algorithm to solve the problem
+  \item Read the problem again
+  \item Repeat until you are confident
+  \end{itemize}
+\end{frame}
 
-  \includegraphics[width=0.3\textwidth]{img/polygon} 
-  \structure{Geometry}: Overlapping? Concave? Negative coordinates? Collinear?
+\begin{frame}
+  \frametitle{Step 3: Problem Traps}
+  \begin{columns}[T]
+    \column{0.7\textwidth}
+    \begin{block}{}
+      Read the problem one more time. There are often ``Traps'' in the
+      problem description.
+    \end{block}
+    \column{0.2\textwidth}
+    \includegraphics[width=1\textwidth]{img/ackbar}
+  \end{columns}
 
   \begin{itemize}
-  \item Maximum number of entries;
-  \item Zero entries;
-  \item ``Wrong'' sort order;
-  \item Unsolvable Entries;
-  \item Empty sets;
-  \item Duplicate items;
-  \item Big Numbers ($>$ Long Long);
+    {\small
+  \item Does the Problem require rounding off of numbers? (Round Up,
+    Round Down, Round to nearest)
+  \item Can the input order be reversed? (Big first, Small First, out of order)
+  \item What is the maximum size of the input? 100? 10000? 1000000000?
+  \item Can the input be negative? Can the input be zero?}
   \end{itemize}
-
 \end{frame}
+
+\begin{frame}
+  \frametitle{Problem Trap Example 1}
+  \begin{columns}[T]
+    \column{0.3\textwidth}
+    \includegraphics[width=1\textwidth]{img/graph1}    
+    \column{0.7\textwidth}
+    Graph Problems:
+    \begin{itemize}
+    \item Does the graph have self-cycles? (search can go in infinite loops)
+      \vspace{.5cm}
+
+    \item Is the graph connected? (some nodes are unreachable)
+      \vspace{.5cm}
+
+    \item Are all weights positive? (Djikstra does not work)
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Trap Example 2}
+  \begin{columns}[T]
+    \column{0.3\textwidth}
+    \includegraphics[width=1\textwidth]{img/polygon}    
+    \column{0.7\textwidth}
+    Geometry Problems:
+    \begin{itemize}
+    \item Can the polygon be convex? (harder algorithms)
+      \vspace{.5cm}
+
+    \item Can two points be in the same place? (division by zero)
+      \vspace{.5cm}
+
+    \item Can points have negative coordinates? (multiplication issues)
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
 
 \subsection{programming}
 
 \begin{frame}
-  \frametitle{NOW you can start to code}
-  % TODO: Improve this slide
+  \frametitle{Step 4: Write the program}
 
-  You should have done all of the previous steps in writing only!
-  Programming distracts from understanding the problem.
-  
-  \includegraphics[width=0.6\textwidth]{img/writing}
+  You should do steps 1, 2 and 3 \alert{on paper}
+  \medskip
+  \begin{center}
+  \includegraphics[width=0.5\textwidth]{img/writing}
+  \end{center}
+  \medskip
+  Only start writing the program after you understand your
+  solution. (easier to avoid bugs!)
 \end{frame}
 
 \begin{frame}
-  \frametitle{Steps for writing the solution}
+  \frametitle{Step 4: Write the Program (some hints)}
+
+  \begin{block}{Do Input/output first}
+    \begin{itemize}
+    \item You can't test without IO
+    \item Check the end condition: EOF or Special Case?
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Test Often}
+    \begin{itemize}
+    \item Test your program on the test data
+    \item Re-test your program every time you do a small change
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Step 4: Algorithm Efficiency, Programmer Efficiency}
+
+  \begin{block}{Algorithm Efficiency}
+    \begin{itemize}
+      \item Pay attention to the size of the input!
+      \item Always calculate the complexity of your algorithm,\\
+        $O(n), O(n^2), O(n^3)$, etc...
+      \item Multiply the complexity by the input size.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Programmer Efficiency}
+    \begin{itemize}
+    \item Avoid overly complex code!
+    \item Double linked lists are very efficient...
+    \item ... but they are not necessary if your input size is 100.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Step 4: Hints for C/C++}
   \begin{itemize}
-    \item Write the input/output first % they are often the same across problems
-      % You can't do anything else without I/O
-      % Input end condition: EOF, or special cases?
-      % Output conditions: precision, newlines, upper/lower case
-      
-    \item Make the program % Language gimmics: C/C++ pointers, java --
-                           % not really designed for programming
-                           % contests, you won't be using a lot of
-                           % objects - everything is in one file. But
-                           % some libraries can be useful. Pascal: WOW-dog
-    \item Release often philosophy %TODO:
-    \item Testing/Debugging
-      % You may be failing on a hard test - write your own secret tests
-      % try tests with limit conditions, try tests with random data
-      % what are the assumptions of your code? of the problem?
+  \item Love the stl;
+    \vspace {.5 cm}
+  \item Avoid messing with pointers;
+    \vspace {.5 cm}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Speed and Memory Limits}
-  Defining speed and memory limits
-
-  Algorithmic efficiency, Memory Efficiency, Programmer efficiency
-
-  % Programming efficiency is useful not only for programming
-  % challenges, but also to save you time on more important tasks.
-
-  % Search on 100 elements vs using quicksort for 100 elements
+  \frametitle{Step 4: Hints for Java}
+  \begin{itemize}
+  \item Object Oriented programming is great, but not very useful for this lecture;
+    \vspace{.5cm}
+  \item Abuse java.util:
+    \vspace{.5cm}
+  \item All classes must be in the same file;
+  \end{itemize}
 \end{frame}
 
-
+\begin{frame}
+  \frametitle{Step 4: Hints for Pascal}
+  \begin{center}
+  \includegraphics[width=0.7\textwidth]{img/pascal}
+  \end{center}
+\end{frame}
 
 \subsection{Problem solving example}
 \begin{frame}
-  \frametitle{Let's apply these steps to a simple problem}
-  % Include one error from missing the input
+  \begin{center}
+    Problem Solving Example: ``The Trip''
+  \end{center}
 \end{frame}
 
 %%%%%% Week 2 -- Data structures %%%%%%%%%
@@ -265,51 +446,157 @@
 
 \subsection{Data Structure Library}
 
+%% TODO: Improve this section
 \begin{frame}
   \frametitle{Know your data structures!}
-  %TODO: Complete this
-  %% KNOW your data structures
-  % time complexity
-  % programming complexity (as we talked before!)
-  % common uses
-  % common bugs
+  \begin{block}{}
+    To be able to do data structure tricks, we need to be familiar
+    with a variety of data structures.
+  \end{block}
+
+  \bigskip
+
+  \begin{itemize}
+  \item What is the time and memory efficiency of each data structure?
+  \item What is \structure{programming efficiency} of each data structure?
+  \item What are the common uses?
+  \item What are the common bugs?
+  \end{itemize}
+  
 \end{frame}
 
 \begin{frame}
-  \frametitle{Let's talk about libraries}
-% It is important then to remember a LIBRARY of interfaces:
-% Library: the languages library: How do you use a dictionary in your language of choice?
-% Library: your programming portfolio: How many data structures can you remember when you are 
-%          thinking about a program? A physical library can be very useful
+  \frametitle{Data Structure Libraries}
+
+  The ``Library'' word can have many meanings:
+
+  \begin{block}{Language Library}
+    \begin{itemize}
+    \item What function is used to create a dictionary?
+    \item What parameters are passed in this function?
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Personal Library}
+    \begin{itemize}
+    \item How many data structures do you personally remember?
+    \item Notes on paper can be very useful!
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-%%% Low level data structures
-% Array
-% Linked List
+\begin{frame}
+  \frametitle{Low Level Data Structures}
+  \begin{itemize}
+  \item Array
+    \vspace{.5cm}
+  \item Linked List
+  \end{itemize}
+  
+  \bigskip
 
-%%% Medium level data structures
-% Stack
-% Queue
+  \begin{block}{}
+    The Array is usually simpler, and less bug prone. But be careful with
+    index overflows!
+    \medskip
+    
+    When in doubt, use a bigger array!
+  \end{block}
+\end{frame}
 
-%%% High level data structures
-% Sets, Dictionaries, Priority queues (Dictionary where the keys are orderable)
-% Definitions and limitations for each
-% Uses and interfaces
-% How would you implement them? 
+\begin{frame}
+  \frametitle{Medium Level Data Structures}
+  \begin{itemize}
+  \item Stack
+    \vspace{.5cm}
+  \item Queue
+  \end{itemize}
 
-%% Other data structures
-% Trees, Graphs, we will talk about these later
+  \bigskip
 
-%% String
-% Strings: computers don't know anything about letters
-% String representation: Index x Glyphs
-% Encoding: transformation from encoding to glyph.
-% Example: ASCII encoding - allows characters to be stored as numbers or as chars
-% Why when you write ls -l, the numbers and symbols are first?
-% As encoders get bigger and not unified, this starts to get hard
+  \begin{block}{}
+    The stack is the simplest ``complex'' data structure. It is
+    implemented with an array and an index.
+    \medskip
+    
+    How do you implement a Queue using two stacks?
+    \medskip
 
+    Queue and Stack are used very often.
+  \end{block}
+\end{frame}
 
-% String structures x string operators (concatenate, set, change order, search -- next week)
+\begin{frame}
+  \frametitle{High level data structures}
+  \begin{itemize}
+  \item Sets
+  \item Dictionaries
+  \item Priority Queues
+  \end{itemize}
+  
+  \bigskip
+
+  \begin{block}{}
+    These structures attach extra information to data: Key,
+    Uniqueness, order.
+    \medskip
+
+    Try to think of them as combinations of the above techniques. How
+    would you implement them?
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other data structures}
+  \begin{itemize}
+  \item Trees
+  \item Graphs
+  \end{itemize}
+
+  \bigskip
+
+  We well talk about these in future classes
+\end{frame}
+
+\subsection{Strings}
+
+\begin{frame}
+  \frametitle{String Representation in Computers} 
+  When you tyle ``\emph{ls}'', why do numbers appear before letters?
+
+  \bigskip
+  
+  \begin{block}{}
+    Strings in a computer system are represented as an
+    \structure{Array of characters}, and each character is represented
+    as an index.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Characters as numerical indexes: what are the consequences?}
+  \begin{itemize}
+  \item Operation on characters (Addition, comparison);
+  \item Arbitrary order of glyphs;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Encodings}
+  \begin{block}{}
+    Encodings are mappings between a set of indexes and a set of
+    glyphs. Different encodings cause Mojibake.
+  \end{block}
+
+  \medskip
+
+  \includegraphics[width=0.7\textwidth]{img/ASCIItableOld}
+
+  \medskip
+
+  ASCII Indexes were selected with very specific properties.
+  
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%
 
