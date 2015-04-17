@@ -1,0 +1,12 @@
+
+%% Implementation: Normally you want to use Collections.sort() or qsort() (stdlib.h) or sort, stable_sort, (stl)
+%% Common Issue: Sorting on multiple characteristics
+% How to solve it 1: Make multiple passes - requires the sorting algorithm to be stable, starts sorting from least important value
+% How to solve it 2: Make a comples comparison function
+% How to solve it 3: Pre-process the data (X+Y), Change the value of the fields (Sort by closest to X)
+
+% Problems:
+% Vito's Family
+% Shoemaker's Problem
+% CDVII
+% Longest Nap
