@@ -1,0 +1,155 @@
+
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{color}
+\usepackage{relsize}		% For \smaller
+\usepackage{url}			% For \url
+\usepackage{epstopdf}	% Included EPS files automatically converted to PDF to include with pdflatex
+
+%For MindMaps
+% \usepackage{tikz}%
+% \usetikzlibrary{mindmap,trees,arrows}%
+
+%%% Color Definitions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\definecolor{bordercol}{RGB}{40,40,40}
+%\definecolor{headercol1}{RGB}{186,215,230}
+%\definecolor{headercol2}{RGB}{80,80,80}
+%\definecolor{headerfontcol}{RGB}{0,0,0}
+%\definecolor{boxcolor}{RGB}{186,215,230}
+
+%%% Save space in lists. Use this after the opening of the list %%%%%%%%%%%%%%%%
+%\newcommand{\compresslist}{
+%	\setlength{\itemsep}{1pt}
+%	\setlength{\parskip}{0pt}
+%	\setlength{\parsep}{0pt}
+%}
+
+%\setbeameroption{show notes on top}
+
+% You should run 'pdflatex' TWICE, because of TOC issues.
+
+% Rename this file.  A common temptation for first-time slide makers
+% is to name it something like ``my_talk.tex'' or
+% ``john_doe_talk.tex'' or even ``discrete_math_seminar_talk.tex''.
+% You really won't like any of these titles the second time you give a
+% talk.  Try naming your tex file something more descriptive, like
+% ``riemann_hypothesis_short_proof_talk.tex''.  Even better (in case
+% you recycle 99% of a talk, but still want to change a little, and
+% retain copies of each), how about
+% ``riemann_hypothesis_short_proof_MIT-Colloquium.2000-01-01.tex''?
+
+\mode<presentation>
+{
+  % A tip: pick a theme you like first, and THEN modify the color theme, and then add math content.
+  % Warsaw is the theme selected by default in Beamer's installation sample files.
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%% THEME
+  %\usetheme{AnnArbor}
+  %\usetheme{Antibes}
+  %\usetheme{Bergen}
+  %\usetheme{Berkeley}		% bem bacana - menu esquerdo
+  %\usetheme{Berlin}
+  %\usetheme{Boadilla}
+  %\usetheme{boxes}
+  %\usetheme{CambridgeUS}		% bem bacana - menu superior
+  %\usetheme{Copenhagen}
+  %\usetheme{Darmstadt}
+  %\usetheme{default}
+  %\usetheme{Dresden}
+  \usetheme{Frankfurt}
+  %\usetheme{Goettingen}
+  %\usetheme{Hannover}		% bem bacana - menu esquerdo
+  %\usetheme{Ilmenau}
+  %\usetheme{JuanLesPins}
+  %\usetheme{Luebeck}
+  %\usetheme{Madrid}		%bacana
+  %\usetheme{Malmoe}
+  %\usetheme{Marburg}		% bem bacana - menu direito
+  %\usetheme{Montpellier}
+  %\usetheme{PaloAlto}		% bem bacana - menu esquerdo
+  %\usetheme{Pittsburgh}
+  %\usetheme{Rochester}		%bacana
+  %\usetheme{Singapore}
+  %\usetheme{Szeged}
+  %\usetheme{Warsaw}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%% COLOR THEME
+  %\usecolortheme{albatross}		% azul escuro, massa
+  %\usecolortheme{beetle}		% cinza, menu azul
+  %\usecolortheme{crane}		% branco e amarelo, massa
+  \usecolortheme{default}		% branco, azul clarinho
+  %\usecolortheme{dolphin}		% azul e branco, legal
+  %\usecolortheme{dove}			% cinza e branco, feio
+  %\usecolortheme{fly}			% todo cinza, horrível
+  %\usecolortheme{lily}			% parece o default
+  %\usecolortheme{orchid}		% azul e branco, ok
+  %\usecolortheme{rose}			% branco e violeta-claro, bonito
+  %\usecolortheme{seagull}		% cinza, feio
+  %\usecolortheme{seahorse}		% nhé, meio feio
+  %\usecolortheme{sidebartab}		% Azul, branco, destaque na tab, interessante
+  %\usecolortheme{structure}		% bichado
+  %\usecolortheme{whale}		% Azul e branco, bem bonito
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%% OUTER THEME
+  \useoutertheme{default}
+  %\useoutertheme{infolines}
+  %\useoutertheme{miniframes}
+  %\useoutertheme{shadow}
+  %\useoutertheme{sidebar}
+  %\useoutertheme{smoothbars}
+  %\useoutertheme{smoothtree}
+  %\useoutertheme{split}
+  %\useoutertheme{tree}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%% INNER THEME
+  \useinnertheme{circles}
+  %\useinnertheme{default}
+  %\useinnertheme{inmargin}
+  %\useinnertheme{rectangles}
+  %\useinnertheme{rounded}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \setbeamercovered{invisible} % or whatever (possibly just delete it)
+  % To change behavior of \uncover from graying out to totally
+  % invisible, can change \setbeamercovered to invisible instead of
+  % transparent. apparently there are also 'dynamic' modes that make
+  % the amount of graying depend on how long it'll take until the
+  % thing is uncovered.
+
+}
+
+
+% Get rid of nav bar
+\beamertemplatenavigationsymbolsempty
+
+% Use short top
+%\usepackage[headheight=12pt,footheight=12pt]{beamerthemeboxes}
+%\addheadboxtemplate{\color{black}}{
+%\hskip0.5cm
+%\color{white}
+%\insertshortauthor \ \ \ \ 
+%\insertframenumber \ \ \ \ \ \ \ 
+%\insertsection \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \insertsubsection
+%\hskip0.5cm}
+%\addheadboxtemplate{\color{black}}{
+%\color{white}
+%\ \ \ \ 
+%\insertsection
+%}
+%\addheadboxtemplate{\color{black}}{
+%\color{white}
+%\ \ \ \ 
+%\insertsubsection
+%}
+
+% Insert frame number at bottom of the page.
+% \usefoottemplate{\hfil\tiny{\color{black!90}\insertframenumber}} 
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{subfigure}
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
