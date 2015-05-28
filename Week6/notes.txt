@@ -1,0 +1,19 @@
+Problems
+
+1- Elephants
+* Longest Decreasing (increasing) sequence
+* But you have to sort the input first!
+* If you sort the input, you have to remember what was the original order
+
+2- Ferry Loading
+- Knapsack
+
+
+
+3- Turtles
+* Order by weight + strenght? (Strength)
+
+4- TSP
+Simple "apples" algorithm
+- Multiple paths are possible, you need to choose the smallest "natural ordering path"
+- To make ordering easier, begin from the exit

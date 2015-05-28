@@ -1,0 +1,424 @@
+\documentclass{beamer}
+% TODO: Add code, review class
+
+\input{beamerpreamble.tex}
+
+\title[]{Programming Challenges}
+\subtitle[]{Week 6 - Dynamic Programming}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
+\institute{College of Information Siences}
+\date{2015-05-29\\{\tiny Last updatet \today}}
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\section{Dynamic Programming}
+\subsection{Introduction}
+
+\begin{frame}
+  \frametitle{Dynamic Programming -- Outline}
+  \begin{block}{}
+    \begin{itemize}
+    \item Extremely common on programming challenges;
+    \item The basic idea is quite simple, but sometimes it is hard to
+      grasp;
+    \item Let's use an example based approach;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Coint to a sum}
+
+%% Simples example: Coins-to-a-sum
+\begin{frame}
+  \frametitle{First Example: Coins to a Sum}
+  \begin{block}{Sample Problem}
+    We have many coins worth \structure{1}, {3} and {5} yenes. How can
+    we combine these coins to add $S$ using the minimum amount of
+    coins?
+  \end{block}
+  \medskip
+  {\small ... No, using modulo does not count}
+\end{frame}
+
+\begin{frame}
+  \frametitle{First Example: Coins to a Sum}
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+          {\bf S} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+          \hline
+              {\bf C} & \only<2->{1} & \only<2->{2}& \only<3->{1} & \only<3->{2} & \only<3->{1} & \only<4->{2} & \only<4->{3} & \only<4->{2} & \only<4->{3} &\only<4->{2} &\only<4->{3} \\
+              \hline
+    \end{tabular}
+  \end{center}
+  \begin{block}{}
+    \begin{itemize}
+    \item How many coins are needed for $S=1$? for $S=2$? for $S=3$? for $S=i$?
+    \item<5-> If we know the values of $S_{i-1}, S_{i-3}, S_{i-5}$, we
+      can use those to calculate $S_i$;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basic Idea for Dynamic Programming}
+  \begin{block}{Table of Partial Results}
+    We want to create a table with all partial results up to the
+    desired value.
+  \end{block}
+  \medskip
+  \begin{itemize}
+  \item How to define the table?
+  \item How to fill the table's values?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{More Coins to a Sum}
+  \begin{itemize}
+  \item Filling the table forward:
+    \begin{onlyenv}<1>
+    \begin{center}
+      \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c}
+        \hline
+            {\bf S} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+            \hline
+                {\bf C} & - & 1 & 2 & 1 & 2 & 1 & 2 & 3 & 2 & 3 & 2 & 3\\
+                \hline
+      \end{tabular}
+    \end{center}
+    \medskip
+    \end{onlyenv}
+
+  \item Filling the table backwards: 
+    \begin{onlyenv}<2>
+    \begin{center}
+      \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c}
+        \hline
+            {\bf S} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+            \hline
+                {\bf C} & 3 & 2 & 3 & 2 & 3 & 2 & 1 & 2 & 1 & 2 & 1 & -\\
+                \hline
+      \end{tabular}
+    \end{center}
+    \medskip
+    \end{onlyenv}
+
+  \item Filling the table by coin:
+    \begin{onlyenv}<3->
+    \begin{center}
+      \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c}
+        \hline
+            {\bf S} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+            \hline
+            {\bf C1} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+            \only<4->{{\bf C2} & 0 & 1 & 2 & 1 & 2 & 3 & 2 & 3 & 4 & 3 & 4 & 5}\\
+            \only<5>{{\bf C3} & 0 & 1 & 2 & 1 & 2 & 1 & 2 & 3 & 2 & 3 & 2 & 3}\\
+            \hline
+      \end{tabular}
+    \end{center}
+    \end{onlyenv}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{States and Decisions}
+  \begin{block}{States}
+    A state is a partial solution. Each state is
+    \structure{independent}: you don't need to know how the program
+    arrived at that state, just its current value.
+  \end{block}
+  \begin{block}{Decisions}
+    Each state has a number of possible \structure{transitions} from
+    itself to other states. These are the actions that can be taken in
+    the problem.
+  \end{block}
+  \medskip
+  The Key for Dynamic programming is being able to define what are the
+  states, and what are the decisions in a problem.
+\end{frame}
+
+
+\subsection{Longest Subsequence}
+\begin{frame}
+  \frametitle{Example 2: Longest Subsequence}
+  \begin{block}{Problem Description}
+    Given a sequence $S$ of integers, find the largest subsequence $Z$
+    where $z_0 < z_1 < z_2 < \dots < z_n$
+  \end{block}
+  \bigskip
+
+  Values:\\
+  \begin{tabular}{cccccccc}
+    2 & 4 & 3 & 8 & 5 & 7 & 4 & 9\\
+  \end{tabular}
+  
+  \begin{onlyenv}<2>
+    Length:\\
+    \begin{tabular}{cccccccc}
+      1 & 2 & 2 &  &  &  &  & \\
+    \end{tabular}\\
+    Last:\\
+    \begin{tabular}{cccccccc}
+      0 & 1 & 1 &  &  &  &  & \\
+    \end{tabular}\\
+  \end{onlyenv}
+  \begin{onlyenv}<3>
+    Length\\
+    \begin{tabular}{cccccccc}
+      1 & 2 & 2 & 3 & 3 &  &  & \\
+    \end{tabular}\\
+    Last:\\
+    \begin{tabular}{cccccccc}
+      0 & 1 & 1 & 3 & 3 &  &  & \\
+    \end{tabular}\\
+  \end{onlyenv}
+  \begin{onlyenv}<4>
+    Length\\
+    \begin{tabular}{cccccccc}
+      1 & 2 & 2 & 3 & 3 & 4 & 3 & 5 \\
+    \end{tabular}\\
+    Last:\\
+    \begin{tabular}{cccccccc}
+      0 & 1 & 1 & 3 & 3 & 5 & 3 & 6 \\
+    \end{tabular}\\
+  \end{onlyenv}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 2: Longest Subsequence}
+  \begin{block}{Algorithm}
+    \begin{itemize}
+    \item State 0: Length = 1, Parent = 0;
+    \item State i: 
+      \begin{itemize}
+      \item Length $S_i$ = 1; Parent = 0;
+      \item For (j = 0 to i-1): 
+      \item if ($S_j < S_i$) and Length($S_j$) >= Length($S_i$):
+      \item Length($S_i$) = Length($S_j$)+1
+      \item Parent($S_i$) = $S_j$
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Another kind of Recursion}
+  \begin{block}{}
+    Dynamic Programming problems use a very similar mindset as
+    recursive problems: You want to find a recurrence function, and
+    use it to calculate new solutions.
+  \end{block}
+  \bigskip
+
+  \begin{itemize}
+    \item It might be useful to store a ``parent'' and ``decision''
+      arrays, to restore the solution that was found.
+  \end{itemize}
+\end{frame}
+
+\subsection{Apples}
+
+\begin{frame}
+  \frametitle{When is Dynamic Programming Useful?}
+  \begin{itemize}
+  \item A ``quick'' way to list all possible solution combinations;
+  \item States are mostly independent;
+  \item Combination of States/Transitions is polinomial;
+  \item Table makes it easier to prune repetitions;
+    \bigskip
+  \item \alert{Keep in mind the number of transitions!}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Example 3: Apples}
+  \begin{block}{Problem Description}
+    A farm has apples spread on a grid. You want to find the
+    South/West path on the grid with the maximum number of apples.
+    \medskip
+    
+    Start: Top Left, End: Bottom Right;
+  \end{block}
+  
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      2 & 3 & & 3 & 5 & 5 & & 1 & \\
+      \hline
+       & & 1 & 2 & 2 & 3 & & & 2 \\
+      \hline
+      2 & & 3 & & 2 & & 2 & 2 & \\
+      \hline
+       & 3 & 2 & & & & & 3 & 4 \\
+      \hline
+       & 2 & & 3 & & 3 & & & 3\\
+      \hline
+       & 2 & & & 3 & & & 3 & \\
+      \hline      
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 3: Apples}
+  \begin{block}{Solving the Problem}
+    \begin{itemize}
+    \item What are the states?
+    \item What are the transitions?
+    \end{itemize}
+  \end{block}
+  \medskip
+  
+  Who can solve this first?\\
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      2 & 3 & & 3 & 5 & 5 & & 1 & \\
+      \hline
+       & & 1 & 2 & 2 & 3 & & & 2 \\
+      \hline
+      2 & & 3 & & 2 & & 2 & 2 & \\
+      \hline
+       & 3 & 2 & & & & & 3 & 4 \\
+      \hline
+       & 2 & & 3 & & 3 & & & 3\\
+      \hline
+       & 2 & & & 3 & & & 3 & \\
+      \hline      
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 3.5: SUPER Apples}
+  \begin{block}{Problem Description}
+    The Problem is the same as before, but now you have to cross the
+    field three times:
+    \begin{enumerate}
+      \item Top Left to Bottom Right;
+      \item Bottom Right to Top Left;
+      \item Top Left to Bottom Right;
+    \end{enumerate}
+  \end{block}
+  \medskip
+  \begin{center}
+    Give me your ideas!
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 3.5: SUPER Apples}
+  \begin{block}{}
+    Let's try to solve it!
+  \end{block}
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      2 & 3 & & 3 & 5 & 5 & & 1 & \\
+      \hline
+      & & 1 & 2 & 2 & 3 & & & 2 \\
+      \hline
+    2 & & 3 & & 2 & & 2 & 2 & \\
+    \hline
+    & 3 & 2 & & & & & 3 & 4 \\
+    \hline
+    & 2 & & 3 & & 3 & & & 3\\
+    \hline
+    & 2 & & & 3 & & & 3 & \\
+    \hline      
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 3.5: SUPER Apples}
+  \begin{block}{Hint 1}
+    \only<2->{Does direction make a difference?}
+  \end{block}
+
+  \begin{block}{Hint 2}
+    \only<3->{Does time make a difference?}
+  \end{block}
+  
+  \begin{block}{Hint 3}
+    \only<4->{Can/should the 3 pathes cross?}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 3.5: SUPER Apples}
+  \begin{block}{}
+    Let's try to solve it!
+  \end{block}
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      2 & 3 & & 3 & 5 & 5 & & 1 & \\
+      \hline
+      & & 1 & 2 & 2 & 3 & & & 2 \\
+      \hline
+    2 & & 3 & & 2 & & 2 & 2 & \\
+    \hline
+    & 3 & 2 & & & & & 3 & 4 \\
+    \hline
+    & 2 & & 3 & & 3 & & & 3\\
+    \hline
+    & 2 & & & 3 & & & 3 & \\
+    \hline      
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Another Idea about Dynamic Programming}
+  \begin{block}{}
+    If the problem sounds too complex, try to change the states
+    around, or reduce it to a simpler problem.
+  \end{block}
+\end{frame}
+
+\subsection{More Examples}
+
+\begin{frame}
+  \frametitle{Example 4: Money Djikstra}
+  \begin{block}{Problem Definition}
+    We want to go from $A_0$ to $A_n$ in an undirected graph. Every
+    vertice has a cost $C_i$ to enter that vertice.\\
+    \medskip
+
+    We start with total money $S_0$, and we cannot enter a vertice if
+    the cost of that vertice is bigger than our current money.\\
+    \medskip
+
+    Find the shortest path in the graph. If more than one path have
+    the same length, choose the one that spends the least money.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 5: Edit Distance}
+  \begin{block}{Problem Definition}
+    Calculate the minimum cost to transform string $a$ into string
+    $b$, using the operations ``INSERT'', ``DELETE'', ``CHANGE'' and
+    ``NOOP''. The NOOP operation has cost 0, the other operations have
+    cost 1.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{This week's problems}
+  \begin{itemize}
+  \item Direct Subsequences        
+  \item Adventures in Moving IV
+  \item Chopsticks
+  \item Unidirectional TSP
+  \end{itemize}
+\end{frame}
+\end{document}
