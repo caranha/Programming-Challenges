@@ -1,0 +1,346 @@
+\documentclass{beamer}
+
+%% TODO: Network algorithms for this class
+% - detect articulation nodes
+% - Minimum Spanning Tree -- OK!
+% - Djisktra
+% - Union find
+
+%% Current Algorithms
+% -  
+
+%%% Algorithms: What do they do, what are they useful for, how to implement them.
+
+
+\input{beamerpreamble.tex}
+
+\title[]{Software Science Seminar}
+\subtitle[]{Week 8 - Graph Algorithms}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
+\institute{College of Information Sciences}
+\date{2015-06-15\\{\tiny Last updated \today}}
+
+\begin{document}
+\section{Introduction}
+\subsection{Introduction}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+  \frametitle{Outline}
+  \begin{itemize}
+  \item \emph{Part I:} Graph properties (node properties, cicles, etc)
+  \item \emph{Part II:} Graph algorithms (spanning tree, flow)
+  \end{itemize}
+\end{frame}
+
+\section{Graph Properties}
+\subsection{Graph Theory}
+
+\begin{frame}
+  \begin{center}
+    Part I: Graph Properties
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Degree Properties}
+  {\small
+  \begin{block}{Vertex Degrees}
+    \begin{itemize}
+    \item The \structure{degree} of a vertex is the total number of edges
+      connected to it.
+    \item For \emph{Undirected Graphs}: Total Degrees = 2*total edges. Why?
+    \item For \emph{Directed Graphs}: We count in-degrees and
+      out-degrees; Total in-degrees = total out-degrees;
+    \end{itemize}
+  \end{block}}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/degrees1}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Degree Properties}
+  {\small
+  \begin{block}{Trees}
+    \begin{itemize}
+    \item Trees are undirected graphs with no cycles.
+    \item \structure{Leaf} nodes are nodes with degree 1;
+    \item Every n-vertex tree contains 1-n edges.
+    \item \structure{Rooted Trees} are directed graphs where every
+      node except the root has in-degree 1. Leaves have out-degree 0.
+    \end{itemize}
+  \end{block}}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/degrees1}
+  \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Degree Properties}
+  {\small
+  \begin{block}{Spanning Trees}
+    \begin{itemize}
+    \item The spanning tree of graph G(V,E) is the subset G(V,E') that
+      forms a tree in G.
+    \item Any connected graph has a spanning tree.
+    \item \structure{The Minimum Spanning Tree} is a important
+      characteristic of weighted graphs.
+    \end{itemize}
+  \end{block}}
+
+  \begin{center}
+    \includegraphics[height=0.45\textheight]{img/degrees2}
+  \end{center}
+\end{frame}
+
+\subsection{Connectivity}
+
+\begin{frame}
+  \frametitle{Connectivity}
+  \begin{block}{Definitions of Connectivity}
+    {\smaller
+    \begin{itemize}
+    \item \structure{Connected Graph}: There is a path between any pair of vertices;
+    \item The existence of a spanning trees guarantees connectivity;
+    \end{itemize}
+    }
+  \end{block}
+  
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/biconnected}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Connectivity}
+  \begin{block}{Definitions of Connectivity}
+    {\smaller
+      \begin{itemize}
+      \item \structure{Vertex Connectivity}: number of vertices that
+        need to be deleted to ``disconnect'' the graph;
+      \item If Vertex connectivity is 1, we have an
+        \structure{articulation vertex}
+      \item If there are no articulation vertices, the graph is
+        \structure{biconnected}
+      \item Finding by brute force: remove each vertex, and test for
+        connectivity;
+    \end{itemize}}
+  \end{block}
+  
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/biconnected}
+  \end{center}
+\end{frame}
+
+\subsection{Cycles}
+
+\begin{frame}
+  \frametitle{Cycles}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{img/eulerian}
+  \end{center}
+  {\small
+  \begin{block}{Eulerian Cycle}
+    \begin{itemize}
+    \item Each edge of the graph is visited exactly once.
+    \item Connected, undirected graphs are eulerian if every vertex
+      has even degree. Why?
+    \item Directed graphs are Eulerian if in-degree = out-degree for
+      all vertices;
+    \item How can we find an Eulerian cycle?
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cycles}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/eulerian}
+  \end{center}
+  {\small
+    \begin{block}{Hamiltonian Cycles}
+      \begin{itemize}
+      \item Each vertex of the graph is visited exactly once;
+      \item Not so easy to find a solution as the Eulerian cycle;
+      \end{itemize}
+    \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cycles}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/eulerian}
+  \end{center}
+\end{frame}
+
+\section{Algorithms}
+\subsection{Minimum Spanning Tree}
+
+\begin{frame}
+  \begin{center}
+    Part II: Graph Algorithms
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Minimum Spanning Trees}
+  \begin{block}{}
+    \begin{itemize}
+    \item \structure{Spanning Tree}: A subset tree of a graph that includes all nodes.
+    \item \structure{Minimum Spanning Tree}: The spanning Tree that has minimal weight.
+    \end{itemize}
+  \end{block}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/minspantree}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Minimum Spanning Tree}
+  \begin{block}{Prim's Algorithm to find the MST}
+    {\smaller
+    Greedy algorithm:
+\begin{verbatim}
+1- Sort all edges by weight. 
+2- Add the smallest edge to MST.
+3- Sort edges that are connected to the MST.
+4- Add the smallest edge with one new node to MST.
+5- Go to 3.
+\end{verbatim}}
+  \end{block}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{img/minspantree}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Minimum Spanning Tree}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{img/minspantree}
+  \end{center}
+  \begin{itemize}
+  \item Maximum Spanning Tree: -1*weight;
+  \item Multiplication Spanning Tree: log(weight);
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[singleslide,fragile]
+  \frametitle{Articulated Vertex Problem}
+  An algorithm to find an articulated vertex in a graph was 
+  discussed in the last class. 
+  \bigskip
+  {\smaller
+\begin{verbatim}
+1- Create a spanning tree using DFS
+2- Rank each node by search order.
+3- Back edges are not part of the DFS
+
+4- Give a second rank to each node, based on the 
+   highest rank they can reach using a back node.
+
+5- Nodes where all children have second rank 
+   smaller than themselves are articulation nodes.
+
+\end{verbatim}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Shortest Path}
+  \begin{block}{Djikstra Algorithm}
+    \begin{itemize}
+    \item Very similar to Prim: What is the difference?
+    \item When does this algorithm encounter problems?
+    \end{itemize}
+  \end{block}
+  
+  \begin{center}
+    \includegraphics<1>[width=0.6\textwidth]{img/djikstra1}
+    \includegraphics<2>[width=0.4\textwidth]{img/djikstra2}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{All-Pairs Shortest Path}
+  {\smaller
+  \begin{block}{Floyd's Algorithm (A bit similar to DP)}
+    \begin{itemize}
+    \item We want to find the shortest distance from all nodes to all nodes;
+    \item Needs an adjacency Matrix (code/idea is simple);
+    \item Iterate over nodes usable in the path;
+    \item usable to test for unreachable nodes (infinite distance at the end);
+    \end{itemize}
+  \end{block}
+\begin{verbatim}
+
+weight[][] is adjacency matrix, unconnected nodes are INF
+
+for (k = 1 to n-vertices):
+  for (i = 1 to n-vertices):
+    for (j = 1 to n-vertices):
+      path_k = weight[i][k]+weight[k][j]
+      if path_k < weight[i][j]:
+        weight[i][j] = path_k
+\end{verbatim}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Union-Find Problem}
+  {\small
+  Union-find is an algorithms that creates a structure to
+  \structure{construct a set} from disjoint nodes. It has two main
+  functions:
+
+  \smallskip
+
+  \begin{itemize}
+    \item Union(Set A, Set B) - Merges set A with set B
+    \item Find(Node A) - finds what set node A belongs to.
+  \end{itemize}
+
+  \bigskip
+
+  In the beginning, all nodes belong to a set containing only
+  themselves. Progressive application of Union will create the
+  different sets using double linked lists.
+  }
+\end{frame}
+
+%% TODO: Re-write network flow more carefully
+\begin{frame}
+  \frametitle{Network Flow}
+  \begin{itemize}
+  \item How much flow can we get from node $A$ to node $B$ at once?
+  \item Ford-Fulkerson ``Augmenting Path'' algorithm:
+  \item Basic idea: Do a BFS, remove ``flow'' from weight, repeat the BFS with new weights.
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/netflow}
+  \end{center}
+
+\end{frame}
+
+\section{Problems}
+\subsection{Problems}
+\begin{frame}
+  \frametitle{This Week's Problems}
+  \begin{itemize}
+    \item Freckles
+    \item Fire Station
+    \item Tourist Guide
+    \item War
+  \end{itemize}
+
+
+\end{frame}
+
+\end{document}
