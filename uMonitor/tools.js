@@ -1,14 +1,12 @@
 
 //** Data **//
 var problemlist = [
-    {deadline:"2016-03-30T15:00:00", 
-     mlist:[36,38,97]},
-    {deadline:"2016-04-10T14:00:00", 
-     mlist:[2726,2684]}
+    {deadline:"2016-04-22", 
+     mlist:[2493,3098,36,1082]},
 ];
 var studentlist = [161945, 339];    
-var startdate = Date.parse("2016-03-01T00:00:00");
-var enddate = Date.parse("2016-07-10T00:00:00");
+var startdate = Date.parse("2016-03-30T00:00:00");
+var enddate = Date.parse("2016-07-09T00:00:00");
 
 //** Code **//
 
@@ -76,6 +74,9 @@ function interval(nano) {
 
     var min = Math.floor(nano/(1000*60));
     ret += min > 9 ? min : "0"+min;
+    
+    ret += " hour"
+    ret += hour != 1 ? "s":""
 
     return ret;
 }
@@ -105,11 +106,11 @@ function basicdata()
 	timeleft = Date.parse(problemlist[i].deadline) - Date.now();
 	timeleft = timeleft > 0 ? interval(timeleft)+" from now": "expired";
 
-	htmlBuffer.push("<div class=\"weektable\">");
-	htmlBuffer.push("Week "+i+": ");
-	htmlBuffer.push("Deadline: "+timeleft);
-	htmlBuffer.push("<table class=\"problemtable\">");
-	htmlBuffer.push("<tr><td>#</td><td>Name</td>");
+	htmlBuffer.push("<div class=\"weektable\" id=\"weektable"+i+"\">");
+	htmlBuffer.push("<span class=\"weektitle\">Week "+i+"</span><br>");
+	htmlBuffer.push("<span class=\"deadline\">Deadline: "+timeleft+"</span>");
+	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
+	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
 	htmlBuffer.push("<td>Solved</td><td>My Status</td></tr>");
 	
 	var mlist = problemlist[i].mlist
@@ -117,14 +118,18 @@ function basicdata()
 	    id = mlist[j];
 	    htmlBuffer.push("<tr>");
 	    htmlBuffer.push("<td>"+(j+1)+"</td>")
-	    htmlBuffer.push("<td id=\"n"+id+"\"></td>");
-	    htmlBuffer.push("<td id=\"sol"+id+"\">No submissions</td>");
-	    htmlBuffer.push("<td id=\"st"+id+"\"></td>");
+	    htmlBuffer.push("<td class=\"pname\" id=\"n"+id+"\"></td>");
+	    htmlBuffer.push("<td class=\"solcount\" id=\"sol"+id+"\">No submissions</td>");
+	    htmlBuffer.push("<td class=\"status\" id=\"st"+id+"\"></td>");
 	    htmlBuffer.push("</tr>");
 	}
-	htmlBuffer.push("</table></div>");
+	htmlBuffer.push("</table><div class=\"toggle\">click to show/hide</div></div>");
+        
     }
-    document.getElementById("problemtable").innerHTML = htmlBuffer.join('\n');    
+    document.getElementById("problemtable").innerHTML = htmlBuffer.join('\n');        
+    $(".weektable").click(function(){
+                $(this).find("table").toggle();
+    });
 }
 
 function problemdata(pid, dl)

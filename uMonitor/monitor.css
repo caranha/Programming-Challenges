@@ -1,0 +1,88 @@
+body {
+    background-color: #c9cfed;    
+}
+
+h1 {
+    background-color: #b3bbe6;
+    color: #555555;
+    margin: 20px;
+    margin-bottom: 0;    
+    padding: 20px;
+
+    font-size: 30px;
+    
+    border-radius: 10px;
+    box-shadow: 5px,5px;
+}
+
+h2 {
+    font-size: 20px;
+    color: #555555;
+    margin-right: 20px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+/*********** Problem Table ******************/
+
+.weektable {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #aaaaaa;
+    text-align: center;
+    font-size: 20px;
+    
+    padding: 10px;
+    width: 600px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.deadline {
+    font-size: 15px;
+}
+
+.toggle {
+    text-align: right;
+    font-size: 10px;
+    margin-top: 7px;
+    color: #555555;
+}
+
+.problemtable {
+    width: 500px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    display: none;
+}
+
+td {
+    padding: 5px;
+}
+
+tr {
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #d9dffd;
+}
+
+.tablehead {
+    background-color: #b3bbe6;
+}
+
+/************* Nameform and Links *********************/
+.nameform {
+    background-color: #b3bbe6;
+    border-radius: 10px;
+    color: #222222;
+    font-size: 20px;
+    width: 340px;
+    
+    margin: 1em;
+    padding: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
