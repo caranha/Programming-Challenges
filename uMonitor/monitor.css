@@ -1,10 +1,9 @@
 body {
-    background-color: #c9cfed;    
+    background-color: white;    
 }
 
 h1 {
-    background-color: #b3bbe6;
-    color: #555555;
+    background-color: #cccccc;
     margin: 20px;
     margin-bottom: 0;    
     padding: 20px;
@@ -17,7 +16,7 @@ h1 {
 
 h2 {
     font-size: 20px;
-    color: #555555;
+    color: #3498DB;
     margin-right: 20px;
     padding-right: 20px;
     text-align: right;
@@ -75,7 +74,7 @@ tr {
 
 /************* Nameform and Links *********************/
 .nameform {
-    background-color: #b3bbe6;
+    background-color: #cccccc;
     border-radius: 10px;
     color: #222222;
     font-size: 20px;
