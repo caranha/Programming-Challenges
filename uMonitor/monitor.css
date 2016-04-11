@@ -72,6 +72,11 @@ tr {
     background-color: #b3bbe6;
 }
 
+.ns { }
+.na { background-color: #cc9999; }
+.al { background-color: #cccc99; }
+.ac { background-color: #99cc99; }
+
 /************* Nameform and Links *********************/
 .nameform {
     background-color: #cccccc;

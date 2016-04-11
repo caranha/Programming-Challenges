@@ -1,7 +1,9 @@
 
 //** Data **//
 var problemlist = [
-    {deadline:"2016-04-23", 
+    {deadline:"2016-07-09T00:00:00",
+     mlist:[2113]},
+    {deadline:"2016-04-22T00:00:01", 
      mlist:[2493,3098,36,1082]},
 ];
 var studentlist = [161945, 339];    
@@ -66,7 +68,7 @@ function interval(nano) {
     var day = Math.floor(nano/(1000*60*60*24));
     ret += day+" day";
     ret += day != 1 ? "s, ": ", "
-    nano = nano%(1000*60*60);
+    nano = nano%(1000*60*60*24);
 
     var hour = Math.floor(nano/(1000*60*60));
     ret += hour > 9 ? hour+":" : "0"+hour+":";
@@ -217,10 +219,10 @@ function mysubmissions()
 				  }
 				  var v;
 				  switch (status) {
-				  case 0: v = "Not submitted"; break;
-				  case 1: v = "Not accepted"; break;
-				  case 2: v = "Accepted (late)"; break;
-				  case 3: v = "Accepted"; break;
+				  case 0: v = "<div class=\"ns\">Not submitted</div>"; break;
+				  case 1: v = "<div class=\"na\">Not accepted</div>"; break;
+				  case 2: v = "<div class=\"al\">Accepted (late)</div>"; break;
+				  case 3: v = "<div class=\"ac\">Accepted</div>"; break;
 				  }
 				  document.getElementById("st"+id).innerHTML = v;
 			      });
