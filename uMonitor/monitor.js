@@ -6,7 +6,9 @@ var problemlist = [
     {deadline:"2016-04-22T00:00:01", 
      mlist:[2493,3098,36,1082]},
 ];
-var studentlist = [161945, 339];    
+var studentlist = [161945,839071,580382,839067,839069,839075,839072,839081,
+769688,839063,839062,420831,839073,839074,794790,796368,229188,839061,839068,
+839079,839077,839105];    
 var startdate = Date.parse("2016-03-30T00:00:00");
 var enddate = Date.parse("2016-07-09T00:00:00");
 
@@ -113,7 +115,7 @@ function basicdata()
 	htmlBuffer.push("<span class=\"deadline\">Deadline: "+timeleft+"</span>");
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
-	htmlBuffer.push("<td>Solved</td><td>My Status</td></tr>");
+	htmlBuffer.push("<td>Sol/Sub/Total</td><td>My Status</td></tr>");
 	
 	var mlist = problemlist[i].mlist
 	for (var j = 0; j < mlist.length; j++) {
@@ -155,27 +157,31 @@ function problemdata(pid, dl)
 
 function classdata(cdata)
 {
-    // load class stats
-    var total = studentlist.length;
-    if (cdata.length > 0)
-    {
-	var sum = 0;
+   // load class stats
+   var total = studentlist.length;
+   if (cdata.length > 0) {
+	var nsolved = 0;
+	var nsubmitted = 0;
 	solved = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
+   submitted = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
+   
 	for (var i = 0; i < cdata.length; i++) {
-	    if (cdata[i].ver == 90) {
-		for (j = 0; j < studentlist.length; j++) {
-		    if (cdata[i].uid == studentlist[j] &&
-			solved[j] == 0
-		       ) {
-			sum += 1;
-			solved[j] == 1;
-		    }
+      for (j = 0; j < studentlist.length; j++) {
+         if (cdata[i].uid == studentlist[j]) {
+            if (submitted[j] == 0) {
+               submitted[j] = 1;
+               nsubmitted += 1;
+            }
+   			if (cdata[i].ver == 90 && solved[j] == 0) {
+   			   nsolved += 1;
+   			   solved[j] = 1;
+   			}
+			}
 		}
-	    }
 	}
 	document.getElementById("sol"+cdata[0].pid).innerHTML = 
-	    sum+"/"+total;
-    }   
+	    nsolved+"/"+nsubmitted+"/"+total;
+   }   
 }
 
 function mysubmissions()
