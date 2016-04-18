@@ -3,7 +3,7 @@
 var problemlist = [
     {deadline:"2016-07-09T00:00:00",
      mlist:[2113]},
-    {deadline:"2016-04-22T00:00:01", 
+    {deadline:"2016-04-22T00:00:01",
      mlist:[2493,3098,36,1082]},
 ];
 var studentlist = [161945,839071,580382,839067,839069,839075,839072,839081,769688,
@@ -44,12 +44,12 @@ function parseURLParams(url) {
 
 // asynchronously load from uhunt-api
 function ajax(api_url, result_callback) {
-  var xhr = window.XMLHttpRequest ? 
+  var xhr = window.XMLHttpRequest ?
 	new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
   xhr.onload = function() {
     if (xhr.readyState == 4) {
       if (xhr.status == 200) {
-        var data = JSON.parse(xhr.responseText); 
+        var data = JSON.parse(xhr.responseText);
 	  // Parse the text into Javascript object.
         result_callback(data); // Notify the caller.
       } else {
@@ -57,9 +57,9 @@ function ajax(api_url, result_callback) {
       }
     }
   }
-  xhr.open("GET", api_url, true); 
+  xhr.open("GET", api_url, true);
     // Use asynchronous call so that your browser does not hang.
-  xhr.onerror = function (e) { console.error(xhr.statusText); }; 
+  xhr.onerror = function (e) { console.error(xhr.statusText); };
     // Log to console if there is an error.
   xhr.send();
 }
@@ -79,7 +79,7 @@ function interval(nano) {
 
     var min = Math.floor(nano/(1000*60));
     ret += min > 9 ? min : "0"+min;
-    
+
     ret += " hour"
     ret += hour != 1 ? "s":""
 
@@ -117,7 +117,7 @@ function basicdata()
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
 	htmlBuffer.push("<td>Sol/Sub/Total</td><td>My Status</td></tr>");
-	
+
 	var mlist = problemlist[i].mlist
 	for (var j = 0; j < mlist.length; j++) {
 	    id = mlist[j];
@@ -129,9 +129,9 @@ function basicdata()
 	    htmlBuffer.push("</tr>");
 	}
 	htmlBuffer.push("</table><div class=\"toggle\">click to show/hide</div></div>");
-        
+
     }
-    document.getElementById("problemtable").innerHTML = htmlBuffer.join('\n');        
+    document.getElementById("problemtable").innerHTML = htmlBuffer.join('\n');
     $(".weektable").click(function(){
                 $(this).find("table").toggle();
     });
@@ -142,10 +142,10 @@ function problemdata(pid, dl)
     // load problemdata and class data
     var start = Math.floor(startdate/1000);
     var end = Math.floor(dl/1000);
-    
+
     ajax("http://uhunt.felix-halim.net/api/p/id/" + pid, function(pdata) {
 	// name and link
-	document.getElementById("n"+pdata.pid).innerHTML = 
+	document.getElementById("n"+pdata.pid).innerHTML =
 	    "<a href=\"https://uva.onlinejudge.org/index.php?"+
 	    "option=com_onlinejudge&Itemid=8&category=24&"+
 	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
@@ -165,7 +165,7 @@ function classdata(cdata)
 	var nsubmitted = 0;
 	solved = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
    submitted = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
-   
+
 	for (var i = 0; i < cdata.length; i++) {
       for (j = 0; j < studentlist.length; j++) {
          if (cdata[i].uid == studentlist[j]) {
@@ -180,25 +180,31 @@ function classdata(cdata)
 			}
 		}
 	}
-	document.getElementById("sol"+cdata[0].pid).innerHTML = 
+	document.getElementById("sol"+cdata[0].pid).innerHTML =
 	    nsolved+"/"+nsubmitted+"/"+total;
-   }   
+   }
 }
 
 function mysubmissions()
 {
+    //Remove table elements in case a previous user info has been searched for.
+    var status_column = document.getElementsByClassName("status");
+    for(var i = 0; i < status_column.length; i++) {
+        status_column[i].innerHTML = "";
+    }
+
     // load data for a user from her username
     username = document.getElementById('uname').value;
-    ajax("http://uhunt.felix-halim.net/api/uname2uid/" + username, 
-	 function (uid) 
-	 { 
+    ajax("http://uhunt.felix-halim.net/api/uname2uid/" + username,
+	 function (uid)
+	 {
 	     if (uid != 0) {
 		 // signal that we got the username
-		 var output = 
+		 var output =
 		     "Problems for user "+username;
-		 document.getElementById("username").innerHTML = 
+		 document.getElementById("username").innerHTML =
 		     output;
-		 
+
 		 for (var i=0; i < problemlist.length; i++) {
 		     var start = Math.floor(startdate/1000);
 		     var end = Math.floor(
@@ -216,11 +222,11 @@ function mysubmissions()
 				      sub = data[uid].subs[k];
 				      var s = 0;
 				      if (sub[4] > start) {
-					  s = 1;
-					  if (sub[2] == 90) {
-					      s = sub[4] > end ?
-						  2 : 3;
-					  }
+    					  s = 1;
+    					  if (sub[2] == 90) {
+    					      s = sub[4] > end ?
+    						  2 : 3;
+    					  }
 				      }
 				      status = s > status ? s : status;
 				  }
@@ -237,5 +243,4 @@ function mysubmissions()
 		 }
 	     }
 	 });
-}	     
-
+}
