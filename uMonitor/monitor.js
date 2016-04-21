@@ -1,14 +1,19 @@
 
 //** Data **//
 var problemlist = [
-    {deadline:"2016-07-09T00:00:00",
-     mlist:[2113]},
-    {deadline:"2016-04-22T00:00:01",
+    {name:"Extra Problems",
+     deadline:"2016-07-09T00:00:00",
+     mlist:[2113,691]},
+    {name:"Week 0: How to Solve Problems",
+     deadline:"2016-04-22T00:00:01",
      mlist:[2493,3098,36,1082]},
+    {name:"Week 1: Data Structures",
+     deadline:"2016-04-29T00:00:01",
+     mlist:[979,3778,1796,1073,1199,3077,3682]},
 ];
 var studentlist = [161945,839071,580382,839067,839069,839075,839072,839081,769688,
-839063,839062,420831,839073,218658,839074,560805,794790,796368,229188,839061,839068
-,839079,839082,839268,839077,839105];
+839063,839582,839062,839070,420831,839073,218658,839445,839074,653352,560805,794790,
+796368,229188,839061,839068,839079,839434,839082,839268,839083,839077,839105];
 
 var startdate = Date.parse("2016-03-30T00:00:00");
 var enddate = Date.parse("2016-07-09T00:00:00");
@@ -112,7 +117,7 @@ function basicdata()
 	timeleft = timeleft > 0 ? interval(timeleft)+" from now": "expired";
 
 	htmlBuffer.push("<div class=\"weektable\" id=\"weektable"+i+"\">");
-	htmlBuffer.push("<span class=\"weektitle\">Week "+i+"</span><br>");
+	htmlBuffer.push("<span class=\"weektitle\">"+problemlist[i].name+"</span><br>");
 	htmlBuffer.push("<span class=\"deadline\">Deadline: "+timeleft+"</span>");
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
