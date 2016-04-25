@@ -274,7 +274,7 @@
 % matrix/table problems, which will be seen later)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\section{Sorting}
 \subsection{Operations in Data Structures}
 
 \begin{frame}
@@ -434,6 +434,7 @@ med = add[(m/2)];
 \end{frame}
 
 \begin{frame}
+  %TODO: improve the ``Relax slides'' -- 2016, Class 1A ended here
   \frametitle{Relax time}
   \begin{enumerate}
   \item The song of the sorting people;
@@ -442,7 +443,119 @@ med = add[(m/2)];
   \end{enumerate}
 \end{frame}
 
+\section{Searching}
+\subsection{Class 1B Start}
+\begin{frame}
+  \maketitle
+  \begin{exampleblock}{}
+    \begin{center}
+      Class 1B (Searching, Non linear data structures, Bitmasking)
+    \end{center}
+  \end{exampleblock}
+\end{frame}
 
+\begin{frame}
+  %% TODO: 2017: Update this slides for the new problems
+  \frametitle{Talking about the problems}
+  {\smaller
+  \alert{Week 0}: Don't forget to send the source code to Manaba\\
+  (Almost everyone did this already)
+
+  \smallskip
+  
+  \alert{Week 1}: Don't forget that the deadline is this week!\\
+  (I want you to rest during GW)
+  }
+  \medskip
+
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{../img/week1results2016}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Jolly Jumpers}
+  Test a ``jolly'' sequence.
+  \begin{itemize}
+  \item Extremely easy problem, if you convert the input correctly;
+  \item What information do we actually need from the input?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Army Buddies}
+  Simulate changes in the data.
+  \begin{itemize}
+  \item Similar idea to Jolly Jumpers, but different data structure.
+  \item What information do we need to store?
+  \item What information do we need to \structure{change}?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rotated Square}
+  Count the number of patterns.
+  \begin{itemize}
+  \item ``bothersome'' problem.
+  \item What data to store?
+  \item What is the program structure?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{File Fragmentation}
+  Find the original bit string.
+  \begin{itemize}
+  \item Understanding the problem: What are looking for here?
+  \item Finding out the correct combination:
+    \begin{itemize}
+    \item Method1: Elimination;
+    \item Method2: Counting;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contest Scoreboard}
+  Output winning teams in a competition.
+  \begin{itemize}
+  \item Actually the second easiest problem of the week. Make sure to
+    read all problems once before starting!
+  \item Problem is about sorting multiple categories.
+    \begin{itemize}
+    \item You could create a single sort function to test all categories
+    \item Or you could sort the data multiple times (sort must be stable!)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Multitasking}
+  Given a list of time intervals, find out if they overlap.
+  \begin{itemize}
+  \item Simple, but long problem
+  \item First: Imagine the solution
+  \item Second: What kind of dataset do you need?
+  \item Caution 1: unecessary loops!
+  \item Caution 2: interval ends \alert{may} overlap;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Jollybee Tournament}
+  Calculate the number of WO matches.
+  \begin{itemize}
+  \item Is the number of WO matches equal to the number of missing players?
+  \item Does it matter who wins?
+  \item Can we represent the problem in a non-tree, iterative manner?
+    \begin{itemize}
+    \item Can we do it without iterating over each pair?
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Searching in An Array}
 \begin{frame}
   \frametitle{Searching in an array}
 
@@ -552,29 +665,218 @@ int main () {
 
 %%%%%%%%%%%%%%%%%%%% BITSET %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{End Friday}
-\subsection{Conclusion Friday}
-\begin{frame}
-  \frametitle{Conclusion and problems}
+\section{Bitmasks}
+\subsection{Bitmasks}
+
+\begin{frame}[singleframe,fragile]
+  \frametitle{Using Bitmasks}
+  {\smaller
+  A \structure{bitmask} is a lightweight version of a
+  \structure{bitset}. You can use an unsigned integer or an unsigned
+  long directly as a proxy for a bitset.
+
+  \begin{block}{}
+\begin{verbatim}
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    unsigned long bb = 3432;
+    unsigned long kk = 14;
+    cout << (bb & kk) << endl;
+    cout << (bb << 3) << endl;
+}
+\end{verbatim}
+  \end{block}
+
+  In a programming contest, they are very useful for quickly
+  manipulating sets (specially if you need to modify a large number of
+  members at the same time).
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{When to use bitmasks} 
   
+  {\smaller In programming challenges, bitmasks are useful for quickly
+    manipulating sets of items. Specially if you need to modify
+    multiple sets at the same time.  
+
+    \begin{block}{}
+      $S = 34 = 100010$\\
+      \medskip
+      Can be seen as a set with elements 1 and 5 present.\\ 
+      The index increase with the digit significance.
+    \end{block}
+    
+    \bigskip
+
+    In regular programming, bitmasks are often used to quickly
+    set/check flags or options.
+    
+    \begin{block}{Bitmasks in regular programming}
+      \begin{itemize}
+      \item Parameter setting/testing
+\begin{verbatim}
+Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | 
+                GL20.GL_DEPTH_BUFFER_BIT );
+\end{verbatim}
+      \item Collision/Filtering in computer graphics
+\begin{verbatim}
+if( isFilled(sprite1Pixel) && isFilled(sprite2Pixel))
+    return true;
+\end{verbatim}
+      \end{itemize}
+    \end{block}
+  }
+\end{frame}
+
+\begin{frame}[singleslide,fragile]
+  \frametitle{Binary Operatons on Bitmasks (2)}
+{\smaller
+
   \begin{itemize}
-  \item Seven problems are listed, all of them related to DS;
-  \item However, you don't need to solve ALL of them (unless you want
-    to!)
-  \item Try to discover which problems are easier, and solve those
-    first.
+  \item Multiply/Divide an integer by two :: shift bits left, right
+\begin{verbatim}
+S          = 34       =  100010
+S = S << 1 = S*2 = 68 = 1000100
+S = S >> 2 = S/4 = 17 =   10001
+S = S >> 1 = S/2 =  8 =    1000
+\end{verbatim}
+\item To check if the ith item is on the set, use bitwise AND
+  operation, (T = S \& (1 << j)) and test if the result is not zero.
+\begin{verbatim}
+S          = 34       =  100010
+j = 3, 1 << j         =  001000
+i = 1, 1 << 1         =  000010
+                         ------
+Tj= S & ( 1 << j)     =  000000  = 0 # 3 is not set
+Ti= S & ( 1 << i)     =  000010 != 0 # 1 is set
+\end{verbatim}
+
   \end{itemize}
+
+}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Binary Operations on Bitmasks (2)}
+  {\smaller
+  \begin{itemize}
+  \item To set/turn on the jth item, use bitwise OR operation S |= (1 << j)
+\begin{verbatim}
+S          = 34       =  100010
+j = 3, 1 << j         =  001000
+                         ------ OR (S |= 1 << j)
+S          = 42       =  101010
+\end{verbatim}
+\item To set/turn off the jth item, use bitwise AND operation S \&= ~(1 << j)
+\begin{verbatim}
+S          = 50       =  110010
+j = (1<<5)|(1<<3)     =  101000 # unset items 5,3 
+~j                    =  010111
+                         ------
+S &= ~(j)             =  010010 # 18
+\end{verbatim}
+  \end{itemize}
+
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Have some code with the previous examples!}
+  {\smaller
+\begin{verbatim}
+#include <iostream>
+using namespace std;
+
+int main() {
+    unsigned int S = 34;    
+    cout << (S<<1) << endl;
+    cout << ((S<<1)>>2) << endl;
+    cout << (((S<<1)>>2)>>1) << endl << endl;    
+    cout << (S & (1 << 3)) << endl;
+    cout << (S & (1 << 1)) << endl << endl;    
+    cout << (S | (1 << 3)) << endl;    
+    S = 50;
+    cout << (S & ~((1 << 5)|(1<<3))) << endl;
+}
+\end{verbatim}
+
+  }
 
 \end{frame}
 
-\subsection{Bonus}
-% Sort algorithm songs
-% Bill gates flapjacks % Sorting too (maybe search?)./\
 
-%\section{Bitset}
-%
 %\begin{frame}
+%  \frametitle{Output on Bitmasks}
+%  Bitmasks to integer
+%  Bitmasks to bits
 %\end{frame}
+
+
+\begin{frame}[fragile,singleframe]
+  \frametitle{Bitsets}
+  {\smaller
+
+  Bitsets can also be used in place of integer bitmasks:
+
+  \begin{block}{}
+\begin{verbatim}
+#include <bitset>
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    bitset<12> b(3432);
+    cout << "3432 in binary is " << b << endl;
+    
+    bitset<12> k(14);
+    cout << (b & k) << endl;
+    cout << (b<<3) << endl;
+}
+\end{verbatim}
+  \end{block}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Bitsets and Bitmasks}
+
+  {\smaller
+  Most bitmask operations are also supported by bitsets. (But you can't mix them!)
+
+  \begin{itemize}
+  \item All binary operations are supported;
+  \item Bitsets are of fixed size, but not limited to 32 and 64 bits.
+  \item Bitset standard output is a bit string, not a decimal (but
+    outputing a decimal is possible);
+  \item But maybe bitmasks are more efficient?
+  \end{itemize}
+  
+  More information about bitmasks 
+
+  \url{http://www.drdobbs.com/the-standard-librarian-bitsets-and-bit-v/184401382}
+  }
+\end{frame}
+
+\subsection{Conclusion}
+\begin{frame}
+  \frametitle{Conclusion}
+
+  Today we talked about:
+  
+  \begin{itemize}
+  \item Searching using standard tools: Binary search, Best N search;
+  \item Tree data structures for efficient searching;
+  \item More about Bitmasks/Bitsets
+  \end{itemize}
+  
+  Thanks for your time!
+\end{frame}
 
 %\subsection{Conclusion Monday}
 
@@ -583,160 +885,4 @@ int main () {
 %\end{frame}
 
 
-\section{Old Slides}
-\subsection{Old Slides}
-
-\begin{frame}
-  \frametitle{Know your data structures!}
-  \begin{block}{}
-    To be able to do data structure tricks, we need to be familiar
-    with a variety of data structures.
-  \end{block}
-
-  \bigskip
-
-  \begin{itemize}
-  \item What is the time and memory efficiency of each data structure?
-  \item What is \structure{programming efficiency} of each data structure?
-  \item What are the common uses?
-  \item What are the common bugs?
-  \end{itemize}
-  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Data Structure Libraries}
-
-  The ``Library'' word can have many meanings:
-
-  \begin{block}{Language Library}
-    \begin{itemize}
-    \item What function is used to create a dictionary?
-    \item What parameters are passed in this function?
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Personal Library}
-    \begin{itemize}
-    \item How many data structures do you personally remember?
-    \item Notes on paper can be very useful!
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Low Level Data Structures}
-  \begin{itemize}
-  \item Array
-    \vspace{.5cm}
-  \item Linked List
-  \end{itemize}
-  
-  \bigskip
-
-  \begin{block}{}
-    The Array is usually simpler, and less bug prone. But be careful with
-    index overflows!
-    \medskip
-    
-    When in doubt, use a bigger array!
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Medium Level Data Structures}
-  \begin{itemize}
-  \item Stack
-    \vspace{.5cm}
-  \item Queue
-  \end{itemize}
-
-  \bigskip
-
-  \begin{block}{}
-    The stack is the simplest ``complex'' data structure. It is
-    implemented with an array and an index.
-    \medskip
-    
-    How do you implement a Queue using two stacks?
-    \medskip
-
-    Queue and Stack are used very often.
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{High level data structures}
-  \begin{itemize}
-  \item Sets
-  \item Dictionaries
-  \item Priority Queues
-  \end{itemize}
-  
-  \bigskip
-
-  \begin{block}{}
-    These structures attach extra information to data: Key,
-    Uniqueness, order.
-    \medskip
-
-    Try to think of them as combinations of the above techniques. How
-    would you implement them?
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Other data structures}
-  \begin{itemize}
-  \item Trees
-  \item Graphs
-  \end{itemize}
-
-  \bigskip
-
-  We well talk about these in future classes
-\end{frame}
-
-\subsection{Strings}
-
-\begin{frame}
-  \frametitle{String Representation in Computers} 
-  When you tyle ``\emph{ls}'', why do numbers appear before letters?
-
-  \bigskip
-  
-  \begin{block}{}
-    Strings in a computer system are represented as an
-    \structure{Array of characters}, and each character is represented
-    as an index.
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Characters as numerical indexes: what are the consequences?}
-  \begin{itemize}
-  \item Operation on characters (Addition, comparison);
-  \item Arbitrary order of glyphs;
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Encodings}
-  \begin{block}{}
-    Encodings are mappings between a set of indexes and a set of
-    glyphs. Different encodings cause Mojibake.
-  \end{block}
-
-  \medskip
-
-  \includegraphics[width=0.7\textwidth]{img/ASCIItableOld}
-
-  \medskip
-
-  ASCII Indexes were selected with very specific properties.
-  
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%
-% TODO: 
 \end{document}
