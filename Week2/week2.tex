@@ -1,468 +1,339 @@
-% TODO: Add jolly jumpers here somewhere
-% TODO: Write comments about new problems
-
 \documentclass{beamer}
+\input{../tools/beamerpreamble.tex}
 
-\input{beamerpreamble.tex}
-
-\usepackage[normalem]{ulem}
-
-\title[]{GB21802 Programming Challenges}
-\subtitle[]{Week 2 - Sorting Algorithms}
-\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
-\institute{College of Information Sciences}
-\date{2015-04-20\\{\tiny Last updated \today}}
-
-%\thanks{fcampelo@ufmg.br}
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 2 - Problem Solving Paradigms (Search)}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-04-22,25\\{\tiny Last updated \today}}
 
 \begin{document}
 
-\section{Outline}
-\subsection{Outline}
-
+\section{Introduction}
+\subsection{Title}
 \begin{frame}
 \maketitle
 \end{frame}
 
-\begin{frame}
-  \frametitle{Notes: Week 1 submissions results}
-  \begin{itemize}
-    \item 3n+1:
-    \item Chess:
-    \item Erdos:
-    \item Scoreboard:
-  \end{itemize}
-
-  \begin{alertblock}{Important note}
-    The system just stores your \structure{First submitted code}. If
-    you want to send a new version after that, you have to
-    \structure{e-mail me}. Sorry about that.
-  \end{alertblock}
-\end{frame}
-
-\subsection{Introduction}
+\subsection{Notes and Warnings}
 
 \begin{frame}
-  \frametitle{The importance of Sorting}
-  \begin{block}{Sorting}
-    Given a collection of items, change the position of those items
-    inside the collection so that they obey some pre-defined order
-    (alphabetical order, numerical order, etc)
-  \end{block}
-  \vfill
-  \begin{center}
-    Why is sorting important?
-  \end{center}
-  \begin{itemize}
-    \item Sorting the data is the first step of many well known
-      algorithms;
-    \item Sorting can also speed up some other algorithms;
-    \item Sorting is a good way to start learning about Computer
-      Science theoretical research;
-  \end{itemize}
-
+  \frametitle{Last Week Results}
 \end{frame}
 
 \begin{frame}
-  \frametitle{The importance of Sorting (2)}
-
-\begin{center}
-  Even Bill Gates has published a paper on Sorting!
-  \medskip
-  \includegraphics[width=0.7\textwidth]{img/billgates}
-\end{center}
+  \frametitle{Special Notes}
+  None this time!
 \end{frame}
 
-\section{Sorting}
-\subsection{Sorting Applications}
+\section{Search}
+
+\subsection{Definitions}
 \begin{frame}
-  \frametitle{Sorting Applications} 
-
-  Sorting can be used as a step in a huge number of algorithms. Let us
-  check a few of them. Please give your own suggestions as well!
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Sorting Applications (1)}
-  \begin{block}{Testing for Uniqueness or Duplicates}
-    After sorting a data array, any duplicate data will be near each
-    other. You can test for the existence of duplicates using only one pass
-    through the array.
-  \end{block}
-
-  \begin{onlyenv}<2>
-    \begin{block}{Unique subset}
-      Using the same idea as above, you can find the largest subset of
-      unique items, by keeping track of any unique items (or row of items)
-      in a different array.
-    \end{block}
-
-    \begin{block}{Frequency Counting, Finding the Mode}
-      Using the same idea as above, you can count the frequency of a
-      value (by counting duplicates). The value with the highest
-      number of duplicates is the \emph{Mode}. 
-    \end{block}
-  \end{onlyenv}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Sorting Applications (2)}
-  \begin{block}{Finding the Median, or a quantile}
-    You can find the $n^{th}$ largest (smallest) element by sorting an
-    array, and picking the $n^{th}$ element in the sorted array.
-
-    The median is the element in the half of the array (different from
-    the mean!).
-  \end{block}
-  
-  \begin{block}{Prioritizing Events}
-    We can sort events by priority (or by the time they should
-    happen). And now we have a priority queue.
-  \end{block}
-
-  \begin{block}{Finding a target pair}
-    We want to find $a$ and $b$ so that $a+b=z$. After finding the
-    lowest value $x$ in the array, we find $y$ so that $z - x = y$,
-    and we do the search from both ends.
-  \end{block}
+  \frametitle{What is Search?}
+  What is search in a common sense of the word 
+  (finding your cellphone in your home)
 \end{frame}
 
 \begin{frame}
-  \frametitle{Sorting Applications (3)}
-  Can you give me suggestions of other uses for sorting?
-\end{frame}
+  \frametitle{What is Search? (In a programming challenge)}
+  - a way to think about the problem and the solution
 
-
-\subsection{Too many algorithms!}
-
-\begin{frame}
-  \frametitle{How many sorting Algorithms are there?}
-  \begin{columns}[c]
-    \column{0.5\textwidth}
-    {\tiny
-    \begin{itemize}
-    \item bubblesort
-    \item insertion sort
-    \item selection sort
-    \item heapsort
-    \item mergesort
-    \item quicksort
-    \item radix sort
-    \item bin sort
-    \item Shell sort
-    \item gnome sort
-    \item library sort
-    \item comb sort
-    \item tree transversal
-    \item sorting networks
-    \item cocktail shaking sort
-    \item bucket sort
-    \item bogo sort
-    \item bitonick sort
-    \item ...
-    \item And many more!
-    \end{itemize}}
-    \column{0.5\textwidth}
-    \includegraphics<2>[width=1\textwidth]{img/fliptable}
-  \end{columns}
+  - There are answer. We can classify the answers into correct and incorrect
+  - We can also, usually, order the answers (both correct and incorrect)
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why are there so many sorting algorithms?}
-  \begin{itemize}
-  \item Theoretical research in sorting can give insights about the
-    theoretical basis of other algorithms;
-    \bigskip
-  \item Some of these algorithms are very efficient in very specific
-    situations;
-    \bigskip
-  \item Sometimes you can exchange memory for time complexity, or
-    vice-versa;
-  \end{itemize}
+  \frametitle{Now you are thinking with search spaces}
+  Thinking of problems as search problems allows us to define 
+  some strategies about how to analyse each of the possible searches.
+
+  Main question: In what order should we analyse the possible answers?
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why are there so many sorting algorithms?}
-  \begin{center}
-    For example, the Bill Gates Paper...
-  \includegraphics[width=0.5\textwidth]{img/billgates}
-  \end{center}
-  \medskip
-  {\small It focuses on sorting by ``reverse radix'' -- an operation that
-  reverses a sub-array. This is very important to calculate the
-  genetic distance between two individuals. (How many reverse
-  operations does it take to go from individual A to individual B?)}
-\end{frame}
-
-\subsection{Characteristics of Sorting Algorithms}
-
-\begin{frame}
-  \frametitle{Characteristics of sorting algorithms}
-  \begin{block}{Computational Complexity}
-    \begin{itemize}
-    \item \structure{How many comparisons?} Comparisons require
-      conditionals in the machine code, and sometimes can be,
-      themselves, very expensive.
-    \item \structure{How many swaps?} Moving memory around can also be
-      expensive, depending on how much memory we are using for the
-      data (Main memory, cache, etc).
-    \item \structure{Memory Requirements:} Some algorithms require an
-      extra array, or maybe even more memory, in exchange for a
-      reduced number of comparisons/swaps.
-    \end{itemize}
-  \end{block}
+  \frametitle{Search Paradigm}
+  Complete Search/Brute Force
+  Divide and Conquer
+  Greedy Approach
+  Dynamic Programming (Next week!)
 \end{frame}
 
 \begin{frame}
-  \frametitle{Characteristics of sorting algorithms}
-  \begin{columns}[c]
-    \column{0.7\textwidth}
-    \begin{itemize}
-    \item \structure{Stable Algorithms} guarantee that two objects who
-      are ``equal'' in the sorting order will maintain their relative
-      position after sorting.
-    \item \structure{Unstable Algorithms} do not guarantee the final
-      order of two objects who are ``equal'' in regard to the sorting
-      comparison function.
-    \item (for example, two objects containing the same data, but
-      different memory addresses)
-      \medskip
-    \end{itemize}
-    \column{0.3\textwidth}
-    \includegraphics[width=0.9\textwidth]{img/sortingstability}
-  \end{columns}
+  \frametitle{Search Space/Search Structure}
+  Most problems in programming challenges can be defined
+  as search problems
+
+  But sometimes that is not the optimal way.
+
+  And sometimes more than one definition is possible!
+\end{frame}
+
+
+\subsection{Theoretical Example}
+
+\begin{frame}
+  \frametitle{Theoretical Example}
+%% 
+% Book example: Array A containing n < 10K integers smaller than
+% 100K: example: A = {10,7,3,5,8,2,9}, n = 7
+
+% Find Largest and smallest element of A
+% Find kth smallest element of A
+% Find largest gap G such that x,y \in A and g = |x-y|
+% Find the longest increasing subsequence of A
 \end{frame}
 
 \begin{frame}
-  \frametitle{Characteristics of sorting algorithms}
-    Other questions:
-    \begin{itemize}
-    \item Is the algorithm parallelizable?
-    \item Is the algorithm recursive? How complex is the code?
-    \item Is the algorithm based on comparisons, or on hashes?
-    \end{itemize}
+  \frame{Solving it with Complete (brute) search}
+  % 1- O(n)
+  % 2- O(n^2) - repeate the search k times
+  %    Order and search is O(nlogn), divide and conquer (9.29) is O(n)
+  %    For small queries
+  % 3- All possible pairs: O(n^2). Prove that g is composed of minimum and 
+  %    maximum numbers, O(n) Greedy search.
+  % 4- All possible subsequences: O(2^n). Dynamic programming O(n^2), greedy
+  %    O(nlogk)
 \end{frame}
 
+\section{Complete Search}
+\subsection{Definition}
+% List and test "all" solutions (Brute force, backtracking)
+% Of course, you can prune: throw away solutions as you go
 
-\section{Algorithm Review}
-\subsection{Sorting Algorithm Review}
+\subsection{True Example 1}
+% Insert Division example here
+%%% Problem Example: Loops:  UVA 725 - Division
+% Problem Description
+%% Search solution: iteractive loops (try all possible fghij, and test if all are different)
+%% Simple: All fghij from 0 to 99999. Or maybe All from 10000 to 99999
+%% Or we can prune this a bit
+%% Max: 01234 to 98765
+%% Max: 98765/N
+% Loop ideas, we can prune the loop using continue, or break. 
 
-\begin{frame}
-  \frametitle{Sorting Algorithm Review}
-  \begin{center}
-    Let us review quickly some sorting algorithms
-  \end{center}
-\end{frame}
+\subsection{Considerations}
+%% What is a complete search: 
+%% List all solutions, and check one by one
+%% If bug-free, should ALWAYS be correct (checks ALL solutions!)
+%% Of course, in many cases, it takes too long.
+
+% Should be the first solution considered. KISS
+% Should be used if the problem is too small that a better solution is overkill
+% Should be used if you really have no other ideas
+% PRUNE PRUNE PRUNE (but beware of WA)
+
+% Sometimes, using a (simple) complete search on some 
+% example inputs allow you to get an intuition for the problem
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Example 2: Multiple Loops + Pruning
+%% UVA 11565 - Simple equations
+% Find X, Y, Z that obey: x+y+z=A,x*y*z=B,x^2+y^2+z^2=C, with minimal X
+% When we first look at it, we might think that we need to solve the equations
+% But on a second look, we can treat this as a search problem.
+
+% First take x^2+y^2+z^2 = C. Since maximum C is 10000, and X,Y,Z must be 
+% different, the maximum range of x is -100 to 100. The Reasoning goes for 
+% Y and Z. With this we can do a triple loop with about 8M operations.
 
 \begin{frame}[fragile,singleslide]
-  \frametitle{Selection Sort}
-  \begin{block}{}
+  \frametitle{11565 -- Three layered solution}
 {\smaller
 \begin{verbatim}
-Divide data into sorted list and unsorted list;
-For i = 1 to length of data:
-    Select lowest element in unsorted list;
-    Move selected element to the end of sorted list;
+bool sol = false; int x,y,z;
+for (x = -100; x <= 100 && !sol; x++)
+  for (y = -100; y <= 100 && !sol; y++)
+    for (z = -100; z <= 100 && !sol; z++)
+      if (y != x && z != x && z != y &&
+          x + y + z == A && x * y * z == B && x*x + y*y + z*z == C) {
+             if (!sol) printf("%d %d %d\n", x,y,z);
+             sol = true;
+          }
 \end{verbatim}
 }
-  \end{block}
-
-\begin{itemize}
-\item Selection sort performs many comparisons, but few data swaps;
-\item Normally, it is \alert{very inneficient}. But if you use the
-  correct data structure for the unsorted data, it becomes the
-  \structure{very efficient} heapsort!
-\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Merge Sort}
-  \begin{block}{}
-{\smaller
-\begin{verbatim}
-If data size is < 3:
-    sort data;
-Else:
-    Mergesort(first half)
-    Mergesort(second half)
-    Merge(first half, second half)
-\end{verbatim}
-}
-  \end{block}
-  \begin{itemize}
-  \item The mergesort can be easily parallelized. You can sort HUGE
-    amounts of data efficiently in a parallel context;
-  \item In fact, it is implemented in many standard libraries;
-  \item How would you implement it without recursion?
-  \end{itemize}
-\end{frame}
+%% Super hard version on 11571
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Quick Sort}
-  
-  \begin{block}{}
-{\tiny
-\begin{verbatim}
-Quicksort (dataarray):
-  While dataarray > 1:
-    p = Partition(dataarray);
-    Quicksort(dataarray[:p-1]);
-    Quicksort(dataarray[p+1:]);
 
-Partition (d):
-  Select a Pivot;
-  PivPlace = 1;
-  for i in d:
-    if d[i] < Pivot:
-       place d[i] in PivPlace;
-       PivPlace++;
-  place Pivot in PivPlace;
-  return PivPlace;
-\end{verbatim}
-}
-\end{block}
+%%% TIPs
 
-  \begin{itemize}
-  \item Quicksort is well known, because it is very fast in the average case.
-  \item In the worst case, quicksort is actually slow (can you build a worst case?)
-  \item Performance is heavily dependent of the smart selection of a
-    pivot. Random pivots are usually an ``okay'' choice.
-  \end{itemize}
-\end{frame}
+% Biggest gambling in using a complete Search solution is: 
+% Will it pass the time limit? If you calculate your 
+% program to be ``borderline'', it might be worth it
+% finding the critical part of the code and trying 
+% to Optimize it.
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Bucket Sort}
+%% TIP 1 - Filtering Vs Generating
+% Filter programs examine all solutions and remove incorrect ones
+% Generating programs gradually build solutions and prune invalid
+% partial solutions.
 
-  \begin{block}{}
-    {\smaller
-\begin{verbatim}
-Create k Buckets;
-For each element in data:
-  Place element in correct bucket;
-For i = 1 to k-1:
-  Concatenate bucket i to bucket i+1;
-\end{verbatim}
-}
-  \end{block}
-  \bigskip
+% Filters are usually iteratively (for) while generators are often recursive.
+% Filters are usually easier to code, but run slower.
 
-  \begin{itemize}
-  \item Can sort in O(n+k) -- linear!
-  \item However, the price to pay is the size of $k$;
-  \item If you know the ``absolute'' positioning of the data, and
-    there are many repetitions, $k$ will be very 
-  \item On the other hand, for ``infinite'' data values, $k$ can also get infinite!
-  \item This method is not based on comparisons!
-  \end{itemize}
-  % Bucket Sort
-\end{frame}
+%% TIP 2 - Prune Early
+% Example, in the Nqueen problem, if we imagine a recursive solution that 
+% places 1 queen per column, we can prune rows, columns and DIAGONALS
+% (Also remember to mark impossible places when you enter recursion, and unmark
+% when you leave, using bitmasks)
+%%% 2.A - Finding simmetries can help, but it is often not worth the troube.
 
-\section{Relaxing}
-\subsection{Relax Time}
+%% Tip 3 - Solving the probl;em backwards
+% Or, in other words, solve the problem from a less obvious angle
+% UVA 10360 - Rat Attack
+% Obvious approach: Check each of the 1024^2 cells, and choose the biggest one.
+% 1024^2 x 50^2 = 2621M = TLE
+% Backwards approach: Make a 1024 x 1024 matrix of ``killed''. For each rat population,
+% Add its value to each cell that the bomb D can reach.
+% n * d^2 = 20000*2500 = 50M + 1024*1024
 
+%% Tip 4 - Pre-Computation
+% Sometimes it is possible to generate tables of partial solutions,
+% Load them as data in your code, to accelerate computation (at the expense of memory)
+% The programming cost of this might be high, unless you output your pre-computation
+% In a code-friendly way.
+
+%% Tip 5 - Optimizing the source code
+% Iteration is usually faster than recursion
+% Operating on built-in data types is usually faster than operations on arrays/vectors
+% Many other tips: Just beware of the tradeoff: Time optimization vs Programmer Optimization
+
+
+%%%% 3.3 Divide and conquer
+
+\section{D\&C}
+\subsection{Divide and Conquer}
 \begin{frame}
-  \frametitle{Sorting Methods Video}
-  Movie time! Can you identify the sorting methods?
-  \vfill
-  
-  Why does the C++ sort leave ``dirt'' to be cleaned in the last pass?
-\end{frame}
+  \frametitle{Divide and Conquer}
 
+  D\&C is a problem-solving paradigm in which a problem is made
+  simpler by 'dividing' it into smaller parts.
 
-\begin{frame}
-  \frametitle{Bogo Sort}
-  \begin{block}{The Worst Sorting Algorithm}
-    \begin{enumerate}
-      \item Shuffle the Data
-      \item If the data is not sorted, return to 1
-    \end{enumerate}
-  \end{block}
-  \bigskip
-  
   \begin{itemize}
-  \item Calculate the complexity of this Algorithm!
-  \item Will this algorithm always stop?
+  \item Divide the original problem into sub-problems;
+  \item Find (sub)-solutions for each sub-problems;
+  \item Combine sub-solutions to get a complete solution;
   \end{itemize}
-\end{frame}
 
-\begin{frame}
-  \frametitle{The \alert{Quantum} Bogo Sort}
-  
-  \begin{block}{The \alert{Best} Sorting Algorithm}
-    \begin{enumerate}
-    \item Shuffle all the data;)
-    \item Check if the data is sorted;
-    \item If the data is not sorted, destroy the entire universe.      
-    \end{enumerate}
+  \begin{block}{Examples}
+    Quick Sort, Binary Search, etc...
   \end{block}
 \end{frame}
 
-\section{Using Sorting}
+%% Canonical -- 
+% searching an item in a static sorted array, check the middle, then take 
+% the appropriate half O(logn). 
 
-\subsection{Using Sorting}
+%%% Binary Search on Uncommon Data Structures
+%% Example: Parents in a tree: Find the parent of node V that has value over P
+% which is closest to the root. Q <= 20K, N <= 80K
+%% Naive approach: For each note, search all parents. Worst case is QN (TLE)
+%% Divide and conquer approach: Take each path from the root, and solve all
+% Queries for each root, using binary search == O(QlogN)
 
+%%% Bisection Method
+% You have to pay V dollars, with a monthly D payment, in M months, %i interest
+% If we fix m, v and i, what is the minimal d? (with 2 decimal cases)
+
+% Example: d = 576.19, m = 2, v = 1000, i = 0.1
+% After one Month, debt = 1000 x 1.1 - 576.19 = 523.81
+% After two Months, debt = 523.81 x 1.1 - 576.19 = 0
+
+% Bisection method: Choose the range [a..b], (ex: 0.01 1100.00)
+% Do a binary search for d in this range
+
+% a & b & d & status: f(d,m,v,i) & action: \\
+% 0.01 & 1100.00 & 550.005 & undershoot by 54.9895 & increase d\\
+% 550.005 & 1100.00 & 825.0025 & overshoot by 522.50525 & decrease d\\
+% 550.005 & 825.0025 & 687.50375 & overshoot by 233.757875 & decrease d\\
+% 550.005 & 687.50375 & 681.754375 & overshoot by 89.384187 & decrease d\\
+% 550.005 & 618.754375 & 584.379688 & overshoot by 17.197344 & decrease d\\
+% 550.005 & 584.379688 & 567.192344 & undershoot by 18.896078 & increase d\\
+% 567.192344 & 584.379688 & 575.786016 & undershoot by 0.849366 & increase d\\
+% ... & ... & ... & a few iterations later ... & ...\\
+% ... & ... & 576.190476 & stop; error is now less than e & answer = 576.19\\
+
+% Total number of iterations os O(log_2((b-a)/e))
+% UVA - 11936 - Through the desert - uses this logic
+
+%%%% 3.4 Greedy 
+\section{Greedy}
+\subsection{Greedy}
 \begin{frame}
-  \frametitle{Sorting in Programming Challenges}
-  \begin{block}{}
-    Your language libraries have already implemented some sorting for
-    you. You will often want to use that.
-  \end{block}
-  \medskip
-  \begin{itemize}
-    \item \structure{Java:} Collections.sort()
-    \item \structure{C (stdlib.h):} qsort();
-    \item \structure{C++ (stl):} sort(), stable\_sort; 
-  \end{itemize}
-  \medskip
-  You usually have to implement the comparison function, except in
-  trivial cases.
+  \frametitle{Greedy}
+
+% An algorithm is said to be greedy if it makes the locally optimal choice
+% at each step, with the hope of eventually reaching the global optimal.
+
+% For greedy to work, a problem must show two properties:
+% 1- It has optimal sub-structures (Optimal solution of the problem
+%    contains optimal solutions for the sub-problems)
+% 2- It has the greedy property: Making locally optimal choices will lead 
+%    ``eventually'' to the optimal solution (difficult to prove!)
+
 \end{frame}
 
 \begin{frame}
-  \frametitle{Implementing Sorting Functions}
-  \begin{block}{Sorting on multiple attributes of your data}
-    Sort by height (ascending), in case of tie sort by last name
-    (alphabetical), in case of tie sort by weight (descending), in
-    case of tie sort by who has the birthday closest to June 30th.
-  \end{block}
-  \begin{center}
-    How do you do that?
-  \end{center}
+  \frametitle{Greedy Example 1}
+  Coin Change:
+
+  Given a target value V and a list of coin sizes, what is the minimum number 
+  of coins that we must use to represent V?
+
+  Example: V = 42, Coins = 25, 10, 5, 1 (a One coin means we can always make any value)
+
+  However, if V = 6, and coins = 4,3,1, the greedy algorithm does not
+  reach an optimal solution.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Implementing Sorting Functions (2)}
-  \begin{block}{Sorting on multiple attributes of your data}
-    Sort by height (ascending), in case of tie sort by last name
-    (alphabetical), in case of tie sort by weight (descending), in
-    case of tie sort by who has the birthday closest to June 30th.
-  \end{block}
-  \medskip
-  \begin{itemize}
-  \item<1> Multiple Passes: Sort the items by the least important
-    criteria, then by the next least important criteria, and so
-    on. Simple, a bit slow, requires a stable sorting algorithm.
-  \item<2> Single Pass: Make a complex comparison function that takes
-    all the sorting conditions into account. Faster than multiple
-    passes, but be careful with code complexity!
-  \item<3> Pre-process the data: In some cases, you can modify parts
-    of the data to make sorting simple. Example: ``Sort closest to X''
-    = sort ``abs(X-value)'';
-  \end{itemize}
+  \frametitle{Greedy Example 2}
+  Load balancing: (UVA 410)
+
+  You have C chambers, and S < 2C specimens. You need to decide where
+  each specimen should go to minimize ``imbalance''.
+
+  Insights:
+
+  - A chamber with 1 individual is always better than a chamber with 0
+  individuals.
+
+  - Order of chambers does not matter.
+
+  %%% Make people think for a while here.
+
+  Greedy algorithm: Order the individuals by weight, and 
+  put one in each chambers until the chambers are full, then add one
+  in each chamber backwards.
 \end{frame}
 
-\section{This Week's Problems}
-
-\subsection{Problem}
 \begin{frame}
-  \begin{itemize}
-  \item Crypt Kicker II
-  \item File Fragmentation
-  \item Vito's Family
-  \item \sout{Football (aka Soccer)} <- \alert{Don't do this one!}
-  \item Shoemaker's Problem
-  \end{itemize}
+  \frametitle{Greedy Example 3 - Dragon of LooWater (11292)}
+  List of knights (with heights) and dragons (with diameter). Find the 
+  minimal height of knights that cut the heads of all dragons 
+  (knights can only cut the heads of dragons when D <= H).
+
+  Sort knights and dragons, and from smallest to biggest dragon, 
+  match with the smallest knight possible to solve.
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% State Space Search
+% UVA 11212 Editing a Book
+% You can cut pages (in order) and paste them to correct the order of the book
+% Report number of steps required.
+% Upper bound: k-1 (paragraphs in the wrong position) - not correct answer, examples
+% Calculations on the number of states for the problem (No solution given in the slides)
+
+
+
+\section{Problem Discussion}
+
+
+
 \end{document}
