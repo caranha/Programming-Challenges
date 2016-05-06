@@ -508,51 +508,109 @@ for (x = -100; x <= 100 && !sol; x++)
 
 \begin{frame}
   \frametitle{Complete Search: TIPS 1}
+  The biggest issue with ``Complete Search'' solutions is: Will it
+  pass the time limit? 
+
+  \medskip
+
+  If you think that your program is borderline passable, it might be
+  worth it finding and optimizing the critical part of the code.
+
+  \vfill
+
+  {\smaller
+  \begin{block}{Tip 1 -- Filtering Vs Generating}
+    \structure{Filter Programs} examine all solutions and remove
+    incorrect ones. Generally iteractive. Generally easier to
+    code. Example: Request for proposal.
+
+    \bigskip
+
+    \structure{Generating Programs} gradually build solutions and
+    prune invalid partial solutions. Generally recursive. Generally
+    faster. Example: 8 queens.
+  \end{block}}
 \end{frame}
 
-%%% TIPs
+\begin{frame}
+  \frametitle{Complete Search: TIPS 2}
+  {\smaller
+    \begin{block}{Tip 2 -- Prune Early}
+      In the N queen problem, if we imagine a recursive solution that
+      places 1 queen per column, we can prune rows, columns and
+      \structure{DIAGONALS}. 
 
-% Biggest gambling in using a complete Search solution is: 
-% Will it pass the time limit? If you calculate your 
-% program to be ``borderline'', it might be worth it
-% finding the critical part of the code and trying 
-% to Optimize it.
+      \smallskip
 
-%% TIP 1 - Filtering Vs Generating
-% Filter programs examine all solutions and remove incorrect ones
-% Generating programs gradually build solutions and prune invalid
-% partial solutions.
+      Also remember to mark impossible places when you enter the
+      recursion, and unmark when you leave, using bitmasks.
+      %%% 2.A - Finding simmetries can help, but it is often not worth the troube.
+    \end{block}
 
-% Filters are usually iteratively (for) while generators are often recursive.
-% Filters are usually easier to code, but run slower.
+    \vfill
 
-%% TIP 2 - Prune Early
-% Example, in the Nqueen problem, if we imagine a recursive solution that 
-% places 1 queen per column, we can prune rows, columns and DIAGONALS
-% (Also remember to mark impossible places when you enter recursion, and unmark
-% when you leave, using bitmasks)
-%%% 2.A - Finding simmetries can help, but it is often not worth the troube.
+    \begin{block}{Tip 3 -- Pre-computation}
+      Sometimes it is possible to generate tables of partial solutions. 
 
-%% Tip 3 - Solving the probl;em backwards
-% Or, in other words, solve the problem from a less obvious angle
-% UVA 10360 - Rat Attack
-% Obvious approach: Check each of the 1024^2 cells, and choose the biggest one.
-% 1024^2 x 50^2 = 2621M = TLE
-% Backwards approach: Make a 1024 x 1024 matrix of ``killed''. For each rat population,
-% Add its value to each cell that the bomb D can reach.
-% n * d^2 = 20000*2500 = 50M + 1024*1024
+      \medskip
 
-%% Tip 4 - Pre-Computation
-% Sometimes it is possible to generate tables of partial solutions,
-% Load them as data in your code, to accelerate computation (at the expense of memory)
-% The programming cost of this might be high, unless you output your pre-computation
-% In a code-friendly way.
+      Load this data in your code to accelerate computation (at the
+      expense of memory). The programming cost is high, since you have
+      to output the tables in a way to facilitate putting it in the
+      code.
+    \end{block}
 
-%% Tip 5 - Optimizing the source code
-% Iteration is usually faster than recursion
-% Operating on built-in data types is usually faster than operations on arrays/vectors
-% Many other tips: Just beware of the tradeoff: Time optimization vs Programmer Optimization
+    }
+\end{frame}
 
+
+\begin{frame}
+  \frametitle{Complete Search: TIPS 3}
+  {\smaller
+    \begin{block}{Tip 4 -- Solve the problem backwards}
+      Sometimes a less obvious angle of attack may be easier.
+
+      \medskip
+
+      Example: UVA 10360, Rat Attack. A 1024 x 1024 city has $n \leq 20000$ rats in
+      some of its blocks. You have a bomb with radius $d \leq
+      50$. Where do you place the bomb to kill most rats?
+
+      \medskip
+
+      \structure{Obvious Approach}: Check each of the $1024^2$
+      cells. Cost: $1024^2*50^2 = 2621M$ TLE
+
+      \medskip
+
+      \structure{Backwards Approach}: Make a 1024x1024 matrix of
+      ``killed rats''. For each rat group, add its value to each cell in the 
+      bomb radius: $n * d^2 = 20000*2500 = 50M + 1024*1024$.
+    \end{block}
+    
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Complete Search: TIPS 4}
+
+  {\smaller
+    \begin{block}{Tip 5 -- Optimizing the source code}
+      \begin{itemize}
+      \item Loops are usually faster than recursion
+      \item Using built-in data types is usually faster than arrays/vectors
+      \item Printf is usually faster than CIN/COUT
+      \item Many other tips
+
+        \bigskip
+        
+      \item Don't forget the Time Optimization vs. Programmer
+        Optimization tradoff!
+      \end{itemize}
+      
+    \end{block}
+  }
+\end{frame}
 
 %%%% 3.3 Divide and conquer
 
@@ -561,8 +619,10 @@ for (x = -100; x <= 100 && !sol; x++)
 \begin{frame}
   \frametitle{Divide and Conquer}
 
-  D\&C is a problem-solving paradigm in which a problem is made
-  simpler by 'dividing' it into smaller parts.
+
+
+  Divide and Conquer (D\&C) is a problem-solving paradigm in which a
+  problem is made simpler by 'dividing' it into smaller parts.
 
   \begin{itemize}
   \item Divide the original problem into sub-problems;
@@ -575,9 +635,24 @@ for (x = -100; x <= 100 && !sol; x++)
   \end{block}
 \end{frame}
 
-%% Canonical -- 
-% searching an item in a static sorted array, check the middle, then take 
-% the appropriate half O(logn). 
+\begin{frame}
+  \frametitle{Canonical Divide and Conquer}
+  \begin{enumerate}
+  \item Sort an static array;
+  \item You want to find item $n$.
+  \item Test the middle of the array.
+  \item If $n$ is smaller/bigger than the middle, throw away the second/first half.
+  \item Repeat
+  \end{enumerate}
+  
+  \vfill
+
+  Search time: O(log n) plus sorting time if necessary.
+\end{frame}
+
+%\begin{frame}
+%  \frametitle{Binary Search on Uncommon Data St
+%\end{frame}
 
 %%% Binary Search on Uncommon Data Structures
 %% Example: Parents in a tree: Find the parent of node V that has value over P
@@ -586,30 +661,67 @@ for (x = -100; x <= 100 && !sol; x++)
 %% Divide and conquer approach: Take each path from the root, and solve all
 % Queries for each root, using binary search == O(QlogN)
 
-%%% Bisection Method
-% You have to pay V dollars, with a monthly D payment, in M months, %i interest
-% If we fix m, v and i, what is the minimal d? (with 2 decimal cases)
+\begin{frame}
+  \frametitle{Binary Search on open ended problems -- Bisection}
+  \begin{block}{Problem Example: Paying the debt}
+    You have to pay $V$ dollars. You pay $D$ dollars per month, in $M$
+    months. Each month, before paying, your debt increases by $i$. 
 
-% Example: d = 576.19, m = 2, v = 1000, i = 0.1
-% After one Month, debt = 1000 x 1.1 - 576.19 = 523.81
-% After two Months, debt = 523.81 x 1.1 - 576.19 = 0
+    \medskip
 
-% Bisection method: Choose the range [a..b], (ex: 0.01 1100.00)
-% Do a binary search for d in this range
+    If we fix $M$,$I$ and $V$, what is the minimal $D$?
+  \end{block}
 
-% a & b & d & status: f(d,m,v,i) & action: \\
-% 0.01 & 1100.00 & 550.005 & undershoot by 54.9895 & increase d\\
-% 550.005 & 1100.00 & 825.0025 & overshoot by 522.50525 & decrease d\\
-% 550.005 & 825.0025 & 687.50375 & overshoot by 233.757875 & decrease d\\
-% 550.005 & 687.50375 & 681.754375 & overshoot by 89.384187 & decrease d\\
-% 550.005 & 618.754375 & 584.379688 & overshoot by 17.197344 & decrease d\\
-% 550.005 & 584.379688 & 567.192344 & undershoot by 18.896078 & increase d\\
-% 567.192344 & 584.379688 & 575.786016 & undershoot by 0.849366 & increase d\\
-% ... & ... & ... & a few iterations later ... & ...\\
-% ... & ... & 576.190476 & stop; error is now less than e & answer = 576.19\\
+  Bisection approach:
+  \begin{itemize}
+  \item Estimate a good min,max interval for $D$.
+  \item Select the middle value and simulate the result.
+  \item If the result is bigger/smaller than the desired, modify the
+    interval accordingly.
+  \item Repeat.
+  \end{itemize}
+\end{frame}
 
-% Total number of iterations os O(log_2((b-a)/e))
-% UVA - 11936 - Through the desert - uses this logic
+\begin{frame}
+  \frametitle{Bisection Method -- Example}
+{\smaller
+\begin{block}{}
+$m = 2, v = 1000, i = 0.1, d = 576.19$
+
+\medskip
+
+After one Month, debt = 1000 x 1.1 - 576.19 = 523.81\\
+After two Months, debt = 523.81 x 1.1 - 576.19 = 0
+\end{block}
+
+Bisection method: Choose the range [a..b], (ex: 0.01 1100.00)\\
+Do a binary search for d in this range
+}
+
+\medskip
+
+{\tiny
+\begin{tabular}{c|c|c|c|l}
+ a & b & d & simulation: f(d,m,v,i) & action: \\
+ \hline
+ 0.01 & 1100.00 & 550.005 & undershoot by 54.9895 & increase d\\
+ 550.005 & 1100.00 & 825.0025 & overshoot by 522.50525 & decrease d\\
+ 550.005 & 825.0025 & 687.50375 & overshoot by 233.757875 & decrease d\\
+ 550.005 & 687.50375 & 681.754375 & overshoot by 89.384187 & decrease d\\
+ 550.005 & 618.754375 & 584.379688 & overshoot by 17.197344 & decrease d\\
+ 550.005 & 584.379688 & 567.192344 & undershoot by 18.896078 & increase d\\
+ 567.192344 & 584.379688 & 575.786016 & undershoot by 0.849366 & increase d\\
+ ... & ... & ... & a few iterations later ... & ...\\
+ ... & ... & 576.190476 & stop; error is now less than e & answer = 576.19\\
+\end{tabular}
+}
+
+\medskip
+
+{\smaller
+Total number of iterations is $O(log_2((b-a)/e))$\\
+UVA - 11936 - Through the desert - uses this logic}
+\end{frame}
 
 %%%% 3.4 Greedy 
 \section{Greedy}
@@ -617,45 +729,75 @@ for (x = -100; x <= 100 && !sol; x++)
 \begin{frame}
   \frametitle{Greedy}
 
-% An algorithm is said to be greedy if it makes the locally optimal choice
-% at each step, with the hope of eventually reaching the global optimal.
+  \begin{block}{Definition}
+    An algorithm is said to be greedy if it makes the locally optimal
+    choice at each step, with the hope of eventually reaching the
+    global optimal.
+  \end{block}
 
-% For greedy to work, a problem must show two properties:
-% 1- It has optimal sub-structures (Optimal solution of the problem
-%    contains optimal solutions for the sub-problems)
-% 2- It has the greedy property: Making locally optimal choices will lead 
-%    ``eventually'' to the optimal solution (difficult to prove!)
+  \vfill
+
+  For greedy to work, a problem must show two properties:
+  \begin{enumerate}
+  \item It has optimal sub-structures (Optimal solution of the problem
+    contains optimal solutions for the sub-problems)
+  \item It has the greedy property: Making locally optimal choices
+    will lead ``eventually'' to the optimal solution (difficult to
+    prove!)
+  \end{enumerate}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Greedy Example 1}
-  Coin Change:
+  \frametitle{Greedy Example 1 -- Coin Change}
 
-  Given a target value V and a list of coin sizes, what is the minimum number 
-  of coins that we must use to represent V?
+  Given a target value $V$ and a list of coin sizes $S$, what is the
+  minimum number of coins that we must use to represent $V$?
 
-  Example: V = 42, Coins = 25, 10, 5, 1 (a One coin means we can always make any value)
+  \bigskip
+
+  Example:\\ 
+  $V = 42, Coins = 25, 10, 5, 1$\\
+  (a One coin means we can always make any value)
+
+  \bigskip
 
   However, if V = 6, and coins = 4,3,1, the greedy algorithm does not
   reach an optimal solution.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Greedy Example 2}
-  Load balancing: (UVA 410)
+  \frametitle{Greedy Example 2 -- Load Balancing UVA 410}
 
-  You have C chambers, and S < 2C specimens. You need to decide where
-  each specimen should go to minimize ``imbalance''.
+  \begin{block}{Problem Description}
+    
 
+  You have C chambers, and S < 2C specimens with different positive
+  weights. You need to decide where each specimen should go to
+  minimize ``imbalance''.
+  \end{block}
+  
+  \begin{equation*}
+    \text{Imbalance} = \sum_{i=1}^C |CM_i - AM|
+  \end{equation*}
+
+  Can you figure out a greedy search solution?
+\end{frame}
+\begin{frame}
+  \frametitle{Greedy Example 2 -- Load Balancing UVA 410}
   Insights:
 
-  - A chamber with 1 individual is always better than a chamber with 0
-  individuals.
+  \begin{itemize}
+  \item A chamber with 1 individual is always better than a chamber
+    with 0 individuals.
 
-  - Order of chambers does not matter.
+    \medskip
 
+  \item Order of chambers does not matter.
+  \end{itemize}
   %%% Make people think for a while here.
+
+  \vfill
 
   Greedy algorithm: Order the individuals by weight, and 
   put one in each chambers until the chambers are full, then add one
@@ -668,8 +810,8 @@ for (x = -100; x <= 100 && !sol; x++)
   minimal height of knights that cut the heads of all dragons 
   (knights can only cut the heads of dragons when D <= H).
 
-  Sort knights and dragons, and from smallest to biggest dragon, 
-  match with the smallest knight possible to solve.
+%  Sort knights and dragons, and from smallest to biggest dragon, 
+%  match with the smallest knight possible to solve.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
