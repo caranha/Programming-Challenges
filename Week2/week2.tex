@@ -5,7 +5,7 @@
 \subtitle[]{Week 2 - Problem Solving Paradigms (Search)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-04-22,25\\{\tiny Last updated \today}}
+\date{2015-05-6,9\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -19,129 +19,450 @@
 
 \begin{frame}
   \frametitle{Last Week Results}
+  {\smaller
+    \begin{columns}[T]
+      \column{0.5\textwidth}
+      \begin{block}{Week 1}
+        Problems Solved\\
+        \begin{itemize}
+        \item Division Of Nlogonia: 28/28
+        \item Cancer Or Scorpio: 24/27
+        \item 3n+1: 25/25
+        \item Request for Proposal: 19/22
+        \end{itemize}
+
+        \medskip
+
+        Manaba Submission: 29 Students
+      \end{block}
+      \column{0.5\textwidth}
+      \begin{block}{Week 2}
+        Problems Solved\\
+        \begin{itemize}
+          \item Jolly Jumpers: 26/26
+          \item Army Buddies: 15/21
+          \item Rotated Square: 17/17
+          \item File Fragmentation: 4/5
+          \item Contest Scoreboard: 10/11
+          \item Multitasking: 3/5
+          \item Jolibee Tournament: 7/7
+        \end{itemize}
+
+        \medskip
+
+        Manaba Submission: 25 students
+      \end{block}
+    \end{columns}
+  }
+
+  \begin{center}
+    Don't Give Up!
+  \end{center}
 \end{frame}
 
 \begin{frame}
   \frametitle{Special Notes}
-  None this time!
+  \begin{block}{If the UVA Judge is offline}
+    Sometimes the UVA Judge gets overloaded. If this happens near the
+    deadline, send your programs to MANABA before the UVA
+    deadline. Re-send your programs to UVA as soon as it becomes
+    available again.
+  \end{block}
+  \begin{block}{If uDebug result is different from UVA result}
+    uDebug is a volunteer service. Although it is very useful, its
+    correctness is not guaranteed. If you see a result that indicates
+    that uDebug is wrong, contact the maintainers of that site, they
+    will be grateful for the report.
+  \end{block}
+
+  Always try to submit programs early!
+\end{frame}
+
+\begin{frame}
+  \frametitle{Quick Review of Last Week}
+  \begin{itemize}
+  \item \structure{Linear Arrays} (unidimensional and bidimensional) are 
+    KISS data structures;
+    \begin{itemize}
+    \item A lot of problems can be solved by iterating on arrays
+    \item Always allocate a bit more than you need.
+    \end{itemize}
+
+    \medskip
+
+  \item \structure{Bitmasks} are quick and efficient ways to store sets of
+    True/False values;
+
+    \medskip
+    
+  \item \structure{Tree data structures} can search very efficiently
+    \begin{itemize}
+    \item Instead of implementing your own, learn to use the
+      structures available from the library.
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Search}
 
 \subsection{Definitions}
 \begin{frame}
-  \frametitle{What is Search?}
-  What is search in a common sense of the word 
-  (finding your cellphone in your home)
+  \frametitle{Topic for this week: Search}
+
+  \begin{block}{What is Search}
+    In day to day life, we say we are \structure{searching} for
+    something when we are trying to find where this something is
+    located.
+
+    \begin{itemize}
+    \item Keys of your bycicle;
+    \item Your wallet;
+    \item Your cellphone;
+    \end{itemize}
+
+    When searching, we think of our \structure{Goal} (the thing we are
+    searching), and the \structure{search space} (the number of places
+    where the thing could be hidden)
+    
+  \end{block}
+  
+  {\smaller
+  \hfill \emph{The thing you search is always in the last place you look}\\
+  \hfill (\emph{By definition!})}
 \end{frame}
 
 \begin{frame}
-  \frametitle{What is Search? (In a programming challenge)}
-  - a way to think about the problem and the solution
+  \frametitle{What is a ``Search Problem''?}
+  {\small
+    
+    We call a problem a search problem, if we can describe the problem
+    as checking multiple \emph{answers} in order to find one or more
+    \emph{solutions}.
 
-  - There are answer. We can classify the answers into correct and incorrect
-  - We can also, usually, order the answers (both correct and incorrect)
+    \medskip
+
+    \begin{itemize}
+    \item Answers to a search problem could be \structure{correct} or \alert{incorrect};
+    \item Answers can also possibly have higher or lower \structure{scores};
+    \item We can \structure{sort} the answers by score, or by some other criteria;
+    \end{itemize}
+
+    \bigskip
+
+    Many problems in programming challenges can be described as search
+    problems! (even if sometimes there are better ways to describe
+    them)
+  }
 \end{frame}
+
+\begin{frame}
+  \frametitle{Sample Search Problems}
+  \begin{block}{Request For Proposal (Week 1)}  
+    You are given a set of proposals with the number of satisfied
+    requirements, and the total cost. \alert{Find} the proposal with
+    the highest number of requirements, and the lowest total cost.
+
+    \bigskip
+
+    \structure{Search Space:} The set of proposals in the input.
+  \end{block}
+
+  \begin{block}{File Fragmentation (Week 2)}
+    You are given a set of binary fragments. \alert{Find} a binary
+    value that match all existing fragments.
+
+    \bigskip
+
+    \structure{Search Space:} The set of all binary values with size $< n$
+  \end{block}
+
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Now you are thinking with search spaces}
-  Thinking of problems as search problems allows us to define 
-  some strategies about how to analyse each of the possible searches.
 
-  Main question: In what order should we analyse the possible answers?
+  When we define a problem as a search problem, we can use strategies
+  based on organizing the search space, and systematically examining
+  each solution contained in it.
+
+  \bigskip
+
+  Questions about the algorithm:
+  \begin{itemize}
+  \item How is the search space represented?
+  \item How are the solutions ordered?
+  \item In what order are the solutions tested?
+  \item How many solutions are tested?
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Search Paradigm}
-  Complete Search/Brute Force
-  Divide and Conquer
-  Greedy Approach
-  Dynamic Programming (Next week!)
+  \frametitle{Thinking with search spaces: Request for Proposal}
+  \begin{itemize}
+  \item \structure{How is the search space represented?}\\
+    For each proposal, the number of requirements and the cost are stored.
+  \item \structure{How are the solutions ordered?}\\
+    The array of proposals is ordered by highest number of requirements and lowest cost.
+  \item \structure{In what order are the solutions tested?}\\
+    Highest item in the array of proposals are checked first.
+  \item \structure{How many solutions are tested?}\\
+    Only the first item is returned.
+  \end{itemize}  
+
+  \bigskip
+
+  Of course, for many problems there is more than one way to fill this
+  pattern.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Search Space/Search Structure}
-  Most problems in programming challenges can be defined
-  as search problems
+  \frametitle{Search Paradigms}
+  These are some common approaches for search problems:
+  
+  \begin{itemize}
+    \item Complete Search/Brute Force;
+    \item Divide and Conquer;
+    \item Greedy Approach;
+    \item Dynamic Programming (Next week!)
+  \end{itemize}
 
-  But sometimes that is not the optimal way.
+  \bigskip
 
-  And sometimes more than one definition is possible!
+  As we said before, some problems can use multiple approaches (but
+  not all of them are equally good!)
 \end{frame}
 
-
-\subsection{Theoretical Example}
+\subsection{Examples}
 
 \begin{frame}
-  \frametitle{Theoretical Example}
-%% 
-% Book example: Array A containing n < 10K integers smaller than
-% 100K: example: A = {10,7,3,5,8,2,9}, n = 7
+  \frametitle{Theoretical Example (1)}
 
-% Find Largest and smallest element of A
-% Find kth smallest element of A
-% Find largest gap G such that x,y \in A and g = |x-y|
-% Find the longest increasing subsequence of A
+  \begin{block}{Search Space}
+    You have an array $A$ of $n$ integers ($n < 10K$), where the value
+    of each integer $a_i$ is ($0 \leq a_i \leq 100K$).
+  \end{block}
+  
+  \bigskip
+
+  Imagine the following problems:
+  \begin{itemize}
+  \item Find the Largest and the smallest element of $A$;
+  \item Find the $k^{th}$ smallest element of $A$;
+  \item Find the largest gap $G$ such that $x,y \in A$ and $G = |x-y|$;
+  \item Find the longest increasing subsequence of A;
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frame{Solving it with Complete (brute) search}
-  % 1- O(n)
-  % 2- O(n^2) - repeate the search k times
-  %    Order and search is O(nlogn), divide and conquer (9.29) is O(n)
-  %    For small queries
-  % 3- All possible pairs: O(n^2). Prove that g is composed of minimum and 
-  %    maximum numbers, O(n) Greedy search.
-  % 4- All possible subsequences: O(2^n). Dynamic programming O(n^2), greedy
-  %    O(nlogk)
+  \frametitle{Theoretical Example (2)} 
+
+  {\smaller
+  How costly would be to search the solutions for each of the four
+  problems described?
+
+  \bigskip
+  
+  \begin{itemize}
+  \item Find the Largest and smallest element of $A$: O(n) - single
+    pass, and we cannot really go faster than this.
+  \item Find the $k^{th}$ smallest elements of $A$:
+    \begin{itemize}
+    \item Repeat the search k times: $O(n^2)$ in the worst case;
+    \item Order the number and search: $O(n\text{log}n)$
+    \end{itemize}
+  \item Fing the largest gap:
+    \begin{itemize}
+    \item Try all possible pairs: $O(n^2)$
+    \item Greedy: Find the smallest and largest numbers $O(n)$ (you
+      have to prove this works)
+    \end{itemize}
+  \item Longest increasing subsequence:
+    \begin{itemize}
+    \item Test all possible subsequences (brute force): $O(2^n)$
+    \item Dynamic programming: $O(n^2)$
+    \item Greedy search: $O(n\text{log}k)$ -- can you prove this?
+    \end{itemize}
+  \end{itemize}  
+  }
 \end{frame}
 
 \section{Complete Search}
 \subsection{Definition}
-% List and test "all" solutions (Brute force, backtracking)
-% Of course, you can prune: throw away solutions as you go
+\begin{frame}
+  \frametitle{Complete Search/Brute Force (1)}
+
+  \structure{Complete Search} algorithms are expected to test all (or
+  almost all) solutions.
+
+  \bigskip
+
+  \begin{exampleblock}{}
+  Complete Search are usually called ``Brute Force''. But because they
+  are often the best way to solve a problem, we use a nicer name here.
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Complete Search/Brute Force (2)}
+
+  Structure of a Complete Search:
+
+  \bigskip
+
+  \begin{itemize}
+  \item Test all existing solutions\\
+    Usually achieved through either for loops or recursive calls;
+
+    \bigskip
+
+  \item Prune, Prune, Prune\\
+    Remove bad solutions (or bad sets of solutions) as you go, by 
+    ``breaking'' early form loops, or setting good ending conditions 
+    to the recursive calls.
+  \end{itemize}
+  
+\end{frame}
 
 \subsection{True Example 1}
-% Insert Division example here
-%%% Problem Example: Loops:  UVA 725 - Division
-% Problem Description
-%% Search solution: iteractive loops (try all possible fghij, and test if all are different)
-%% Simple: All fghij from 0 to 99999. Or maybe All from 10000 to 99999
-%% Or we can prune this a bit
-%% Max: 01234 to 98765
-%% Max: 98765/N
-% Loop ideas, we can prune the loop using continue, or break. 
+\begin{frame}
+  \frametitle{Complete Search Example: UVA 725 -- Division}
+  \begin{block}{Problem Summary}
+    Given an integer N, find all pairs of numbers $abcde$ and $fghij$ so that 
+    $fghij/abcde = N$ and all 10 digits are different.
+
+    \bigskip
+
+    \structure{Example:} $N = 62$
+
+    \medskip
+
+    79546 / 01283 = 62\\
+    94736 / 01528 = 62\\
+  \end{block}
+
+  \vfill
+  
+  Consider this problem for a bit before I show how to solve it using search.
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Complete Search Example: UVA 725 -- Division}
+  {\smaller
+  \begin{block}{Full Search Solution:}
+    A naive way to solve the problem is to test all $0 \leq x \leq
+    99999$, calculate $y = x*n$, and test whether $x$ and $y$ have 
+    all different digits.
+  \end{block}
+
+\begin{verbatim}
+for (int x = 0; x < 99999; x++)
+{
+  y = x*n;
+  digits = test(x,y);
+  if (digits == 1<<10 - 1) printf("%0.5d/%0.5d=%d\n",y,x,N);
+}
+
+int digits(int x, int y)
+{
+  int used = (x < 10000);
+  int tmp; 
+  tmp = x; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
+  tmp = y; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
+  return used;
+}
+\end{verbatim}
+  
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Complete Search Example: UVA 725 -- Division}
+  Pruning the complete loop:
+
+  \bigskip
+
+  \begin{itemize}
+  \item What is the absolute minimum and maximum for x? 01234:98765
+
+    \bigskip
+
+  \item Maximum for Y is also 98765, so the actual maximum for x is 
+    $x < 98766/n$
+
+    \bigskip
+
+  \item Can we cut the digits test earlier?
+  \end{itemize}
+\end{frame}
 
 \subsection{Considerations}
-%% What is a complete search: 
-%% List all solutions, and check one by one
-%% If bug-free, should ALWAYS be correct (checks ALL solutions!)
-%% Of course, in many cases, it takes too long.
 
-% Should be the first solution considered. KISS
-% Should be used if the problem is too small that a better solution is overkill
-% Should be used if you really have no other ideas
-% PRUNE PRUNE PRUNE (but beware of WA)
+\begin{frame}
+  \frametitle{Considerations about complete search}
+  \begin{itemize}
+  \item A bug-free complete search should ALWAYS be correct.\\
+    \begin{itemize}
+    \item A complete search tests all solutions, so it should always
+      find the correct one;
+    \item Of course, in many cases, checking all solutions takes too long;
+    \end{itemize}
 
-% Sometimes, using a (simple) complete search on some 
-% example inputs allow you to get an intuition for the problem
+    \bigskip
 
+  \item Complete Search should always be solution considered (KISS
+    principle)
+    \begin{itemize}
+    \item If the problem is so small that a better solution is overkill;
+    \item If you are running out of ideas, or take too many WAs;
+    \item Prune, prune, prune!
+    \end{itemize}
+    
+    \bigskip
 
+  \item Sometimes, you can use a simple complete search on a hard
+    problem to get an idea of what sort of result is expected.
+    \begin{itemize}
+    \item Use it to generate solutions for test cases in problems that
+      generate TLEs.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Example 2}
 
-%% Example 2: Multiple Loops + Pruning
-%% UVA 11565 - Simple equations
-% Find X, Y, Z that obey: x+y+z=A,x*y*z=B,x^2+y^2+z^2=C, with minimal X
-% When we first look at it, we might think that we need to solve the equations
-% But on a second look, we can treat this as a search problem.
+\begin{frame}
+  \frametitle{Complete Search Example 2: Simple Equations}
+  \begin{block}{Problem Summary -- UVA 11565}
+    Find $x,y,z$ so that $x+y+z=A$, $x*y*z=B$, $x^2+y^2+C^2=C$, $1
+    \leq A,B,C \leq 10000$.
+
+    \bigskip
+  \end{block}
+
+  \vfill
+
+  We need to test sets of x,y,z, but how do we set the limits for
+  these values?
+\end{frame}
 
 % First take x^2+y^2+z^2 = C. Since maximum C is 10000, and X,Y,Z must be 
 % different, the maximum range of x is -100 to 100. The Reasoning goes for 
 % Y and Z. With this we can do a triple loop with about 8M operations.
 
 \begin{frame}[fragile,singleslide]
-  \frametitle{11565 -- Three layered solution}
+  \frametitle{Example 2: Simple Equations -- initial pruning}
+
+  \begin{block}{}
+    Consider $x^2 + y^2 + x^2 = C$. Since $C \leq 10000$, the maximum
+    range for $x,y,z$ must be $-100, 100$.
+    
+    \bigskip
+
+    Therefore, here is the \structure{Complete Search Loop}    
+  \end{block}
+
 {\smaller
 \begin{verbatim}
 bool sol = false; int x,y,z;
@@ -154,11 +475,40 @@ for (x = -100; x <= 100 && !sol; x++)
              sol = true;
           }
 \end{verbatim}
+
+\begin{block}{}
+  Can you think of other ways to prune the loop?
+
+  
+\end{block}
 }
 \end{frame}
 
-%% Super hard version on 11571
+\begin{frame}
+  \frametitle{Example 2: Simple Equations -- more pruning}
+  There are many other ways that we can prune the loop:
 
+  \medskip
+
+  \begin{itemize}
+  \item We can change the range using the actual input values of $A,B,C$
+  \item We only need one solution. We can break the loop once we find it.
+  \item We can consider the other two equations, specially equation 2.
+  \end{itemize}
+
+  \vfill
+
+  \begin{alertblock}{}
+    This week's problem: ``Simple Equations -- Extreme!'' has a much
+    higher range for $A,B,C$. You need a lot of pruning to avoid a TLE!
+  \end{alertblock}
+\end{frame}
+
+\subsection{Complete search: TIPS}
+
+\begin{frame}
+  \frametitle{Complete Search: TIPS 1}
+\end{frame}
 
 %%% TIPs
 
@@ -332,8 +682,38 @@ for (x = -100; x <= 100 && !sol; x++)
 
 
 
-\section{Problem Discussion}
+\section{Week's Problems}
+\subsection{Problem Discussion}
+%% TODO: Include problemlist
+\begin{frame}
+  \frametitle{Problem Discussion}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{itemize}
+    \item Division
+    \item Social Constraints
+    \item Simple Equations - EXTREME!!
+    \item Bars
+    \item Rat Attack
+    \end{itemize}
+    \column{0.5\textwidth}
+    \begin{itemize}
+    \item Little Bishops
+    \item Water Gate Management
+    \item Through the Desert
+    \item Dragon of Loowater
+    \item Shoemaker's Problem
+    \end{itemize}
+  \end{columns}
+\end{frame}
 
 
+\section{Extra}
+%% TODO: Complete this
+\subsection{Search Research}
+\begin{frame}
+  \frametitle{Search Algorithms are an important area of research}
+  Heuristics
+\end{frame}
 
 \end{document}
