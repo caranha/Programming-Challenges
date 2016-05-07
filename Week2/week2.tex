@@ -79,6 +79,23 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Special Notes 2}
+  \begin{block}{UVA webpage infinite loop}
+    Some people have experienced problems connecting with the UVA webpage. The 
+    browser would display a message such as \alert{Redirect Loop Problem}. 
+
+    \bigskip
+
+    If you have this problem, try connecting with another browser first. 
+
+    \bigskip
+    
+    I am not sure yet what causes this problem (browser problem or page problem?) 
+    any information is appreciated.
+  \end{block}
+\end{frame}
+
+\begin{frame}
   \frametitle{Quick Review of Last Week}
   \begin{itemize}
   \item \structure{Linear Arrays} (unidimensional and bidimensional) are 
@@ -756,14 +773,24 @@ UVA - 11936 - Through the desert - uses this logic}
 
   \bigskip
 
-  Example:\\ 
-  $V = 42, Coins = 25, 10, 5, 1$\\
-  (a One coin means we can always make any value)
+  \begin{block}{Example:}
+    $V = 42, Coins = 25, 10, 5, 1$\\
+    {\small (a 1\$ coin means we can always make any value)}
+  \end{block}
 
   \bigskip
 
-  However, if V = 6, and coins = 4,3,1, the greedy algorithm does not
+  We can solve this case by always taking the biggest coing that fits
+  the remaining cost: 25x1, 10x1, 5x1, 1x2;
+
+  \medskip
+
+  However, if V = 6, and coins = 4,3,1, this greedy algorithm does not
   reach an optimal solution.
+
+  \begin{center}
+    Be careful that \alert{a greedy algorithm can be wrong!}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -783,8 +810,17 @@ UVA - 11936 - Through the desert - uses this logic}
 
   Can you figure out a greedy search solution?
 \end{frame}
+
+
 \begin{frame}
   \frametitle{Greedy Example 2 -- Load Balancing UVA 410}
+
+  \begin{block}{Problem Description}
+  You have C chambers, and S < 2C specimens with different positive
+  weights. You need to decide where each specimen should go to
+  minimize ``imbalance''.
+  \end{block}
+
   Insights:
 
   \begin{itemize}
@@ -796,22 +832,27 @@ UVA - 11936 - Through the desert - uses this logic}
   \item Order of chambers does not matter.
   \end{itemize}
   %%% Make people think for a while here.
-
-  \vfill
-
-  Greedy algorithm: Order the individuals by weight, and 
-  put one in each chambers until the chambers are full, then add one
-  in each chamber backwards.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Greedy Example 3 - Dragon of LooWater (11292)}
-  List of knights (with heights) and dragons (with diameter). Find the 
-  minimal height of knights that cut the heads of all dragons 
-  (knights can only cut the heads of dragons when D <= H).
+  \frametitle{Greedy Example 2 -- Load Balancing UVA 410}
 
-%  Sort knights and dragons, and from smallest to biggest dragon, 
-%  match with the smallest knight possible to solve.
+  \begin{block}{Problem Description}
+  You have C chambers, and S < 2C specimens with different positive
+  weights. You need to decide where each specimen should go to
+  minimize ``imbalance''.
+  \end{block}
+
+  \vfill
+
+  \structure{Greedy algorithm:} Order the individuals by weight, and 
+  put one in each chambers until the chambers are full, then add one
+  in each chamber backwards.
+
+  \bigskip
+
+  A similar approach can be used to solve this week's problem ``Dragon
+  of LooWater''.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -832,30 +873,94 @@ UVA - 11936 - Through the desert - uses this logic}
   \begin{columns}
     \column{0.5\textwidth}
     \begin{itemize}
-    \item Division
-    \item Social Constraints
-    \item Simple Equations - EXTREME!!
-    \item Bars
-    \item Rat Attack
+    \item Division\\{\small Looping}
+    \item Social Constraints\\{\small Looping on permutations}
+    \item Simple Equations - EXTREME!!\\{\small Pruning}
+    \item Bars\\{\small Looping on subsets}
+    \item Rat Attack\\{\small Different PoV}
     \end{itemize}
     \column{0.5\textwidth}
     \begin{itemize}
-    \item Little Bishops
-    \item Water Gate Management
-    \item Through the Desert
-    \item Dragon of Loowater
-    \item Shoemaker's Problem
+    \item Little Bishops\\{\small Different PoV}
+    \item Water Gate Management\\{\small Similar to Bars}
+    \item Through the Desert\\{\small Bisection Method, simulation}
+    \item Dragon of Loowater\\{\small Greedy}
+    \item Shoemaker's Problem\\{\small Greedy}
     \end{itemize}
   \end{columns}
 \end{frame}
 
 
 \section{Extra}
-%% TODO: Complete this
 \subsection{Search Research}
+%% TODO: Improve the Search Algorithms in CS research ... Next time!
+
 \begin{frame}
-  \frametitle{Search Algorithms are an important area of research}
-  Heuristics
+  \frametitle{Search Algorithms in CS Research}
+
+  Complete Search and Greedy algorithms feel like something that you
+  only use in your first year of Computer Science, and then never
+  touch again..
+
+  \vfill
+
+  ... it turns out however, that search algorithms have a really
+  important role: Heuristics and NP-hard problems.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Heuristic Example: A* Search} 
+
+  A* is a search algorithm for finding a shortest path between two
+  (x/y) coordinates.
+
+  {\small
+  \begin{enumerate}
+  \item List all vertices that you can check next;
+  \item Sort the vertices by sum(distance from start + distance from goal)
+  \item Explore vertice highest in the sort;
+  \end{enumerate}
+  }
+
+  \includegraphics[width=0.4\textwidth]{../img/astar2_amitpatel}\hfill
+  \includegraphics[width=0.4\textwidth]{../img/astar_amitpatel}
+
+  \hfill{\tiny Images from Amit Patel}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Heuristic and NP-hard problems}
+
+  Consider NP-hard problems:
+  \begin{itemize}
+  \item There are no polinomial algorithms that solve the problem;
+  \item However, a solution to the problem can be \structure{tested}
+    in polinomial time;
+  \end{itemize}
+
+  \bigskip
+
+  One approach to NP-hard problems is to treat them as
+  \structure{search problems}, systematically testing solutions 
+  (in polynomial time), until an acceptable solution is found.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Heuristic Algorithms}
+  \begin{itemize}
+  \item Hill Climbing
+  \item Evolutionary Algorithms
+  \item Swarm Algorithms
+  \item Etc...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Next Week}
+  \begin{center}
+    Dynamic Programming!
+  \end{center}
 \end{frame}
 
 \end{document}

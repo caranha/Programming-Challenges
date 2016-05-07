@@ -26,3 +26,8 @@ Do not forget the TODO file in each class
 * Add more examples/code for class A.
 * Class B was good in 2016
 
+=== Week 2
+* Week 2A went all the way up to "Divide and Conquer"
+* Working on actual examples was a good idea
+* Notes about not being able to access UVA should go to class 0
+* Should remember students on Class A to consider solutions for class B
