@@ -154,7 +154,7 @@ function problemdata(pid, dl)
     ajax("http://uhunt.felix-halim.net/api/p/id/" + pid, function(pdata) {
 	// name and link
 	document.getElementById("n"+pdata.pid).innerHTML =
-	    "<a href=\"https://uva.onlinejudge.org/index.php?"+
+	    "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
 	    "option=com_onlinejudge&Itemid=8&category=24&"+
 	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
 	// class stats
