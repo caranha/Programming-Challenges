@@ -17,7 +17,8 @@
 </div>
 
 <div class="nameform">
-Check submissions for username: <input type="text" id="uname"> 
+<!-- keyCode 13 == Enter key -->
+Check submissions for username: <input onkeypress="if(event.keyCode == 13) mysubmissions()" type="text" id="uname">
 <button onclick="mysubmissions()">Go</button>
 </div>
 
