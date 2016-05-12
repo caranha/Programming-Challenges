@@ -1,633 +1,669 @@
 \documentclass{beamer}
-% TODO: Nothing to do in the beginning
-\input{beamerpreamble.tex}
+\input{../tools/beamerpreamble.tex}
 
-\title[]{Programming Challenges}
-\subtitle[]{Week 3 - Arithmetic and Algebra}
-\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
-\institute{College of Information Sciences}
-\date{2015-04-27\\{\tiny Last updated \today}}
-%\thanks{fcampelo@ufmg.br}
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 3 - Dynamic Programming (Part I)}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-05-13,16\\{\tiny Last updated \today}}
 
 \begin{document}
-\section{introduction}
-\subsection{outline}
 
+\section{Introduction}
+\subsection{Title}
 \begin{frame}
 \maketitle
 \end{frame}
 
-\begin{frame}
-  \frametitle{Notes: Vito's Family (1)}
-  \begin{itemize}
-  \item Some people had trouble, they tried to calculate the ``minimal path''
-  \item The trick for Vito's Family is that the ``minimal path'' is the median!
-  \item Calculating the median, you could solve Vito's Family in 10 lines.
-  \end{itemize}
-  \begin{block}{}
-    Think carefully about the problem before beginning to code.
-  \end{block}
-\end{frame}
-
-\begin{frame}[simpleframe,fragile]
-  \frametitle{Notes: Vito's Family (2)}
-\begin{verbatim}
-a,r['~~'];main(b,c,d,e,f,s){
-for(scanf("%d",&b);b--;a=!printf("%d\n",a))
-{for(f=!scanf("%d",&s);f<s;)scanf("%d",r+f++);
-for(a=1<<29;f--;a=a>d?d:a)for(d=c=0;c<s;d+=e>0?e:-e)
-e=r[c++]-r[f];}}
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[simpleframe,fragile]
-  \frametitle{Notes: Vito's Family (2)}
-\begin{verbatim}
-a,r['~~'];main(b,c,d,e,f,s){
-for(scanf("%d",&b);b--;a=!printf("%d\n",a))
-{for(f=!scanf("%d",&s);f<s;)scanf("%d",r+f++);
-for(a=1<<29;f--;a=a>d?d:a)for(d=c=0;c<s;d+=e>0?e:-e)
-e=r[c++]-r[f];}}
-\end{verbatim}
-\includegraphics[width=0.4\textwidth]{img/joker}\\
-\url{http://www.ioccc.org/}
-\end{frame}
-
-\begin{frame}[simpleframe,fragile]
-  \frametitle{Notes: Code Comments}
-  \begin{block}{}
-    Remember that adding comments to your code will increase your
-    grade. Make sure to describe what is the idea for each program
-    that you solve.
-  \end{block}
-
-  \bigskip
-
-\begin{verbatim}
-/* Vito's Family: The minimum distance can be 
- * easily calculated from the Median of 
- * the addresses
- */
-\end{verbatim}
-  
-\end{frame}
+\subsection{Notes and Warnings}
 
 \begin{frame}
-  \frametitle{Class Outline}
-  \begin{block}{}
-    Two things are quite hard when dealing with numbers on a computer:
-    Very big numbers, and very small numbers.
-  \end{block}
-
-  {\small
-  \begin{itemize}
-    \item Usually, numbers in computers are represented as variables
-      with fixed sizes (2 bytes, 4 bytes, etc).
-    \item This means that there is a limit to which numbers a
-      \emph{int} or a \emph{float} can store.
-    \item Mathematics does not care for these limits, which can result
-      in \emph{overflow} or \emph{underflow} problems.
-    \item Writing functions to deal with large (or small) numbers can
-      be a hard but interesting problem for programming challenges.
-  \end{itemize}
-  }
-
+  \frametitle{Last Week Results}
   {\smaller
-  \begin{block}{The Pentium FDIV bug}
-    In 1994, Intel's Pentium CPU had a bug in that returned wrong
-    results in floating point divisions. The recall cost them 475
-    million dollars.
-  \end{block}
+    \begin{columns}[T]
+      \column{0.5\textwidth}
+      \begin{block}{Week 1}
+        Problems Solved\\
+        \begin{itemize}
+        \item Division Of Nlogonia: 28/28
+        \item Cancer Or Scorpio: 24/27
+        \item 3n+1: 25/25
+        \item Request for Proposal: 19/22
+        \end{itemize}
+
+        \medskip
+
+        Manaba Submission: 29 Students
+      \end{block}
+      \column{0.5\textwidth}
+      \begin{block}{Week 2}
+        Problems Solved\\
+        \begin{itemize}
+          \item Jolly Jumpers: 26/26
+          \item Army Buddies: 15/21
+          \item Rotated Square: 17/17
+          \item File Fragmentation: 4/5
+          \item Contest Scoreboard: 10/11
+          \item Multitasking: 3/5
+          \item Jolibee Tournament: 7/7
+        \end{itemize}
+
+        \medskip
+
+        Manaba Submission: 25 students
+      \end{block}
+    \end{columns}
   }
-  
-  % Problems with big numbers and small numbers
-  % It is easy to get it wrong!
-  % Intel-Pentium Bug 1994
+
+  \begin{center}
+    Don't Give Up!
+  \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Book Suggestion}
-  \begin{columns}[c]
-    \column{0.7\textwidth}
-    \begin{itemize}
-    \item The book \structure{Numerical Recipes} has many algorithms
-      and programming examples for arithmetic operations. Worth
-      checking it out!
-    \end{itemize}
-    \column{0.3\textwidth}
-    \includegraphics[width=1\textwidth]{img/numericalrecipes}
-  \end{columns}
+  \frametitle{Special Notes}
 \end{frame}
 
-\section{Big Numbers}
-\subsection{Why big numbers}
-
+\section{Definition}
+\subsection{Definition of Dynamic Programming}
 \begin{frame}
-  \frametitle{Big numbers in computers}
-  \begin{block}{}
-    When we talk about \structure{Big Numbers}, we usually mean large
-    integers. Programming languages usually have primitive variables
-    with a fixed number of bits. What is the biggest number that we
-    can represent using this amount of bits?
+  \frametitle{Dynamic Programming (DP)}
+
+  \structure{Dynamic programming (DP)} is a more challenging, but much
+  more versatile, approach for \structure{search algorithms}.
+
+  \vfill
+
+  \begin{block}{Basic idea of DP}
+    Define a table with all unique search states of a problem, and 
+    fill that table (in a top-down or bottom up fashion) until the 
+    desired solution is found.
   \end{block}
-  
-  \bigskip
 
-  \begin{itemize}
-    \item 32 bits: $2.147.483.648$
-    \item 64 bits: $9.223.372.036.854.775.808$
-    \item 128 bits: $1.701331*10^{38}$
-  \end{itemize}
+  \begin{exampleblock}{Key skills needed for DP}
+    \begin{itemize}
+    \item Determine state space for a problem;
+    \item Determine transition between spaces;
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}
-  \frametitle{How big is big enough?}
+  \frametitle{Uses of DP} 
 
-    \begin{itemize}
-    \item 32 bits: $2.147.483.648$
-    \item 64 bits: $9.223.372.036.854.775.808$
-    \item 128 bits: $1.701331*10^{38}$
-    \end{itemize}
+  DP is most often used in \emph{optimization} or \emph{counting}
+  problems.
 
-    \begin{block}{Where can we use these?}
+  \vfill
+
+  If your problem can be described as:
+  \begin{itemize}
+  \item Maximize this...
+  \item Minimize that...
+  \item Count the ways to do...
+  \end{itemize}
+  Then there is a very high chance that you should use DP to solve it.
+\end{frame}
+
+\subsection{Introductory Problem: Wedding}
+
+\begin{frame}
+    \frametitle{Problem Example: Wedding Shopping -- UVA 11450}
+
+    \begin{block}{}
+      Best way to understand DP is to \structure{do a lot of examples!}
     \end{block}
     
+    Problem outline:
     \begin{itemize}
-    \item Speed of Light: 300.000 m/s;
-    \item<2-> Closest star system (5 light years):\\ $47.304.000.000.000$ km; 
-    \item<3-> Number of atoms in the universe: $1*10^{80} atoms$;
-    \item<4-> Digits of pi: more than $1*10^{100.000.000}$;\\
-      \alert{damn mathematicians!}
-    \end{itemize}    
+      \item Consider budget $M < 200$ to buy $C < 20$ classes;
+      \item Each class has $K_i < 20$ items, each with different cost;
+      \item \structure{Goal:} Choose one item from each class so that
+        the money used is maximum; \alert{Do not go over the budget!}
+    \end{itemize}
+
+    \hfill \includegraphics[width=0.25\textwidth]{../img/weddingdress}\\
+    {\tiny
+    \hfill Image CC-By-2.0 by \url{https://www.flickr.com/photos/vancouver125/5634967507}}
+
 \end{frame}
 
 \begin{frame}
-  \frametitle{Size and Precision}
-  \begin{block}{}
-    By using the correct representation, we can store numbers of any
-    size in a fixed length integer:
+  \frametitle{Problem Example: Wedding Shopping -- UVA 11450}
+  \begin{block}{Sample case 1: $C=3$}
+  \begin{tabular}{|c|cccc|}
+    Class & 1 & 2 & 3 & 4\\
+    \hline
+    0 & 6 & 4 & 8 & \\
+    1 & 5 & 10 & & \\
+    2 & 1 & 5 & 3 & 5\\
+  \end{tabular}
   \end{block}
 
+  \medskip
+
+  For budget $M=20$, the answer is \alert{19}, which can be reached by buying items
+  $(8+10+1)$, $(6+10+3)$ or $(4+10+5)$.
+
   \bigskip
 
-  \begin{itemize}
-  \item $47.304.000.000.000$ km -> $4.7304{+e}13$ km    
-  \end{itemize}
+  On the other hand, if the budget $M=9$, the answer is ``no
+  solution'', because the minimal possible budget is \alert{10},
+  reached by buying items $(4+5+1)$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Example: Wedding Shopping -- UVA 11450}
+  \begin{block}{Sample case 1: $C=3$}
+  \begin{tabular}{|c|cccc|}
+    Class & 1 & 2 & 3 & 4\\
+    \hline
+    0 & 6 & 4 & 8 & \\
+    1 & 5 & 10 & & \\
+    2 & 1 & 5 & 3 & 5\\
+  \end{tabular}
+  \end{block}
+
+  This looks like a search problem! Can we do a \structure{greedy search}?
+
+  \bigskip
+
+  One approach: For each class, choose most expensive item:\\
+  $(8+10+1)$ -- It works! ... Not if $M = 12$...
+
+  \medskip
+
+  How about \structure{divide and conquer}?
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Wedding Shopping (11450) -- Complete search}
+  How can we enumerate the search space? (all the solutions)
+
+  \begin{block}{Recursive Approach}
+    \begin{itemize}
+    \item Function \structure{shop(m,g)} discovers the best item $k$
+      in class $C_g$ that can be bought with total money $m$
+    \item For each $k$ in $C_g$, the value for that choice is $V_k =
+      \text{cost}_k + \text{shop}(m - \text{cost}_k, g+1)$
+    \item shop(m,g) returns the maximum $V_k =< m$;
+    \item shop(m,$|C|$), when we pass the last item, returns 0;
+    \end{itemize}
+
+  \end{block}
+
+  \vfill
   
+  This works! ... but TLE.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Wedding Shopping (11450) - Complete search}
+  
+  \alert{Time Limit Exceeded:}
+
   \bigskip
 
-  {\small
-  \begin{block}{}
-    However, our \structure{precision} is limited:
-  \end{block}}
+  20 categories of items, with 20 items each, a complete search will
+  take: $20^{20}$ operations.
 
-  {\small
+  \vfill
+
+  \alert{Problem: Too many overlapping subproblems}
+  
+
+  \begin{block}{Sample case 2: $C=4$}
+
+    \medskip
+
+    \begin{columns}[T]
+      \column{0.4\textwidth}
+      \begin{tabular}{|c|cccc|}
+        Class & 1 & 2 & 3 & 4\\
+        \hline
+        0 & 6 & 4 & 8 & 12\\
+        1 & 4 & 6 & 6 & 2\\
+        2 & 1 & 5 & 1 & 5\\
+        3 & 2 & 4 & 6 & 2\\
+      \end{tabular}
+      \column{0.4\textwidth}
+      How many times \emph{shop(15,3)} is called?
+      
+      \bigskip
+
+      Every time we call \emph{shop(15,3)}, the solution is the same.
+
+    \end{columns}
+  \end{block}
+\end{frame}
+
+\subsection{Dynamic Programming Approach}
+
+\begin{frame}
+  \frametitle{Wedding Shopping -- the DP approach}
+
+  Since the problem has an \structure{overlapping subproblem}
+  structure, we can think about using a DP approach.
+
+  \bigskip
+
+  The first step of using DP is constructing the state table.
+
+  \smallskip
+
+  \begin{block}{How many states do we need?}
+    Since we know the unique states are \emph{(Money,Class)}, we need
+    to make a table of $M x C$.
+
+    \bigskip
+
+    Since $0 \leq M \leq 200$ and $0 < C \leq 20$, our table will have
+    \alert{$201*20=4020$ states}.
+  \end{block}
+
+  \smallskip
+
+  Only 4020 states! This looks promising!
+\end{frame}
+
+\begin{frame}
+  \frametitle{Wedding Shopping -- the DP approach}
+
+  Now that we have our \structure{state table}, there are two
+  approaches for building a DP solution:
+
+  \bigskip
+
   \begin{itemize}
-  \item $47.304.000.000.000$ km -> $4.7304{+e}13$ km
-  \item $47.304.000.013.200$ km -> $4.7304{+e}13$ km
-  \item $47.304.005.037.001$ km -> $4.7304{+e}13$ km
+  \item \structure{The top-down approach}: \\Use the state table as a
+    look-up table. Save the result of visited states, and do not
+    re-calculate those.
+
+    \vfill
+
+  \item \structure{The bottom-up approach}: \\Fill the base-states of
+    the table, and iteratively fill the other states transitioning
+    from the base.
+  \end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%
+%% Solution: Dynamic Programming
+% Programming here is not "code", but a "tabular method" (table method)
+
+%% DP us normally used when
+% Program has optimal sub structure: 
+%   The optimal solution to the problem contain optimal solutions to sub problems
+%   - "similar" to the requirement of greedy
+%   - If you can make a complete search recurrent (recursive), then you have this
+% The subproblems are overlapping
+%   - The number of _Distinct_ subproblems is small, but they are computed repeatedly
+%   - Different from divide and conquer, in DC the sub problems are distinct
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile,single-slide]
+  \frametitle{Wedding Shopping -- top-down DP}
+
+{\smaller
+\begin{verbatim}
+memset(table,-1,sizeof(table))  ** DP <3 memset **
+
+shop(m,g):
+   if (m < 0) return -INF
+   if (g == C) return M - money
+   if (table[m][g]) != -1 return table[m][g]  **NEW**
+   return table[m][g] = max(shop(m-price[g][k],g+1) 
+                            for every k)
+\end{verbatim}  
+% TODO: check if M - money is a good return value
+\vfill
+
+\begin{block}{}
+  To implement top-down DP, simply add a table check to a complete
+  recursive search.
+\end{block}
+
+\begin{alertblock}{}
+  Make sure that your states are \alert{independent} from the
+  parent. If they are not, you need to rethink your state table.
+\end{alertblock}
+}
+\end{frame}
+
+%%% TODO: Add how to print after the bottom up DP
+%% What if you need to print the result (maybe not add this?)
+% for each level, you check the lower level to see which one matches the current state
+% See slide 16 for details
+
+\begin{frame}
+  \frametitle{Wedding Shopping -- bottom-up DP}
+  Algorithm:
+  \begin{itemize}
+  \item Prepare a table with the problem states (same as top-down);
+  \item Fill the table with base case values;
+  \item Find the \structure{topological order} in which the table is filled;
+  \item Fill the non-basic cases;
+  \end{itemize}
+
+  \vfill
+
+  The main problem for bottom-up DP is finding the base cases and the 
+  ordering between the cases. In some good cases, the ordering is 
+  just a list of nested loops!
+\end{frame}
+
+\begin{frame}
+  \frametitle{Wedding Shopping -- bottom-up DP}
+
+  Example: M=10, \alert<2>{G1=(2,4)}, \alert<3>{G2=(4,6)}, \alert<4>{G3=(1,3,2,1)}
+
+  \bigskip
+
+  \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    Money & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+    \hline
+    G0 & & & & & & & & & & & 1\\
+    G1 & & & & & & & \only<2->{1} & & \only<2->{1} & & \\
+    G2 & \only<3->{1} & & \only<3->{1} & & \only<3->{1} & & & & & & \\
+    G3 & \only<4->{1} & \only<4->{1} & \only<4->{1} & \only<4->{1} & & & & & & & \\
+    \hline
+  \end{tabular}
+
+  {\smaller
+  \begin{itemize}
+  \item Initial state: With 0 items, we can reach money 10;
+  \item For each reachable money state in $G_i$, we can reach money
+    state in $G_{i+1}$ according to the costs of the items.
+  \item If any money state in $G_C$ is reachable, the problem is solvable.
+  \item Solution is M - minimal reachable state;
   \end{itemize}}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Don't forget your libraries!}
-  \begin{itemize}
-    \item \structure{C++}: \emph{Integer} class
-    \item \structure{Java}: \emph{java.math.BigInteger} class
-  \end{itemize}
-  \bigskip
+\begin{frame}[fragile,singleframe]
+  \frametitle{Wedding Shopping -- bottom-up DP}
+  M=10, cost[1] = [2,4], cost[2] =(4,6), G3=(1,3,2,1)
+  \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    Money & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+    \hline
+    g = 0 & & & & & & & & & & & 1\\
+    g = 1 & & & & & & & 1 & & 1 & & \\
+    g = 2 & 1 & & 1 & & 1 & & & & & & \\
+    g = 3 & 1 & 1 & 1 & 1 & & & & & & & \\
+    \hline
+  \end{tabular}
 
-  Many programming languages provide support for big intergers ``Out
-  of the Box''. Sometimes it may be necessary to make your
-  implementation of big integers, but keep these classes in mind!
-\end{frame}
-
-\subsection{Representation}
-\begin{frame}
-  \frametitle{How to represent big Integers (1)}
-
-  \begin{block}{Array of Digits}
-    \begin{itemize}
-    \item Very simple to implement;
-    \item First element of the array is the least significant digit;
-    \item Keep the index of the last digit at hand;
-    \end{itemize}
-  \end{block}
-  
-  \begin{block}{Linked List of Digits}
-    \begin{itemize}
-    \item Since each item is just a digit, you occupy double the space with pointers.
-    \item If you have few big numbers, but many small ones, this saves some memory.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{How to represent big Integers (2)}
-  \begin{block}{What base should we use?}
-    \begin{itemize}
-    \item A decimal base sounds natural, but not required!
-    \item A higher base means we need fewer digits (smaller arrays)
-      \begin{itemize}
-      \item Example: Octal base (base 8), Hexadecimal base (base 16)
-      \end{itemize}
-    \item On the other hand, you need extra functions to transform the numbers;
-    \end{itemize}
-  \end{block}
-  
-  \begin{block}{Pay attention to the sign!}
-    \begin{itemize}
-    \item You will need to keep an explicit field for the number's
-      sign;
-    \item This creates a special case: -0 and +0 are different!
-    \item Don't forget to transform -0 numbers into +0 in your operators;
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\subsection{Operations}
-
-\begin{frame}
-  \frametitle{BigNum Operations} 
-
-  Traditional arithmetic operations in big numbers are not different
-  from what we know. However, there are a number of caveats that occur
-  because:
-  \begin{itemize}
-  \item We are operating on one digit at a time;
-  \item We are explicitly dealing with the sign;
-  \item We want to be efficient;
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Addition (a,b)}
-  
-  Start the addition digit by digit, starting from the least
-  significant. Any overflow should be added as a carry to the next
-  digit
-
-  \bigskip
-
-  \begin{block}{Caveats}
-    \begin{itemize}
-    \item If $a$ and $b$ have different signs, it becomes a
-      subtraction. Switch the sign of the parameter and send it to the
-      subtraction function!
-    \item Don't forget that the carry may add an extra digit to the
-      final result!
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-%% Subtraction: Normal Method
-\begin{frame}
-  \frametitle{Subtracting (borrow method)}
-  
-  Subtract each digit, starting from the least significant. If the
-  result is negative, add \emph{base} and increment a \emph{borrow}
-  counter. This counter is subtracted from the next digit.
-
-  \bigskip
-
-  \begin{block}{Caveats}
-    \begin{itemize}
-    \item Order the parameters by their most significant digit, to
-      avoid special cases when borrowing;
-    \item Ordering the parameters also avoids having to decide what is
-      the final sign;
-    \item Don't forget to adjust zeroes, and deal with -0;
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-
-%% Subtraction: Complement
-\begin{frame}
-  \frametitle{Subtracting (complement method)} 
-
-  We can use the \structure{complement} of the base to make
-  subtraction using only additions.
-
-  This makes more sense in the machine code level, because the
-  complement of base 2 has many useful properties. But it can also be
-  done at higher bases.
-  
-  \bigskip
-
-  \begin{block}{caveats}
-    \begin{itemize}
-    \item You need to either order the numbers, to always subtract the
-      smaller from the larger;
-    \item Or you need to check for carry, to complement the result
-      again in case it underflows;
-    \item Don't forget to add 1 in the regular case!
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-
-%% Multiplication
-\begin{frame}[fragile,singleslide]
-  \frametitle{Multiplication} 
-
-  \begin{block}{}
-  A simple way to implement multiplication is to use the traditional
-  method that we learn at school:
-  \end{block}
-  
-\begin{columns}[c]
-  \column{0.5\textwidth}
+  {\smaller
 \begin{verbatim}
-  1234
-   312 x
-  ======
-  1234*2 +
- 12340*1 +
-123400*3
-========
+memset(table,0,sizeof(table))
+
+table[0][10] = 1
+
+for g in (0:G-1)
+  for i in (0:M):
+    if table[g][i] == 1:
+       for k in C[g+1]:
+          table[g+1][i-cost[k]] = 1
 \end{verbatim}
-\column{0.5\textwidth}
-\begin{verbatim}
-  1234 +
-  1234 +
- 12340 +
-123400 +
-123400 +
-123400
-========
-\end{verbatim}
-\end{columns}
-\end{frame}
-
-\begin{frame}[fragile,singleslide]
-  \frametitle{Multiplication}
-  \begin{block}{Schoolhouse Multiplication}
-{\smaller
-\begin{verbatim}
-multiply_bignum(bignum *a, bignum *b, bignum *c) {
-  bignum row; /* represent shifted row */
-  bignum tmp; /* placeholder bignum */
-  int i,j;    /* counters */
-  row = *a;
-  for (i=0; i<=b->lastdigit; i++) {
-    for (j=1; j<=b->digits[i]; j++) {
-      add_bignum(c,&row,&tmp);
-      *c = tmp;
-    }
-    digit_shift(&row,1);
   }
-  c->signbit = a->signbit * b->signbit;
-}
-\end{verbatim}}
+
+\end{frame}
+
+\subsection{Considerations}
+
+\begin{frame}
+  \frametitle{DP: Top-down or Bottom-up?}
+  
+  \begin{block}{Top-Down}
+    \structure{Pros:}\\ Easy to implement starting from a recursive
+    search. Only compute states if necessary.
+
+    \alert{Cons:}\\ Recursive calls are slower if there are many
+    levels, state table memory usually can't be reduced.    
   \end{block}
+
+  \begin{block}{Bottom-Up}
+    \structure{Pros:}\\ Faser if many sub-problems are visited. Can
+    sometimes save memory space by keeping only s and s+1 in memory.
+
+    \alert{Cons:}\\ Not very intuitive. If there are X states, all
+    states values will have to be checked.
+  \end{block}
+    
+
+
 \end{frame}
 
 \begin{frame}
-  \frametitle{Fast Multiplication} 
-  \begin{block}{Complexity}
-    {\small
-    Traditional multiplication on $n$ digits requires $O(n^2)$
-    elementary operations. There are special algorithms that produce
-    faster results for large numbers.}
-  \end{block}
-  \begin{block}{Karatsuba Method}
-    {\small
-    Breaks $a$ and $b$ into numbers with less digits ($a_0 *b^m +
-    a_1$,$b_0 *b^m + a_2$), and multiply these numbers. This is done
-    recursively. Complexity is $O(n^{\log_23})$}
-  \end{block}
-  \begin{block}{Schonhage-Strassen Algorithm}
-    {\small 
+  \frametitle{DP: What about the decision set?}  
 
-      Uses Fast-Fourier Transform to get a complexity
-      $O(n\log{n}\log\log{n})$. Only used in practice when the number
-      of \emph{digits} is 30.000 or more.  
-    }
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile,singleslide]
-  \frametitle{Division}
   \begin{block}{}
-    Division can, in principle, be dealt in a similar way to
-    multiplication. We repeatedly subtract the dividend, and then
-    shift it to the right.
+  In the previous example, we only cared about the final value of the
+  solution. What if we want to know the exact items in an optimal
+  solution?
   \end{block}
 
-  \begin{columns}[c]
-    \column{0.5\textwidth}
-\begin{verbatim}
-  450203
-      23 %
-  ======
-  230000*1 -
-   23000*9 -
-    2300*5 - 
-     230*7 -
-      23*4 -
-  ======
-       1   (19574)
-\end{verbatim}
-\column{0.5\textwidth}
-  \end{columns}
-\end{frame}
+  \medskip
+  
+  Together with the \emph{state} table, keep a second \emph{parent} table. 
+  Every time you update a value on the state table, write in the parent table 
+  which cell(s) was used to update that value.
 
+  \medskip
 
-\begin{frame}
-  \frametitle{Exponentiation}
-  \begin{block}{}
-    There is a neat trick to make fast exponentiation, do you remember it?
-  \end{block}
-  \begin{onlyenv}<2>
-    \begin{block}{}
-      Normally we approach exponentiation in a ``divide and conquer''
-      fashion. Cache the partial answers, because they will repeat
-      many times.
-      \begin{itemize}
-      \item $A^n = A^{floor(n/2)} * A^{floor(n/2)} * A^{(n(mod)2)}$
-      \end{itemize}
-    \end{block}
-  \end{onlyenv}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Small Numbers}
-\subsection{Introduction}
-
-\begin{frame}
-  \frametitle{Real Numbers}
-  \begin{block}{Pesky infinity}
-    \begin{itemize}
-    \item In Mathematics, there is always a number between $a$ and
-      $b$: $\frac{a+b}{2}$:
-    \item In Computers, there is a limit to our precision, so this is
-      not always true;
-    \item In the case of floats, this is \structure{often} not true!
-    \end{itemize}
-  \end{block}
+  Pay attention to whether the problem requires you to print the first
+  solution, or the last, or a solution with some particular
+  properties.
 
   \bigskip
-  
-  $a = (x + y) + z$\\
-  $b = x + (y + z)$\\
+
+  Let's see some code in the next DP example.
+\end{frame}
+% If we need to print the decision set, we have to add a second table
+% pay attention to requirements such as ortographical order, etc
+
+
+
+\section{More Examples}
+\subsection{Apple Field Example}
+\begin{frame}
+  \frametitle{Example 2: Apple Field -- not on UVA}
 
   \begin{block}{}
-    $a == b$ may return false, if $a$ and $b$ are floats! :-(
+  {\smaller
+  Farmer Tanaka is growing apples in his field. He has a robot to collect the apples, but 
+  the robot can only walk east and south. If you know how many apples there are in each 
+  tree of his $m * n$ field, can you calculate the path that the robot should make to collect
+  most apples?}
   \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Types of Real Numbers}
-  \begin{block}{Rational Numbers}
-    Can be represented by $a/b$, where $a$ and $b$ are integers. In
-    general it is easier to do all representation and operations
-    directly on these integers.\\
-    \structure{Note:} Every integer $c$ can be represented as $c/1$
-  \end{block}
-  \begin{block}{Irrational Numbers}
-    Some Real numbers can't be represented as a fraction of two
-    integers. For example, $\pi$, $e$, $\sqrt{2}$, etc. Like with
-    large integer, there is a limit to the precision of these numbers
-    which depends on the number of digits that we can store.
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Representing Real Numbers} 
-
-  Floating point numbers in \emph{floats} and \emph{doubles} are
-  represented using the IEEE notation:
-  \smallskip
-
-  \begin{center}
-    $a*2^c$
+  
+  \begin{center}  
+    \includegraphics[width=0.5\textwidth]{../img/applefield}
   \end{center}
-  \smallskip
+\end{frame}
 
-  Where $a$ (the mantissa) and $c$ (the exponent) have a limited
-  number of bits. This implies that making operations on numbers with
-  very different exponents is a recipe for numerical imprecisions.
+\begin{frame}
+  \frametitle{Example 2: Apple Field -- complete search}
+  \begin{center}
+    {\smaller One possible (non-optimal) solution}\\
+    \includegraphics[width=0.5\textwidth]{../img/applefield-solution}
+  \end{center}
+
+  For every square, the robot can choose to go right (east) or down
+  (south). How many possible paths exist?
+
   \bigskip
-  
-  \begin{block}{Warning}
-    Do not directly compare two floats using $==$ : there is
-    frequently precision errors. Instead, you want to test if their
-    differences lie whithin a limit $\epsilon$. Or just use integers.
-  \end{block}
+
+  And how many overlapping solutions are there?
 \end{frame}
 
-\subsection{Operations}
+\begin{frame}
+  \frametitle{Example 2: Apple Field -- overlapping solutions}
+  \begin{center}
+    {\smaller One possible (non-optimal) solution}\\
+    \includegraphics[width=0.5\textwidth]{../img/applefield-solution}
+  \end{center}
+
+  If the robot reached position (x,y) with k apples, it does not
+  matter how it did it. So the path from (x,y) to the goal is independent from 
+  the parent path.
+
+  This smells like DP! Let's solve it with a bottom up approach.
+\end{frame}
 
 \begin{frame}
-  \frametitle{Operations on Rational Numbers}
-  \begin{block}{}
-    Given two rational numbers, $c = x_1/y_1$ and $d = x_2/y_2$, the
-    basic arithmetic operations are easy to program:
-  \end{block}
+  \frametitle{Example 2: Apple Field -- Bottom up DP}
+
+  {\small
   \begin{itemize}
-  \item Addition: $c+d = \frac{x_1y_2 + x_2y_1}{y_1y_2}$
-  \item Subtraction: $c-d = \frac{x_1y_2 - x_2y_1}{y_1y_2}$
-  \item Multiplication: $cd = \frac{x_1x_2}{y_1y_2}$
-  \item Division: $c/d = \frac{x_1y_2}{x_2y_1}$
-  \end{itemize}
-  \begin{block}{Warning!}
-    Repeating all these multiplications leads to a serious danger of
-    overflows! \structure{Reduce the Fractions} from time to time to
-    avoid this.
-  \end{block}
-  
-\end{frame}
+  \item \structure{tables:} We want to maximize the number of apples
+    at the goal. Let's try a m*n position table. At each cell, we want
+    to store the maximum number of apples achievable at that cell.
 
-\section{Algebra}
-\subsection{Polynomials}
-
-\begin{frame}[singleframe,fragile]
-  \frametitle{Polynomials}
-
-  \begin{block}{}
-    It is useful to think of univariate polynomials as a special case
-    of Big Numbers. In this case, the \emph{base} of the big number is
-    the variable, and the digits are the coefficients. (Except that
-    there is no carry)
-  \end{block}
-  \vspace{1cm}
-
-\begin{verbatim}
-   Polynomial(x) = {c0,c1,c2,c3...cn}
-\end{verbatim}
-
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Operation on Polynomials}
-  \begin{block}{Evaluation}
-    Brute force evaluation costs $O(n^2)$ multiplications. We can
-    reduce this to $O(n)$ by using Horner's rule:\\
     \medskip
 
-    $(((c_nx + c_{n-1})x + c_{n-2})x + ...)x + c_0$
-  \end{block}
+    We also want a second table, \emph{path}, which will store the path
+    used.
 
-  \begin{block}{Addition, Subtraction}
-    These operate in the sabe way as bignum additions and
-    subtractions, but without the carry/borrow.
-  \end{block}
+    \vfill
+    
+  \item \structure{initial condition:} We can fill the top row (x,1) of the 
+    table with the sum of apples from 1 to x. And we can fill the Left column
+    with the sum of apples from 1 to y.
+    
+    \medskip
+
+    Alternatively, we can add an additional dummy ``-1'' column/line
+    and fill it with zeros.
+
+    \vfill
+
+  \item \structure{transition:} For each cell x,y, max(x,y) is either 
+    max(x-1,y) + apple(x,y) or max(x,y-1) + apple(x,y)
+  \end{itemize}}  
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Example 2: Apple Field -- Let's see some code}
+  {\smaller
+\begin{verbatim}
+// Assume apple[0,] and apple[,0] are all zeroes.
+int apple[m][n]// Input.
+int sum[m][n]// DP table, set to 0 using memset
+int parent[m][n][2]// Path table, set to 0 using memset
+
+for i in (1:m):
+  for j in (1:n):
+    sum[m][n] = apple[m][n] + max(sum[m][n-1],sum[m-1][n])
+    if (sum[m][n-1] > sum[m-1][n]):
+       parent[m][n][0] = m, parent[m][n][1] = n-1
+    else:
+       parent[m][n][0] = m-1, parent[m][n][1] = n
+\end{verbatim}
+  }
+\end{frame}
+
+\subsection{Flight Planner}
+%%%%%%%%%%%%%
+%% Example 2 -- UVA 10337 Flight Planner
+% 1 Mile Altitude and 1(x100) miles distance
+% wind speed map
+% fuel cost: Climb +60, hold +30, sink +20 - windspeed wsp[alt][dis]
+% Compute min fuel cost from (0,0) to (0,X=4)
+
+%% First guess: Complete search/Backtracking finding path with minimal fuel cost
+% Recurrence: minimum of current + climb/Hold/Dive
+% Problem: 1000 distance columns: 3^1000 states to search!
+% However, there are MANY overlapps: at any column/height, former path does not matter.
+
+%% DP solution
+% TOP down: create a 2D table and store computation value of subproblems as they are seen.
+% Bottom-up: Start at 0 fuel used. Calculate next column based on where current column can reach
+%            Bottom up hint: We just need to store two columns at a time (if only final result is desired)
+
+\subsection{classical DPs}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Discussion on Classical DPs
+% Max sum (1-D) -- Kadane's algorithm
+% Longest Increasing Subsequence O(nlogk)
+% 0-1 knapsack/subset sum
+% Coin change (textbook)
+% Travelling Salesman Problem (bitmask again)
+
+%% Max Sum (1D)
+% Given an array with positive and negative numbers, find a contiguous *sub array* with
+% the max sum.
+% example: 1,-2,6,3,2,-12,-6,7,1
+% answer is: 6,3,2 -- can we do this in On^3? n^2? n?
+
+%% Longest Increasing Subsequence
+% Find the LIS in an array A -- subsequence does not need to be contiguous
+% Example: -7, 10, 9, 2, 3, 8, 8, 1: How to do it in n^2? How to do it in nLogK?
+% Answer above is -7,2,3,8
+
+%% 0/1 Knapsack/subset sum
+% Items have weight and price
+% n item, S backpack size: can we do it in O(nS)
+
+%% Travelling Salesman Problem (TSP)
+% State: tsp(pos,bitmask)
+% Transition: 
+%   Each visited city is a bit in the bitmask
+%   - if every city has been visited: tsp(pos, 2^n -1) = dist[pos][0] (back to the start with 0 cities)
+%   - Else, try visiting unvisited cities one by one
+%   - tsp(pos,bitmask) = min (dist[pos][nxt] + tsp(nxt,bitmask|1<<nt))) for every nxt != pos, 
+%                                                                           and nxt not visited
+%                                                                           bitmask & 1<<nxt == 0
+
+\section{Conclusion}
+\begin{frame}
+   \frametitle{Summary} 
+
+   Dynamic Programming is a \structure{smart way to do complete
+     search}, when a large part of the search space is overlapping.
+
+   \begin{itemize}
+   \item \alert{Top-down DP}: recursive complete search with memoization;
+   \item \alert{Bottom-up DP}: state table with iterative completion recurrency;
+   \end{itemize}
+
+   \vfill
+
+   \begin{block}{Next Class}
+     \begin{itemize}
+     \item DP on non-classical problems
+     \item Relationship between DP and DAG
+     \item Other ``cool'' DP techniques.
+     \end{itemize}
+   \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Operations on Polynomials}
-  \begin{block}{Multiplication}
-    The product of $P(x)$ and $Q(x)$ is the combination of all items:
-    \begin{center}
-    $\sum_{i=0}\sum_{j=0} (c_ic_j)x^{i+j}$
-    \end{center}
-    This all against all operation is known as
-    \structure{convolution}. The brute force complexity is $O(n^2)$,
-    but it can be done in $O(n\log n)$ with a FFT. Other convolutions:
-    String matching, digit addition, etc.
-  \end{block}
-  \begin{block}{Division}
-    Division is not a closed operation for polynomials, and needs to
-    be treated as a special case. For example:
-    \begin{center}
-      $P(x) = 2x; Q(x) = x^2+1; P(x)/Q(x)$
-    \end{center}
-    Is not a polynomial, but rather a \structure{fractional function}.
-  \end{block}
+   \frametitle{Read more about DP}
+   \begin{itemize}
+      \item \url{http://people.csail.mit.edu/bdean/6.046/dp/}
+      \item \url{http://community.topcoder.com/tc?module=Static&d1=tutorials&d2=dynProg}
+   \end{itemize}
 \end{frame}
 
-\subsection{Logarithms}
-
-\begin{frame}
-  \frametitle{Logarithms and exponential roots} 
-
-  Remember the basic rules of logarithms and exponentiations:
-  \begin{center}
-    $\log{xy} = \log{x} + \log{y}$\\
-    $\log{x^y} = y\log{x}$
-  \end{center}
-  We can use these to easily find fractional exponents:
-  \begin{center}
-    $a^b = \exp(\ln(a^b)) = \exp(b\ln(a))$\\
-    $\sqrt{x} = x^{1/2} = \exp(0.5\ln(x))$
-  \end{center}
-  Just beware of computational uncertainties!
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Problems}
-\subsection{Next Week's Problems:}
+\subsection{This Week's Problems}
 \begin{frame}
-  \frametitle{Problems for this week}
-  \begin{itemize}
-  \item Primary Arithmetic
-  \item Reverse and Add
-  \item Polynomial Coefficient
-  \item Stern Brocot Number System
-  \end{itemize}
+   \frametitle{This Week's Problems}
 \end{frame}
 
+
+\section{Extra}
+\subsection{Extra}
+%% TODO: Add another call for action regarding programming contests? -- DP is a big part of progcon.
+
+% DP is a very important program paradigm in programming contests
 \end{document}
+
+
+

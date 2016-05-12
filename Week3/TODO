@@ -1,1 +1,3 @@
-week3.tex:2:% TODO: Nothing to do in the beginning
+320:% TODO: check if M - money is a good return value
+335:%%% TODO: Add how to print after the bottom up DP
+663:%% TODO: Add another call for action regarding programming contests? -- DP is a big part of progcon.
