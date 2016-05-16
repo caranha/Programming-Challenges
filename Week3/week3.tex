@@ -600,32 +600,408 @@ for i in (1:m):
 % Bottom-up: Start at 0 fuel used. Calculate next column based on where current column can reach
 %            Bottom up hint: We just need to store two columns at a time (if only final result is desired)
 
-\subsection{classical DPs}
+\section{Classical DP}
+\subsection{Max Sum}
 
+\begin{frame}
+  \frametitle{Classical DPs: 1D Range Sum}
+
+  Given an array A containing $< 20K$ non-zero integers,
+  \structure{determine the maximum range sum} of A.
+
+  \begin{equation*}
+    A = { 1, 20, -2, 10, 5, 6, 47, -30, -3}
+  \end{equation*}
+
+  \vfill
+  
+  \begin{block}{What is a range sum?}
+    A maximal range sum is two indexes $i,j, i < j$ in A that maximizes
+    the sum $a_i + a_{i+1}, a_{i+2}, \ldots, a_j$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Search Approaches for 1D Range Sum}
+  \begin{block}{Naive Complete Search O($n^3$)}
+
+    Naive approach: For every possible pair i,j, add the values
+    between i and j and save the result.
+
+{\smaller
+\begin{verbatim}
+maxindex = []
+maxsum = 0
+for i in (0:n):
+   for j in (i:n):
+      sum = 0
+      for k in (i:j):
+         sum += k
+      if sum > maxsum:
+         maxsum = sum
+         maxindex = [i,j]
+\end{verbatim}
+}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Search Approaches for 1D Range Sum}
+  \begin{block}{Better Complete Search -- $O(n^2)$}
+
+    If we initialize A with the right values, we can skip the sum in
+    the loop of the previous slide.
+
+{\smaller
+\begin{verbatim}
+A = [], maxsum = 0
+for (i in 0:n):
+   A[i] = A[i-1] + input
+   // A[i] now has the sum 0..i
+
+for (i in 0:n):
+   for (j in i:n):
+      sum = A[j] - A[i-1]
+      if sum > maxsum:
+         maxsum = sum
+         maxindex = [i,j]
+\end{verbatim}
+}
+  \end{block}
+
+  We can do better!
+\end{frame}
+
+\begin{frame}[singleslide,fragile]
+  \frametitle{1D Sum -- Kadane's Greedy Algorithm}
+  \begin{block}{Greedly Max Sum O(n)}
+      {\smaller
+\begin{verbatim}
+A[] = { 4, -5, 4, -3, 4, 4, -4, 4, -5};
+int sum = 0, ans = 0;
+for (i in 0:n):
+   sum += A[i], ans = max(ans, sum)
+   if (sum < 0) sum = 0; // reset greedy
+\end{verbatim}
+      }
+  \end{block}
+
+\begin{itemize}
+\item Sum is the answer if we sum all the numbers
+\item Sum is reset to zero if we ever go negative\\
+  (better to start again)
+\item At each step, we have two choices: add the sum from the previous
+  step, or start from zero.
+\end{itemize}
+\end{frame}
+
+\subsection{Maximum 2D Sum}
+\begin{frame}
+  \frametitle{Classic DP -- Maximum 2D sum}
+  \begin{block}{Problem Summary}
+    Given an array of positive and negative numbrers, find the
+    subarray with maximum sum.
+  \end{block}
+
+  \bigskip
+
+  \begin{center}
+    \begin{tabular}{|cccc|}
+      \hline
+      0 & -2 & -7 & 0\\
+      9 & 2 & -6 & 2\\
+      -4 & 1 & -4 & 1\\
+      -1 & 8 & 0 & -2\\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \bigskip
+
+  How big would be a complete search for this problem?
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Maximum 2D Sum -- Complete Search}
+
+\begin{block}{}
+  A complete search approach needs 6 loops (2 for each coordinate, 2
+  for the sum), for a total complexity of O($n^6$).
+\end{block}
+
+{\smaller
+\begin{verbatim}
+minvalue = -MIN_INT
+for i in (0:n):
+   for j in (0:n):
+      for k in (i:n):
+         for l in (j:n):
+         sum = 0
+         for a in (i:k):
+            for b in (j:l):
+               sum += A[a,b]
+         if sum > minvalue:
+            minvalue = sum
+\end{verbatim}
+}
+\end{frame}
+
+\begin{frame}[fragile, singleslide]
+  \frametitle{Max 2D sum using partial sums}
+  \begin{block}{}
+    The ``partial sum'' algorithm used for 1D arrays can also be
+    adapted to 2D Matrices, using the ``inclusion/exclusion''
+    principle.
+  \end{block}
+
+{\smaller
+\begin{verbatim}
+for i in (0:n):
+   for j in (0:n):
+       A[i][j] = input
+       if (i > 0) A[i][j] += A[i-1][j]
+       if (j > 0) A[i][j] += A[i][j-1]
+       // Avoid double count
+       if (i > 0 && j > 0) A[i][j] -= A[i-1][j-1]  
+
+for i,j in (0:n)(0:n):
+   for k,l in (i:n)(j:n):
+      sum = A[k][l]
+      if (i > 0) sum -= A[i - 1][j];
+      if (j > 0) sum -= A[i][j-1];
+      if (i > 0 && j > 0) sum += A[i-1][j-1]
+      maxsum = max(sum,maxsum)   
+\end{verbatim}
+}
+
+\end{frame}
+
+\subsection{Longest Increasing Subsequence}
+
+\begin{frame}
+  \frametitle{Classic DP: Longest Increasing Subsequence}
+  \begin{block}{Problem Definition}
+    Given a sequence $A = \{A[0],A[1],\ldots,A[n]\}$, determine the 
+    longest subsequence of increasing numbers.
+
+    \smallskip
+
+    Note that the numbers do not need to be contiguous.
+  \end{block}
+
+  Example:
+
+  \bigskip
+
+  A = \{ \alert{-7}, 10, 9, \alert{2}, \alert{3}, \alert{8}, 8, 1\}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Longest Increasing Subsequence: Complete Search}
+
+  The complete search for the LIS problem requires you to test 
+  all possible subsets. This takes $O(2^n)$. 
+
+  \bigskip
+
+  Very slow for any $n$ big enough :-(
+
+  {\small
+  \begin{block}{}
+    Remember that you can easily list all subsets using a loop on a bitmask:
+    {\smaller
+\begin{verbatim}
+
+for (i in 0:1<<n):
+   subset = []
+   ind = 0
+   while (1 << ind) < i:
+      if (1 << ind) & i:
+         subset.append(set[ind])
+      ind++
+
+   if len(subset) > maxlen:
+      maxlen = len;
+\end{verbatim}
+    }
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Longest Increasing Subsequence -- DP approach}
+  {\smaller
+  \begin{block}{1 -- What is the state space?}
+    For each element $A[i]$, we just need to know what is the size of
+    the maximum subsequence up to that element.
+
+    \medskip
+
+    The element at the end of that sequence is either $A[i]$, or an element 
+    before $A[i]$ with the same max sequence size.
+  \end{block}
+
+  \bigskip
+
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+    A[i] & -7 & 10 & 9 & 2 & 3 & 8 & 8 & 1\\
+    \hline
+    LIS[i] & 1 & 2 & 2 & 2 & 3 & 4 & 4 & 2\\
+    \hline
+  \end{tabular}
+
+  \begin{block}{2 -- What is the state transition?}
+    For every $A[i+1]$ we find k in $0:i$ that has the biggest
+    LIS$[k]$ where $A[k] < A[i+1]$. LIS$[i+1] =$ LIS$[k] + 1$.
+  \end{block}
+
+  The complexity of this approach is $O(n^2)$
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Longest Increasing Subsequence -- DP approach}
+  {\small
+\begin{verbatim}
+LIS[0:n] = 1
+parent[0:n] = -1
+for i in (1:n):
+   for j in (0:i):
+      if (LIS[j] >= LIS[i]) && (A[j] < A[i]):
+         LIS[i] = LIS[j] + 1
+         parent[i] = j
+\end{verbatim}
+  }
+
+\vfill
+
+\begin{block}{}
+  There is also a $O(n\text{log}k)$ approach that uses greedy
+  algorithm and binary search. I'll leave that one for you to study at home!
+\end{block}
+\end{frame}
+
+\subsection{Knapsack problem}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Classic DP: 0-1 Knapsack Problem}
+  {\smaller
+  \begin{block}{Problem Definition -- also known as \emph{subset sum}}
+    Given a set $A$ with $n$ elements. Each element has a value $V_i$
+    and size $S_i$. Calculate the subset with maximum sum
+    $V_{subset}$ and $S_{subset} \leq S$.
+  \end{block}
+
+  \medskip
+
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    $V_i$ & 100 & 70 & 50 & 10\\
+    \hline
+    $S_i$ & 10 & 4 & 6 & 12\\
+    \hline
+  \end{tabular}
+  
+  \smallskip
+  
+  $S = 12$
+
+  \begin{block}{Complete Search Recursive Solution -- Similar to Wedding Problem}
+    Consider the recursive function \emph{value(id,size)}, where
+    \emph{id} is the item we want to test, and \emph{size} is the size
+    remaining in the backpack.
+
+    \medskip
+
+\begin{verbatim}
+value(id,size):
+   if size == 0, return 0 // bag is full
+   if id == n, return 0 // checked all items
+   if S[id] > size, return value(id+1,size) // too big
+   return max(value(id+1,size), 
+              V[id] + value(id+1, size - S[id]))
+\end{verbatim}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{0-1 Knapsack Problem: DP Approaches} 
+
+  {\small 
+    We can easily modify the algorithm in the last slide to a Top-down
+    DP.
+
+    \bigskip
+
+    \alert{Just be careful}: the size of the state table is: $nS$.\\ 
+    If $S$ is too large ($>>1M$), this approach might be unfeasible.
+  }
+\end{frame}
+
+\subsection{Coin Change}
+\begin{frame}
+  \frametitle{Classical DP -- The Coin Change Problem (CC)}
+  \begin{block}{Problem Summary}
+    Given a target value $V$, and a list $A$ of $n$ coin sizes, what
+    is the minimum number of coins necessary to represent $V$? Assume
+    unlimited supply of coins.
+  \end{block}
+
+  Example: $V = 7$,$A = \{1,3,4,5\}$\\
+  \medskip
+  One answer is $5+1+1$. The optimal answer is $4+3$
+
+  \bigskip
+
+  \begin{exampleblock}{Recurrence}
+    The number of coins for value $V$ is 1 + the number of coins for
+    value $V - $\emph{size of coin}.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,singleframe]
+  \frametitle{Coin Change -- Complete Search Algorithm}
+  {\smaller
+  \begin{block}{Recursive Complete Search Again!}
+\begin{verbatim}
+change(value):
+   if value == 0: return 0 // 0 coins for 0
+   if value < 0: return INF // impossible result
+   min = INF
+   for i in (0:n):
+      t = 1 + change(value - A[i])
+      if (t < min): min = t
+   return t
+\end{verbatim}
+
+\medskip
+
+Can you see the many overlapping subproblems?
+  \end{block}
+\begin{itemize}
+  \item By now you should know how to do the top-down DP from here;
+  \item Can you modify the recurrence to show \structure{how many
+    different ways} you can complete a value?\\ 
+    (hint: complexity does not change);
+  \item If you have many queries $V$, but with the same set of coins
+    $A$, you don't need to clear the table.
+\end{itemize}
+
+
+  }
+\end{frame}
+
+
+
+\subsection{Travelling Salesman Problem}
+\begin{frame}
+  \frametitle{Classical DP -- Travelling Salesman Problem}
+
+  We will talk about TSP with DP Next Class!
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Discussion on Classical DPs
-% Max sum (1-D) -- Kadane's algorithm
-% Longest Increasing Subsequence O(nlogk)
-% 0-1 knapsack/subset sum
-% Coin change (textbook)
 % Travelling Salesman Problem (bitmask again)
-
-%% Max Sum (1D)
-% Given an array with positive and negative numbers, find a contiguous *sub array* with
-% the max sum.
-% example: 1,-2,6,3,2,-12,-6,7,1
-% answer is: 6,3,2 -- can we do this in On^3? n^2? n?
-
-%% Longest Increasing Subsequence
-% Find the LIS in an array A -- subsequence does not need to be contiguous
-% Example: -7, 10, 9, 2, 3, 8, 8, 1: How to do it in n^2? How to do it in nLogK?
-% Answer above is -7,2,3,8
-
-%% 0/1 Knapsack/subset sum
-% Items have weight and price
-% n item, S backpack size: can we do it in O(nS)
-
 %% Travelling Salesman Problem (TSP)
 % State: tsp(pos,bitmask)
 % Transition: 
@@ -639,7 +1015,7 @@ for i in (1:m):
 \section{Conclusion}
 \subsection{Conclusion}
 \begin{frame}
-   \frametitle{Summary} 
+   \frametitle{Summary}
 
    Dynamic Programming is a \structure{smart way to do complete
      search}, when a large part of the search space is overlapping.
@@ -651,7 +1027,7 @@ for i in (1:m):
 
    \vfill
 
-   \begin{block}{Next Class}
+   \begin{block}{Next Class (20/5, 23/5)}
      \begin{itemize}
      \item DP on non-classical problems
      \item Relationship between DP and DAG
@@ -672,23 +1048,48 @@ for i in (1:m):
 \begin{frame}
    \frametitle{This Week's Problems}
    \begin{itemize}
-   \item Jill Rides Again
-   \item Maximum Sum on a Torus
-   \item Strategic Defense Initiative
-   \item Is bigger smarter?
-   \item Ferry Loading
-   \item Unidirectional TSP
-   \item Flight Planner
-   \item e-Coins
+   \item Jill Rides Again -- Subset Sum (1D)
+   \item Maximum Sum on a Torus -- Subset Sum (2D)
+   \item Strategic Defense Initiative -- Longest Increasing Subsequence
+   \item Is bigger smarter? -- Longest Increasing Subsequence
+   \item Ferry Loading -- Knapsack
+   \item Unidirectional TSP -- Pathfinding
+   \item Flight Planner -- Pathfinding
+   \item e-Coins -- Coin Change
    \end{itemize}
 \end{frame}
 
-
-\section{Extra}
 \subsection{Extra}
-%% TODO: Add another call for action regarding programming contests? -- DP is a big part of progcon.
+\begin{frame}
+  \frametitle{Extra -- ICPC Call to Arms!}
 
-% DP is a very important program paradigm in programming contests
+  {\smaller
+  If you can solve complete search and DP problems quickly, \alert{you
+  probably can reach top 50\%} at the ICPC first round. Why not try it this year?
+  
+  \begin{block}{ICPC team registration -- Deadline 06/10 -- Contest 06/23}
+    Send message to caranha@cs.tsukuba.ac.jp with the following information:
+    \begin{itemize}
+    \item Team Name -- roman letters, numbers and symbols
+    \item Team Member 1 -- Name (letters), Name (japanese), e-mail, student ID
+    \item Team Member 2 -- Name (letters), Name (japanese), e-mail, student ID
+    \item Team Member 3 -- Name (letters), Name (japanese), e-mail, student ID
+    \end{itemize}
+  \end{block}}
+
+
+  {\tiny
+  \begin{itemize}
+  \item Japan 1st Round contest 2011 --\\
+    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2011&year_min=2011}
+  \item Japan 1st Round contest 2012 --\\
+    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2012&year_min=2012}
+  \item Japan 1st Round contest 2013 --\\
+    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2013&year_min=2013}
+  \item Japan 1st Round contest 2014 --\\
+    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2014&year_min=2014}
+  \end{itemize}}
+\end{frame}
 \end{document}
 
 
