@@ -1,2 +1,4 @@
-336:% TODO: check if M - money is a good return value
-351:%%% TODO: Add how to print after the bottom up DP
+11:%% TODO: Fix makefile so that chapters without TODO do not cause errors.
+269:      %% TODO: Explore this relationship more in the future
+378:% TODO: Add a DP math example (Yahtzee?)
+390:    %% TODO: Add an string problem

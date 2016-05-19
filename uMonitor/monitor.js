@@ -3,7 +3,7 @@
 var problemlist = [
     {name:"Extra Problems",
      deadline:"2016-07-09T00:00:00",
-     mlist:[2113,691,1967,2445]},
+     mlist:[2113,691,1967,2445,1884]},
     {name:"Week 0: How to Solve Problems",
      deadline:"2016-04-22T00:00:01",
      mlist:[2493,3098,36,1082]},
@@ -16,6 +16,9 @@ var problemlist = [
     {name:"Week 3: Dynamic Programming",
      deadline:"2016-05-20T00:00:01",
      mlist:[448,1768,438,1072,1202,52,1278,1247]},
+    {name:"Week 4: Dynamic Programming II",
+     deadline:"2016-05-27T00:00:01",
+     mlist:[1437,2259,1662,944,3702,977,1851,2402]},
 ];
 var studentlist = [161945,839071,580382,839067,839069,839075,839072,839081,769688,
 839063,839582,839062,839070,420831,839073,218658,839445,839074,653352,560805,794790,
