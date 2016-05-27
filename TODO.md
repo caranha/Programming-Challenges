@@ -38,3 +38,59 @@ Do not forget the TODO file in each class
 
 * Class A: introduction to DP with two examples (wedding, apple trees)
 * Class B: classical DPs except TSP (no time)
+
+### Week 4 -- Dynamic Programming
+
+* Class A: TSP + other problems (OK)
+* Class B: No topics, asked students to participate, failure. (Only one TSP class next year?)
+
+### Week 5 -- Graph Part I AB
+Class A
+* Review of Graph Terms
+* BFS and DFS
+* BFS/DFS algorithms: Connected components/Topological Sort/Bipartite Check
+* Spanning Tree, Cycles, Strongly Connected Components
+* Minbimum Spanning Tree: Kruskal and Prim's algorithm, MST Variants
+
+Class B
+* Pathfinding: SSSP, Djikstra, Bellman Ford
+* All Pairs Shortest Path: Floyd Warshall/implementation
+* Tricks with APSP: Minimum Cycle, Negative Cycle, Diameter of a Graph
+* Problems
+
+### Week 6 -- Graph Part II AB
+
+
+
+Idea: put everything in a single class and break by time. Add examples as necessary.
+Idea: There is a lot to cover on graphs. I will cover the most interesting bits, but 
+      see the materials for the parts that I skipped.
+
+* Review of Graph related terms
+* BFS and DFS programming examples 
+  (Many graph problems are variants and specializations of DFS and BFS)
+** Simple graph problems (quick modification of DFS/BFS)
+
+** Connected Components/Flood Fill
+** Topological Sort
+** Bipartite Check
+
+** DFS Spanning Tree (edge type: tree edge/back edge/forward edge)
+** Finding Cycles (back edges exist)/Finding articulations and Bridges
+** Finding Strongly connected components (undirected graphs)
+
+** Minimum Spanning Tree/Kruskal Algorithm
+** Prim's Algorithm
+** Minimum Spanning Tree Variants: Maximum Spanning Tree, MS Forest, MS subgraph
+
+** Single Source Shortest Paths (Djikstra) -- Djikstra Original Paper does not specify an implementaton.
+** Bellman Ford Algorithm for shortest path with negative loop (slower than djikstra)
+
+** All pairs Shortest path (Floyd Warshall) ## Main attractiveness: Very simple to program
+** Explain the idea of Floyd Warshall (DP!)
+** Tricks with all pairs shortest path: Minimum Cycle/Negative Cycle: Check the diagonal for the cost of i,i
+** Diameter of a graph: Maximum shortest path between any i,j of a graph
+
+
+* Network Flow (Class II?)
+* Graph Matching (Class II?)
