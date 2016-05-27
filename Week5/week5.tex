@@ -74,7 +74,7 @@
     \item Graph Basics review: Concepts and Data Structure;
     \item Depth First Search and Breadth First Search;
     \item Problems you solve with DFS and BFS;
-    \item Minimum Spanning Tree: Kruskal and Prim Algorithms;
+    \item Minimum Spanning Tree: Kruskal and Prim Algorithms \alert{(Monday)};
      \end{itemize}
   \end{block}
   \begin{block}{Next Week - Graph II}
@@ -85,6 +85,7 @@
     \item Bipartite Graph Matching and related Problems;
     \end{itemize}
   \end{block}}
+  Many variations in graph problems!
 \end{frame}
 
 %%% Simple Concepts in Graph Theory
@@ -105,10 +106,9 @@
         and \structure{edges} $E$.
       \item Edges can be \structure{directed}\\ (has source and destination vertices);
       \item Edges can be \structure{weighted} or not\\ (all weigths = 1);
-      \item Sets of Nodes can be \structure{connected}\\ or \structure{disconnected}
-        \structure{strongly connected} (all pairs connected)
-      \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}\\
-        (often used in trick inputs!)
+      \item Sets of nodes can be \structure{connected}\\ or \structure{disconnected}
+      \item Directed Graphs can be \structure{Strongly Connected}
+      \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}
       \end{itemize}
       \column{0.4\textwidth}
 
@@ -159,6 +159,9 @@
       \item A \structure{cycle} is a path with first and last vertices identical;
       \item \structure{Labelled} graphs and \structure{Isomorphic} graphs;
       \item A \structure{tree} is a acyclical, undirected graph;
+      \item A \structure{spanning tree} is a subset of edges from E'
+        that form a tree, connecting all nodes $V \in G$;
+      \item A \alert{spamming tree} houses very noisy insects in summer;
       \end{itemize}
       \column{0.4\textwidth}
       \begin{tikzpicture}[scale=1,auto,swap]
@@ -171,6 +174,8 @@
         \draw[edge] (s) to  (a2);
         \draw[edge] (a1) to  (b1);
         \draw[edge] (a1) to  (b2);
+        \draw[black edge] (b1) to (b2);
+        \draw[black edge] (a2) to (b2);
       \end{tikzpicture}
 
       \vspace{.5cm}
@@ -185,6 +190,8 @@
         \draw[edge] (s) to  (a2);
         \draw[edge] (a1) to  (b1);
         \draw[edge] (a1) to  (b2);
+        \draw[black edge] (b1) to (b2);
+        \draw[black edge] (a2) to (b2);
       \end{tikzpicture}
   \end{columns}}
 
@@ -734,48 +741,224 @@ while (!q.empty() && isBipartite) {
 
 \begin{frame}
   \frametitle{Articulation Points and Bridges}
+  {\smaller
+    \begin{block}{Problem Description}
+      In an undirected graph G:
+      \begin{itemize}
+      \item A verted V is an \structure{Articulation Point} if removing V would make G disconnected.
+      \item An edge E is a \structure{Bridge} if removing E would make G disconnected.
+      \end{itemize}
+    \end{block}
+    \begin{center}
+        \begin{tikzpicture}[scale=1.3,auto,swap]
+          \node[vertex] (a) at (0,0) {};
+          \node[vertex] (b) at (2,0) {};
+          \node[red vertex] (c) at (0,2) {};
+          \node[red vertex] (d) at (2,2) {};
+          \node[red vertex] (e) at (3,1) {};
+          \node[vertex] (f) at (4,0) {};
+          \node[vertex] (g) at (4,2) {};
+          \node[blue vertex] (h) at (3,3) {};
+          \draw[edge] (a) to (b);
+          \draw[edge] (a) to (c);
+          \draw[edge] (c) to (d);
+          \draw[edge] (d) to (b);
+          \draw[red edge] (d) to (e);
+          \draw[edge] (e) to (f);
+          \draw[edge] (f) to (g);
+          \draw[edge] (g) to (e);
+          \draw[red edge] (c) to (h);
+        \end{tikzpicture}
+      \end{center}
+  }
+\end{frame}
 
+\begin{frame}
+  \frametitle{Articulation Points and Bridges: Algorithm}
+  {\smaller
+    \begin{block}{Complete Search algorithm for Articulation Points}
+      \begin{enumerate}
+      \item Run DFS/BFS, and count the number of CC in the graph;
+      \item For each vertex $v$, remove $v$ and run DFS/BFS again;
+      \item If the number of CC increases, $v$ is a connection point;
+      \end{enumerate}
+      Since DFS/BFS is $O(V+E)$, this algorithm runs in $O(V^2+EV)$.
+    \end{block}
+    
+    \bigskip
+
+    \hfill ... but we can do better!
+  }
+\end{frame}
+
+% TODO: Make my own image for the DFS articulation detection algorithm
+\begin{frame}
+  \frametitle{Tarjan's DFS variant for Articulation point (O(V+E))}
+  {\smaller
+    \begin{exampleblock}{Tarjan Variant: $O(V+E)$}
+      Main idea: Add extra data to the DFS to detect articulations.
+    \end{exampleblock}
+      \begin{center}
+        \includegraphics[width=0.9\textwidth]{../img/graph_articulation}
+      \end{center}
+    \begin{itemize}
+    \item \structure{dfs\_num[]}: Recieves the number of the iteration
+      when this node was reached for the first time;
+    \item \structure{dfs\_low[]}: Recieves the lowest dfs\_num[] which
+      can be reached if we start the DFS from here;
+    \item For any neighbors $u,v$, if dfs\_low[$v$] >= dfs\_num[$u$],
+      then $u$ is an articulation node.
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Tarjan's DFS variant for Articulation point (2)}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{../img/graph_articulation}
+  \end{center}
+  
+{\tiny
+  \begin{exampleblock}{}
+\begin{verbatim}
+void dfs_a(u){
+   dfs_num[u] = dfs_low[u] = IterationCounter++;   // dfs_num[u] is a simple counter
+   for (int i = 0; i < AdjList[u].size(); i++){
+      v = AdjList[u][i];
+      if (dfs_num[v] == UNVISITED) {
+         dfs_parent[v] = u;                        // store parent
+         if (u == 0) rootChildren++:               // special case for root node
+
+         dfs_a(v);
+         if (dfs_low[a] >= dfs_num[u])
+            articulation_vertex[u] = true;
+         dfs_low[u] = min(dfs_low[u],dfs_low[v])
+
+      else if (v != dfs_parent[u])                 // found a cycle edge
+         dfs_low[u] = min(dfs_low[u],dfs_num[v])
+}}
+\end{verbatim}
+  \end{exampleblock}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Strongly Connected Components (Directed Graph)}
+  {\smaller
+    \begin{block}{Problem Description}
+      On a directed graph $G$, a Strongly Connected Component (SCC) is
+      a subset $G'$ where for every pair of nodes $a,b \in G'$, there is both 
+      a path $a \rightarrow b$ and a path $b \rightarrow a$.
+    \end{block}
+
+
+\begin{columns}[t]
+    \column{0.5\textwidth}
+    \begin{exampleblock}{One CC}
+      \vspace{0.1cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=1.1,auto,swap]
+          \node[vertex] (a) at (0,0) {};
+          \node[vertex] (b) at (1,0) {};
+          \node[vertex] (c) at (2,0) {};
+          \node[vertex] (d) at (1,1) {};
+          \node[vertex] (e) at (3,0) {};
+          \node[vertex] (f) at (4,0) {};
+          \node[vertex] (g) at (4,1) {};
+          \node[vertex] (h) at (3,1) {};
+          \draw[edge] (a) to (b);
+          \draw[edge] (b) to (c);
+          \draw[edge] (c) to (d);
+          \draw[edge] (d) to (b);
+          \draw[edge] (c) to (e);
+          \draw[edge] (e) to (f);
+          \draw[edge] (f) to (g);
+          \draw[edge] (g) to (h);
+          \draw[edge] (h) to (e);
+        \end{tikzpicture}
+      \end{center}
+      \vspace{0.1cm}
+    \end{exampleblock}
+    \column{0.5\textwidth}
+    \begin{exampleblock}{Three SCC}
+      \vspace{0.1cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=1.1,auto,swap]
+          \tikzset{edge/.style = {->,>=latex'}}
+          \node[vertex] (a) at (0,0) {};
+          \node[blue vertex] (b) at (1,0) {};
+          \node[blue vertex] (c) at (2,0) {};
+          \node[blue vertex] (d) at (1,1) {};
+          \node[red vertex] (e) at (3,0) {};
+          \node[red vertex] (f) at (4,0) {};
+          \node[red vertex] (g) at (4,1) {};
+          \node[red vertex] (h) at (3,1) {};
+          \draw[edge] (a) to (b);
+          \draw[edge] (b) to (c);
+          \draw[edge] (c) to (d);
+          \draw[edge] (d) to (b);
+          \draw[edge] (c) to (e);
+          \draw[edge] (e) to (f);
+          \draw[edge] (f) to (g);
+          \draw[edge] (g) to (h);
+          \draw[edge] (h) to (e);
+        \end{tikzpicture}
+      \end{center}
+      \vspace{0.1cm}
+    \end{exampleblock}
+  \end{columns}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Strongly Connected Components -- Algorithm} 
+
+  We can use a simple modification of the algorithm for bridges and
+  articulation points:
+
+  \begin{itemize}
+    \item Every time we visit a new node, put that node in a stack $S$;
+    \item When we finish visiting a node $i$, test if dfs\_num[$i$] == dfs\_min[$i$].
+    \item If the above condition is true, $i$ is the root of the
+      SCC. Pop all vertices in the stack as part of the SCC.
+  \end{itemize}
 \end{frame}
 
 \section{Spanning Tree}
 \subsection{Introduction}
 \begin{frame}
-  \frametitle{What is a Spanning Tree?}
+  \frametitle{Spanning Trees}
+
+  On Monday Class:
+
+  \begin{itemize}
+  \item Spanning Trees\\
+    {\small (DO NOT CONFUSE WITH SPAMMING TREES)}
+  \item Problem discussion and hints
+  \item Questions (?)
+  \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Concepts in a Spanning Tree} 
+%\begin{frame}
+%  \frametitle{Concepts in a Spanning Tree} 
 
-  When forming a spanning tree, we can classify the vertices and edges
-  in a graph.
+%  When forming a spanning tree, we can classify the vertices and edges
+%  in a graph.
 
-  The vertices can be classified into ``root'' and ``leaf'' vertices.
+%  The vertices can be classified into ``root'' and ``leaf'' vertices.
 
-  The edges can be classified into ``tree edge'', ``back edge'' and ``forward edge''.
-\end{frame}
+%  The edges can be classified into ``tree edge'', ``back edge'' and ``forward edge''.
+%\end{frame}
 
-\begin{frame}
-  \frametitle{Uses of a Spanning Tree}
-  We can use a spanning tree to detect Cycles in a graph. As we generate 
-  the spanning tree, if a back edge exists, there is a cycle.
-
-  Finding Strongly Connected Components (CP Book)
-\end{frame}
-
-\begin{frame}
-  \frametitle{Algorithms for Spanning Trees}
+%\begin{frame}
+%  \frametitle{Algorithms for Spanning Trees}
   %% Minimum Spanning Tree/Kruskal Algorithm
   %% Prim's Algorithm
   %% Minimum Spanning Tree Variants: Maximum Spanning Tree, MS Forest, MS subgraph
-\end{frame}
+%\end{frame}
 
-\begin{frame}
-  \frametitle{Variants of the minimum spanning tree}
-\end{frame}
+%\begin{frame}
+%  \frametitle{Variants of the minimum spanning tree}
+%\end{frame}
 
 
 % NEXT WEEK
@@ -808,6 +991,18 @@ while (!q.empty() && isBipartite) {
 
 \begin{frame}
   \frametitle{This Week's Problems}
+  \begin{itemize}
+  \item Dominator;
+  \item Knight in a War grid;
+  \item Wetlands in Florida;
+  \item Battleships;
+  \item Pick up Sticks;
+  \item Place the Guards;
+  \item Street Directions;
+  \item Dominos;
+  \item Freckles;
+  \item Artic Network;
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
