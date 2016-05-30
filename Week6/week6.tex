@@ -1,0 +1,132 @@
+\documentclass{beamer}
+\input{../tools/beamerpreamble.tex}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+% Latex Graph Example:
+% https://www.overleaf.com/5297501zrjzfm#/16716638/
+
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
+\tikzstyle{blue vertex}=[circle,fill=blue!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{red vertex}=[circle,fill=red!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{red edge} = [draw, line width=5pt,-,red!50]
+\tikzstyle{black edge} = [draw, line width=5pt,-,black!20]
+\tikzstyle{weight} = [font=\smaller]
+
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 6 - Graph Problems (Part II)}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-06-03,6\\{\tiny Last updated \today}}
+
+\begin{document}
+
+\section{Introduction}
+\subsection{Title}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\subsection{Notes and Warnings}
+
+\begin{frame}
+  \frametitle{Last Week Results}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{block}{Week 5 - Graph I}
+      \begin{itemize}
+      \item Jill Rides Again - 15/32
+      \end{itemize}
+    \end{block}
+    \column{0.5\textwidth}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Special Notes}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Week 5 and 6 -- Outline}
+  {\smaller
+  \begin{block}{This Week - Graph I}
+    \begin{itemize}
+    \item Graph Basics review: Concepts and Data Structure;
+    \item Depth First Search and Breadth First Search;
+    \item Problems you solve with DFS and BFS;
+    \item Minimum Spanning Tree: Kruskal and Prim Algorithms \alert{(Monday)};
+     \end{itemize}
+  \end{block}
+  \begin{block}{Next Week - Graph II}
+    \begin{itemize}
+    \item Single Sourse Shortest Path (Djikstra);
+    \item All Pairs Shortest Path (Floyd Warshall);   
+    \item Network Flow and related Problems;
+    \item Bipartite Graph Matching and related Problems;
+    \end{itemize}
+  \end{block}}
+  Many variations in graph problems!
+\end{frame}
+
+
+% NEXT WEEK
+%\section{Shortest Paths}
+%\subsection{Introduction}
+%\begin{frame}
+%  \frametitle{Finding Paths in Graphs}
+%\end{frame}
+
+%\subsection{Single Source Shortest Paths - SSSP}
+%\begin{frame}
+%  \frametitle{Single Source Shortest Path}
+%\end{frame}
+
+%% Single Source Shortest Paths (Djikstra) -- Djikstra Original Paper
+%% does not specify an implementaton.  Bellman Ford Algorithm for
+%% shortest path with negative loop (slower than djikstra)
+
+%% All pairs Shortest path (Floyd Warshall) ## Main attractiveness:
+%% Very simple to program Explain the idea of Floyd Warshall (DP!)
+%% Tricks with all pairs shortest path: Minimum Cycle/Negative Cycle:
+%% Check the diagonal for the cost of i,i Diameter of a graph: Maximum
+%% shortest path between any i,j of a graph
+
+\section{Conclusion}
+\subsection{Conclusion}
+\begin{frame}
+  \frametitle{Summary}
+\end{frame}
+
+\begin{frame}
+  \frametitle{This Week's Problems}
+  \begin{itemize}
+  \item Dominator;
+  \item Knight in a War grid;
+  \item Wetlands in Florida;
+  \item Battleships;
+  \item Pick up Sticks;
+  \item Place the Guards;
+  \item Street Directions;
+  \item Dominos;
+  \item Freckles;
+  \item Artic Network;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Next Week}
+  More Graphs!
+  \begin{itemize}
+  \item Network Flow (and related problems);
+  \item Graph Matching (bipartite matching, etc) (and related problems);
+  \end{itemize}
+\end{frame}
+
+%% TODO: Extra: Why study graph problems
+% Human Networks (Scale-free Networks)
+% State Machines (Computation models, theory)
+% Dependence Graphs (Compilers, Pipelining, Scheduling)
+% Grammar Graphs (Compilers, NLP)
+\end{document}
+

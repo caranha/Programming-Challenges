@@ -7,8 +7,9 @@
 
 
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
-\tikzstyle{blue vertex}=[circle,fill=blue!25,minimum size=10pt,inner sep=0pt]
-\tikzstyle{red vertex}=[circle,fill=red!25,minimum size=10pt,inner sep=0pt]
+\tikzstyle{blue vertex}=[circle,fill=blue!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{red vertex}=[circle,fill=red!100,minimum size=10pt,inner sep=0pt]
+%\tikzstyle{label}=[thin, draw=black, align=center,minimum width=0.5cm, minimum height=0.5cm,fill=white]
 \tikzstyle{edge} = [draw,thick,-]
 \tikzstyle{red edge} = [draw, line width=5pt,-,red!50]
 \tikzstyle{black edge} = [draw, line width=5pt,-,black!20]
@@ -923,70 +924,416 @@ void dfs_a(u){
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Spanning Tree}
 \subsection{Introduction}
 \begin{frame}
-  \frametitle{Spanning Trees}
+  \frametitle{Minimum Spanning Trees (MST)}
 
-  On Monday Class:
+  {\smaller
+  \begin{block}{Definition}
+    A \structure{Spanning Tree} is a subset $E'$ from graph $G$ so
+    that all vertices are connected without cycles.
 
-  \begin{itemize}
-  \item Spanning Trees\\
-    {\small (DO NOT CONFUSE WITH SPAMMING TREES)}
-  \item Problem discussion and hints
-  \item Questions (?)
-  \end{itemize}
+    \medskip
+
+    A \structure{Minimum Spanning Tree} is a spanning tree where the
+    sum of edge's weights is minimal.    
+  \end{block}
+  }
+
+  \begin{columns}[T]
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[red edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[red edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[red edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[red edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[red edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[red edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+  \end{columns}
 \end{frame}
 
-%\begin{frame}
-%  \frametitle{Concepts in a Spanning Tree} 
+\begin{frame}
+  \frametitle{MST -- Use cases and Algorithms}
+  {\small
+  \begin{block}{Problems using MST}
+    Problems using MST usually involve calculating the minimum costs
+    of infrastructure such as roads or networks. 
+    
+    \medskip
 
-%  When forming a spanning tree, we can classify the vertices and edges
-%  in a graph.
+    Some variations may require you to find the \alert{maximum}
+    spanning tree, or define some edges that \alert{must} be taken in advance.
+  \end{block}
 
-%  The vertices can be classified into ``root'' and ``leaf'' vertices.
+  \begin{exampleblock}{Algorithms for MST}
+    The two main algorithms for calculating the MST are the
+    \structure{Kruskal}'s algorithms and the \structure{Prim}'s
+    algorithms.
 
-%  The edges can be classified into ``tree edge'', ``back edge'' and ``forward edge''.
-%\end{frame}
+    \medskip
 
-%\begin{frame}
-%  \frametitle{Algorithms for Spanning Trees}
-  %% Minimum Spanning Tree/Kruskal Algorithm
-  %% Prim's Algorithm
-  %% Minimum Spanning Tree Variants: Maximum Spanning Tree, MS Forest, MS subgraph
-%\end{frame}
+    Both are greedy algorithms that add edges to the MST in weight order.
+  \end{exampleblock}
+    }
+\end{frame}
 
-%\begin{frame}
-%  \frametitle{Variants of the minimum spanning tree}
-%\end{frame}
+\begin{frame}
+  \frametitle{Kruskal's Algorithm}
+  \begin{block}{Outline}
+    Kruskal's algorithms sorts all edges by their weight, and try to
+    add each edge to the MST, checking whether adding that edge would
+    create a cycle.
+  \end{block}
 
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{enumerate}
+    \item Sort all edges;
+    \item If smallest edge does not create a cycle, add to MST;
+    \item If smallest edge creates a cycle, remove it from list;
+    \item Go to 2;
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+      \draw<2->[red edge] (b) -- node[label] {$2$} (c);
+      \draw<3->[red edge] (a) -- node[label] {$4$} (b);
+      \draw<4->[black edge] (a) -- node[label] {$4$} (c);
+      \draw<4->[red edge] (a) -- node[label] {$6$} (d);
+      \draw<5->[red edge] (a) -- node[label] {$6$} (e);
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
 
-% NEXT WEEK
-%\section{Shortest Paths}
-%\subsection{Introduction}
-%\begin{frame}
-%  \frametitle{Finding Paths in Graphs}
-%\end{frame}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Kruskal's Algorithm -- Implementation}
+{\smaller
+\begin{exampleblock}{}
+\begin{verbatim}
+vector<pair<int, pair<int,int>> Edgelist; 
+sort(Edgelist.begin(),Edgelist.end());
+int mst_cost = 0; 
+UnionFind UF(V);
+  // note 1: Pair object has built-in comparison;
+  // note 2: Need to implement UnionSet class;
 
-%\subsection{Single Source Shortest Paths - SSSP}
-%\begin{frame}
-%  \frametitle{Single Source Shortest Path}
-%\end{frame}
+for (int i = 0; i < Edgelist.size(); i++) {
+   pair <int, pair <int,int>> front = Edgelist[i];
+   if (!UF.isSameSet(front.second.first,
+                     front.second.second)) {
+      mst_cost += front.first;
+      UF.unionSet(front.second.first,front.second.second)
+   }}
 
-%% Single Source Shortest Paths (Djikstra) -- Djikstra Original Paper
-%% does not specify an implementaton.  Bellman Ford Algorithm for
-%% shortest path with negative loop (slower than djikstra)
+cout << "MST Cost: " << mst_cost << "\n"
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
 
-%% All pairs Shortest path (Floyd Warshall) ## Main attractiveness:
-%% Very simple to program Explain the idea of Floyd Warshall (DP!)
-%% Tricks with all pairs shortest path: Minimum Cycle/Negative Cycle:
-%% Check the diagonal for the cost of i,i Diameter of a graph: Maximum
-%% shortest path between any i,j of a graph
+\begin{frame}
+  \frametitle{Prim's Algorithm}
+  {\small
+  \begin{block}{Outline}
+    Prim's algorith adds nodes to the MST one at a time, and keeps the
+    edges connected to those nodes in a \structure{priority queue}. It
+    then tests each edge in the priority queue to add more nodes to
+    the MST, avoiding cycles.
+  \end{block}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{enumerate}
+    \item Add node 0 to MST;
+    \item Add all edges from new node to Priority Queue;
+    \item Visit smallest edge in Queue;
+    \item If the edge leades to a new node, add it to MST;
+    \item Add new edges to Queue;
+    \item Go to 3;
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+      \uncover<2->{
+      \node[red vertex] (a1) at (0,0) {};
+      \draw[black edge] (a) -- node[label] {$4$} (b);
+      \draw[black edge] (a) -- node[label] {$4$} (c);
+      \draw[black edge] (a) -- node[label] {$6$} (d);
+      \draw[black edge] (a) -- node[label] {$6$} (e);
+      }
+
+      \uncover<3->{
+        \node[red vertex] (c1) at (2,0) {};
+        \draw[red edge] (a) -- node[label] {$4$} (c);
+        \draw[black edge] (c) -- node[label] {$8$} (d);
+        \draw[black edge] (b) -- node[label] {$2$} (c);
+      }
+      \uncover<4->{
+        \node[red vertex] (b1) at (1,1) {};
+        \draw[red edge] (b) -- node[label] {$2$} (c);
+      }
+
+      \uncover<5->{
+        \node[red vertex] (d1) at (1,-1) {};
+        \draw[red edge] (a) -- node[label] {$6$} (d);
+        \draw[black edge] (d) -- node[label] {$9$} (e);
+      }
+      
+      \uncover<6->{
+        \node[red vertex] (e1) at (0,-2) {};
+        \draw[red edge] (a) -- node[label] {$6$} (e);
+      }
+    \end{tikzpicture}
+  \end{columns}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Prim's Algorithm -- Implementation}
+{\smaller
+\begin{exampleblock}{}
+\begin{verbatim}
+vector <int> taken;
+priority_queue <pair <int,int>> pq;
+
+void process (int v) {
+   taken[v] = 1;
+   for (int j = 0; j < (int)AdjList[v].size(); j++) {
+      pair <int,int> ve = AdjList[v][j];
+      if (!taken[ve.first]) 
+         pq.push(pair <int,int> (-ve.second,-ve.second)
+}}
+taken.assign(V,0);
+process(0);
+mst_cost = 0;
+
+while (!pq.empty()) {
+  vector <int,int> pq.top(); pq.pop();
+  u = -front.secont, w = -front.first;
+  if (!taken[u]) mst_cost += w, process(u);
+}
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
+
+\subsection{Other MST Problems}
+
+\begin{frame}
+  \frametitle{MST variant 1 -- Maximum Spanning tree}
+
+  {\smaller
+    \begin{block}{}
+      The \structure{Maximum Spanning Tree} variant requires the spanning
+      tree to have maximum possible weight.
+      
+      \bigskip
+      
+      It is very easy to implement the Maximum MST by reversing the sort
+      order of the edges (Kruskal), or the weighting of the priority Queue
+      (Prim).
+    \end{block}
+
+  \medskip
+
+  \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (0,2) {};
+      \node[vertex] (d) at (-1,1) {};
+      \node[vertex] (e) at (-2,0) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[red edge] (c) -- node[label] {$8$} (d);
+      \draw[red edge] (a) -- node[label] {$6$} (e);
+      \draw[red edge] (d) -- node[label] {$9$} (e);
+  \end{tikzpicture}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST variant 2 -- Minimum Spanning Subgraph, Forest}
+  {\smaller
+    \begin{block}{}
+      In one importante variant of the MST, a subset of edges or
+      vertices are pre-selected.
+
+      \begin{itemize}
+      \item In the case of pre-selected vertices, add them to the
+        ``taken'' list in Kruskal's algorithm before starting;
+      \item In the case of edges, add the end vertices to the
+        ``taken'' list;
+      \item What if you are given a \alert{number of Connected Components}?
+      \end{itemize}
+    \end{block}
+    \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+        \node[blue vertex] (a) at (0,0) {};
+        \node[vertex] (b) at (1,1) {};
+        \node[vertex] (c) at (2,2) {};
+        \node[vertex] (d) at (3,1) {};
+        \node[vertex] (e) at (4,0) {};
+        \node[blue vertex] (f) at (4,2) {};
+        \node[vertex] (g) at (5,0) {};
+        \node[vertex] (h) at (6,2) {};
+        \node[blue vertex] (i) at (6,1) {};
+        \draw[red edge] (a) -- node[label] {$2$} (b);
+        \draw[red edge] (a) -- node[label] {$1$} (d);
+        \draw[edge] (d) -- node[label] {$4$} (c);
+        \draw[edge] (d) -- node[label] {$8$} (e);
+        \draw[edge] (d) -- node[label] {$3$} (f);
+        \draw[red edge] (c) -- node[label] {$3$} (f);
+        \draw[edge] (f) -- node[label] {$6$} (g);
+        \draw[red edge] (e) -- node[label] {$4$} (g);
+        \draw[red edge] (f) -- node[label] {$1$} (h);
+        \draw[red edge] (g) -- node[label] {$3$} (i);
+      \end{tikzpicture}
+    \end{center}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST Variant 3 -- $n$th Best MST}
+  {\smaller
+  \begin{block}{Problem Definition}
+    Consider that you can order MST by their costs: $G_1, G_2, \ldots,
+    G_n$.  This variant asks you to calculate the $n^{th}$ best
+    spanning tree.    
+  \end{block}
+
+  \bigskip
+
+  Basic Idea:
+  \begin{itemize}
+    \item Calculate the MST (using Kruskal or Prim);
+    \item For every edge in the MST, remove that edge from the graph
+      and calculate a new MST;
+    \item The new MST with minimum weight is the $2^{nd}$ best MST;
+  \end{itemize}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST Variant 4 -- Min-max (or Max-min)}
+
+  {\smaller
+
+  \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=0.8]
+        \node[red vertex] (a) at (0,0) {0};
+        \node[vertex] (b) at (1,1) {1};
+        \node[vertex] (c) at (1,-1) {2};
+        \node[vertex] (d) at (2,0) {3};
+        \node[vertex] (e) at (3,1) {4};
+        \node[vertex] (f) at (3,-1) {5};
+        \node[red vertex] (g) at (4,0) {6};
+        \draw[red edge] (a) -- node[label] {$50$} (b);
+        \draw[red edge] (a) -- node[label] {$60$} (c);
+        \draw[edge] (b) -- node[label] {$120$} (d);
+        \draw[edge] (b) -- node[label] {$90$} (e);
+        \draw[red edge] (c) -- node[label] {$50$} (f);
+        \draw[red edge] (d) -- node[label] {$80$} (f);
+        \draw[red edge] (d) -- node[label] {$70$} (g);
+        \draw[red edge] (e) -- node[label] {$40$} (g);
+        \draw[edge] (f) -- node[label] {$140$} (g);
+      \end{tikzpicture}
+    \end{center}
+  
+  \begin{block}{Problem Definition}
+    Given two vertices $i,j$, find a path $i \rightarrow j$ so that
+    the cost of the most expensive edge is minimized;
+
+    \medskip
+
+    Another way to write this problem is: Find the cheapest path where
+    the cost of the path is the cost of the most expensive edge.
+  \end{block}
+
+  \begin{exampleblock}{How to solve}
+    The MST finds the path that connects all nodes while keeping the
+    cost of individual edges minimal. 
+
+    \medskip
+    
+    To solve the minimax problem, we calculate the MST for $G$, and
+    then find the path from $i$ to $j$ in the MST.
+  \end{exampleblock}
+  }
+\end{frame}
+
 
 \section{Conclusion}
 \subsection{Conclusion}
 \begin{frame}
   \frametitle{Summary}
+  \begin{itemize}
+  \item Graphs come in a wide variety of types;
+  \item Graph problems also have many different types;
+  \item Most problems involve small modifications of DFS and BFS;
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -1006,12 +1353,177 @@ void dfs_a(u){
 \end{frame}
 
 \begin{frame}
+  \frametitle{Problem Hints (0)}
+  \begin{itemize}
+  \item All the problems this week (and next week!) include graphs,
+    and probably need BFS and/or DFS;
+
+    \medskip
+
+  \item Prepare a ``template'' of an Adjacency list and DFS/BFS, and
+    put it in the code before starting;
+
+    \medskip
+
+  \item Try to draw the problem on paper before coding;
+
+    \medskip
+
+  \item Remember to test ``tricky'' cases: Graphs with 1 node,
+    disconnected graphs, self-edges, multi-edges;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (1)}
+  {\smaller
+  \begin{block}{Dominator}
+    \begin{itemize}
+    \item Remember: A node is not dominated by anyone if it is not connected to the root (node 0);
+    \item Basic algorithm discussed in class: Calculate all nodes
+      reachable from root. Then remove one node at a time, and node which ones are not reachable anymore;
+    \item If removing node $i$ makes node $j$ not reachable, then $i$ dominates $j$.
+    \item To ``remove'' a node, modify the DFS(root,i) so that it returns if $i$ is reached;
+    \end{itemize}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (2)}
+  {\smaller
+  \begin{block}{Knight in a War Grid}
+    \begin{itemize}
+    \item The problem only wants to know which squares are reachable,
+      it is not worried about minimum distance;
+    \item Be careful, $M$ or $N$ can be zero!
+    \item Be careful, if $M == N$, the graph becomes multigraph!
+    \item This graph is implicit, the connections are given by the
+      knight step, the board size, and the impossible squares;
+    \end{itemize}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (3)}
+  {\smaller
+  \begin{block}{Wetlands of Florida}
+    \begin{itemize}
+      \item Make a graph with 0 and 1 indicating water or no water;
+      \item Flood-fill the graph at the requested location;
+      \item Multiple-case input is a bit hard to read, make sure to test that;
+    \end{itemize}
+  \end{block}
+  \begin{block}{Battleships}
+    \begin{itemize}
+      \item Scan the graph (double fors). 
+      \item For each unvisited 'x' or '@', flood fill the ship (mark
+        visited) and add the ship;
+      \item A ship with only @'s should not be counted.
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (4)}
+  {\smaller
+  \begin{block}{Pick up sticks}
+    \begin{itemize}
+    \item The input gives you directed nodes. 
+    \item Try to build a topological order (follow the class code)
+    \item Any order is fine. If you find a cycle, print ``impossible''
+    \end{itemize}
+  \end{block}
+  \begin{block}{Palace Guards}
+    \begin{itemize}
+    \item Each junction is a node, each street is an edge. 
+    \item We have junctions with guards and without guards. (No guard can be near each other)
+    \item There is a solution if the graph is bipartite!
+    \item How do you calculate the smallest number of guards?
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (5)}
+  {\smaller
+  \begin{block}{Street Directions}
+    \begin{itemize}
+    \item We have to convert two way streets to one way streets 
+    \item Undirected graph to directd graph. 
+    \item When is a 2-way street \alert{necessary}?
+    \item How can you generate 1 way streets?
+    \item Hint: you need to draw the graph on paper
+    \end{itemize}
+  \end{block}
+  \begin{block}{Dominos}
+    \begin{itemize}
+    \item The dominos falling is a directed graph. 
+    \item Each domino that falls, we visit one node.
+    \item How many nodes do we need to start, to visit all nodes?
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (6)}
+  \begin{block}{Freckles}
+    \begin{itemize}
+    \item The problem requires the minimum ink (cost) among all freckles;
+    \item This is straight up MST code;
+    \item Be careful when rounding up values;
+    \end{itemize}    
+  \end{block}
+  \begin{block}{Arctic Network}
+    \begin{itemize}
+    \item Also wants to calculate the MST (minimum radio power necessary);
+    \item However, we can use $S$ ``satellite'' links, which cost 0;
+    \item Remember that two stations need a satellite link to talk;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Next Week}
   More Graphs!
   \begin{itemize}
+  \item Shortest Paths (Single Source and All Pairs);
   \item Network Flow (and related problems);
   \item Graph Matching (bipartite matching, etc) (and related problems);
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{EXTRA: Union Find Disjoint Set}
+  
+  {\tiny
+    \begin{exampleblock}{Union Find Class}
+\begin{verbatim}
+class UnionFind {
+private: vector<int> p, rank;
+public: 
+   UnionFind(int N) {
+      rank.assign(N,0);
+      p.assign(N,0); for (int i=0; i<N; i++) p[i]=i;}
+   int findSet(int i) {
+      return (p[i] == i? i : (pi[i] = findSet(p[i]))); }
+   bool isSameSet(int i, int j) { 
+      return findSet(i) == findSet (j); }
+   void unionSet(int i, int j) {
+      is (!isSameSet(int i, int j) { 
+         int x = findSet(i), y = findSet(j);
+         if (rank[x] > rank[y]) 
+            p[y] = x;
+         else { 
+            p[x] = y;
+            if (rank[x] == rank[y]) rank[y]++; }
+   }}
+};
+\end{verbatim}
+    \end{exampleblock}
+  }
 \end{frame}
 
 %% TODO: Extra: Why study graph problems
