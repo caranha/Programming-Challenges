@@ -23,12 +23,24 @@ var problemlist = [
      deadline:"2016-06-03T00:00:01",
      mlist:[3053,3057,410,3104,2733,2021,551,2499,975,1310]},
 ];
-var studentlist = [161945,839071,580382,839067,839069,839075,839072,839081,769688,
-839063,839582,839062,839070,420831,839073,218658,839445,839074,653352,560805,794790,
-796368,229188,839061,839068,839079,839434,839082,839268,839083,839077,839105];
+var studentlist = [161945,580382,839069,839075,839072,839081,769688,839063,839582,839062,839070,
+420831,218658,839445,839074,560805,840186,794790,796368,229188,839061,839068,
+839079,839434,839082,839268,839083,839077,839105,844310,844350];
+
 
 var startdate = Date.parse("2016-03-30T00:00:00");
 var enddate = Date.parse("2016-07-09T00:00:00");
+
+var StudentWeekSolved = new Array(studentlist.length);
+for (var i = 0; i < studentlist.length; i++) {
+    StudentWeekSolved[i] = Array.apply(null, Array(problemlist.length)).map(Number.prototype.valueOf,0);
+}
+
+var WeekSolvedLevel = new Array(problemlist.length);
+for (var i = 0; i < problemlist.length; i++) {
+    WeekSolvedLevel[i] = Array.apply(null, Array(15)).map(Number.prototype.valueOf,0);
+    WeekSolvedLevel[i][0] = studentlist.length;
+}
 
 //** Code **//
 
@@ -131,6 +143,7 @@ function basicdata()
 	htmlBuffer.push("<div class=\"weektable\" id=\"weektable"+i+"\">");
 	htmlBuffer.push("<span class=\"weektitle\">"+problemlist[i].name+"</span><br>");
 	htmlBuffer.push("<span class=\"deadline\">Deadline: "+timeleft+"</span>");
+	htmlBuffer.push("<div class=\"deadline\" id=\"solvedlevel"+i+"\">Loading</div>");
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
 	htmlBuffer.push("<td>Sol/Sub/Total</td><td>My Status</td></tr>");
@@ -181,25 +194,43 @@ function classdata(cdata)
 	var nsolved = 0;
 	var nsubmitted = 0;
 	solved = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
-   submitted = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
+        submitted = Array.apply(null, Array(total)).map(Number.prototype.valueOf,0);
 
 	for (var i = 0; i < cdata.length; i++) {
-      for (j = 0; j < studentlist.length; j++) {
-         if (cdata[i].uid == studentlist[j]) {
-            if (submitted[j] == 0) {
-               submitted[j] = 1;
-               nsubmitted += 1;
-            }
-   			if (cdata[i].ver == 90 && solved[j] == 0) {
-   			   nsolved += 1;
-   			   solved[j] = 1;
-   			}
-			}
-		}
+            for (j = 0; j < studentlist.length; j++) {
+                if (cdata[i].uid == studentlist[j]) {
+                    if (submitted[j] == 0) {
+                        submitted[j] = 1;
+                        nsubmitted += 1;                        
+                    }
+                    if (cdata[i].ver == 90 && solved[j] == 0) {
+                        nsolved += 1;
+                        solved[j] = 1;                        
+                    }                    
+                }
+            }            
+        }
+        document.getElementById("sol"+cdata[0].pid).innerHTML = 
+            nsolved+"/"+nsubmitted+"/"+total;
+
+       // Counting how many students solved how many problems per week
+       var week = 0;
+       for (var i = 0; i < problemlist.length; i++) {
+	   for (var j = 0; j < problemlist[i].mlist.length; j++) {
+	       if (problemlist[i].mlist[j] == cdata[0].pid) { week = i; }}}
+       for (var i = 0; i < solved.length; i++) {
+	   if (solved[i] == 1) {
+	       StudentWeekSolved[i][week] += 1;
+	       WeekSolvedLevel[week][StudentWeekSolved[i][week] - 1] -= 1;
+	       WeekSolvedLevel[week][StudentWeekSolved[i][week]] += 1; }}
+       var htmlBuffer = [];
+	htmlBuffer.push("Problems Solved --");
+	for (var j = 0; j < WeekSolvedLevel[week].length; j++) {
+	    if (WeekSolvedLevel[week][j] > 0) {
+		htmlBuffer.push(" "+j+"P:"+WeekSolvedLevel[week][j]+","); }
 	}
-	document.getElementById("sol"+cdata[0].pid).innerHTML =
-	    nsolved+"/"+nsubmitted+"/"+total;
-   }
+	document.getElementById("solvedlevel"+week).innerHTML = htmlBuffer.join('');
+    }
 }
 
 function mysubmissions()
@@ -217,8 +248,24 @@ function mysubmissions()
 	 {
 	     if (uid != 0) {
 		 // signal that we got the username
+		 var student = -1;
+		 for (var i = 0; i < studentlist.length; i++) {
+		     console.log(i+" "+studentlist[i]+" "+uid+" "+student);
+		     if (studentlist[i] == uid) { student = i;}}
+		 if (student == -1) {
+		     document.getElementById("username").innerHTML = "Invalid User";
+		     return; 
+		 }
+		 var problemarray = [];
+		 var sum = 0;
+		 for (var i = 0; i < StudentWeekSolved[student].length; i++) {
+		     problemarray.push(StudentWeekSolved[student][i]);
+		     sum += StudentWeekSolved[student][i];
+		 }
 		 var output =
-		     "Problems for user "+username;
+		     "Problems for user "+username+ " <br>(Total: "+sum+", per week:";
+		 var output = output + problemarray.join('/') + ")";
+		 
 		 document.getElementById("username").innerHTML =
 		     output;
 
