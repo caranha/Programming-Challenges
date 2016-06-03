@@ -3,7 +3,7 @@
 var problemlist = [
     {name:"Extra Problems",
      deadline:"2016-07-09T00:00:00",
-     mlist:[2113,691,1967,2445,1884]},
+     mlist:[2113,691,1967,2445,1884,2352]},
     {name:"Week 0: How to Solve Problems",
      deadline:"2016-04-22T00:00:01",
      mlist:[2493,3098,36,1082]},
@@ -22,6 +22,9 @@ var problemlist = [
     {name:"Week 5: Graphs I",
      deadline:"2016-06-03T00:00:01",
      mlist:[3053,3057,410,3104,2733,2021,551,2499,975,1310]},
+    {name:"Week 6: Graphs II",
+     deadline:"2016-06-10T00:00:01",
+     mlist:[1128,499,3553,3497,1295,40,195,1421,2008,1021]},
 ];
 var studentlist = [161945,580382,839069,839075,839072,839081,769688,839063,839582,839062,839070,
 420831,218658,839445,839074,560805,840186,794790,796368,229188,839061,839068,
@@ -137,12 +140,12 @@ function basicdata()
     var htmlBuffer = [];
     for (var i = 0; i < problemlist.length; i++) {
 
-	timeleft = Date.parse(problemlist[i].deadline) - Date.now();
+	timeleft = Date.parse(problemlist[i].deadline) - (Date.now());
 	timeleft = timeleft > 0 ? interval(timeleft)+" from now": "expired";
 
 	htmlBuffer.push("<div class=\"weektable\" id=\"weektable"+i+"\">");
 	htmlBuffer.push("<span class=\"weektitle\">"+problemlist[i].name+"</span><br>");
-	htmlBuffer.push("<span class=\"deadline\">Deadline: "+timeleft+"</span>");
+	htmlBuffer.push("<span class=\"deadline\">Deadline: UCT "+problemlist[i].deadline+" ("+timeleft+")</span>");
 	htmlBuffer.push("<div class=\"deadline\" id=\"solvedlevel"+i+"\">Loading</div>");
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
