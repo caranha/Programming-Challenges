@@ -539,77 +539,312 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
 \begin{frame}
   \frametitle{Network Flow}
 
-% Motivation: Imagine a connected, weighted and directed graph as a network of pipes. 
-% From the source node, an infinite amount of water is entering. How much water is leaving
-% At the destination node?
+  {\small
+  \begin{block}{Problem Definition}
+    Imagine a \structure{connected, weighted and directed} network of pipes.
 
-%% TODO: Water Flow image
+    From the \alert{source} node, an infinite amount of water is
+    entering. How much water is leaving at the \alert{destination}
+    node?
+  \end{block}
 
-% This problem is called the MAX FLOW problem, in a family of problems
-% involving flow in networks
+  \begin{center}
+    \includegraphics[width=.55\textwidth]{../img/maxflow_wiki}
+  \end{center}
+
+  %% TODO: Make my own image here.
+
+  \begin{block}{}
+    This image describes the \structure{MAX FLOW} problem. It is part
+    of a family of graph problems called \structure{``flow
+      problems''}.
+  \end{block}}
+
+  \hfill{\tiny Image CC-BY-SA 3.0 by Maksim}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Network Flow}
+  \begin{center}
+    \includegraphics[width=.55\textwidth]{../img/maxflow_wiki}
+  \end{center}
+  
+  {\smaller
+    In the image above, \structure{5 ``flow''} go from $s$ to $t$.
+    \begin{itemize}
+    \item 2 flow go through: $s\rightarrow o\rightarrow q\rightarrow t$;
+    \item 1 flow go through: $s\rightarrow o\rightarrow q\rightarrow r\rightarrow t$;
+    \item 2 flow go through: $s\rightarrow p\rightarrow r\rightarrow t$;
+    \end{itemize}
+  }
+
+  \hfill{\tiny Image CC-BY-SA 3.0 by Maksim}
+\end{frame}
+
 
 \begin{frame}[fragile,singleslide]
   \frametitle{Ford Fulkerson Method}
-  One way to solve the Max Flow is the Ford Fulkerson Method (Footnote: Same Ford as the Bellman-Ford algorithm)
 
-Algorithm Idea:
-\begin{verbatim}
-// initial setup: residual graph - edge capacity = original edge weight
-mf =0
-while ("a path p with positive weight exists" from s to t):
-  find v (edge with minimal weight in p)
-  remove Wv from all foward edges i in P(s,g)
-  increase Wv to all backward edges i in P(g,s)
-  mf += f
-} 
-\end{verbatim}
+  {\smaller
+  \begin{block}{}
+    One way to solve the Max Flow problem is using the \structure{Ford-Fulkerson Method}.
 
-Question to think about: Why do we increase Wv to all backward edges?
-\end{frame}
+    \hfill {\tiny Note: Same Ford as in Bellman-Ford}
+  \end{block}
+  
+  \medskip
 
-\begin{frame}
-  \frametitle{Implementing Ford Fulkerson Method}
-``while (a path p with positive weight exists)``
-
-How do we find this path? Examples: BFS, DFS.
-(Does not need to be minimal, the increase of Wv will fix that (but it may be slow))
-
-Cost with DFS: O(|f*|E), where f* is the Max Flow value. But f* can be arbitrarily large!
-
-Better idea: BFS (Edmond Karp's algorithm)
+  Basic Idea:
+  \begin{enumerate}
+  \item Create \structure{residual graph} with flow capacity between nodes;
+  \item Initial residual graph = weight graph. Non existing edges have capacity 0;
+  \item Find a path between $s$ and $t$;
+  \item \alert{Remove value} of lowest weight from all edges in residual graph;
+  \item \alert{Add value} of lowest weight to all reverse edges in residual graph;
+  \item goto 3;
+  \end{enumerate}}
 \end{frame}
 
 \begin{frame}[fragile,singleslide]
-  \frametitle{Edmond Karp's algorithm implementation}
+  \frametitle{Ford Fulkerson -- Pseudocode}
+{\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+int residual[V][V];
+memset(residual,0,sizeof(residual))
+for (int i; i < AdjList.size();i++)
+   for (int j; j < AdjList[i].size();j++)
+      residual[i][AdjList[i][j].target] = 
+         AdjList[i][j].weight;
 
-%% Page 190, O(V^3E), can be made better by optimizing the code (more complicated)
+mf = 0;
+while (P = FindPath(s,t)) > 0) {
+   m = P.weight; // minimum edge in P
+   for (v in P) {
+      residual[v.first][v.second] -= m;
+      residual[v.second][v.first] += m;}
+   mf += m;
+}
+\end{verbatim}
+  \end{exampleblock}
+}
+\end{frame}
+
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Ford Fulkerson Implementation: Finding Paths}
+
+  {\smaller
+    \begin{block}{}
+\begin{verbatim}
+while (P = FindPath(s,t) > 0) {...}
+\end{verbatim}
+
+A key part of the algorithm is finding paths from $s$ to $t$, and
+calculating the flow of the path (minimum edge weigth). We can use any
+algorithm to implement this search.
+    \end{block}
+
+\begin{exampleblock}{Idea 1: Find augmenting paths using DFS;}
+  This is simple to implement, but the worst case scenario has cost:
+  $O(|f*|E)$, where $f*$ is the true Max Flow value.
+
+  \includegraphics[width=1\textwidth]{../img/ff_worst_halim}
+
+\end{exampleblock}
+}
+\hfill{\tiny Image from Competitive Programming, 3rd edition}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Edmond Karp's Algorithm}
+
+  {\smaller
+  \begin{block}{O(|f*|E) is too expensive!}
+    The algorithm presented in the last page is too expensive for
+    arbitrary values of |f*|. The \structure{Edmond Karp} algorithm is 
+    a $O(VE^2)$ variation using BFS.
+  \end{block}
+
+\begin{verbatim}
+//// PART 1: Augment based on BFS
+
+// This is a simpler O(V^3E) implementation
+int res[MAX_V][MAX_V], mf, s, t;
+vi p; // BFS spanning tree from s
+
+void augment(int v, int minEdge) { // traverse BFS s->t
+   inf (v == s) { f = minEdge; return; }
+   else if (p[v] != -1) { 
+      augment(p[v], min(minEdge,res[p[v]][v]));
+      res[p[v]][v] -= f; res[v][p[v]] += f;}}
+\end{verbatim}
+}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Edmond Karp's Algorithm (2)}
+  {\smaller
+  \begin{block}{O(|f*|E) is too expensive!}
+    The algorithm presented in the last page is too expensive for
+    arbitrary values of |f*|. The \structure{Edmond Karp} algorithm is 
+    a $O(VE^2)$ variation using BFS.
+  \end{block}
+
+\begin{verbatim}
+//// PART 2: create the BFS
+mf = 0;
+while (1) { f = 0; vi dist(MAX_V,INF): dist[s] = 0;
+            queue<int> q; q.push(s); p.assign(MAX_V,-1);
+   while (!q.empty()) { int u = q.front; q.pop();
+      if (u==t) break; for int (v = 0; v < MAX_V; v++)
+         if (res[u][v] > 0 && dist[v] == INF)
+            dist[v] = dist[u]+1, q.push(v), p[v] = u; }
+   // BFS (parent indexes) is now in "p";
+   augment(t,INF); // modify residuals based on P
+   if (f == 0) break; // if no more flow, end.
+   mf += f;
+   }
+\end{verbatim}
+  }
+\end{frame}
+
+\subsection{Problem Sample 1}
+\begin{frame}
+  \frametitle{NF Example: UVA 259 -- Software Allocation}
+  
+  {\smaller
+    \begin{block}{Problem Description}
+      \begin{itemize}
+      \item (up to) 26 programs and 10 computers;
+      \item Each computer can run only one program at a time;
+      \item Each computer has a list of programs it can run;
+      \item Each program wants to run in ``p'' computers;
+      \end{itemize}
+      Can you find an allocation to run all programs?
+    \end{block}
+
+    \bigskip
+    
+    \structure{Allocation Problems} (Often called ``matching''
+    problems) can be solved using the Max Flow algorithm. 
+
+    \smallskip
+
+    Create a \structure{source} node connected to all the requesters;
+    and an \structure{end} node connected to all the providers. The
+    max flow between the source and the end shows how much of the
+    allocation is possible.
+    }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{NF Example: UVA 259 -- Software Allocation}
+
+
+
+
+  {\smaller
+\begin{verbatim}
+A4 01345;
+Q1 6
+P4 35789;
+\end{verbatim}
+
+
+   \begin{center}
+     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+       \tikzset{edge/.style = {->,>=latex'}}
+       \node[red vertex] (s) at (0,0) {s};
+       \node[vertex] (A) at (2,-1) {A};
+       \node[vertex] (Q) at (0,-1) {Q};
+       \node[vertex] (P) at (-1,-1) {P};
+       \node[vertex] (0) at (5,-3) {0};
+       \node[vertex] (1) at (4,-3) {1};
+       \node[vertex] (2) at (3,-3) {2};
+       \node[vertex] (3) at (2,-3) {3};
+       \node[vertex] (4) at (1,-3) {4};
+       \node[vertex] (5) at (0,-3) {5};
+       \node[vertex] (6) at (-1,-3) {6};
+       \node[vertex] (7) at (-2,-3) {7};
+       \node[vertex] (8) at (-3,-3) {8};
+       \node[vertex] (9) at (-4,-3) {9};
+       \node[red vertex] (e) at (0,-4) {e};
+       \draw[edge] (s) -- node[label] {4} (A);
+       \draw[edge] (s) -- node[label] {1} (Q);
+       \draw[edge] (s) -- node[label] {4} (P);
+       \draw[edge] (A) -- (0);
+       \draw[edge] (A) -- (1);
+       \draw[edge] (A) -- (5);
+       \draw[edge] (A) -- (3);
+       \draw[edge] (A) -- (4);
+       \draw[edge] (Q) -- (6);
+       \draw[edge] (P) -- (5);
+       \draw[edge] (P) -- (3);
+       \draw[edge] (P) -- (7);
+       \draw[edge] (P) -- (8);
+       \draw[edge] (P) -- (9);
+       \draw[edge] (0) -- (e);
+       \draw[edge] (1) -- (e);
+       \draw[edge] (2) -- (e);
+       \draw[edge] (3) -- (e);
+       \draw[edge] (4) -- (e);
+       \draw[edge] (5) -- (e);
+       \draw[edge] (6) -- (e);
+       \draw[edge] (7) -- (e);
+       \draw[edge] (8) -- (e);
+       \draw[edge] (9) -- (e);
+     \end{tikzpicture}
+   \end{center}
+  }
+\end{frame}
+
+\subsection{Problem Variants}
+\begin{frame}
+  \frametitle{Network Flow Problem Variants (1)}
+  {\smaller
+  \begin{block}{Minimum Cut -- UVA 10480 (Sabotage)}
+    Find a minimum set of edges C so that if all edges from the set
+    are removed, then the flow from $s$ to $e$ becomes 0. (i.e., $s$
+    and $e$ are disconnected).
+  \end{block}
+
+  Ideas:
+  \begin{itemize}
+  \item Perform the Max Flow, and analyse the residual matrix;
+  \item All nodes reachable from $s$ using edges with positive
+    residual are connected to $s$;
+  \item All nodes not reachable from $s$ as above are connected to $e$;
+  \item All edges with residual $0$ connect the two sets, and belong
+    to the Minimum Cut;
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Network Flow Problem Example: UVA 259}
+  \frametitle{Network Flow Problem Variants (2)}
+  {\smaller
+    \begin{block}{Multiple Sources, Multiple Sinks}
+    \end{block}
+
+    Ideas:
+    \begin{itemize}
+    \item Create a ``super source'' node ss. ss connects to all sources with infinite weight;
+    \item Create a ``super sink'' node se. All sinks connect to se with infinite weight;
+    \end{itemize}
+
+    \begin{block}{Weights on nodes, not edges}
+    \end{block}
+    Ideas:
+    \begin{itemize}
+    \item Split the vertices. Vertice weight is now an edge connecting both halves.
+    \item Be careful. Doing this doubles V and increases E.
+    \item (note how many times the solution is to modify the graph to our needs)
+    \end{itemize}
+
+    %% TODO: Add example problems for these cases
+  }
 \end{frame}
-
-\begin{frame}
-  \frametitle{Network Flow Problem Variants}
-  %% Minimum Cut: Find a minimum set of edges C so that if all sets are removed the flow 
-  % from sourse s to sink e becomes 0 (i.e., s and t are disconnected)
-
-  % all nodes reachable from source on edges with positive residual are connected to St,
-  % all nodes not reachable from source on edges with positive residual are connected to En,
-  % all edges with residual = 0, connecting the two sets S,E, belong to the min cut
-
-  %% Multi-source, multi-sink: create a super source node ss, and a super sink node ee, which
-  % connect to all sources/all sinks one-way with infinite weights.
-
-  %% Weights on vertex: we can modify the graph by splitting the vertices, and connecting 
-  % i1 to i2 with the vertex weight. Beware, because this increases V ans E
-\end{frame}
-
-% TODO: Graph modeling example, page 193, titanic sample problem
-% TODO: Converting Graph to DAG, solving SSSP on DAG: Fishmonger - node cost + goal time
-% (Not really network flow -- bonus problems on graphs/revisiting DP)
-
 
 \section{Special Graphs}
 \subsection{Special Graphs}
@@ -617,50 +852,189 @@ Better idea: BFS (Edmond Karp's algorithm)
 
 \begin{frame}
   \frametitle{Graph Problems: Thinking with many boxes} 
-
+  
+  {\smaller
   The interesting part about graph problems is that they came in great
   variety. Once you know the basic algorithms, the main problem is figuring
   out what kind of graph you are dealing with.
 
   This knowlege only comes with practice, but here are some examples.
+  }
+\end{frame}
+
+\subsection{Fishmonger}
+
+\begin{frame}
+  \frametitle{DAG example: Fishmonger (SPOJ 0101)}
+  {\smaller
+  \begin{block}{Problem Description}
+    You are given a number of cities $3\leq n \leq 50$, remaining time
+    $1 \leq t \leq 1000$, a toll matrix and a travel time matrix,
+    choose a route:
+    \begin{itemize}
+    \item starting at city $0$ and ending at city $n-1$;
+    \item travel time must be less than $t$;
+    \item toll must be minimum;
+    \end{itemize}
+  \end{block}
+
+  \bigskip
+
+  There are two goals: \emph{time} and \emph{cost} that can contradict
+  each other. How do you calculate the SSSP in this condition?
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{DAG example: Timed SSSP}
-  % TODO: Converting Graph to DAG, solving SSSP on DAG: Fishmonger - node cost + goal time
+  \frametitle{DAG example: Fishmonger (SPOJ 0101)} 
+
+  To handle the time constraint, we add a parameter (state) to each
+  vertex indicating how much time is left.
+
+  \bigskip
+
+  The number of nodes will be multiplied: $(1) \leftarrow (1,t),
+  (1,t-1),(1,t-2),\ldots,(1,0)$,\\ but now the graph is an DAG (time can
+  only move in one direction).
+
+  \bigskip
+
+  But because it is a DAG, the problem becomes solvable using DP
+  search (\emph{find(city,timeleft)}).
+\end{frame}
+
+
+\subsection{Titanic}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Network Flow Example 2: Titanic (UVA 11380)}
+
+  {\smaller
+  \begin{block}{Problem Description}
+    You are given a map of an accident:
+
+\begin{verbatim}
+# -- large wood: safe place, houses P people;
+@ -- large iceberg: unsafe, houses 1 person;
+. -- ice: unsafe, 1 person, breaks after using once;
+~ -- freezing water: unsafe, no one can use;
+* -- initial position of each person;
+\end{verbatim}
+    How many people can find paths to the safe place?
+  \end{block}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{../img/uva11380_halim}
+  \end{center}
+  \hfill{\tiny Image from \emph{Competitive Programming, 3rd edition}}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Max Flow Example: Iceberg}
-  % TODO: Graph modeling example, page 193, titanic sample problem
+  \frametitle{Network Flow Example 2: Titanic (UVA11380)}
+  {\smaller
+  \begin{block}{Graph Modeling}
+    Since we have many people trying to go to the safe places, we can
+    model this problem as a Max Flow problem. How do we set up the graph?
+  \end{block}
+  \uncover<2>{
+  \begin{itemize}
+  \item Connect all non ``water'' cells with INF capacity to represent the paths;
+  \item Set vertex capacity: ice and initial position is 1, iceberg
+    and large wood is INF, to represent breaking;
+  \item Super source node connect to all survivors with capacity 1;
+  \item Super sink node connect to all large woods with capacity P;
+  \end{itemize}}
+  }
+\end{frame}
+
+\subsection{Prime Pairing}
+\begin{frame}
+  \frametitle{Bipartite Example - Prime pairing}
+  \begin{block}{Problem Description}
+    Two numbers $a,b$ can be \structure{prime paired} if their sum
+    $a+b$ is prime. Given a set of numbers $N$, print the pairings of
+    $N[0]$ that allow a \structure{complete pairing} of $N$ to be
+    made.
+  \end{block}
+
+  Examples:  
+  \begin{itemize}
+  \item $N = \{1,4,7,10,11,12\}$ -- answer: $\{4,10\}$
+  \end{itemize}
+
+  \vfill
+
+  Is this even a graph problem??
 \end{frame}
 
 \begin{frame}
   \frametitle{Bipartite Example - Prime pairing}
-  % Page 208
+  \begin{block}{}
+    The trick is to note that this is an ``allocation'' problem, just
+    like ``software allocation''. Each number will be allocated to
+    another number to form primes.
+  \end{block}
+
+  How to create the graph:
+  \begin{itemize}
+  \item Split set between odds and evens (because odd + odd is not prime);
+  \item Create edges between odds and evens that sum primes;
+  \item super source connects to odds, super sink connects to edges;
+  \item see if the max flow is equal to the number of nodes/2;
+  \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Flow and Special Graph problems}
-\end{frame}
+%\begin{frame}
+%  \frametitle{Flow and Special Graph problems}
+% %% TODO: Add more special problems from the book for discussion
+%\end{frame}
 
 \section{Conclusion}
 \subsection{Conclusion}
 \begin{frame}
   \frametitle{Summary}
+  \begin{itemize}
+  \item BFS for unweighted path search; Djikstra for weighted path search;
+  \item Bellman-ford for weighted path search with negative loops;
+  \item Floyd-Warshall for all-to-all path search;
+  \item Ford-Fergusson for Network flow
+
+    \bigskip
+
+  \item However, the most important skill in graph problems is knowing
+    how to transform the problem into a graph that can be solved by a
+    known algorithm;
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{This Week's Problems}
+  {\smaller
+  \begin{itemize}
+    \item From Dusk Until Down;
+    \item Wormholes; 
+    \item Mice and Maze; 
+    \item Degrees of Separation;
+    \item Avoiding your Boss;
+    \item Arbitrage;
+    \item \alert{Software Allocation};
+    \item \alert{Sabotage};
+    \item \alert{Little Red Riding Hood};
+    \item \alert{Gopher II};
+  \end{itemize}}
 \end{frame}
 
 \begin{frame}
   \frametitle{Next Weeks}
   \begin{itemize}
-  \item Week 7
-  \item Week 8
-  \item Week 9
+  \item Week 7 -- Math Problems;
+  \item Week 8 -- Computational Geometry;
+  \item Week 9 -- String Problems;
   \end{itemize}
+
+  \vfill
+  
+  Hang in there a little bit more! :-)
+  
 \end{frame}
 
 \end{document}

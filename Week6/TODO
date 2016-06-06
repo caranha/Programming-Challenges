@@ -2,9 +2,7 @@
 239:  % TODO: Redraw Djikstra graph by hand
 506:  % TODO: Write down each trick with details, write code;
 525:  % TODO: Add discussion of problems
-546:%% TODO: Water Flow image
-609:% TODO: Graph modeling example, page 193, titanic sample problem
-610:% TODO: Converting Graph to DAG, solving SSSP on DAG: Fishmonger - node cost + goal time
-616:% TODO: Replaced ``bipartite Match'' with special graphs, deal with many examples from 4.7.*
-630:  % TODO: Converting Graph to DAG, solving SSSP on DAG: Fishmonger - node cost + goal time
-635:  % TODO: Graph modeling example, page 193, titanic sample problem
+555:  %% TODO: Make my own image here.
+845:    %% TODO: Add example problems for these cases
+851:% TODO: Replaced ``bipartite Match'' with special graphs, deal with many examples from 4.7.*
+988:% %% TODO: Add more special problems from the book for discussion

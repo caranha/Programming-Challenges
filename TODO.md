@@ -53,15 +53,19 @@ Class A
 * Minbimum Spanning Tree: Kruskal and Prim's algorithm, MST Variants
 
 Class B
-* Pathfinding: SSSP, Djikstra, Bellman Ford
-* All Pairs Shortest Path: Floyd Warshall/implementation
-* Tricks with APSP: Minimum Cycle, Negative Cycle, Diameter of a Graph
+* Pathfinding: SSSP, Djikstra, Bellman Ford (NOT)
+* All Pairs Shortest Path: Floyd Warshall/implementation (NOT)
+* Tricks with APSP: Minimum Cycle, Negative Cycle, Diameter of a Graph (NOT)
 * Problems
 
 ### Week 6 -- Graph Part II AB
+* Students seemed to enjoy code with "why it works". 
+* Class A: SSSP, Djikstra, BellmanFord, Floyd Warshall
+* Class B: Max Flow, Min Flow, Special Graphs
 
 
 
+### Others
 Idea: put everything in a single class and break by time. Add examples as necessary.
 Idea: There is a lot to cover on graphs. I will cover the most interesting bits, but 
       see the materials for the parts that I skipped.
