@@ -1,0 +1,511 @@
+\documentclass{beamer}
+\input{../tools/beamerpreamble.tex}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+% Latex Graph Example:
+% https://www.overleaf.com/5297501zrjzfm#/16716638/
+
+% TODO: Silly Makefile
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
+\tikzstyle{blue vertex}=[circle,fill=blue!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{red vertex}=[circle,fill=red!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{red edge} = [draw, line width=5pt,-,red!50]
+\tikzstyle{black edge} = [draw, line width=5pt,-,black!20]
+\tikzstyle{weight} = [font=\smaller]
+
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 7 - Math Problems}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-06-10,13\\{\tiny Last updated \today}}
+
+\begin{document}
+
+\section{Introduction}
+\subsection{Title}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\subsection{Notes and Warnings}
+
+\begin{frame}
+  \frametitle{Last Week Results}
+  \begin{block}{Week 6 - Graph II}
+    {\smaller
+      \begin{columns}[T]
+        \column{0.5\textwidth}
+        \begin{itemize}
+        \item From Dusk Until Dawn -- 1/31
+        \item Wormholes -- 11/31
+        \item Mice and Maze -- 6/31
+        \item Degrees of Separation -- 5/31
+        \item Avoiding your Boss -- 4/31
+        \item Arbitrage -- 0/31
+        \item Software Allocation -- 3/31
+        \item Sabotage -- 0/31
+        \item Little Red Riding Hood -- 6/31
+        \item Gopher II -- 3/31
+        \end{itemize}
+        \column{0.5\textwidth}
+        \begin{itemize}
+        \item 19 people: 0 problems;
+        \item 3 people: 1 problem;
+        \item 3 people: 2 problems;
+        \item 2 people: 3-4 problems;
+        \item 2 person: 6-7 problems!
+        \end{itemize}
+      \end{columns}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Special Notes}
+
+  {\small
+    \begin{block}{ASPS for single weighted graphs}
+
+      Apparently, this is still an open problem!
+
+      \begin{itemize}
+      \item $v$ times BFS: $O(ve+v^2)$
+      \item A paper (2009) claims $O(v^2\text{log}v)$:\\
+        {\tiny 
+        \url{http://waset.org/publications/8870/all-pairs-shortest-paths-problem-for-unweighted-graphs-in-o-n2-log-n-time}}\\
+        (pseudocode included!)
+      \item This is better for dense graphs ($e \rightarrow v^2$), but
+        for sparse graphs does not make a difference;
+      \end{itemize}
+    \end{block}
+  }
+\end{frame}
+
+\subsection{Outline}
+\begin{frame}
+  \frametitle{Math problems in programming Competitions} {\smaller
+    \structure{Math problems} have a wide variety of forms, just like
+    Graph problems. However, unlike graph problems, \structure{the
+      programming part is easy}, and \alert{the formulation is hard}.
+
+    \bigskip
+
+    A sample of math topics in programming challenges:
+    \begin{itemize}
+    \item \structure{Ad-hoc:} Simulation, Probability;
+    \item \structure{Big Num:} Simple problems with $n > 1000000000000000000000$      
+    \item \structure{Number Theory:} Primality, Divisibility, Modulo arithmetic;
+    \item \structure{Combinatorics:} Counting, closed forms, recurrences;
+    \end{itemize}
+    
+    \bigskip
+
+    In this lecture, we will just scratch the surface, focusing on
+    examples. Experience is the best teacher!
+  }
+\end{frame}
+
+\section{Ad Hoc}
+\subsection{Intro}
+\begin{frame}
+  \frametitle{Ad-hoc Maths Problems}
+
+  \begin{block}{What is ad-hoc?}
+    \structure{ad-hoc} means ``single purpose''. In other words, you 
+    need to improvise a solution useful for only one (or few) problems.
+
+    Ad-hoc problems u
+    
+
+  % What is Ad-hoc? -- No rule, improvisation
+
+  % Ad-hoc problems usually require just a little bit of elementary 
+  % Maths and a little bit of programming. Common sub categories are:
+
+  \end{block}
+
+
+  % Simulation (Brute Force): execute an simple formula on a set of numbers,
+  % for example, how many of the elements in S are smaller than X?
+
+  % Finding patterns or formulas: Unlike simulation problems, trying every
+  % Number in this one will give you TLE. (Usually they have huge inputs)
+  % In this case, you need to find a formula to solve. For example, 
+  % Set S has all square numbers (1,4,9,16). For an integer X (X < 10^17),
+  % How many numbers in S are smaller than X? (answer: SQRT(x-1))
+
+  % Number Systems or sequences: The ``opposite'' of the previous one.
+  % Given a series of numbers x1,x2...xi, calculate x_n for a very big n
+
+  % Logarithmic, Exponentiation, Base
+
+  % Polinomials (sum/multiplication/division of polynomials)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Some Programming Hints}
+
+  Calculating Logb(a): import cmath, log(a)/log(b)
+
+  Counting Digits: (int) floor(1+log10((double)a))
+
+  Square root n of a: pow((double) a, 1/(double) n)
+\end{frame}
+
+\subsection{Example Problem} 
+\begin{frame}
+  \frametitle{Example Problem: Probability}
+
+  Throw x dice, what is the chance of result > m?
+
+  Chance = \#desired outcomes / \#all outcomes
+
+  This can be solved by DP!
+
+  (roundoff errors, simplifying fractions)
+
+\end{frame}
+
+
+\section{BigNum}
+\subsection{Bignum}
+\begin{frame}
+  \frametitle{Dealing with big numbers}
+
+  C++ unsigned int = unsigned long = $2^{32}$ (9-10 digits)
+  C++ unsigned long long: $2^{64}$ (19-20 digits)
+  Factorial of 21: $>$ 20 digits
+
+  For math problems with relatively small $n$, we need bignum;
+
+  The ``DIY'' approach is to transform the numbers in strings, and
+  implement digit by digit operators. The programmer efficient
+  approach is to use the JAVA BigInteger class
+\end{frame}
+
+\begin{frame}
+  \frametitle{Java Bignum Class}
+  BigInteger.add(BI)
+  BigInteger.subtract(BI)
+  BigInteger.multiply(BI)
+  BigInteger.divide(BI)
+  BigInteger.pow(int)
+  BigInteger.mod(BI)
+  BigInteger.remainder(BI)
+  BigInteger.divideAndRemainder(BI)
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Problem Example - 10925 - Krakovia}
+  \begin{block}{Problem Description}
+  \end{block}
+  \begin{exampleblock}{}
+\begin{verbatim}
+\end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Java BigInteger superpowers}
+
+  .toString(int radix) -- converts base
+
+  .isProbablePrime(int certainty) -- probabilistic primality test
+  $1-\frac{1}{2}^{\text{certainty}}$ (for ``small'' primes, we can use
+  the Sieve of Erasthothenes which we will see later)
+
+  .gcd(BI)
+
+  .modPow(BI exponent, BI m)  
+\end{frame}
+
+
+
+\section{Number Theory}
+\begin{frame}
+  \frametitle{Number Theory} 
+  The field of Number theory studies the properties of integers and
+  sets. Some problems in field include primality and modular arithmetic.
+
+  An understanding of number theory is important to avoid brute 
+  force attacks to certain problems, or to pre-process data in large
+  problems.
+\end{frame}
+
+\subsection{Prime Numbers}
+\begin{frame}
+  \frametitle{Number Theory: Primality} 
+  
+  Prime numbers are numbers >= 1 that are only divisible by 1 and
+  themselves. There is a huge use for prime numbers, including 
+  cryptography.
+
+  Naive calculation of prime number: For i in 1:N, test i//N
+
+  Better calculation of prime number: For i in 1:sqrtN, test i//N
+
+  Even better calculation of prime number: For i in primes[1:sqrtN] test i//N
+
+  Can we calculate the primes[1:sqrtN] fast? pi(x) = x/logx (prime number theorem)
+
+  \hfill {\tiny \url{https://primes.utm.edu/howmany.html}}
+\end{frame}
+
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Sieve of Eratosthenes}
+
+  Idea
+
+  Code
+  
+  Complexity of primality testing: O(NloglogN)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Finding Prime Factors}
+
+  Prime factors: is the list of all primes that divide N
+
+  Naive approach: If you have a list of primes, try to divide each
+  prime in that list by N
+
+  Divide and conquer approach: Find the smallest prime factor i of
+  N. Now find the smallest prime factor i' of N//i, recursively.
+
+  This is slow if the number has few, big prime factors, but very fast
+  if the number has many, small primes. This is the principle of our
+  cryptography!
+\end{frame}
+
+\begin{frame}
+  \frametitle{Working with Prime Factors}
+
+  Prime factors are the building blocks of all integers. Therefore,
+  sometimes we can work with prime factors instead of working with
+  huge integers.
+
+
+  Example: Problem 10139: Factorvision
+
+  Problem description: Does $m$ divides $n!$? (m,n $< 2^{31}-1$).
+  Factor of 22 is already bignum, we cannot work with the factors directly!
+
+
+  Solution: Calculate the prime factors of $m$ and $n!$, and see if $n!$ contains $m$ 
+
+\end{frame}
+
+\subsection{Modulo Operations}
+\begin{frame}
+  \frametitle{Modulo Operation} 
+
+  {\smaller
+  We can use \structure{modulo arithmetic} to operate on very large
+  numbers without calculating the entire number.
+
+  Remember that:
+  \begin{enumerate}
+  \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
+  \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
+  \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
+  \end{enumerate}
+  
+  \begin{block}{UVA 10176 -- Ocean Deep!}
+    Test if a 100-digit binary is divisible by 131071.
+
+    \medskip
+
+    We can calculate the module of each (binary) digit using the
+    recurrence in (3), and module sum the result without ever touching
+    the entire $2^{100}$ number.
+  \end{block}}
+\end{frame}
+
+\subsection{GCD/LCM}
+\begin{frame}[fragile, singleframe]
+  \frametitle{Euclid Algorithm and Extended Euclid Algorithm}
+
+  {\smaller  
+    \begin{itemize}
+    \item The \structure{Euclid Algorithm} gives us the maximum common divisor $D$ of $a$ and $b$;
+    \item The \structure{Extended Euclid Algorithm} also gives us $x,y$ so that $ax+by = D$;
+    \item Both are extremely simple to code:
+    \end{itemize}
+    
+    \begin{exampleblock}{}
+\begin{verbatim}
+int gcd(int a, int b) {return (a == 0?b:gcd(b%a,a));}
+int x, y;
+int egcd(int a, int b) { 
+   if (a==0) {x = 0; y = 1; return b;} // stop condition
+   int d = egcd(b%a, a); int tx = x; // gcd recurrence
+   x = y - (b/a)*tx; y = tx; return d; } // update x,y
+\end{verbatim}
+    \end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using EGCD: The Diophantine Equation}
+  {\smaller
+    \begin{block}{Problem Example (variations of this problem are common)}
+      You have 839 yen. \alert{X}hoco candy costs 25 yen,
+      \alert{Y}anilla candy costs 18 yen. How many candies can we buy?
+    \end{block}
+
+    \bigskip
+
+    The equation $xA+yB=C$ is called the \structure{Linear Diophantine
+      Equation}. It has infinite solutions if GCD(A,B)|C, but none if
+    it does not.
+
+    \bigskip   
+
+    The first solution ($x_0,y_0$) can be derived from the extended
+    GCD, and other solutons can be found from:
+    expressed as:
+    \begin{itemize}
+    \item $x = x_0 + (b/d)n$
+    \item $y = y_0 - (a/d)n$
+    \end{itemize}
+    Where $d$ is GCD(A,B) and $n$ is an integer.
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using EGCD: The Diophantine Equation}
+  {\smaller
+    \begin{block}{Problem Example (variations of this problem are common)}
+      You have 839 yen. \alert{X}hoco candy costs 25 yen,
+      \alert{Y}anilla candy costs 18 yen. How many candies can we buy?
+    \end{block}
+   
+    \begin{itemize}
+    \item \structure{EGCD} gives us: $x=-5, y=7, d=1$ or $25(-5)+18(7) = 1$
+    \item Multiply both sides by 839: $25(-4195)+18(5873) = 839$
+    \item So: $x_n = -4195 + 18n$ and $y_n = 5873 - 25n$
+    \item We have to find $n$ so that both $x_n,y_n$ are $> 0$.
+    \item $-4195 + 18n \geq 0$ and $5873 - 25n \geq 0$
+    \item $n \geq 4195/18$ and $5873/25 \geq n$
+    \item $4195/18 \leq n \leq 5873/25$
+    \item $233.05 \leq n \leq 234.92$
+    \end{itemize} 
+  }
+\end{frame}
+
+
+\section{Combinatorics}
+\subsection{Counting and Closed Forms}
+\begin{frame}
+  \frametitle{Combinatorics problems} 
+
+  Combinatorics is the branch of mathematics concerning the study of
+  \structure{countable discrete structures}.
+
+  Combinatory problems usually involving finding out the
+  \structure{recurrence} of a set (recursive function that construct
+  the set) or the \structure{closed form} of a set (formula that
+  calculates the nth element of the set)
+
+  Depending on the recurrence or formula, the need of bignums is not
+  uncommon either. Also, often the recurrence can be sped-up by using
+  DP.
+
+  Let's see some examples.  
+\end{frame}
+
+\subsection{Specific Sequences}
+\begin{frame}
+  \frametitle{Fibonacci Numbers}
+  
+  fib(0) = 0, fib(1) = 1, fib(n>2) = fib(n-1)+fib(n-2)
+
+  Usually this is implemented based on a O(n) table, as a complete recursion is very slow.
+
+  However, there is an approximation that is O(1): calculate the
+  closest integer to $\frac{(phi^n - (-phi)^{-n})}{\sqrt{5}}$ where phi is the golden ratio
+  $\frac{1+\sqrt{5}}{2}$ (this is not accurate for very large fibonacci numbers).
+\end{frame}
+
+\begin{frame}
+  \frametitle{Funny Fibonacci}
+% Zeckendorf's theorem: every positive integer can be written in a unique way as a sum of 
+% one or more distinc fibonacci numbers which are not consecutive.(can find this by greedy form)
+
+% Pisano period: the last one/two/three/four digits repeat with a period of 60/300/1500/15000
+% What are the last two digits of the 1211313628th fibonacci number?
+\end{frame}
+
+\begin{frame}
+  \frametitle{Binomial Coefficients}
+  $^nC_k$ the number of ways that $n$ items can be selected $k$ at a time, also the coefficients of 
+  the $(x+y)^n$ polinomial.
+
+  A single value of the binomial can be calculated as
+  $\frac{n!}{(n-k)!k!}$. This formula is problematic, however. Not
+  only factorials are very large for small $n$, multiplyign factorials
+  have a good chance of exploding.
+
+  Some tricks to avoid using bignum
+  * If k > n-k. then exchange k and n-k.
+  * Try to divide before multiplyign
+  * top down dynamic programming: C(n,0) = C(n,n) = 1
+  C(n,k) = C(n-1,k-1) + C(n-1,k). 
+
+  In this case, the recursive formula is more useful than the closed form.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Catalan Numbers}
+
+  Cat(n) = 1, 1, 2, 5, 14, 42, 132, 429, 1430
+
+  They are calculated as: 
+  Cat(n) = $\frac{(^{2n}C_n)}{(n+1)}$, Cat(0) = 1
+
+  Or
+
+  Cat(n+1) = $\frac{(2n+2)(2n+1)}{(n+2)(n+1)}$Cat(n)
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Catalan Numbers -- Uses}
+  \begin{itemize}
+    \item Number of ways that you can match $n$ parenthesis.
+    \item Number of ways that you can triangulate a poligon with $n+2$ sides
+    \item Number of monotonic paths on an $nxn$ grid that do not pass above
+      the diagonal.
+    \item Number of distinct binary trees with $n$ vertices
+    \item Etc...
+  \end{itemize}
+\end{frame}
+
+
+\section{Conclusion}
+\subsection{Conclusion}
+\begin{frame}
+  \frametitle{Class Summary}
+  \begin{itemize}
+  \item Math Problems!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{This Week's Problems}
+  {\smaller
+  \begin{itemize}
+  \item UVA Problems
+  \end{itemize}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{To Learn More}
+  Euler Project
+\end{frame}
+
+\end{document}
+
