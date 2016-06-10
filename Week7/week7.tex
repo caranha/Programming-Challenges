@@ -38,24 +38,24 @@
       \begin{columns}[T]
         \column{0.5\textwidth}
         \begin{itemize}
-        \item From Dusk Until Dawn -- 1/31
-        \item Wormholes -- 11/31
-        \item Mice and Maze -- 6/31
-        \item Degrees of Separation -- 5/31
-        \item Avoiding your Boss -- 4/31
-        \item Arbitrage -- 0/31
-        \item Software Allocation -- 3/31
-        \item Sabotage -- 0/31
-        \item Little Red Riding Hood -- 6/31
-        \item Gopher II -- 3/31
+        \item From Dusk Until Dawn -- 4/31
+        \item Wormholes -- 18/31
+        \item Mice and Maze -- 11/31
+        \item Degrees of Separation -- 9/31
+        \item Avoiding your Boss -- 5/31
+        \item Arbitrage -- 3/31
+        \item Software Allocation -- 4/31
+        \item Sabotage -- 1/31
+        \item Little Red Riding Hood -- 9/31
+        \item Gopher II -- 4/31
         \end{itemize}
         \column{0.5\textwidth}
         \begin{itemize}
-        \item 19 people: 0 problems;
-        \item 3 people: 1 problem;
-        \item 3 people: 2 problems;
-        \item 2 people: 3-4 problems;
-        \item 2 person: 6-7 problems!
+        \item 11 people: 0 problems;
+        \item 8 people: 1-2 problems;
+        \item 7 people: 3-4 problems;
+        \item 3 people: 5-6 problems;
+        \item 2 people: 7+ problems!
         \end{itemize}
       \end{columns}
     }
@@ -112,59 +112,133 @@
 \begin{frame}
   \frametitle{Ad-hoc Maths Problems}
 
+  {\small
   \begin{block}{What is ad-hoc?}
     \structure{ad-hoc} means ``single purpose''. In other words, you 
     need to improvise a solution useful for only one (or few) problems.
 
-    Ad-hoc problems u
-    
+    \bigskip
 
-  % What is Ad-hoc? -- No rule, improvisation
-
-  % Ad-hoc problems usually require just a little bit of elementary 
-  % Maths and a little bit of programming. Common sub categories are:
-
+    Ad-hoc problems usually require only a bit of elementary maths and
+    a bit of programming;
   \end{block}
 
-
-  % Simulation (Brute Force): execute an simple formula on a set of numbers,
-  % for example, how many of the elements in S are smaller than X?
-
-  % Finding patterns or formulas: Unlike simulation problems, trying every
-  % Number in this one will give you TLE. (Usually they have huge inputs)
-  % In this case, you need to find a formula to solve. For example, 
-  % Set S has all square numbers (1,4,9,16). For an integer X (X < 10^17),
-  % How many numbers in S are smaller than X? (answer: SQRT(x-1))
-
-  % Number Systems or sequences: The ``opposite'' of the previous one.
-  % Given a series of numbers x1,x2...xi, calculate x_n for a very big n
-
-  % Logarithmic, Exponentiation, Base
-
-  % Polinomials (sum/multiplication/division of polynomials)
+  Common categories:
+  \begin{itemize}
+  \item \structure{Simulation (Brute Force)}: Execute one or more simple formulas
+    on a set of numbers and report the result;
+  \item \structure{Finding patterns/formulas}: Similar to simulation, but trying
+    to execute it directly will result in TLE. You have to find a
+    function that summarizes the formula;
+  \end{itemize}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Some Programming Hints}
+  \frametitle{Ad Hoc example: Probability problems}
 
-  Calculating Logb(a): import cmath, log(a)/log(b)
+  {\smaller 
+    ``What is the chance of X happening'' is a common ad-hoc
+    problem. The general formula is ``prob = events of interest /
+    total events'';
+    
+    \medskip
 
-  Counting Digits: (int) floor(1+log10((double)a))
+    \begin{block}{The dice problem}
+      If I have $n$ dice, what is the chance of rolling a total above $m$?
+    \end{block}
 
-  Square root n of a: pow((double) a, 1/(double) n)
+    \begin{itemize}
+    \item \structure{Example:} For $n=3$ dice, and $m=16$, the chance is $10/216$
+    \end{itemize}
+    \begin{columns}
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 6,6,6
+      \item 6,6,5
+      \item 6,5,6
+      \item 5,6,6
+      \end{itemize}
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 6,5,5
+      \item 5,6,5
+      \item 5,5,6
+      \end{itemize}
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 4,6,6
+      \item 6,4,6
+      \item 6,6,4
+      \end{itemize}
+    \end{columns}
+
+
+  }
 \end{frame}
 
-\subsection{Example Problem} 
 \begin{frame}
-  \frametitle{Example Problem: Probability}
+  \frametitle{Ad Hoc example: Probabilty Problems}
 
-  Throw x dice, what is the chance of result > m?
+  {\smaller
+  \begin{block}{The dice problem}
+    If I have $n$ dice, what is the chance of rolling a total above $m$?
+  \end{block}
+ 
+  \begin{itemize}
+  \item For $n=0$, we have only one result: $r=0$
+  \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
+  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$ 
 
-  Chance = \#desired outcomes / \#all outcomes
+    \bigskip
 
-  This can be solved by DP!
+  \item Can you start to see a bottom up DP here?
+  \item With a state table (dice,result), we can count the number of
+    dice combination above a certain value;
 
-  (roundoff errors, simplifying fractions)
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[fragile,simpleslide]
+  \frametitle{Ad Hoc example: Probability Problems}
+  \begin{exampleblock}{Example Code}
+{\small
+\begin{verbatim}
+int count(int dice_left, int score_left) {
+   if (score_left < 1) return 1;
+   if (dice_left == 0) return 0;
+   if (result[dice_left][score_left] != -1)
+      return result[dice_left][score_left];       
+   int sum = 0;
+   for (int i = 0; i < 6; i++)
+      sum += count(dice_left-1, score_left-(i+1))
+   result[dice_left][score_left] = sum;
+   return sum;
+}
+
+prob = count(n,m)/6**n;
+
+\end{verbatim}
+}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Other hints for ad hoc problems}
+
+
+  \begin{itemize}
+  \item Calculating $\text{log}_ba$: \#import<cmath>; log(a)/log(b);
+
+    \medskip
+
+  \item Counting Digits: (int) floor(1+log10((double)a));
+    
+    \medskip
+
+  \item $n^{th}$ root of $a$: pow((double) a, 1/(double) n);
+  \end{itemize}
 
 \end{frame}
 
@@ -174,81 +248,160 @@
 \begin{frame}
   \frametitle{Dealing with big numbers}
 
-  C++ unsigned int = unsigned long = $2^{32}$ (9-10 digits)
-  C++ unsigned long long: $2^{64}$ (19-20 digits)
-  Factorial of 21: $>$ 20 digits
+  {\smaller
+  \begin{block}{}
+    Many math problems require the handling of numbers much bigger
+    than C++'s long long.
+  \end{block}
 
-  For math problems with relatively small $n$, we need bignum;
+  \begin{itemize}
+  \item C++ unsigned int = unsigned long = $2^{32}$ (9-10 digits)
+  \item C++ unsigned long long = $2^{64}$ (19-20 digits)
 
-  The ``DIY'' approach is to transform the numbers in strings, and
-  implement digit by digit operators. The programmer efficient
-  approach is to use the JAVA BigInteger class
-\end{frame}
+    \medskip
 
-\begin{frame}
-  \frametitle{Java Bignum Class}
-  BigInteger.add(BI)
-  BigInteger.subtract(BI)
-  BigInteger.multiply(BI)
-  BigInteger.divide(BI)
-  BigInteger.pow(int)
-  BigInteger.mod(BI)
-  BigInteger.remainder(BI)
-  BigInteger.divideAndRemainder(BI)
+  \item Factorial of 21: $> 20$ digits!
+  \end{itemize}
+
+  \begin{block}{}
+    The ``DIY'' approach is to transform big numbers into strings, and
+    implement digit operations.
+    
+    \bigskip
+
+    The \structure{programmer efficient} approach is to use the JAVA
+    BigInteger class.    
+  \end{block}  
+  }
 \end{frame}
 
 \begin{frame}[fragile,singleslide]
-  \frametitle{Problem Example - 10925 - Krakovia}
-  \begin{block}{Problem Description}
+  \frametitle{Java BigInteger Class}
+
+  {\smaller
+  \begin{block}{}
+    Java's \structure{BigInteger} class handles arbitrarily big
+    numbers: Input, Output, and many operations.
   \end{block}
+
   \begin{exampleblock}{}
 \begin{verbatim}
+import java.util.Scanner;
+import java.math.BigInteger;
+class Main {
+    public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    int caseNo = 1;
+    while (true) {
+    int N = sc.nextInt(), F = sc.nextInt();
+    if (N == 0 && F == 0) break;
+    BigInteger sum = BigInteger.ZERO; 
+        for (int i = 0; i < N; i++) {
+            BigInteger V = sc.nextBigInteger(); 
+            sum = sum.add(V);
+}}}}
 \end{verbatim}
-  \end{exampleblock}
+\end{exampleblock}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Java BigInteger algebraic functions}
+
+  \begin{itemize}
+    \item BigInteger.add(BI): \hfill $A+BI$
+    \item BigInteger.subtract(BI): \hfill $A-BI$
+    \item BigInteger.multiply(BI): \hfill $A*BI$
+    \item BigInteger.divide(BI): \hfill $A/BI$
+    \item BigInteger.pow(int): \hfill $A^{BI}$
+    \item BigInteger.mod(BI): \hfill $A\%BI$
+    \item BigInteger.remainder(BI): \hfill $A - A//BI$
+    \item BigInteger.divideAndRemainder(BI): \hfill $(A//BI,A-A//BI)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Example - 10925 - Krakovia}
+  \begin{block}{Problem Description}
+    Given a number of costs, and a number of friends,
+    divide the total cost among all friends.
+  \end{block}
+
+  \bigskip
+
+  \begin{itemize}
+  \item Super simple problem, but requires BigInteger;
+  \item Use this problem to familiarize yourself with writing JAVA
+    code;
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Java BigInteger superpowers}
 
-  .toString(int radix) -- converts base
+  \begin{block}{}
+    The class BigInteger implements many other functions that 
+    might be useful in mathematical problems:
+  \end{block}
 
-  .isProbablePrime(int certainty) -- probabilistic primality test
-  $1-\frac{1}{2}^{\text{certainty}}$ (for ``small'' primes, we can use
-  the Sieve of Erasthothenes which we will see later)
 
-  .gcd(BI)
+  \begin{itemize}
+  \item .toString(int radix) -- Outputs the Big Integer, can also be
+    used to convert base
 
-  .modPow(BI exponent, BI m)  
+  \item .isProbablePrime(int certainty) -- probabilistic primality
+    test. The chance of the test being correct is $1-\frac{1}{2}^{\text{certainty}}$\\
+    \medskip
+
+  \item .gcd(BI)
+  \item .modPow(BI exponent, BI m)  
+  \end{itemize}
 \end{frame}
 
 
 
 \section{Number Theory}
+\subsection{outline}
 \begin{frame}
-  \frametitle{Number Theory} 
-  The field of Number theory studies the properties of integers and
-  sets. Some problems in field include primality and modular arithmetic.
+  \frametitle{Number Theory} {\small 
 
-  An understanding of number theory is important to avoid brute 
-  force attacks to certain problems, or to pre-process data in large
-  problems.
+    The field of Number theory studies the properties of integers and
+    sets. Some problems in field include \structure{primality} and
+    \structure{modular arithmetic}.
+
+    \bigskip
+    
+    An understanding of number theory is important to avoid brute
+    force attacks to certain problems, or to pre-process data in large
+    problems.}
 \end{frame}
 
 \subsection{Prime Numbers}
 \begin{frame}
   \frametitle{Number Theory: Primality} 
-  
+  {\smaller
   Prime numbers are numbers >= 1 that are only divisible by 1 and
   themselves. There is a huge use for prime numbers, including 
   cryptography.
 
-  Naive calculation of prime number: For i in 1:N, test i//N
+  \begin{itemize}
+    
+  \item Naive calculation of prime number: For each $i \in 1..N$, test i|N
+    
+  \item Better calculation of prime number: For each $i \in 1..\sqrt{N}$, test i|N
+        
+  \item Even better calculation: For each \alert{i is prime} $\in 1..\sqrt{N}$, test i|N\\
 
-  Better calculation of prime number: For i in 1:sqrtN, test i//N
+    \medskip
 
-  Even better calculation of prime number: For i in primes[1:sqrtN] test i//N
+    number of primes up to x: $\pi(x) =$ x/logx (prime number theorem)
+    
+    \bigskip
 
-  Can we calculate the primes[1:sqrtN] fast? pi(x) = x/logx (prime number theorem)
+    \begin{block}{}
+    How can we calculate all the primes between 1 and $\sqrt{N}$ fast? 
+    \end{block}
+
+  \end{itemize}}
 
   \hfill {\tiny \url{https://primes.utm.edu/howmany.html}}
 \end{frame}
@@ -257,45 +410,134 @@
 \begin{frame}[fragile,singleslide]
   \frametitle{Sieve of Eratosthenes}
 
-  Idea
+  {\smaller
+  \begin{block}{Main Idea}
+    Start with a set of numbers (possible primes) between 2 and $\sqrt{N}$.\\
+    For each confirmed prime, remove all multiples of that number from the list.
+  \end{block}
 
-  Code
+  \begin{exampleblock}{}
+\begin{verbatim}
+def sieve(k):                 ## Find all primes up to k
+   primes = []
+   sieve = [1]*(k+1)    ## all numbers start in the list
+   sieve[0] = sieve[1] = 0             ## except 0 and 1
+   for i in range(k+1):                          ## O(N)
+      if (sieve[i] == 1):
+         primes.append(i)             ## new prime found
+         j = i*i   ## why can i start from i*i, not i*2?
+         while (j < k+1):                  ## O(loglogN)
+            sieve[j] = 0
+            j += i                      ## next multiple
+   return primes
+\end{verbatim}
+  \end{exampleblock}
   
-  Complexity of primality testing: O(NloglogN)
+  Complexity the sieve: $O(N\text{loglog}N)$ (Also, this is a kind of DP!)
+  }
 \end{frame}
 
+% Prime number: Sosuu
+% Prime factors: Soinsuu
+% Factorization: Insuu Bunkai
 \begin{frame}
   \frametitle{Finding Prime Factors}
+  
+  {\smaller 
 
-  Prime factors: is the list of all primes that divide N
+    Any natural number $N$ can be expressed as a \structure{unique}
+    set of prime numbers: 
 
-  Naive approach: If you have a list of primes, try to divide each
-  prime in that list by N
+    \begin{equation*}
+      N=1p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}
+    \end{equation*}
 
-  Divide and conquer approach: Find the smallest prime factor i of
-  N. Now find the smallest prime factor i' of N//i, recursively.
+    These are the \structure{Prime Factors} of $N$. From this set, we
+    can also obtain the set of \structure{Factors} of $N$ (all numbers
+    $i$ such as $i|N$.
 
-  This is slow if the number has few, big prime factors, but very fast
-  if the number has many, small primes. This is the principle of our
-  cryptography!
+    \medskip
+    
+    Factorization is a key issue in \structure{cryptography}
+
+    \begin{block}{Very Naive approach}
+      For every $i \in 1..\sqrt{N}$, test $i|N$ and isPrime(i).\\
+      \smallskip
+      \hfill Very Costly!
+    \end{block}
+
+    \begin{block}{Naive approach}
+      Calculate a list of primes, for each prime $i$, test if $i|N$.\\
+      \smallskip
+      \hfill Will not find all non-prime factors!
+    \end{block}
+}
 \end{frame}
 
+\begin{frame}[fragile,singleslide]
+  \frametitle{Prime factorization: Divide and conquer approach}
+  
+  {\smaller
+  \begin{block}{Idea}
+    The prime factorization of $N$ is equal to the union of $p_i$ and
+    the prime factorization of $N/p_i$, where $p_i$ is the smallest
+    prime factor of $N$.
+
+    \bigskip
+
+    The set of all factors is composed of all combinations of the set
+    of prime factors (including repetitions).  
+  \end{block}
+
+  \begin{exampleblock}{}
+\begin{verbatim}
+def primefactors(n):
+   primes = sieve(int(np.sqrt(n))+1)
+   c = 0, i = n, factors = []
+   while i > 1:
+      if (i%primes[c] == 0):
+          i = i/primes[c]
+          factors.append(primes[c])
+      else:
+          c = c+1
+   return factors
+\end{verbatim}
+  \end{exampleblock}}
+\end{frame}
+
+
 \begin{frame}
-  \frametitle{Working with Prime Factors}
+  \frametitle{Working with Prime Factors: 10139 -- Factovisors}
 
-  Prime factors are the building blocks of all integers. Therefore,
-  sometimes we can work with prime factors instead of working with
-  huge integers.
+  {\smaller
+    \begin{block}{Problem description}
+      Calculate whether $m$ divides $n!$ ($1 \leq m,n \leq 2^{31}-1$)
+    \end{block}
 
+    Factorial of 22 is already bigint! But we can break down these numbers into their 
+    factors, which are all $\leq 2^{30}$.
 
-  Example: Problem 10139: Factorvision
+    \begin{itemize}
+    \item $F_m$: primefactors(m)
+    \item $F_{n!}$: $\cup$(primefactors(1), primefactors(2)...,primefactors(n))
+    \end{itemize}
 
-  Problem description: Does $m$ divides $n!$? (m,n $< 2^{31}-1$).
-  Factor of 22 is already bignum, we cannot work with the factors directly!
+    Having the factor sets, $m$ divides $n!$ if $F_m \subset F_{n!}$.
 
+    \bigskip
 
-  Solution: Calculate the prime factors of $m$ and $n!$, and see if $n!$ contains $m$ 
+    Examples:
+    \begin{itemize}
+    \item $m = 48$ and $n=6$\\
+      $F_m = \{2,2,2,2,3\} F_{n!} = \{2,3,2,2,5,2,3\}$
+  
+  \medskip
 
+    \item $m = 25$ and $n = 6$\\
+      $F_m = \{5,5\} F_{n!} = \{2,3,2,2,5,2,3\}$
+
+    \end{itemize}
+  }
 \end{frame}
 
 \subsection{Modulo Operations}
@@ -306,43 +548,60 @@
   We can use \structure{modulo arithmetic} to operate on very large
   numbers without calculating the entire number.
 
+  \bigskip
+
   Remember that:
   \begin{enumerate}
   \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
   \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
   \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
   \end{enumerate}
-  
-  \begin{block}{UVA 10176 -- Ocean Deep!}
-    Test if a 100-digit binary is divisible by 131071.
 
-    \medskip
-
-    We can calculate the module of each (binary) digit using the
-    recurrence in (3), and module sum the result without ever touching
-    the entire $2^{100}$ number.
-  \end{block}}
+  }
 \end{frame}
 
+\begin{frame}
+  \frametitle{Modulo Operation -- UVA 10176, Ocean Deep!}
+  {\smaller
+  \begin{block}{Problem summary}
+    Test if a binary number $n$ (up to 100000 digits) is divisible by 131071
+  \end{block}
+
+  \begin{itemize}
+  \item The problem wants to know if $n\%13107 == 0$
+  \item But $n$ is too big!
+
+  \item Use the recurrence in the previous slide to break down each
+    digit to a reasonable value.
+  \end{itemize}}
+
+\end{frame}
+
+% Saidaikōyakusū
 \subsection{GCD/LCM}
 \begin{frame}[fragile, singleframe]
   \frametitle{Euclid Algorithm and Extended Euclid Algorithm}
 
   {\smaller  
     \begin{itemize}
-    \item The \structure{Euclid Algorithm} gives us the maximum common divisor $D$ of $a$ and $b$;
-    \item The \structure{Extended Euclid Algorithm} also gives us $x,y$ so that $ax+by = D$;
+    \item \structure{Euclid Algorithm} gives us the greatest common divisor $D$ of $a,b$;
+    \item \structure{Extended Euclid Algorithm} also gives us $x,y$ so that $ax+by = D$;
     \item Both are extremely simple to code:
     \end{itemize}
     
+    \vfill
+
     \begin{exampleblock}{}
 \begin{verbatim}
 int gcd(int a, int b) {return (a == 0?b:gcd(b%a,a));}
+
 int x, y;
 int egcd(int a, int b) { 
-   if (a==0) {x = 0; y = 1; return b;} // stop condition
-   int d = egcd(b%a, a); int tx = x; // gcd recurrence
-   x = y - (b/a)*tx; y = tx; return d; } // update x,y
+   if (a==0) 
+      {x = 0; y = 1; return b;}        // stop condition
+   int d = egcd(b%a, a); 
+   int tx = x;                         // gcd recurrence
+   x = y - (b/a)*tx; y = tx; return d; }   // update x,y
 \end{verbatim}
     \end{exampleblock}
 }
@@ -402,45 +661,76 @@ int egcd(int a, int b) {
 \begin{frame}
   \frametitle{Combinatorics problems} 
 
+  {\smaller
   Combinatorics is the branch of mathematics concerning the study of
   \structure{countable discrete structures}.
+
+  \bigskip
 
   Combinatory problems usually involving finding out the
   \structure{recurrence} of a set (recursive function that construct
   the set) or the \structure{closed form} of a set (formula that
   calculates the nth element of the set)
 
+  \bigskip
+
   Depending on the recurrence or formula, the need of bignums is not
   uncommon either. Also, often the recurrence can be sped-up by using
   DP.
-
-  Let's see some examples.  
+  }
 \end{frame}
 
 \subsection{Specific Sequences}
 \begin{frame}
   \frametitle{Fibonacci Numbers}
-  
-  fib(0) = 0, fib(1) = 1, fib(n>2) = fib(n-1)+fib(n-2)
+  \begin{equation*}
+  F(0) = 0, F(1) = 1, F(n>2) = F(n-1)+F(n-2)
+  \end{equation*}
 
-  Usually this is implemented based on a O(n) table, as a complete recursion is very slow.
+  {\smaller
 
-  However, there is an approximation that is O(1): calculate the
-  closest integer to $\frac{(phi^n - (-phi)^{-n})}{\sqrt{5}}$ where phi is the golden ratio
-  $\frac{1+\sqrt{5}}{2}$ (this is not accurate for very large fibonacci numbers).
+    \begin{block}{O(N) implementation}
+      Recursion on F(N) with a DP table (top-down) or (better)
+      iteration on F(n-1), F(n), F(n+1).
+    \end{block}
+
+    \begin{block}{O(1) implementation}
+
+      The Fibonacci has a closed form that can be \alert{approximated}
+      as:
+      
+      \bigskip
+
+      Round($\frac{\phi^n - (-\phi)^{-n}}{\sqrt{5}}$) where $\phi$ is
+      the \structure{golden ratio} $\frac{1+\sqrt{5}}{2}$.
+    \end{block}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Funny Fibonacci}
-% Zeckendorf's theorem: every positive integer can be written in a unique way as a sum of 
-% one or more distinc fibonacci numbers which are not consecutive.(can find this by greedy form)
+  % TODO expand this, add more closed forms
+  % TODO add a section on HOW to derive closed forms (from maths for CS class)
+  \frametitle{Funny Fibonacci facts}
+  {\small
+  \begin{block}{Zeckendorf's theorem}
+    Every positive integer can be written in a unique way as a sum of
+    one or more distinct fibonacci numbers which are not consecutive
+    (can find this by greedy method)
+  \end{block}
 
-% Pisano period: the last one/two/three/four digits repeat with a period of 60/300/1500/15000
-% What are the last two digits of the 1211313628th fibonacci number?
+  \begin{block}{Pisano period} 
+    The last one/two/three/four digits repeat with a period of 60/300/1500/15000
+
+    \bigskip
+
+    What are the last two digits of the 1211313628th Fibonacci number?
+  \end{block}
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Binomial Coefficients}
+  {\smaller
   $^nC_k$ the number of ways that $n$ items can be selected $k$ at a time, also the coefficients of 
   the $(x+y)^n$ polinomial.
 
@@ -456,6 +746,7 @@ int egcd(int a, int b) {
   C(n,k) = C(n-1,k-1) + C(n-1,k). 
 
   In this case, the recursive formula is more useful than the closed form.
+  }
 \end{frame}
 
 \begin{frame}
@@ -483,6 +774,15 @@ int egcd(int a, int b) {
     \item Etc...
   \end{itemize}
 \end{frame}
+% TODO expand this, add more closed forms
+% TODO add a section on HOW to derive closed forms (from maths for CS class)
+% Add some more example problems
+
+\section{Problems}
+\subsection{Problem Discussion}
+\begin{frame}
+  \frametitle{}
+\end{frame}
 
 
 \section{Conclusion}
@@ -490,7 +790,12 @@ int egcd(int a, int b) {
 \begin{frame}
   \frametitle{Class Summary}
   \begin{itemize}
-  \item Math Problems!
+  \item Math Problems
+  \item Java's Big Integer class
+  \item Primality
+  \item Modulo arithmetic
+  \item GCD and Diophantine Equations
+  \item Combinatorics
   \end{itemize}
 \end{frame}
 
@@ -498,13 +803,23 @@ int egcd(int a, int b) {
   \frametitle{This Week's Problems}
   {\smaller
   \begin{itemize}
-  \item UVA Problems
+  \item Division
+  \item What Base Is This
+  \item Divisibility of Factors
+  \item Triangle Counting
+  \item Help My Brother
+  \item Marbles
+  \item Ocean Deep!
+  \item Winning Streak
   \end{itemize}}
 \end{frame}
 
 \begin{frame}
   \frametitle{To Learn More}
-  Euler Project
+
+  Euler Project: Mathematical questions using computers:
+
+  \url{http://projecteuler.net}
 \end{frame}
 
 \end{document}
