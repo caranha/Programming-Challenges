@@ -662,111 +662,259 @@ int egcd(int a, int b) {
   \frametitle{Combinatorics problems} 
 
   {\smaller
-  Combinatorics is the branch of mathematics concerning the study of
-  \structure{countable discrete structures}.
+    \begin{block}{Definition}
+      Combinatorics is the branch of mathematics concerning the study of
+      \structure{countable discrete structures}.
+    \end{block}
+
+    Combinatory problems involve understanding a sequence, and
+    figuring one of:
+
+    \medskip 
+
+    \begin{itemize}
+    \item \structure{Recurrence}: A formula that calculates the
+      $n^{th}$ member of a sequence, based on the value of previous members;
+      
+    \item \structure{Closed form}: A formula that calculates the
+      $n^{th}$ member of a sequence independently from other members;
+    \end{itemize}
 
   \bigskip
 
-  Combinatory problems usually involving finding out the
-  \structure{recurrence} of a set (recursive function that construct
-  the set) or the \structure{closed form} of a set (formula that
-  calculates the nth element of the set)
-
-  \bigskip
-
-  Depending on the recurrence or formula, the need of bignums is not
-  uncommon either. Also, often the recurrence can be sped-up by using
-  DP.
+  It is not uncommon to use \structure{Dynamic Programming} or
+  \structure{Bignum} to solve combinatoric related problems.
   }
 \end{frame}
 
-\subsection{Specific Sequences}
 \begin{frame}
-  \frametitle{Fibonacci Numbers}
-  \begin{equation*}
-  F(0) = 0, F(1) = 1, F(n>2) = F(n-1)+F(n-2)
-  \end{equation*}
+  \frametitle{Example: Triangular Numbers}
+  {\smaller
+  \begin{block}{Definition}
+    The triangular numbers is the sequence where the $n^{th}$ value is
+    composed of the sum of all integers from $1$ to $n$
+  \end{block}
+
+  \begin{itemize}
+  \item S(1) = 1
+  \item S(2) = 1+2 = 3
+  \item S(3) = 1+2+3 = 6
+  \item $\ldots$
+  \item S(7) = 1+2+3+4+5+6+7 = 28
+  \end{itemize}
+  }
+
+  What are the recurrence and the closed form for this sequence?
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example: Triangular Numbers}
+  {\smaller
+    \begin{itemize}
+    \item S(1) = 1, S(2) = 3, S(3) = 6
+    \end{itemize}
+
+    \begin{block}{Recurrence}
+      The recursive form of a sequence:
+      \begin{equation*}
+        S(n) = S(n-1)+n; S(1) = 1
+      \end{equation*}
+    \end{block}
+    \begin{block}{Closed Form}
+      The non-recursive form of a sequence:
+      \begin{equation*}
+        S(n) = \frac{n(n+1)}{2}
+      \end{equation*}
+    \end{block}
+    \alert{Problem:} Calculate the first triangle number with more
+    than 500 factors!  }
+\end{frame}
+
+\subsection{Fibonacci}
+
+\begin{frame}
+  \frametitle{A more famous sequence: Fibonacci Numbers}
 
   {\smaller
+  \begin{block}{Definition -- very famous sequence}
+    Each number is the sum of the two numbers before it.
 
-    \begin{block}{O(N) implementation}
-      Recursion on F(N) with a DP table (top-down) or (better)
-      iteration on F(n-1), F(n), F(n+1).
-    \end{block}
+    \medskip
 
-    \begin{block}{O(1) implementation}
+    F() = 0,1,1,2,3,5,8,13,21,34...    
+  \end{block}
 
-      The Fibonacci has a closed form that can be \alert{approximated}
-      as:
-      
-      \bigskip
+  \begin{block}{The recurrence is well known}
+  \begin{equation*}
+  F(0) = 0, F(1) = 1, F(n) = F(n-1)+F(n-2)
+  \end{equation*}
+  When implementing the recurrence, don't forget the memoization
+  table!
+  \end{block}
 
-      Round($\frac{\phi^n - (-\phi)^{-n}}{\sqrt{5}}$) where $\phi$ is
-      the \structure{golden ratio} $\frac{1+\sqrt{5}}{2}$.
-    \end{block}
+  \begin{block}{Closed Form}
+    The Fibonacci numbers also have a less well known
+    \structure{closed form}:
+    
+    \begin{equation*}
+      F(n) = \frac{1}{\sqrt{5}}\left(\left(\frac{1+\sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)^n\right)
+    \end{equation*}
+  \end{block}
+    Square roots introduce floating point errors. What is the maximum
+    $n$ this can calculate with less than 0.1 error?
   }
 \end{frame}
 
-\begin{frame}
-  % TODO expand this, add more closed forms
-  % TODO add a section on HOW to derive closed forms (from maths for CS class)
-  \frametitle{Funny Fibonacci facts}
-  {\small
+\begin{frame}[fragile,singleslide]
+  \frametitle{Fibonacci Facts}
+  {\smaller
   \begin{block}{Zeckendorf's theorem}
-    Every positive integer can be written in a unique way as a sum of
-    one or more distinct fibonacci numbers which are not consecutive
-    (can find this by greedy method)
+    Every positive integer can be written in a \structure{unique way} as a sum of
+    one or more distinct fibonacci numbers, which are not consecutive.
+
+\begin{verbatim}
+def zeckenfy(n):
+    fibs = []
+    f = greatest fib =< n; fibs.append(f)
+    fibs.append(zeckenfy(n-f))
+    return fibs
+\end{verbatim}
   \end{block}
 
-  \begin{block}{Pisano period} 
-    The last one/two/three/four digits repeat with a period of 60/300/1500/15000
+  \begin{block}{Pisano's period} 
+    The last digits of the Fibonacci sequence repeat!
 
-    \bigskip
+    \medskip
 
-    What are the last two digits of the 1211313628th Fibonacci number?
+    The last one/two/\alert{three/four} digits repeat with a period of
+    60/300/\alert{1500/15000}.
+
+    F(6) = 8\\ 
+    F(66) = 27777890035288\\
+    F(366) = 1380356705549181797202918793682511 3333650564850089197542855968899086435571688
+
   \end{block}
   }
 \end{frame}
 
-\begin{frame}
+\subsection{Binom}
+
+\begin{frame}[fragile,singleframe]
   \frametitle{Binomial Coefficients}
   {\smaller
-  $^nC_k$ the number of ways that $n$ items can be selected $k$ at a time, also the coefficients of 
-  the $(x+y)^n$ polinomial.
 
-  A single value of the binomial can be calculated as
-  $\frac{n!}{(n-k)!k!}$. This formula is problematic, however. Not
-  only factorials are very large for small $n$, multiplyign factorials
-  have a good chance of exploding.
+    \begin{block}{Definition}
+      Binomial Coefficients are the number series that correspond to
+      the coefficients of the expansion of a binomial:
 
-  Some tricks to avoid using bignum
-  * If k > n-k. then exchange k and n-k.
-  * Try to divide before multiplyign
-  * top down dynamic programming: C(n,0) = C(n,n) = 1
-  C(n,k) = C(n-1,k-1) + C(n-1,k). 
+      \medskip
 
-  In this case, the recursive formula is more useful than the closed form.
+      Binom(3) = $(a+b)^3$ = $1a^3 + 3ab^2 + 3ab^2 + b^3$ = $\{1,3,3,1\}$ 
+
+      \medskip
+
+      We are usually interested in the $k^{th}$ coefficient of the
+      $n^{th}$ binomial:
+      
+      \medskip
+
+      $C(n,k) = C(3,2) = \{1,$ \alert{3} $,3,1\} = 3$
+
+    \end{block}
+
+    Pascal's Triangle gives us a good representation of C(n,n):
+\begin{verbatim}
+0  1  0  0  0  0  0  0  0  0
+0  1  1  0  0  0  0  0  0  0
+0  1  2  1  0  0  0  0  0  0
+0  1  3  3  1  0  0  0  0  0
+0  1  4  6  4  1  0  0  0  0
+0  1  5  10 10 5  1  0  0  0
+0  1  6  15 20 15 6  1  0  0
+0  1  7  21 35 35 21 7  1  0
+0  1  8  28 56 70 56 28 8  1
+\end{verbatim}
   }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Catalan Numbers}
+  \frametitle{Uses for the Binomial Coefficient}
 
-  Cat(n) = 1, 1, 2, 5, 14, 42, 132, 429, 1430
+  The value of $C(n,k)$ tells us how many ways we can choose $n$
+  items, $k$ at a time.
 
-  They are calculated as: 
-  Cat(n) = $\frac{(^{2n}C_n)}{(n+1)}$, Cat(0) = 1
+  \bigskip
 
-  Or
+  Some use cases:
+  \begin{itemize}
+  \item \structure{Probabilities:} What is the probability of winning
+    a loto when you choose 5 numbers out of 60? $1/C(60,5)$
+  \item \structure{Grids:} How many ways are there to go from the
+    bottom left end of a $mn$ grid to the top right, if you can only
+    go up and right? $C(m+n,n)$
+  \end{itemize}
+\end{frame}
 
-  Cat(n+1) = $\frac{(2n+2)(2n+1)}{(n+2)(n+1)}$Cat(n)
 
+\begin{frame}
+  \frametitle{Calculating the Binomial Coefficient}
+  {\smaller
+
+    \begin{block}{Closed form of C(n,k)}
+      \begin{equation*}
+        C(n,k) = \frac{n!}{(n-k)!k!}
+      \end{equation*}
+
+      \alert{Problem}: Multiplying factorials tends to generate huge numbers
+      even for small $n$ and $k$.
+    \end{block}
+
+    \begin{block}{Recurrence for C(n,k)}
+      \begin{itemize}
+      \item C(n,0) = C(n,n) = 1;
+      \item C(n,k) = C(n-1,k-1) + C(n-1,k)
+      \end{itemize}
+
+      Using a memoization table will cut the calculation time by
+      half. In this case, top-down DP will usually be faster than
+      bottom-up.
+    \end{block}
+  }
+\end{frame}
+
+\subsection{Catalan}
+
+\begin{frame}
+  \frametitle{Another useful sequence: Catalan Numbers}
+  {\smaller
+  \begin{block}{The Catalan sequence}
+    \begin{equation*}
+      C(n) = 1, 1, 2, 5, 14, 42, 132, 429, 1430
+    \end{equation*}
+  \end{block}
+
+  \begin{exampleblock}{The Recurrence}
+    \begin{equation*}
+    C(n) = \sum^{n-1}_{k=0}C(k)C(n-1-k)
+    \end{equation*}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Closed Form}
+    \begin{equation*}
+      C(n) = \frac{1}{n+1}\binom{2n}{n}
+    \end{equation*}
+  \end{exampleblock}
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Catalan Numbers -- Uses}
   \begin{itemize}
-    \item Number of ways that you can match $n$ parenthesis.
+    \item Number of ways that you can match $n$ parenthesis.\\
+      C(3):((())),()(()),(())(),()()(),(()())
+
+      \medskip
+      
     \item Number of ways that you can triangulate a poligon with $n+2$ sides
     \item Number of monotonic paths on an $nxn$ grid that do not pass above
       the diagonal.
@@ -774,16 +922,119 @@ int egcd(int a, int b) {
     \item Etc...
   \end{itemize}
 \end{frame}
-% TODO expand this, add more closed forms
-% TODO add a section on HOW to derive closed forms (from maths for CS class)
-% Add some more example problems
 
-\section{Problems}
-\subsection{Problem Discussion}
+\subsection{Integer Partition}
 \begin{frame}
-  \frametitle{}
+  \frametitle{Integer Partition}
+  \begin{block}{}
+    f(5,5) = (5),(4,1),(3,2),(3,1,1),(2,2,1),(2,1,1,1),(1,1,1,1,1)
+  \end{block}
+  \begin{block}{Definition and calculation}
+    $f(n,k)$ -- number of ways that we can sum $n$, using integers
+    equal or less than $k$.
+
+    \bigskip
+
+    \structure{Recurrence:}
+    \begin{itemize}
+    \item $f(n,k) = f(n-k,k) + f(n, k+1)$
+    \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$ 
+    \end{itemize}
+  \end{block}
 \end{frame}
 
+
+% TODO expand this, add more sequences
+% TODO add a section on HOW to derive closed forms (from maths for CS class)
+
+
+\section{Problems}
+%% TODO: Problem Discussion and example problems
+
+\subsection{Problem Discussion}
+\begin{frame}
+  \frametitle{Problem Discussion (1)}
+
+  \begin{block}{Division (7)}
+    For $a,b,t$, determine whether $\frac{t^a-1}{t^b-1}$ is integer
+    with less than 100 digits.
+
+    \bigskip
+
+    \begin{itemize}
+    \item What are the special cases?
+    \item What language did you use to solve it?
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{What base is this? (1)}
+    Given two numbers $a,b$, determine what pair of bases (1..35) can
+    be used to make $a==b$.
+
+    \begin{itemize}
+    \item Naive search: Try all bases (35x35)
+    \item Are there any special cases?
+    \item Can we reduce the number of bases?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Discussion (2)}
+  \begin{block}{Divisibility of Factors (4)}
+    Given $N$ and $D$, how many factors of $N!$ are divisible by $D$?
+
+    \begin{itemize}
+    \item We already know how to calculate the set of prime factors.
+    \item A factor $f$ of $N!$ is divisible by $D$, if $f$ contains
+      all prime factos of $D$.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Triangle Counting (3)}
+    If we have $n$ sticks of size $1,2,3,\ldots,n$, how many different
+    triangles can we create?
+
+    \begin{itemize}
+    \item Triangle inequality: $a+b > c$
+    \item How many triangles can we create with $n = 3$? $n = 4$? $n =
+      m+1$?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Problem Discussion (3)}
+  \begin{block}{Help My Brother (0)}
+    Calculate the median of the ``line'' composed of fibonacci numbers:
+\begin{verbatim}
+0 / 1 / 2 3 / 4 5 6 / 7 8 9 10 11
+\end{verbatim}
+\begin{itemize}
+\item What is the first number of line $n$? What is the last?
+\item How to you calculate the median of an unitary sequence?
+\item Note: Fibonacci above 60 are VERY BIG, use tables!
+\end{itemize}
+  \end{block}
+  \begin{block}{Marbles (0)}
+    \begin{itemize}
+    \item Diaphantine equation, but now with a cost associated for $a$ and $b$.
+    \item Calculate the feasible range for $n$, then find $n$ with minimal cost.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Discussion (4)}
+  \begin{block}{Ocean Deep, Make it Shallow! (1)}
+    Use modulo operation to break a binary number, and test it for
+    divisibility with 131071
+  \end{block}
+  \begin{block}{Winning Streak (0)}
+    Calculate the probability for all the events, and use the formula 
+    to calculate the expected length of the winning streak.
+  \end{block}
+\end{frame}
 
 \section{Conclusion}
 \subsection{Conclusion}
@@ -797,6 +1048,10 @@ int egcd(int a, int b) {
   \item GCD and Diophantine Equations
   \item Combinatorics
   \end{itemize}
+
+  \begin{block}{}
+    Next week: Geometry problems!
+  \end{block}
 \end{frame}
 
 \begin{frame}
