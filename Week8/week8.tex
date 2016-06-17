@@ -1,0 +1,661 @@
+\documentclass{beamer}
+\input{../tools/beamerpreamble.tex}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
+\tikzstyle{blue vertex}=[circle,fill=blue!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{red vertex}=[circle,fill=red!100,minimum size=10pt,inner sep=0pt]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{red edge} = [draw, line width=5pt,-,red!50]
+\tikzstyle{black edge} = [draw, line width=5pt,-,black!20]
+\tikzstyle{weight} = [font=\smaller]
+
+\title[GB21802]{GB21802 - Programming Challenges}
+\subtitle[]{Week 8 - Computational Geometry}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute{College of Information Science}
+\date{2015-06-17,20\\{\tiny Last updated \today}}
+% TODO: Fix many small typos in code
+
+\begin{document}
+
+\section{Introduction}
+\subsection{Title}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\subsection{Notes and Warnings}
+
+\begin{frame}
+  \frametitle{Last Week Results}
+  \begin{block}{Week 6 - Graph II}
+    {\smaller
+      \begin{columns}[T]
+        \column{0.5\textwidth}
+        \begin{itemize}
+        \item Division -- 16/31
+        \item What Base is This? -- 6/31
+        \item Divisibility of Factors -- 11/31
+        \item Triangle Counting -- 11/31
+        \item Help my Brother (II) -- 4/31
+        \item Marbles -- 1/31
+        \item Ocean Deep! Make it Shallow! -- 9/31
+        \item Winning Streak -- 0/31
+        \end{itemize}
+        \column{0.5\textwidth}
+        \begin{itemize}
+        \item  14 people: 0 problems; 
+        \item  6 people: 1-2 problems;
+        \item  6 people: 3-4 problems;
+        \item  4 people: 5-6 problems;
+        \item  1 people: 7-8 problems!
+        \end{itemize}
+      \end{columns}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Special Notes}
+
+\end{frame}
+
+\subsection{Characteristics}
+\begin{frame}
+  \frametitle{Topic of the Week -- Computational Geometry}
+  {\small
+  
+    \begin{itemize}
+    \item \structure{Computational Geometry} problems are generally
+      considered to be difficult, both in terms of understanding the
+      solution, and programming the solution;
+
+      \vfill
+
+    \item One trick for these problems is to \structure{prepare} a
+      large library of basic geometric operations (distances,
+      intersections, angle operations, etc); \\
+
+      \begin{itemize}
+        \item {\smaller Focus of this class is the implementation of these
+          operations.}
+      \end{itemize}
+
+      \vfill
+
+    \item Special attention is needed to deal with \alert{degeneracies};
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Degeneracies: Special cases}
+
+  {\smaller
+    \begin{block}{}
+      Two types of degeneracies: \structure{Special cases} and
+      \structure{Precision errors}
+    \end{block}
+
+    \bigskip
+
+    (some) Special cases:
+    \begin{itemize}
+    \item Lines parallel to the vertical axis
+    \item Colinear Lines
+    \item Overlapping Segments
+    \item Concave polygons
+    \item Etc...
+    \end{itemize}
+
+    \medskip
+
+    Good implementations should deal with common special cases.
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Degeneracies: Precision errors}
+
+  Representation of \structure{floating point} numbers in computers
+  has a limited precision. So for multiple operations on very small
+  numbers, we may start to see calculation errors.
+
+  \medskip
+
+  Some ways to avoid floating point precision errors:
+
+  \begin{itemize}
+  \item Whenever possible, convert the float numbers to integers
+  \item Never compare ``float x == float y''. 
+  \item Instead, use this: ``fabs(x - y) < EPS'' (float EPS$ = 0.00000001$)
+  \end{itemize}
+
+  %% TODO: Add some degeneracy image examples
+\end{frame}
+
+
+
+\section{Points and Lines}
+\subsection{Points}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Point Representation}  
+  {\smaller
+
+    \begin{columns}
+      \column{0.6\textwidth}
+      Points are the building blocks of geometric objects.
+      In C/C++, we can represent them using a struct with two members:
+      \column{0.4\textwidth}
+      \includegraphics[width=.65\textwidth]{../img/geom2}
+    \end{columns}
+
+    \begin{exampleblock}{}
+\begin{verbatim}
+// When possible, use int coordinates
+struct point_i { int x, y;
+  point_i() { x = y = 0; }
+  point_i(int _x, int _y) : x(_x), y(_y) {}};
+
+// Floating point variation
+struct point { double x, y;
+  point() { x = y =0.0;}
+  point(double _x, double _y) : x(_x), y(_y) {}};
+\end{verbatim}
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Point Operations}
+
+  {\smaller
+    To compare two points, or test for equality, we can 
+    overload the \emph{equal} or \emph{less} operator in the point struct.
+
+    \begin{exampleblock}{}
+\begin{verbatim}
+struct point { double x, y;
+   point() { x = y = 0.0;
+   point(double _x, double _y) : x(_x), y(_y) {}
+
+   // override less than operator -- useful for sorting
+   bool operator < (point other) const { 
+      if (fabs(x - other.x) > EPS)
+         return x < other.x;
+      return y < other.y; }
+
+   // override equal operator, takes EPS into account
+   bool operator == (point other) const {
+      return (fabs(x - other.x) < EPS &&  
+             (fabs(y - other.y) < EPS)); }
+   }
+\end{verbatim}
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Point: Euclidean Distance}
+  {\smaller
+
+    \begin{exampleblock}{}
+\begin{verbatim}
+#define hypot(dx,dy) sqrt(dx*dx + dy*dy)
+
+double dist(point p1, point p2) {
+  return hypot(p1.x - p2.x, p1.y - p2.y);
+}
+\end{verbatim}
+    \end{exampleblock}
+
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{../img/geom1}
+    \end{center}
+    %% TODO: Add image for Euclidean distance
+  }
+\end{frame}
+  
+\begin{frame}[fragile,singleslide]
+  \frametitle{Point: Rotation around origin}
+  {\smaller
+    \begin{exampleblock}{}
+\begin{verbatim}
+#define PI           3.14159265358979323846  /* pi */
+#define DEG_to_RAD(X) (X*PI)/180.0
+
+// theta is in degrees
+point rotate(point p, double theta) {
+   double rad = DEG_to_RAD(theta);
+   return point(p.x * cos(rad) - p.y * sin(rad),
+                p.x * sin(rad) + p.y * cos(rad));}   
+\end{verbatim}
+    \end{exampleblock}
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{../img/rotation_halim}
+    \end{center}
+  }
+\end{frame}
+
+\subsection{Lines}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Line Representation}
+
+  {\small
+  How to represent a line?
+
+  \begin{itemize}
+  \item \structure{Two points}. Problem: cannot generalize for other
+    points of the line easily;
+  \item \structure{y = mx + c}. Problem: cannot handle vertical lines (m is infinite)
+  \item \structure{ax + by + c = 0}. Better representation for ``most'' cases.
+  \end{itemize}
+
+  \begin{exampleblock}{}
+\begin{verbatim}
+struct line { double a,b,c; };
+
+void pointsToLine(point p1, point p2, line &l) {
+   if (fabs(p1.x - p2.x) < EPS { 
+      l.a = 1.0; l.b = 0.0; l.c = -p1.x; }
+   else {
+      l.a = -(double) (p1.y-p2.y)/(p1.x-p2.x);
+      l.b = 1.0; l.c = -(double) (l.a*p1.x) - p1.y;}
+}
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Line: Parallel and Identical lines}
+  {\smaller
+
+    \begin{columns}
+      \column{0.6\textwidth}
+      \begin{itemize}
+      \item Two lines are parallel if their coefficients $(a, b)$ are the same;
+      \item Two lines are identical if all coefficients $(a,b,c)$ are the same;
+      \item Remember that we force $b$ to be 0 or 1;
+      \end{itemize}
+      \column{0.4\textwidth}
+      \includegraphics[width=.8\textwidth]{../img/geom3}
+    \end{columns}
+  \begin{exampleblock}{}
+\begin{verbatim}
+bool areParallel(line l1, line l2) {
+   return (fabs(l1.a-l2.a) < EPS) && 
+          (fabs(l1.b-l2.b) < EPS); }
+
+bool areSame(line l1, line l2) {
+   return areParallel(l1,l2) && 
+          (fabs(l1.c - l2.c) < EPS); }
+\end{verbatim}    
+  \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Line: Intersection} 
+  {\smaller 
+    
+    If two lines are not parallel, then they will intersect at a
+    point. This point (x,y) is found by solving the system of two
+    linear equations: 
+
+    \begin{equation*}
+      a_1x+b_1y+c_1 = 0 \text{ and } a_2x+b_2y+c_2 = 0
+    \end{equation*}
+
+    \vfill
+
+    \begin{exampleblock}{}
+\begin{verbatim}
+bool areIntersect(line l1, line l2, point &p) {
+   if (areParallel(l1,l2)) return False;
+
+   p.x = (l2.b * l1.c - l1.b * l2.c) / 
+         (l2.a * l1.b - l1.a * l2.b);
+   if (fabs(l1.b) > EPS) // Testing for vertical case
+      p.y = -(l1.a * p.x + l1.c);
+   else
+      p.y = -(l2.a * p.x + l2.c);
+   return true; }}
+\end{verbatim}
+    \end{exampleblock}
+
+  }
+\end{frame}
+
+\subsection{Segments}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Segments and Vectors}
+  {\smaller
+    \begin{columns}
+      \column{0.7\textwidth}
+      \begin{itemize}
+      \item A \structure{Line Segment} is a line limited by two points and finite length;
+      \item A \structure{Vector} is a segment with an associated direction;
+      \item Often vectors are represented by a single point
+        (the other assumed to be the origin);
+      \end{itemize}
+      \column{0.3\textwidth}
+      \includegraphics[width=.95\textwidth]{../img/geom4}
+    \end{columns}
+    \begin{exampleblock}{}
+\begin{verbatim}
+struct vec { double x, y; 
+    vec(double _x, double _y) : x(_x), y(_y) {} };
+
+vec toVec(point a, point b) { 
+    return vec(b.x - a.x, b.y - a.y); }
+vec scale(vec v, double s) { 
+    return vec(v.x * s, v.y * s); }
+point translate(point p, vec v) { 
+    return point(p.x + v.x , p.y + v.y); }
+\end{verbatim}
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Distance between point and line}
+  \begin{block}{}
+    Given a point $p$ and a line $l$, the distance between the point
+    and the line is the distance between $p$ and the $c$, the closest
+    point in $l$ to $p$.
+
+    \bigskip
+
+    We can calculate the position of $c$ by taking the projection of
+    $\bar{ac}$ into $l$ ($a,b$ are points in $l$).
+  \end{block}
+
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{../img/geom5}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Distance between point and line}
+
+  {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+double dot(vec a, vec b) { 
+   return (a.x * b.x + a.y * b.y); }
+double norm_sq(vec v) { 
+   return v.x * v.x + v.y * v.y; }
+
+// Calculates distance of p from line, given 
+// a,b different points in the line.
+double distToLine(point p, point a, point b, point &c) {
+  // formula: c = a + u * ab
+  vec ap = toVec(a, p), ab = toVec(a, b);
+  double u = dot(ap, ab) / norm_sq(ab);
+  c = translate(a, scale(ab, u));
+  // translate a to c
+  return dist(p, c); }
+\end{verbatim}
+  \end{exampleblock}
+
+}
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Distance between segment and line} 
+  % TODO: Add an image explaining the u conditional
+
+  {\smaller 
+    If we have a \structure{segment} $ab$ instead of a line, the
+    procedure to calculate the distance is similar, but we need to
+    test if the intersection point falls in the segment.
+    
+    \begin{exampleblock}{}
+\begin{verbatim}
+double distToLineSegment(point p, point a, 
+                         point b, point &c) {
+  vec ap = toVec(a, p), ab = toVec(a, b);
+  double u = dot(ap, ab) / norm_sq(ab);
+  
+  if (u < 0.0) { c = point(a.x, a.y); // closer to a
+                 return dist(p, a); }
+  if (u > 1.0) { c = point(b.x, b.y); // closer to b
+                 return dist(p, b); }
+
+  return distToLine(p, a, b, c); }
+\end{verbatim}
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile,singleslide]
+  \frametitle{Angles between segments}
+  {\smaller
+
+    \begin{exampleblock}{angle between two segments ao and ob}
+\begin{verbatim}
+#import <cmath>
+
+double angle(point a, point o, point b) { // in radians
+vec oa = toVector(o, a), ob = toVector(o, b);
+return acos(dot(oa, ob)/sqrt(norm_sq(oa)*norm_sq(ob)));}
+\end{verbatim}
+    \end{exampleblock}
+
+\structure{Left/Right test}: We can calculate the position of point
+$p$ in relation to a line $l$ using the \structure{cross product}.
+
+\smallskip
+
+Take $q,r$ points in $l$. Magnitude of the cross product $pq$ x $pr$
+being positive/zero/negative means that $p \rightarrow q \rightarrow
+r$ is a left turn/collinear/right turn.
+
+\begin{exampleblock}{}
+\begin{verbatim}
+double cross(vec a, vec b) { 
+  return a.x * b.y - a.y * b.x; } 
+bool ccw(point p, point q, point r) { 
+  return cross(toVec(p, q), toVec(p, r)) > 0; } 
+collinear(point p, point q, point r) { 
+  return fabs(cross(toVec(p, q), toVec(p, r))) < EPS;
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
+
+\subsection{Problem Example}
+\begin{frame}
+  \frametitle{Problem Example: UVA -- Intersection}
+  % TODO: Add image for this problem
+  % TODO: Add code for this problem
+  {\small
+    \begin{block}{Summary}
+    Given two points $p_1$ and $p_2$, and a rectangle, test whether
+    the segment $p_1p_2$ intersects the rectangle.
+    \end{block}
+
+    Strategy
+    \uncover<2->{
+      \begin{itemize}
+      \item Test if points $p_1$ or $p_2$ are in the rectangle (easy tests first)
+      \item Test if $p_1p_2$ intersects with any side of the rectangle. 
+      \item ``Hard'' Way:
+        \uncover<3->{
+          {\smaller
+          \begin{itemize}
+          \item Find the intersection between lines $p_1p_2$, and top/bottom/left/right
+          \item Test if the intersection point is in line $p_1p_2$;
+          \item Test if the intersection point is in the rectangle;
+          \end{itemize}}
+        }
+      \uncover<4>{\item There is an easier way that takes into account vertical/horizontal sides}
+
+      \end{itemize}
+    }
+
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Example: UVA -- Waterfalls}
+  % TODO: Add image for this problem
+  % TODO: Add code for this problem
+  {\small
+    \begin{block}{Summary}
+      Given a list of water sources, and a list of segments, calculate the position that 
+      each water source will arrive at the bottom.
+    \end{block}
+
+    Strategy:
+    \begin{itemize}
+    \item For each water source, calculate all the segments that intersect it (easy because vertical line)
+    \item For each segment, calculate the intersection point - get the highest one.
+    \item New position of the water source is the lowest point of that segment.
+      
+      \bigskip
+
+    \uncover<2>{\item \alert{Problem:} No limit of segments or water sources. How do you avoid TLE?}
+    \end{itemize}
+  }
+\end{frame}
+
+\section{Circles}
+\subsection{Circles}
+\begin{frame}[fragile,singleslide]
+  \frametitle{Circles}
+  {\smaller
+  \begin{itemize}
+  \item A circle is defined by its center $(a,b)$ an its radius $r$
+  \item The circle contains all points such $(x,y)$ such as $(x-a)^2+(y-b)^2 \leq r^2$
+  \end{itemize}
+
+  \begin{exampleblock}{}
+\begin{verbatim}
+int insideCircle(point_i p, point_i c, int r) {
+   int dx = p.x-c.x, dy = p.y-c.y;
+   int Euc = dx*dx + dy*dy, rSq = r*r;
+   return Euc < rSq ? 0 : Euc == rSq ? 1 : 2; 
+   // 0 - inside, 1 - border, 2- outside
+}
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Circles (2)}
+  {\smaller
+
+    \begin{center}
+      % TODO: Make my own image
+      \includegraphics[width=0.65\textwidth]{../img/circle_halim}
+    \end{center}
+
+    \begin{itemize}
+      \item If you are not given $\pi$, use $pi = 2*$acos$(0.0)$;
+      \item Diameter: $D=2r$; Perimeter/Circumference: $C=2\pi r$; Area: $A=\pi r^2$;
+      \item To calculat the \structure{Arc} of an angle $\alpha$ (in Degrees), $\frac{\alpha}{360}*C$;
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Circles (3)}
+  {\smaller
+    \begin{center}
+      % TODO: Make my own image
+      \includegraphics[width=0.65\textwidth]{../img/circle_halim}
+    \end{center}
+  
+  \begin{itemize}
+  \item A \structure{chord} of a circle is a segment composed of two points in the circle's border. A circle with radius $r$ and angle $\alpha$ degrees has a chord of length sqrt$(2r^2(1-\cos{\alpha}))$
+  \item A \structure{Sector} is the area of the circle that is enclosed by two radius and and arc between them. Area is: $\frac{\alpha}{360}A$
+  \item A \structure{Segment} is the region enclosed by a chord and an arc.
+
+  \end{itemize}
+  }
+\end{frame}
+
+
+\subsection{Problem Example}
+\begin{frame}
+  \frametitle{Problem Example: Area}
+
+  \begin{block}{Summary}
+    Given 4 circles, determine the proportion of points that fall in all four circles.
+  \end{block}
+  
+\end{frame}
+
+% Circles
+
+\section{Triangles}
+\subsection{Triangles}
+\begin{frame}
+  \frametitle{Triangles!}
+\end{frame}
+% Triangles
+
+
+\section{Polygons}
+\begin{frame}
+  \frametitle{Polygons!}
+\end{frame}
+% Polygons
+
+%% Intro and representation
+
+%% Area of a polygon
+
+%% Checking if a polygon is convex
+
+%% Checking if a point is in a polygon
+
+%% Cutting a polygon
+
+%% Grahan Scan
+%% Grahan Scan without using atan (Andrew's Monotone Chain Algorithm)
+
+%% TODO: Add problem examples to each section -- book only deals with libraries
+
+\section{Conclusion}
+
+\subsection{Problem Discussion}
+\begin{frame}
+  \frametitle{Problem Discussion}
+  \begin{itemize}
+  \item Sunny Mountains
+  \item Bright Lights
+  \item Rope Crisis in Ropeland
+  \item Bounding Box
+  \item Soya Milk
+  \item SCUD Bursters
+  \item Trash Removal
+  \item The Sultan's Problem
+  \end{itemize}
+\end{frame}
+
+\subsection{Conclusion}
+\begin{frame}
+  \frametitle{Class Summary}
+  Computational Geometry
+  \begin{itemize}
+  \item Basic Concepts
+  \item Triangles
+  \item Circles
+  \item Polygons
+  \end{itemize}
+
+  \begin{block}{}
+    Final Week: String Problems!
+  \end{block}
+\end{frame}
+
+\end{document}
+
