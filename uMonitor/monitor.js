@@ -18,34 +18,34 @@
 //** Data **//
 var problemlist = [
     {name:"Extra Problems",
-     deadline:"2016-07-09T00:00:00",
+     deadline:"2016-07-18T00:00:00",
      mlist:[2113,691,1967,2445,1884,2352, 1464, 1866, 1080]},
     {name:"Week 0: How to Solve Problems",
-     deadline:"2016-04-22T00:00:01",
+     deadline:"2016-04-24T00:00:01",
      mlist:[2493,3098,36,1082]},
     {name:"Week 1: Data Structures",
-     deadline:"2016-04-29T00:00:01",
+     deadline:"2016-05-01T00:00:01",
      mlist:[979,3778,1796,1073,1199,3077,3682]},
     {name:"Week 2: Search Problems",
-     deadline:"2016-05-13T00:00:01",
+     deadline:"2016-05-15T00:00:01",
      mlist:[666,2842,2618,3886,1301,802,3768,3086,2267,967]},
     {name:"Week 3: Dynamic Programming",
-     deadline:"2016-05-21T00:00:01",
+     deadline:"2016-05-23T00:00:01",
      mlist:[448,1768,438,1072,1202,52,1278,1247]},
     {name:"Week 4: Dynamic Programming II",
-     deadline:"2016-05-27T00:00:01",
+     deadline:"2016-05-29T00:00:01",
      mlist:[1437,2259,1662,944,3702,977,1851,2402]},
     {name:"Week 5: Graphs I",
-     deadline:"2016-06-03T00:00:01",
+     deadline:"2016-06-05T00:00:01",
      mlist:[3053,3057,410,3104,2733,2021,551,2499,975,1310]},
     {name:"Week 6: Graphs II",
-     deadline:"2016-06-10T00:00:01",
+     deadline:"2016-06-12T00:00:01",
      mlist:[1128,499,3553,3497,1295,40,195,1421,2008,1021]},
     {name:"Week 7: Math Problems",
-     deadline:"2016-06-17T00:00:01",
+     deadline:"2016-06-19T00:00:01",
      mlist:[1024,279,1425,2396,2102,1031,1117,2117]},
     {name:"Week 8: Computational Geometry",
-     deadline:"2016-06-24T00:00:01",
+     deadline:"2016-06-26T00:00:01",
      mlist:[861,1868,1121,1518,3060,45,3552,2232]}
 ];
 var studentlist = [161945,580382,839069,839075,839072,839081,769688,839063,839582,839062,839070,
@@ -54,7 +54,7 @@ var studentlist = [161945,580382,839069,839075,839072,839081,769688,839063,83958
 
 
 var startdate = Date.parse("2016-03-30T00:00:00");
-var enddate = Date.parse("2016-07-09T00:00:00");
+var enddate = Date.parse("2016-07-18T00:00:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {
@@ -106,6 +106,28 @@ function ajax(api_url, result_callback) {
         var data = JSON.parse(xhr.responseText);
 	  // Parse the text into Javascript object.
         result_callback(data); // Notify the caller.
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  }
+  xhr.open("GET", api_url, true);
+    // Use asynchronous call so that your browser does not hang.
+  xhr.onerror = function (e) { console.error(xhr.statusText); };
+    // Log to console if there is an error.
+  xhr.send();
+}
+
+// asynchronously load from uhunt-api
+function ajaxp(api_url, p, result_callback) {
+  var xhr = window.XMLHttpRequest ?
+        new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  xhr.onload = function() {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var data = JSON.parse(xhr.responseText);
+          // Parse the text into Javascript object.
+        result_callback(data, p); // Notify the caller.
       } else {
         console.error(xhr.statusText);
       }
@@ -301,11 +323,12 @@ function mysubmissions()
 		     var mlist = problemlist[i].mlist;
 		     for (var j=0; j < mlist.length; j++) {
 			 var pid = mlist[j];
-			 ajax("http://uhunt.felix-halim.net/api/subs-pids/"+
-			      uid+"/"+pid+"/0",
-			      function (data) {
+			 ajaxp("http://uhunt.felix-halim.net/api/subs-pids/"+
+			      uid+"/"+pid+"/0",end,
+			      function (data,end) {
 				  if (data[uid].subs.length == 0) { return; }
 				  var status = 0;
+                                 var tt = 0;
 				  var id = data[uid].subs[0][1];
 				  for (var k = 0; k < data[uid].subs.length; k++) {
 				      sub = data[uid].subs[k];
@@ -317,12 +340,15 @@ function mysubmissions()
     						  2 : 3;
     					  }
 				      }
+				      if (s > status) { status = s; tt = sub[4]}
 				      status = s > status ? s : status;
 				  }
 				  var v;
 				  switch (status) {
 				  case 0: v = "<div class=\"ns\">Not submitted</div>"; break;
 				  case 1: v = "<div class=\"na\">Not accepted</div>"; break;
+                                 //case 2: v = "<div class=\"al\">Accepted ("+s2d(tt-end)+" late)</div>"; break;
+                                 // Uncomment the version above to show exactly how late an exercise is
 				  case 2: v = "<div class=\"al\">Accepted (late)</div>"; break;
 				  case 3: v = "<div class=\"ac\">Accepted</div>"; break;
 				  }
@@ -333,3 +359,9 @@ function mysubmissions()
 	     }
 	 });
 }
+
+function s2d(t)
+{
+    return (t/(3600*24));
+}
+
