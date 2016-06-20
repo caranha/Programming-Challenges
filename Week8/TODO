@@ -1,19 +1,20 @@
 18:% TODO: Fix many small typos in code
-136:  %% TODO: Add some degeneracy image examples
-217:    %% TODO: Add image for Euclidean distance
-410:  % TODO: Add an image explaining the u conditional
-411:  % TODO: This is actually distance between point and segment. FIX.
-437:  % TODO: Explain why angle between segment works
-438:  % TODO: Make appropriate picture to illustrate angle btw segments
-477:  % TODO: Add image for this problem
-478:  % TODO: Add code for this problem
-509:  % TODO: Add image for this problem
-510:  % TODO: Add code for this problem
-559:      % TODO: Make my own image
-575:      % TODO: Make my own image, explain why these circles work.
-576:      % TODO: If I have 2 points on a circle, how do I calculate the angle between them?
-633:% TODO: Visual explanation of Heron's formula
-638:    % TODO: Add own image of incircle and outcircle triangles
-639:    % TODO: Explain how the calculations for the incircle work
-879:  % TODO: Add an image explaining Polygon cutting
-915:  % TODO: Add an image explaining the Convex Hull
+161:  %% TODO: Add some degeneracy image examples
+242:    %% TODO: Add image for Euclidean distance
+435:  % TODO: Add an image explaining the u conditional
+436:  % TODO: This is actually distance between point and segment. FIX.
+462:  % TODO: Explain why angle between segment works
+463:  % TODO: Make appropriate picture to illustrate angle btw segments
+502:  % TODO: Add image for this problem
+503:  % TODO: Add code for this problem
+534:  % TODO: Add image for this problem
+535:  % TODO: Add code for this problem
+584:      % TODO: Make my own image
+600:      % TODO: Make my own image, explain why these circles work.
+601:      % TODO: If I have 2 points on a circle, how do I calculate the angle between them?
+658:% TODO: Visual explanation of Heron's formula
+663:    % TODO: Add own image of incircle and outcircle triangles
+664:    % TODO: Explain how the calculations for the incircle work
+904:  % TODO: Add an image explaining Polygon cutting
+940:  % TODO: Add an image explaining the Convex Hull
+1026:%% TODO: Add polygon problem example

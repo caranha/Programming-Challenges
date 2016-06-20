@@ -1,3 +1,19 @@
+// TODO: Decouple data loading from data showing:
+
+// "big table" of users x problems. For each cell, list
+// Sucessfull, Failed, Late submissions
+// Make a button that load this data per problem (or re-load at a reasonable time frame)
+
+// Function that displays the data into the page -- should be reloaded whenever
+// the table gets "dirty" -- set dirty flag on the end of data loading, set clean flag
+// on the end of datashowing. Should repeat from time to time.
+
+// Get statistics on the number of API calls, and probably on the quantity of data
+// Pause updating button, Force updating button.
+
+// Probably still nee
+
+
 
 //** Data **//
 var problemlist = [
