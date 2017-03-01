@@ -76,12 +76,11 @@
   \begin{block}{Course Philosophy: Learning by Practice}
     \begin{itemize}
       {\small
-    \item Every week, you will be asked to solve 4 programming
+    \item Every week, you will be asked to solve some programming
       problems;
     \item You have to decide the best data structure, and technique to
-      solve the problem;
-    \item Efficiency Matters;
-    \item Specification Matters;
+      solve each problem;
+    \item Each problem has a max time, and max memory;
     \item We will discuss some techniques and tricks;
       }
     \end{itemize}
@@ -125,8 +124,8 @@
   \begin{alertblock}{1- Heavy Workload}
     \begin{itemize}
     \item Challenges start easy, but end very hard;
-    \item Expect to use up to 1-4 hours/week on homework;
-    \item Lots of BUGS!
+    \item Expect to use a few hours per week on homework;
+    \item Lots of debugging;
 
       \bigskip
 
@@ -313,7 +312,7 @@ int main()
   \item \structure{Wrong Answer}: Your program is incorrect. Debugging
     time.
   \item \structure{Time/Memory limit exceeded}: Your program is
-    inefficient.
+    inefficient. Think more.
   \item \structure{Runtime Error}: Your program is crashing. To the
     debugger!
   \end{itemize}
@@ -344,7 +343,7 @@ int main()
 
   Go to ``Assignment/Reports'' and select the appropriate week. Create
   a zip file containing the code for all problems that you have
-  solved, and send it.
+  solved, AND the discussion file and send it.
 
   \begin{alertblock}{Attention}
   Submission to the UVA judge without a submission to MANABA will not
@@ -356,11 +355,13 @@ int main()
   \frametitle{Some warnings about Java:}
 
   \begin{itemize}
-  \item All code must be in the same source file (can define many classes in this file)
+  \item All code must be in the same source file (can define many
+    classes in this file)
 
     \medskip
 
-  \item All programs must begin in a static main method in a \structure{Main} class.
+  \item All programs must begin in a static main method in a
+    \structure{Main} class.
 
     \medskip
 
@@ -391,7 +392,7 @@ int main()
         \item Every week there are four programming assignments;
         \item Assignments follow the weekly theme;
         \item Automatic Submission and Evaluation System;
-        \item Deadline is Thursday 23:59
+        \item Program Deadline is Thursday 23:59
         \end{itemize}   
     \end{block}
 \end{frame}
@@ -408,7 +409,8 @@ int main()
 \begin{frame}
   \frametitle{Evaluation and Grading (1)}
 
-  Evaluation Criteria: \structure{Problems solved}, \structure{Code} and \structure{Participation}
+  Evaluation Criteria: \structure{Problems solved}, \structure{Code}
+  and \structure{Participation}
   
   \bigskip
 
@@ -418,8 +420,8 @@ int main()
 \begin{frame}
   \frametitle{Evaluation and Grading (2) -- Base Grade}
 
-  The \structure{Base Grade} is decided solely based on UVA
-  submissions. 
+  The \structure{Base Grade} is decided solely based on homework
+  submissions to UVA.
 
   \bigskip
   
@@ -455,9 +457,10 @@ int main()
   \medskip
   \begin{exampleblock}{Bonus: Grade Up}
     \begin{itemize}
-    \item Participation in class and forum
-    \item Good comments in code
-    \item Best $N$ students with base A grade
+    \item Participation in class and MANABA
+    \item Submit corrections/suggestions to lecture notes
+    \item Good comment files in homework
+    \item Best $N$ students in number of submissions
     \end{itemize}
   \end{exampleblock}
   \begin{alertblock}{Penalty: Grade Down}
@@ -470,39 +473,40 @@ int main()
 \end{frame}
 
 \begin{frame}[simple,fragile]
-  \frametitle{Evaluation and Grading (4) -- about comments}
+  \frametitle{Evaluation and Grading (4) -- comment file}
 
+  When you submit your program to Manaba, you need to include
+  a text file with comments on each problem.
+  
   \begin{exampleblock}{Good Comment}
     {\smaller
 \begin{verbatim}
-/**
- * I used quicksort to solve this problem. 
- * I sorted the age of the persons in the input.
- * To make it faster, people with the same age were 
- * removed from the data.
- * Must be careful about the large size of the input 
- * (Over 9000)
- */
+# Problem 1:
+This problem needs to sort the input. I used quicksort.
+I sorted the age of the persons in the input.
+To make it faster, people with the same age were 
+removed from the data.
+Must be careful about the large size of the input 
 \end{verbatim}}
   \end{exampleblock}
   \begin{alertblock}{Bad Comment}
 {\smaller
 \begin{verbatim}
-/**
- * Quicksort.
- */
+# Problem 1:
+Quicksort.
 \end{verbatim}}
   \end{alertblock}
 
-  Comments may be in Japanese.
+  Comments may be in Japanese. (FILENAMES must be in romaji)
 \end{frame}
 
 \begin{frame}
   \frametitle{Evaluation and Grading (5) -- about plagiarism}
   
-  The assignments are \alert{individual}. Use your \structure{own strength} to solve the programs.
+  The assignments are \alert{individual}. Use your \structure{own
+    strength} to solve the programs.
 
-  \begin{exampleblock}{YOU MAY}
+  \begin{exampleblock}{GOOD}
     \begin{itemize}
     \item Ask for ideas to your friends;
     \item Ask for ideas in the MANABA forum;
@@ -510,7 +514,7 @@ int main()
     \end{itemize}
   \end{exampleblock}
 
-  \begin{alertblock}{YOU MAY NOT}
+  \begin{alertblock}{BAD}
     \begin{itemize}
     \item Copy a solution from the internet;
     \item Copy a solution from your friends;
@@ -534,7 +538,7 @@ int main()
     \medskip
 
   \item \href{https://uva.onlinejudge.org/}{\structure{\underline{UVA Online Judge}}}:
-    Use this page to submit your problems. \alert{Make an account and tell me!}
+    Use this page to submit your problems. \alert{Make an account and list the username on MANABA}
 
     \medskip
 
@@ -546,23 +550,24 @@ int main()
   \item
     \href{https://www.github.com/caranha/ProgrammingChallengesLectureNotes}{\structure{\underline{Github
           Repository}}}:
-    Source for lecture notes. Feel free to fork. Beware of old classes!        
+    Working directory for lecture notes. Send me PR, issues!
   \end{itemize}
 \end{frame}
 
 
 % Books
 % TODO: Add images for the books (week 0A)
+% TODO: Add japanese books
 \begin{frame}
   \frametitle{Books}
 
   \begin{itemize}
-  \item \structure{New Book:} Competitive Programming, 3rd Edition\\
+  \item \structure{Main Book:} Competitive Programming, 3rd Edition\\
     \url{http://cpbook.net/}\\
     
     \bigskip
 
-  \item \structure{Old Book:} Programming Challenges\\
+  \item \structure{Suggested Books:} Programming Challenges\\
     \url{https://books.google.co.jp/books/about/Programming_Challenges.html?id=dNoLBwAAQBAJ&source=kp_cover&redir_esc=y}
   \end{itemize}
 \end{frame}
