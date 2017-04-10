@@ -19,12 +19,18 @@
 var problemlist = [
     {name:"Non-grading Problems",
      deadline:"2017-07-30T00:00:01",
-     mlist:[3710,3565,36]},
+     mlist:[3710,3565,2113]},
+    {name:"Week 0: Introduction and Problem Solving",
+     deadline:"2017-04-20T15:00:01",
+     mlist:[36,2827,2595,2899,834,1146,97,388]},
+//    {name:"Week 1: Data Structures",
+//     deadline:"2017-07-28T00:00:01",
+//     mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
 ];
 var studentlist = [161945,161504];
 
 
-var startdate = Date.parse("2017-01-30T00:00:00");
+var startdate = Date.parse("2017-03-30T00:00:00");
 var enddate = Date.parse("2017-07-30T00:00:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
