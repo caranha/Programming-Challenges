@@ -6,7 +6,7 @@
 \subtitle[]{Week 0 - Introduction}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
-\date{2016/4/15\\{\smaller(last updated: \today)}}
+\date{2017/4/14\\{\smaller(last updated: \today)}}
 
 \begin{document}
 
@@ -27,8 +27,8 @@
     
     \medskip
     
-    \url{https://manaba.tsukuba.ac.jp/ct/course_427760}\\
-    Registration Code: 4004466
+    \url{https://manaba.tsukuba.ac.jp/ct/course_781339}\\
+    Registration Code: 8467527
   \end{block}
   \begin{exampleblock}{Language}
     \begin{itemize}
@@ -78,10 +78,10 @@
       {\small
     \item Every week, you will be asked to solve some programming
       problems;
-    \item You have to decide the best data structure, and technique to
-      solve each problem;
-    \item Each problem has a max time, and max memory;
-    \item We will discuss some techniques and tricks;
+    \item You have to decide the best \structure{data structure}, and
+      \structure{algorithm} to solve each problem;
+    \item Each problem has a \alert{max time}, and \alert{max memory};
+    \item We will discuss algorithms, techniques and tricks;
       }
     \end{itemize}
   \end{block}
@@ -92,8 +92,12 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why you should do this class}
+  \frametitle{Why you should do this class?}
   \begin{itemize}
+  \item \structure{You like to program, you think programming is fun}
+
+    \smallskip
+    
   \item You learned a lot of programming theory, but you need more
     programming practice;
     
@@ -225,7 +229,7 @@
 
 
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Solving ``Relational Operator''}
     
 \begin{block}{}
@@ -259,15 +263,17 @@ int main()
 \begin{frame}
   \frametitle{How to submit a problem} 
   
-  After you finish your program, \structure{and make sure it is
+  After you finish your programs, \alert{and make sure they are
     correct}, you can submit it.
 
   \bigskip
 
-  Problem submission has two steps:
+  Your weekly routine should have four steps:
   \begin{enumerate}
-    \item Submit the problem to the UVA online Judge;
-    \item Submit the problem to MANABA;
+    \item Think about how to solve each problem;
+    \item Submit each problem to the UVA website, and check it is correct;
+    \item Prepare your MANABA package (code + comment file);
+    \item Submit your MANABA package to MANABA;
   \end{enumerate}
 \end{frame}
 
@@ -336,15 +342,32 @@ int main()
 
 \subsection{Manaba Submission}
 \begin{frame}
-  \frametitle{Submitting the problem to MANABA (1)}
-  
+  \frametitle{Submitting the problem to MANABA}
+
+  {\small
   After you finish the problems listed in the monitor, you need to
-  submit your source code to MANABA.
+  submit your source code and a comment file as a zip package to MANABA.}
 
-  Go to ``Assignment/Reports'' and select the appropriate week. Create
-  a zip file containing the code for all problems that you have
-  solved, AND the discussion file and send it.
+  \medskip
 
+  {\small
+  \begin{columns}
+    \column{0.3\textwidth}
+    \column{0.4\textwidth}
+    \begin{block}{s2015XXXXXX-weekYY.zip}
+      \begin{itemize}
+      \item problem1.cpp
+      \item problem2.cpp
+      \item problem5.cpp
+      \item kaisetsu.txt
+      \end{itemize}
+    \end{block}
+    \column{0.3\textwidth}
+  \end{columns}
+  }
+
+  \medskip
+  
   \begin{alertblock}{Attention}
   Submission to the UVA judge without a submission to MANABA will not
   be accepted!
@@ -389,11 +412,11 @@ int main()
     
     \begin{block}{Solving Problems}
         \begin{itemize}
-        \item Every week there are four programming assignments;
+        \item Every week there are 6-10 programming assignments;
         \item Assignments follow the weekly theme;
         \item Automatic Submission and Evaluation System;
         \item Program Deadline is Thursday 23:59
-        \end{itemize}   
+        \end{itemize}
     \end{block}
 \end{frame}
     
@@ -420,26 +443,26 @@ int main()
 \begin{frame}
   \frametitle{Evaluation and Grading (2) -- Base Grade}
 
-  The \structure{Base Grade} is decided solely based on homework
-  submissions to UVA.
+  The \structure{Base Grade} is based on homework submissions to UVA.
 
   \bigskip
   
   \begin{itemize}
-  \item \structure{C}: One problem per week, or $X_c$ problems total
+  \item \structure{C}: One problem per lecture, or $X_c$ problems total
 
     \medskip
 
-  \item \structure{B}: Two problems per week, or $X_b$ problems total
+  \item \structure{B}: Two problems per lecture, or $X_b$ problems total
 
     \medskip
 
-  \item \structure{A}: Three problems per week, or $X_a$ problems total
+  \item \structure{A}: Three problems per lecture, or $X_a$ problems total
   \end{itemize}
 
-  \bigskip
-  
-  Parameters $X_{a,b,c}$ will be decided at a later date.
+  \vfill
+
+  {\small
+  Parameters $X_{a,b,c}$ will be decided at a later date. \alert{Do not rely on this}}
 
 \end{frame}
 
@@ -459,45 +482,44 @@ int main()
     \begin{itemize}
     \item Participation in class and MANABA
     \item Submit corrections/suggestions to lecture notes
-    \item Good comment files in homework
+    \item Consistently good Comment/Kaisetsu file
     \item Best $N$ students in number of submissions
     \end{itemize}
   \end{exampleblock}
   \begin{alertblock}{Penalty: Grade Down}
     \begin{itemize}
-    \item More than 25\% late problems.
+    \item More than 25\% problems submitted after the deadline
     \end{itemize}
   \end{alertblock}
 
   \tiny{Parameter $N$ will be decided at a later date.}
 \end{frame}
 
-\begin{frame}[simple,fragile]
-  \frametitle{Evaluation and Grading (4) -- comment file}
+\begin{frame}[fragile]
+  \frametitle{Evaluation and Grading (4) -- comment/kaisetsu file}
 
-  When you submit your program to Manaba, you need to include
-  a text file with comments on each problem.
-  
-  \begin{exampleblock}{Good Comment}
+  When you submit your package every week, include a text file (no
+  Word!) with comments on each problem you tried to solve.
+    
+  \begin{exampleblock}{Example}
     {\smaller
 \begin{verbatim}
+Name: Claus, ID: 98884735
 # Problem 1:
-This problem needs to sort the input. I used quicksort.
-I sorted the age of the persons in the input.
-To make it faster, people with the same age were 
-removed from the data.
-Must be careful about the large size of the input 
+To solve this problem, I sorted the input data, and 
+printed the input with the highest number of repeated 
+letters.
+
+# Problem 2: 
+I tried to solve this problem with brute force, but 
+the time limit was exceeded. I had to use DP on the 
+number of people instead.
 \end{verbatim}}
   \end{exampleblock}
-  \begin{alertblock}{Bad Comment}
-{\smaller
-\begin{verbatim}
-# Problem 1:
-Quicksort.
-\end{verbatim}}
-  \end{alertblock}
 
-  Comments may be in Japanese. (FILENAMES must be in romaji)
+  \bigskip
+  
+  Comments may be in Japanese. {\small (FILENAMES must be in romaji)}
 \end{frame}
 
 \begin{frame}
@@ -530,10 +552,12 @@ Quicksort.
 
 % Class Links
 \begin{frame}
-  \frametitle{Class Links}
+  \frametitle{Useful Links}
   \begin{itemize} 
-  \item \href{https://manaba.tsukuba.ac.jp/ct/course_455573}{\structure{\underline{Manaba Page}}}: 
-    All the class material will be here. Access Code is: 4004466
+  \item
+    \href{https://manaba.tsukuba.ac.jp/ct/course_781339}
+         {\structure{\underline{Manaba Page}}}: All the class material
+         will be here. Access Code is: 8467527
 
     \medskip
 
@@ -551,6 +575,13 @@ Quicksort.
     \href{https://www.github.com/caranha/ProgrammingChallengesLectureNotes}{\structure{\underline{Github
           Repository}}}:
     Working directory for lecture notes. Send me PR, issues!
+
+    \medskip
+    
+  \item
+    \href{https://www.udebug.com/}{\structure{\underline{uDebug}}}:
+    Web service that generates test inputs and test outputs for UVA
+    problems. Useful tool for this course.
   \end{itemize}
 \end{frame}
 
@@ -562,13 +593,17 @@ Quicksort.
   \frametitle{Books}
 
   \begin{itemize}
-  \item \structure{Main Book:} Competitive Programming, 3rd Edition\\
-    \url{http://cpbook.net/}\\
+  \item \structure{Main Book:} Competitive Programming, 3rd Edition
+    \href{http://cpbook.net/}{Link}
     
     \bigskip
 
-  \item \structure{Suggested Books:} Programming Challenges\\
-    \url{https://books.google.co.jp/books/about/Programming_Challenges.html?id=dNoLBwAAQBAJ&source=kp_cover&redir_esc=y}
+  \item \structure{Old Course Book:} Programming Challenges
+    \href{https://books.google.co.jp/books/about/Programming_Challenges.html?id=dNoLBwAAQBAJ&source=kp_cover&redir_esc=y}{Link}
+
+    \bigskip
+    
+  \item For suggestions of books in Japanese, please check the Manaba materials!
   \end{itemize}
 \end{frame}
 
@@ -619,7 +654,11 @@ Quicksort.
     \bigskip
 
   \item \structure{Room}: SB1012\\
-    Best times to find me: Monday, Thursday, Friday Morning (9:00 -- 11:00)
+    Best times to find me:
+    \begin{itemize}
+    \item Morning (9:00 -- 11:00): Monday, Wednesday, Friday
+    \item Evening (17:00 -- 19:00): Monday, Tuesday, Wednesday
+    \end{itemize}
   \end{itemize}
 
   \bigskip
