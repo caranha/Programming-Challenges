@@ -6,12 +6,11 @@
 \subtitle[]{Week 0B - Solving Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
-\date{2016/4/15\\{\smaller(last updated: \today)}}
+\date{2017/4/17\\{\smaller(last updated: \today)}}
 
 \begin{document}
 
 %% TODO: Add coding examples for each of the hints in this chapter
-%% TODO: Add some optional, additional post-hoc problems
 
 \section{Introduction}
 \subsection{Class Outline}
@@ -21,42 +20,40 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Survey Results (Sunday)}
+  \frametitle{Survey Results}
 
-  About 15 respondents:
+  About 35 respondents:
   \begin{itemize}
-  \item Students: Regular: 40\%, Tech School: 40\%, Intl: 20\%
-  \item Contest Experience: 10\%
-  \item 50\% programs for fun. Only 1 to save the world.
-  \item C/C++ are favorite languages, Only 1 likes Python :-(. One
-    wants to use Ruby, One wants to use LUA!
-  \item Expectations: Programming Contest (1 person), Improving
-    programming skill (5 people), Worried about English: 2 People;
+  \item Students: Regular: 26, Tech School: 9
+  \item Contest Experience: 9 (30\%)/ 5 (55\%) 
+  \item Why do you Program?
+    \begin{itemize}
+    \item Fun/Personal: 19; Money: 15; Save the world: 5;
+    \item More people are worried about saving the world than last year! :-)
+    \end{itemize}
+  \item Languages:
+    \begin{itemize}
+    \item C/C++: 15; Java: 14; Python: 10;
+    \item Very balanced.
+    \end{itemize}
+  \item Extra: 5 people said they loved cats! I will try to put more
+    cats in the course.
+    
   \end{itemize}
 
-  \vfill
-  
-  \begin{alertblock}{UVA Username}
-    Currently, \alert{24 out of 30} people sent me their username.\\
-    Don't forget to submit your UVA username!
-  \end{alertblock}
 \end{frame}
 
 \begin{frame}
   \frametitle{Submission Results (Sunday)}
 
-  \begin{itemize}
-  \item Division of Nlogonia: 7 Tried, 6 Succeeded
-  \item Cancer or Scorpio: 4 tried, 4 succeeded
-  \item 3n+1 Problem: 5 tried, 4 suceeded
-  \item Request for Proposal: 2 tried, 2 succeeded
-  \end{itemize}
-
-  \vfill
-
   \begin{center}
-    Time to make questions about the problems!
+    \includegraphics[width=0.9\textwidth]{img/resultsW0}
   \end{center}
+
+  \begin{block}{}
+    Very Good! It is going to get harder from here on.
+  \end{block}
+  
 \end{frame}
 
 \begin{frame}
@@ -93,7 +90,7 @@
   \item Task 2: Understand the input/output;
   \item Task 3: Choose the Algorithm;
   \item Task 4: Write the Code;
-  \item Task 5: Test the program on example data until it works;
+  \item Task 5: Test the program on example data;
   \item Task 6: Test the program on hidden data;
   \end{itemize}}
 \end{frame}
@@ -102,19 +99,46 @@
 \begin{frame}
   \frametitle{Task 1: Understanding the Problem Description}
 
-  Program Challenge descriptions can be hard to understand sometimes:
-
+  The English description is so hard!
+  
   \bigskip
 
-  \begin{itemize}
-    \item Easy problems usually have extra ``flavor'' text;
-    \item Problems with little text are usually harder;
-  \end{itemize}
-
-  \bigskip
-
-  Of course, \alert{there are always exceptions!}
+  \begin{block}{Don't Worry:}
+  \begin{enumerate}
+  \item Separate the text into \structure{flavor} and \structure{rules};
+  \item Sometimes it is easy to read the input/output first, and then
+    the text;    
+  \item Problems with a lot of \structure{flavor} are usually not very hard.;
+  \end{enumerate}
+  \end{block}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Example: Problem 11559 -- Event Planning}
+
+  {\smaller
+  \begin{alertblock}{Flavor:}
+    As you didn't show up to the yearly general meeting of the Nordic
+    Club of Pin Collectors, you were unanimously elected to organize
+    this years excursion to Pin City.  You are free to choose from a
+    number of weekends this autumn, and have to  nd a suitable hotel
+    to stay at, preferably as cheap as possible.
+  \end{alertblock}
+
+  \begin{exampleblock}{rules}
+    You have some \underline{constraints}: The total \underline{cost}
+    of the trip must be within \underline{budget}, of course. All
+    participants \underline{must stay at the same hotel}, to avoid
+    last years catastrophe, where some members got lost in the city,
+    never being seen again.
+  \end{exampleblock}
+
+  \bigskip
+
+  {\bf Keywords:} constraints, minimum, maximum, cost, rules, number,
+  etc...  }
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Extreme example: UVA 1124, Celebrity Jeopardy}
@@ -122,23 +146,24 @@
 
   \hrulefill\\
   \alert{Real Problem:}
-  Copy the input into the output.
+  Copy the input into the output. (look at the examples)
 \end{frame}
 
 \begin{frame}
-  \frametitle{Hints for reading text}
+  \frametitle{Hints for hard to read problems}
   
   \begin{columns}
     \column{0.7\textwidth}
+    {\small
     \begin{itemize}
-    \item Read the \structure{Input/Output} sections first, to know
-      the \structure{important keywords of a problem};
-    \item Read the problem one time, and mark keywords;
-    \item Read the problem a second time, and cut phrases that are not
-      important;
-    \item For harder problem descriptions, copy the important
-      information to another file.
+    \item If it is hard, look at the examples;
+    \item If it is really hard, print on paper;
+    \item First read: mark keywords;
+    \item Second read: cut flavor;
+    \item Re-write the important parts in another file;
+    \item \alert{Do not begin programming until you understand the problem!}
     \end{itemize}
+    }
     \column{0.3\textwidth}
     \includegraphics[width=\textwidth]{../img/textmarker}
   \end{columns}
@@ -153,34 +178,45 @@
 \subsection{Task 2: Understanding the Input/Output}
 
 \begin{frame}
-  \frametitle{Understanding the Input}
+  \frametitle{Task 2: Understanding the Input}
 
-  Checklist of things we want to learn from the input:
-  \smallskip
+  When you read the input, pay attention to:
+  
+  \bigskip
 
+  {\small
   \begin{itemize}
-  \item Problem Size
-  \item Input Format
+  \item What is the problem size?
+  \item What is the end condition?
+  \item What type of data is it?
+  \item What is the format of the data?
   \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Input Size} 
-  \structure{Input Size} might be the most
-  important information in the text. It will 
-  strongly influence your choice of algorithms.
+  \frametitle{Task 2: Input Size}
 
+  The input size shows how big the problem gets.
+
+  \begin{itemize}
+  \item If the problem is too small, you can try a brute force
+    algorithm;
+  \item If the problem is too big, you must use a more complex
+    algorithm;
+  \end{itemize}
+  
   \begin{block}{Keep in Mind!}
     \begin{itemize}
-    \item Most problems have time limits around 1 -- 3 seconds
-    \item Around 10.000.000 calculations per second
-    \item Don't forget multiplicative effects!
+    \item The average time limit in UVA is 1-3 seconds.
+    \item Assume around 10.000.000 operations per second (in the judge).
+    \item Use this as a \alert{rough measure} of time your program spends.
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Input Size -- Examples}
+  \frametitle{Task 2: Input Size -- Examples}
 
   \begin{block}{n $<$ 24}
     Exponential algorithms will work (O($2^n$)).\\
@@ -203,11 +239,26 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Input Types (1)}
-  \begin{block}{N lines}
-    The input tells the number of lines to be read in advance.\\
-    \structure{Example:} 11947 -- Cancer or Scorpio
+\begin{frame}
+  \frametitle{Task 2: Input Types}
+
+  You should pay attention to the \structure{type and format} of the
+  input.
+
+  \vfill
+
+  \begin{itemize}
+  \item Reading A fixed number of tokens;
+  \item Reading Until a condition;
+  \item Reading until the end of the input;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Task 2: Input Types}
+  \begin{block}{Reading a fixed number of tokens}
+    The first line of the input says the total number of
+    tokens/lines/cases to read;
   \end{block}
 
 {\smaller 
@@ -217,28 +268,29 @@ using namespace std;
 
 int main()
 {
-    int n;
-    string input;
-    
+    int n;    
     cin >> n;
-    for (int i = 0; i < n; i++)
+
+    for (; n > 0; n--)
     {
-        cin >> input;
-        // Do your work!
+       // Do something
     }    
 }
 \end{verbatim}}
 
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Input Types (2)}
+\begin{frame}[fragile]
+  \frametitle{Task 2: Input Types}
   \begin{block}{Conditional Ending}
-    The input starts with a condition (number of elements, etc), and 
-    a special case indicates the end of the input.\\
-    \structure{Example:} 10141 -- Request for Proposal
+    The problem specifies a special case to end the input.
   \end{block}
 
+  \bigskip
+
+  \structure{Example -- Request for Proposal:}\\
+  The input ends with a line containing two zeroes.
+  
 {\smaller
 \begin{verbatim}
 int main()
@@ -248,7 +300,7 @@ int main()
    // throws away the \n for a future getline
    while (n!=0 || p!=0)
    {
-       // do your work!
+       // do something!
        cin >> n >> p;               
        cin.ignore(1000, '\n');
    }
@@ -256,22 +308,23 @@ int main()
 \end{verbatim}}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Input Types (3)}
-  \begin{block}{End of File}
+\begin{frame}[fragile]
+  \frametitle{Task 2: Input Types}
+  \begin{block}{Reading until the end of file}
+
+    Put your reading function (getline, cin) inside a conditional.
     The input goes on until the end of the file. No explicit
-    terminating value.\\
-    \structure{Example:} 100 -- The N+1 Problem
+    terminating value.\\ \structure{Example:} 100 -- The N+1 Problem
   \end{block}
 {\smaller
 \begin{verbatim}
 #include<string>
 int main()
 {
-    string n;
-    while (getline(cin,n))
+    int a, b;
+    while (cin >> a >> b;)
     {
-        // Solving your problem
+        // Do something!
     }
 }
 \end{verbatim}
@@ -304,29 +357,26 @@ int main()
   \item Singular or plural? (1 hours \structure{or} 1 hour)
   \item What is the precision of floating numbers? (3.051 \structure{or} 3.05)
   \item Do you round up or round down? (3.62 $\rightarrow$ 3 \structure{or} 4)
+  \item Is there more than one answer?
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Other things to pay attention in the output}
-  \includegraphics[width=0.15\textwidth]{../img/angryclient}
-  \begin{itemize}
-  \item Do you need to output the \structure{entire solution} or just
-    the \structure{solution cost}?
-  \item Are there multiple solutions? Which one must you output?
-  \end{itemize}
-\end{frame}
 
 \begin{frame}
   \frametitle{Reading the problem: Identify Traps!}
-  Be very careful to limits \alert{not stated} in the problem:
-  \begin{itemize}
-    \item \structure{3n+1}: The input gives $i$ and $j$, but there is
-      no guarantee that $i$ > $j$.
-    \item \structure{Cancer or Scorpio}: You have to take leap years
-      into account.
-  \end{itemize}
 
+  Be very careful to find traps in the problem:
+
+  \vfill
+  
+  \begin{block}{Example: 3n+1 Problem}
+    \begin{itemize}
+    \item The two numbers $i$ and $j$ in the input can come in any
+      order.
+    \item But the output must be in the same order as the input!
+    \end{itemize}
+  \end{block}
+    
   \vfill
 
   \hfill \includegraphics[width=0.25\textwidth]{../img/trap}
@@ -334,14 +384,16 @@ int main()
 
 \begin{frame}
   \frametitle{Reading the problem: Identify Traps!}
-  Other common traps:
-  \begin{itemize}
-  \item Negative numbers, No maximum limit;
-  \item Repeated Numbers;
-  \item (in graphs) circular edges, duplicate edges;
-  \item (in geometry) duplicate points;
-  \item (in paths) two paths with same cost, no solutions;
-  \end{itemize}
+
+
+  \begin{block}{Common Traps}
+    \begin{itemize}
+    \item Negative numbers, zeros;
+    \item Duplicated input, empty input;
+    \item No solutions, multiple solutions;
+    \item Other special cases;
+    \end{itemize}
+  \end{block}
 
   \hfill \includegraphics[width=0.25\textwidth]{../img/trap}
 \end{frame}
@@ -352,19 +404,19 @@ int main()
   \frametitle{Task 3: Choosing the algorithm}
   \begin{block}{3.1 What type of problem it is?}
     \begin{itemize}
-    \item Full Search: Tests all possible solutions;
-    \item Greedy: Break the solution, and try each best subsolution;
-    \item Simulation: Execute a series of steps, record the results;
-    \item Dynamic Programming: Table of partial solutions;
-    \item Counting: Calculate the number of possible solutions;
-    \item Ad-hoc: No fixed category;
+    \item {\bf Full Search:} Tests all possible solutions;
+    \item {\bf Greedy:} Break the solution, and try each best subsolution;
+    \item {\bf Simulation:} Execute a series of steps, record the results;
+    \item {\bf Dynamic Programming:} Table of partial solutions;
+    \item {\bf Counting:} Calculate the number of possible solutions;
+    \item {\bf Ad-hoc:} No fixed category;
     \item And many others;
     \end{itemize}
   \end{block}
 
   \bigskip
 
-  We will see examples of each category during the course.
+  First understand the problem; Then think; \alert{lastly code}.
 \end{frame}
 
 \begin{frame}
@@ -376,7 +428,7 @@ int main()
     has O(nk) complexity;
   \item A recursive algorithm with b recursive calls per level, and L
     levels, it should have O(bL) complexity;
-  \item This complexity can be reduced with pruning;
+  \item Use pruning to reduce the complexity of algorithms.
   \item An algorithm processing a $n*n$ matrix in O(k) per cell runs
     in $O(kn^2)$ time. 
   \end{itemize}
@@ -385,69 +437,92 @@ int main()
 \begin{frame}
   \frametitle{Task 3: Choosing the algorithm}
   
-  We will talk about data structures next class, but see this example:
+  Example of Pruning: The 8-queen problem
 
-  \begin{block}{3.2: What data structure should we use?}
-    Number of Solutions for the 8-queen problem:
+  \vfill
+  
+  \begin{block}{Pruning with a good data structure}
     \begin{itemize}
     \item 8x8 matrix, with 1 for each queen: 64*63*62... = 1.78e+14
     \item 1 queen per column: 8*8*8*... = 1.67+e8
     \item 1 queen per column/row: 8*7*6... = 40320
     \end{itemize}
-
-    \bigskip
-
-    You can remove even more solutions by pruning simetries.
   \end{block}
+
+  \bigskip
+
+  You can prune even more by removing simmetries!
 \end{frame}
 
 \subsection{Task 4: Coding}
 
-
 \begin{frame}
-  \frametitle{Task 4: Coding} 
+  \frametitle{Task 4: Coding}
 
-  \structure{Programmer Efficiency}: Different from time efficiency,
-  programmer efficiency measures how much a code taxes your mind.
+  Do you understand \structure{The Problem} and \structure{The Algorithm}?
 
-  \begin{itemize}
-  \item Understandable program! (not a lot of boiler plate)
-  \item Simpler structures to avoid hard bugs (avoid memory allocation)
-  \item Using ``Good Enough'' algorithms (avoid overcomplexity)
-  \item Use standard libraries and Macros
-  \end{itemize}
+  \bigskip
 
+  {\bf NOW} you can start writing your program.
 
-  \begin{exampleblock}{Hint: Library File}
-    Create an extra file with macros, functions and structures you use
-    often. Add to this file as you learn new techniques. 
-  \end{exampleblock}
+  \vfill
+
+  \begin{block}{}
+    If you start your program before you understand the solution, you
+    will create many more bugs.
+  \end{block}
 \end{frame}
 
 \begin{frame}
   \frametitle{Task 4: Coding}
-  \begin{block}{Hint 1: Use paper}
+  \begin{exampleblock}{Hint 1: ``The Library''}
+    Create a file with code examples that you often use.
     \begin{itemize}
-    \item Think first
-    \item Code second
+    \item Input/output functions;
+    \item Common data structures;
+    \item Difficult algorithms;
+    \end{itemize}
+   \end{exampleblock}
+
+   \begin{block}{Hint 2: Use paper}
+    \begin{itemize}
+    \item Writing your idea on paper help you visualize;
+    \item Sometimes you can find bugs this way;
     \end{itemize}
   \end{block}
-
-  \begin{exampleblock}{Hint 2: Type fast}
-    Practice typing in one of many online typing challenges.
-    \begin{itemize}
-    \item \url{www.typingtest.com}
-    \item \url{https://typing.io} -- for programmers!
-    \end{itemize}    
-  \end{exampleblock}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Task 4: Coding} 
+
+  \begin{block}{Hint 3: Programmer Efficiency}
+    Everyone knows about \structure{CPU efficiency} or
+    \structure{Memory efficiency}.
+
+    \bigskip
+
+    But \structure{Programmer Efficiency} is very important too: Don't
+    get \structure{tired/confused!}
+  \end{block}
+
+  \vfill
+  
+  \begin{itemize}
+  \item Use standard library and macros;
+  \item Your program just need to solve THIS problem;
+  \item Use simple structures and algorithms;
+  \item TDD mindset;
+  \end{itemize}
+\end{frame}
+
 
 \subsection{Testing}
 \begin{frame}
-  \frametitle{Test and Hidden Data}
+  \frametitle{Task 5,6: Test and Hidden Data}
 
-  The problem description in UVA shows the \structure{Example
-    Data}. But the actual judge also uses \alert{Hidden Data}. 
+  The example data {\bf is not} all the data!
+  
+  \bigskip
 
   \begin{columns}
     \column{0.45\textwidth}
@@ -455,15 +530,14 @@ int main()
       \begin{itemize}
       \item Useful to test input/output;
       \item Read the example data to understand the problem;
-      \item Minimal condition to say your program work;
       \end{itemize}
     \end{exampleblock}
     \column{0.45\textwidth}
     \begin{alertblock}{Hidden Data}
       \begin{itemize}
-      \item Actual judging will happen with different data;
-      \item Usually harder and longer data sets;
-      \item Including bully and worst cases;
+      \item Used by the UVA judge;
+      \item Contain bigger data sets;
+      \item Includes special cases;
       \end{itemize}
     \end{alertblock}
   \end{columns}
@@ -492,8 +566,6 @@ int main()
     \includegraphics[width=0.8\textwidth]{../img/udebug_big}
   \end{center}
 \end{frame}
-
-
 
 \section{Conclusion}
 \subsection{The End}
@@ -544,15 +616,27 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{BONUS II -- More Info on the ICPC Programming Challenge}
-  \begin{itemize}
-  \item Application deadline: 06/10 (Fri) -- 3-people team
-  \item Internet based contest: 06/24 (Fri) -- At Tsukuba
-  \item Webpage: \url{http://icpc.iisf.or.jp/2015-tsukuba/?lang=ja}
-  \end{itemize}
-  \bigskip
+  \frametitle{BONUS II -- Typing Fast}  
 
-  Ask me for details!
+  Practice typing in one of many online typing challenges.
+  \begin{itemize}
+  \item \url{www.typingtest.com}
+  \item \url{https://typing.io} -- for programmers!
+  \end{itemize}    
 \end{frame}
+
+% TODO Find info about 2017 ICPC
+
+%\begin{frame}
+%  \frametitle{BONUS II -- More Info on the ICPC Programming Challenge}
+%  \begin{itemize}
+%  \item Application deadline: 06/10 (Fri) -- 3-people team
+%  \item Internet based contest: 06/24 (Fri) -- At Tsukuba
+%  \item Webpage: \url{http://icpc.iisf.or.jp/2015-tsukuba/?lang=ja}
+%  \end{itemize}
+%  \bigskip
+
+%  Ask me for details!
+%\end{frame}
 
 \end{document}
