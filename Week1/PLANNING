@@ -1,35 +1,79 @@
+# LECTURE TODO LIST
 
-= Problemlist
-== 1D Array
-** - Jolly Jumper (1) DD
-** - Army Buddies (3) DD
+# Outline 
+- Notes
+- Motivation for Data sets (Queen, Towers of Hanoi)
 
-== 2D Array
-** - RotatedSquares (3) -- find 4 rotations of a square in a matrix.
+- In this class, we will not talk much about the theory. You have the data structure class
+  for that. Instead, we will try to talk about implementations and tricks and coding
+- The most important thing is to know your libraries. Each language has many tricks 
+  and faster and slower (or more bug-free) ways to do things
+  
+- Concrete examples:
+  - The humble array
+    - Resetting the array
+    - Queue
+    - Stack
+    - Sorting (what is it good for?)
+      - Finding specific value once -- O(n)
+      - Finding specific value many times -- O(n^2) or if you sort, O(nlogn) + O(logn) binary search
+  - Map
+    - Useful for very quick access, uniqueness test
+    - Hashes
+  - Union Find Disjoint set
+  - Bitmask
 
-== STL map
-** - File Fragmentation (3) - Store all combination of B sized fragments in a map, report the one 
-with highest frequency. D
+- Many more examples: 2.3 -- Binary tree, 2.4.3 segment tree, etc, etc, etc
+- All these data strutures should be a big part of your personal library
 
-== STL algorithm (Java collections)
-** - Contest Scoreboard (multi-fields sorting, use "sort") -- simulation (2) D
+- Hints for problems
 
-== Bit Manipulation
-** - Multitasking (1M bitset to check if a slot is free) (4)
-** - Jollybee tournament
-
-= Class themes
-== Data structures (array, matrix)
-== Libraries (map, algorithm, stack, etc)
-== Bitmask
+- epic Game of Life Movie
+- Song of the sorting method
+- Quantum Bogosort
+    
 
 
-= TODO
-- Write class skeleton
-- Fill class skeleton
-- redo 0D problems
+## Data structure: Set
+- Useful when the items are unique
+- Has certain properties: Counting, eliminating duplicates
 
-= Reference
-- [ ] List "Data Structure (+ bitmask)" problems from CPbook
-- [ ] List ideas/texts from chapter two in "frame" format
-- [ ] Rewrite week1 (chapter 2) slides
+## Data structure: Array
+- We can simplify many other data structures as arrays: Pointers, smaller matrices
+-- Example: Army Buddies
+-- Exemple Grid Successors
+
+## Data structure: Tree
+- We want to avoid using pointers as much as possible
+
+# PROBLEM HINTS
+
+- File fragmentation: find the maximum string size. Create all possible strings of that size, 
+and report the one with highest frequency. Use Map to manage solutions.
+
+- CD not a difficult problem, but a very tight time limit. Using MAP or Hashes will help 
+pass the time limit.
+
+- Army Buddies: Instead of using pointers, have an array of left buddies and an array of right buddies
+
+- WAR: Two union sets are necessary, one for friends, and one for enemies.
+
+- Grid Sucessors: We need to find a cycle, how do we do that without using a pointer? 
+(generate index from binary representation,  array of transformations using the indexes)
+
+
+
+How many ways can we fill an array?
+
+memset(v,0,5000*sizeofint())
+fill(v.begin(), v.end(),0)
+v.assign(v.size(),0)
+
+
+Method      |  executable size  |  Time Taken (in sec) |
+            |  -O0    |  -O3    |  -O0      |  -O3     |  
+------------|---------|---------|-----------|----------|
+1. memset   | 17 kB   | 8.6 kB  | 0.125     | 0.124    |
+2. fill     | 19 kB   | 8.6 kB  | 13.4      | 0.124    |
+3. manual   | 19 kB   | 8.6 kB  | 14.5      | 0.124    |
+4. assign   | 24 kB   | 9.0 kB  | 1.9       | 0.591    |
