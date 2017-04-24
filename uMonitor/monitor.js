@@ -194,6 +194,10 @@ function basicdata()
     $(".weektable").click(function(){
                 $(this).find("table").toggle();
     });
+
+    $(".weektable a").click(function (e) {
+	        e.stopPropagation();
+    });
 }
 
 function problemdata(pid, dl)
