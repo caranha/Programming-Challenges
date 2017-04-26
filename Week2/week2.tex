@@ -5,7 +5,7 @@
 \subtitle[]{Week 2 - Problem Solving Paradigms (Search)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-05-6,9\\{\tiny Last updated \today}}
+\date{2017-04-28,05-08\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -15,85 +15,11 @@
 \maketitle
 \end{frame}
 
-\subsection{Notes and Warnings}
+\subsection{Notes from Previous Classes}
 
-\begin{frame}
-  \frametitle{Last Week Results}
-  {\smaller
-    \begin{columns}[T]
-      \column{0.5\textwidth}
-      \begin{block}{Week 1}
-        Problems Solved\\
-        \begin{itemize}
-        \item Division Of Nlogonia: 28/28
-        \item Cancer Or Scorpio: 24/27
-        \item 3n+1: 25/25
-        \item Request for Proposal: 19/22
-        \end{itemize}
+\input{previousclass.tex}
 
-        \medskip
-
-        Manaba Submission: 29 Students
-      \end{block}
-      \column{0.5\textwidth}
-      \begin{block}{Week 2}
-        Problems Solved\\
-        \begin{itemize}
-          \item Jolly Jumpers: 26/26
-          \item Army Buddies: 15/21
-          \item Rotated Square: 17/17
-          \item File Fragmentation: 4/5
-          \item Contest Scoreboard: 10/11
-          \item Multitasking: 3/5
-          \item Jolibee Tournament: 7/7
-        \end{itemize}
-
-        \medskip
-
-        Manaba Submission: 25 students
-      \end{block}
-    \end{columns}
-  }
-
-  \begin{center}
-    Don't Give Up!
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Special Notes}
-  \begin{block}{If the UVA Judge is offline}
-    Sometimes the UVA Judge gets overloaded. If this happens near the
-    deadline, send your programs to MANABA before the UVA
-    deadline. Re-send your programs to UVA as soon as it becomes
-    available again.
-  \end{block}
-  \begin{block}{If uDebug result is different from UVA result}
-    uDebug is a volunteer service. Although it is very useful, its
-    correctness is not guaranteed. If you see a result that indicates
-    that uDebug is wrong, contact the maintainers of that site, they
-    will be grateful for the report.
-  \end{block}
-
-  Always try to submit programs early!
-\end{frame}
-
-\begin{frame}
-  \frametitle{Special Notes 2}
-  \begin{block}{UVA webpage infinite loop}
-    Some people have experienced problems connecting with the UVA webpage. The 
-    browser would display a message such as \alert{Redirect Loop Problem}. 
-
-    \bigskip
-
-    If you have this problem, try connecting with another browser first. 
-
-    \bigskip
-    
-    I am not sure yet what causes this problem (browser problem or page problem?) 
-    any information is appreciated.
-  \end{block}
-\end{frame}
+\subsection{Outline}
 
 \begin{frame}
   \frametitle{Quick Review of Last Week}
@@ -174,14 +100,14 @@
 
 \begin{frame}
   \frametitle{Sample Search Problems}
-  \begin{block}{Request For Proposal (Week 1)}  
-    You are given a set of proposals with the number of satisfied
-    requirements, and the total cost. \alert{Find} the proposal with
-    the highest number of requirements, and the lowest total cost.
+  \begin{block}{Traffic Lights (Week 0)}  
+    You are given a set of traffic lights with different \emph{period lengths}
+    \alert{Find} The moment in time when all trafic lights are in the
+    green period.
 
     \bigskip
 
-    \structure{Search Space:} The set of proposals in the input.
+    \structure{Search Space:} The point in time from 1 to MCM(traffic lights).
   \end{block}
 
   \begin{block}{File Fragmentation (Week 2)}
@@ -215,16 +141,16 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Thinking with search spaces: Request for Proposal}
+  \frametitle{Thinking with search spaces: File Fragmentation}
   \begin{itemize}
   \item \structure{How is the search space represented?}\\
-    For each proposal, the number of requirements and the cost are stored.
+    For each possible solution $n$, the binary representation of $n$ is stored.
   \item \structure{How are the solutions ordered?}\\
-    The array of proposals is ordered by highest number of requirements and lowest cost.
+    The solutions are ordered by the number of fragments that do not match $n$;
   \item \structure{In what order are the solutions tested?}\\
-    Highest item in the array of proposals are checked first.
+    We can test the solutions in increasing order;
   \item \structure{How many solutions are tested?}\\
-    Only the first item is returned.
+    Any item that matches all fragments is returned.
   \end{itemize}  
 
   \bigskip
@@ -364,7 +290,7 @@
   Consider this problem for a bit before I show how to solve it using search.
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Complete Search Example: UVA 725 -- Division}
   {\smaller
   \begin{block}{Full Search Solution:}
@@ -468,7 +394,7 @@ int digits(int x, int y)
 % different, the maximum range of x is -100 to 100. The Reasoning goes for 
 % Y and Z. With this we can do a triple loop with about 8M operations.
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Example 2: Simple Equations -- initial pruning}
 
   \begin{block}{}
@@ -867,28 +793,8 @@ UVA - 11936 - Through the desert - uses this logic}
 
 \section{Week's Problems}
 \subsection{Problem Discussion}
-%% TODO: Include problemlist
-\begin{frame}
-  \frametitle{Problem Discussion}
-  \begin{columns}
-    \column{0.5\textwidth}
-    \begin{itemize}
-    \item Division\\{\small Looping}
-    \item Social Constraints\\{\small Looping on permutations}
-    \item Simple Equations - EXTREME!!\\{\small Pruning}
-    \item Bars\\{\small Looping on subsets}
-    \item Rat Attack\\{\small Different PoV}
-    \end{itemize}
-    \column{0.5\textwidth}
-    \begin{itemize}
-    \item Little Bishops\\{\small Different PoV}
-    \item Water Gate Management\\{\small Similar to Bars}
-    \item Through the Desert\\{\small Bisection Method, simulation}
-    \item Dragon of Loowater\\{\small Greedy}
-    \item Shoemaker's Problem\\{\small Greedy}
-    \end{itemize}
-  \end{columns}
-\end{frame}
+
+\input{problemdiscussion.tex}
 
 
 \section{Extra}
