@@ -41,16 +41,16 @@ function parseUCT(dateString) {
 //** Data **//
 var problemlist = [
     {name:"Non-grading Problems",
-     deadline:"2017-07-29T23:59:59",
+     deadline:"2017-07-29T23:59:59+09:00",
      mlist:[3710,3565,2113]},
     {name:"Week 0: Introduction and Problem Solving",
-     deadline:"2017-04-20T14:59:59",
+     deadline:"2017-04-20T14:59:59+09:00",
      mlist:[36,2827,2595,2899,834,1146,97,388]},
     {name:"Week 1: Data Structures",
-     deadline:"2017-04-28T14:59:59",
+     deadline:"2017-04-28T14:59:59+09:00",
      mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
     {name:"Week 2: Search Problems",
-     deadline:"2017-05-12T14:59:59",
+     deadline:"2017-05-12T14:59:59+09:00",
      mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
 ];
 
@@ -62,8 +62,8 @@ var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 89879
 898796, 898791, 899199, 899172, 899115, 899311, 898826
 ];
 
-var startdate = parseUCT("2017-03-30T00:00:00");
-var enddate = parseUCT("2017-07-30T00:00:00");
+var startdate = parseUCT("2017-03-30T00:00:00+09:00");
+var enddate = parseUCT("2017-07-30T00:00:00+09:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {
