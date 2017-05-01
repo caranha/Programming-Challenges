@@ -1,0 +1,183 @@
+\begin{frame}
+  \frametitle{Problem Discussion -- At a glance}
+
+  \begin{itemize}
+  \item Dragon of Loowater -- Greedy Search
+  \item Stern Brocot Number -- Binary Search
+  \item 8 Queens -- Complete and Pruning
+  \item Bars -- Knapsack Problem
+  \item Social Constraints -- Permutation Search
+  \item Rat Attack -- Correct Representation
+  \item Simple Equations -- Input Pruning
+  \item Through the Desert -- Binary Search
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Dragon of Loowater}
+
+  {\small 
+  \begin{block}{}
+    \begin{itemize}
+    \item You are given a list of heads and a list of knights;
+    \item A knight must be paired with a head that is smaller than him;
+    \item The cost is proportional to the Knight's size;
+    \item Find the {\bf minimum cost;}
+    \end{itemize}
+  \end{block}
+  
+  \begin{itemize}
+  \item Direct Greedy Search;
+  \item Who should we try to pair first?
+    \begin{itemize}
+    \item Smallest Knight?
+    \item Smallest Head?
+    \item Biggest Knight?
+    \item Biggest Head?
+    \end{itemize}
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stern-Brocot Number}
+
+  {\small
+    \begin{block}{}
+      \begin{itemize}
+      \item Understand a system to create fractions
+      \item Find the place of a certain fraction in the system
+      \end{itemize}
+    \end{block}
+    
+    \begin{itemize}
+    \item Binary search the fractions {\bf by hand};
+    \item Create the fractons {\bf as you go}
+      \begin{itemize}
+      \item You need the \structure{parents}, \structure{current number} and \structure{target}
+      \end{itemize}
+    \end{itemize}  
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{8 Queens}
+
+  {\small
+    \begin{block}{}
+      \begin{itemize}
+      \item The position of {\bf one queen} is {\bf fixed};
+      \item Print {\bf all solutions} given the fixed queen;
+      \end{itemize}
+    \end{block}
+
+    \begin{itemize}
+    \item Permutations are your friend!
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bars}
+
+  {\small
+  \begin{block}{}
+    \begin{itemize}
+    \item Knapsack problem
+    \item Find a subset of 20 bars that add to the total size.
+    \end{itemize}
+  \end{block}
+
+  \begin{itemize}
+  \item Worst case: You need to test all $2^{20}$ combinations, for 50 test cases.
+  \item Pruning!
+    \begin{itemize}
+    \item If all bars are bigger, it is impossible;
+    \item You just need ONE solution;
+    \item etc...
+    \end{itemize}
+  \item The total size {\bf could be zero!}
+  \end{itemize}
+  
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Social Constraints}
+
+  {\small
+    \begin{block}{}
+      \begin{itemize}
+      \item $N$ people must sit in a row
+      \item Constraint 1: $i$ and $j$ must be {\bf less than} $c$ positions away
+      \item Constraint 2: $i$ and $j$ must be {\bf more than} $c$ positions away
+      \item {\bf How many} valid arrangements exist?
+      \end{itemize}
+    \end{block}
+
+    \begin{itemize}
+    \item You could try to count how many arrangements are eliminated
+      by each constraint... \alert{but that is very complicated...}
+    \item $N \leq 8$, so the number of arrangements is $8! = 40.000$.
+    \item That is a very small number!
+    \item It is okay if you test each arrangement by hand (use next\_permutation)
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rat Attack}
+
+  {\small
+    \begin{block}{}
+      \begin{itemize}
+      \item A 1024 x 1024 matrix has rats in some cells;
+      \item A bomb with power d kills rats in a 2d+1 x 2d+1 matrix;
+      \item Where is the best place to put the bomb?
+      \end{itemize}
+    \end{block}
+    \begin{itemize}
+    \item We need to check all squares in the city, including the borders.
+    \item But, if we calculate the rats all the time, this becomes very slow.
+      (1024 * 1024 * 100 * 100)
+    \item It is possible to {\bf Pre-process} the number of rats killed in each bomb position. (1024 * 1024 + 100 * 100 * 20000)
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simple Equations}
+
+  {\small
+  \begin{block}{}
+    \begin{itemize}
+    \item You are given a set of equations: $x + y + z = A, xyz = B, x^2 + y^2 + z^2 = C$
+    \item Given A, B, C, what are the values of x, y, z?
+    \end{itemize}
+  \end{block}
+
+  \begin{itemize}
+  \item You need to define limits for x, y and z, how do you do that?
+  \item The equation $x^2 + y^2 + z^2 = C$ might be a good place to start.
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Through the Desert}
+  {\small
+    \begin{block}{}
+      \begin{itemize}
+      \item Simulate a car going through the desert;
+      \item Find the least amount of starting fuel needed to win.
+      \end{itemize}
+    \end{block}
+
+    \begin{itemize}
+    \item You could try to calculate the amount of fuel needed in each
+      section of the trip (between gas stations);
+    \item Or you could just simulate the trip, and make a binary
+      search based on the amount of fuel left;
+    \end{itemize}
+  }
+\end{frame}

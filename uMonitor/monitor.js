@@ -13,30 +13,57 @@
 
 // Probably still nee
 
-
+// UCT date parsing incantation from Norman Gray
+// http://stackoverflow.com/questions/439630/how-do-you-create-a-javascript-date-object-with-a-set-timezone-without-using-a-s
+function parseUCT(dateString) {
+    var timebits = /^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})(?::([0-9]*)(\.[0-9]*)?)?(?:([+-])([0-9]{2})([0-9]{2}))?/;
+    var m = timebits.exec(dateString);
+    var resultDate;
+    if (m) {
+        var utcdate = Date.UTC(parseInt(m[1]),
+                               parseInt(m[2])-1, // months are zero-offset (!)
+                               parseInt(m[3]),
+                               parseInt(m[4]), parseInt(m[5]), // hh:mm
+                               (m[6] && parseInt(m[6]) || 0),  // optional seconds
+                               (m[7] && parseFloat(m[7])*1000) || 0); // optional fraction
+        // utcdate is milliseconds since the epoch
+        if (m[9] && m[10]) {
+            var offsetMinutes = parseInt(m[9]) * 60 + parseInt(m[10]);
+            utcdate += (m[8] === '+' ? -1 : +1) * offsetMinutes * 60000;
+        }
+        resultDate = new Date(utcdate);
+    } else {
+        resultDate = null;
+    }
+    return resultDate;
+}
 
 //** Data **//
 var problemlist = [
     {name:"Non-grading Problems",
-     deadline:"2017-07-30T00:00:01+09:00",
-     mlist:[3710,3565,2113,691]},
+     deadline:"2017-07-29T23:59:59+09:00",
+     mlist:[3710,3565,2113]},
     {name:"Week 0: Introduction and Problem Solving",
-     deadline:"2017-04-20T15:00:01+09:00",
+     deadline:"2017-04-20T14:59:59+09:00",
      mlist:[36,2827,2595,2899,834,1146,97,388]},
     {name:"Week 1: Data Structures",
-     deadline:"2017-04-28T15:00:01+09:00",
+     deadline:"2017-04-28T14:59:59+09:00",
      mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
+    {name:"Week 2: Search Problems",
+     deadline:"2017-05-12T14:59:59+09:00",
+     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
 ];
+
 var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 898790, 
 898792, 898794, 898798, 898799, 898800, 898801, 898803, 898804, 898805, 898806, 
 898807, 898809, 898810, 898812, 898815, 898817, 898818, 898819, 898820, 898821, 
 898822, 898826, 898830, 898835, 898838, 898850, 898863, 899020, 899005, 898949,
 898839, 898944, 899051, 898942, 899097, 898811, 898802, 899086, 899051, 899183,
-898796, 898791, 899199, 899172
+898796, 898791, 899199, 899172, 899115, 899311, 898826
 ];
 
-var startdate = Date.parse("2017-03-30T00:00:00+09:00");
-var enddate = Date.parse("2017-07-30T00:00:00+09:00");
+var startdate = parseUCT("2017-03-30T00:00:00+09:00");
+var enddate = parseUCT("2017-07-30T00:00:00+09:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {
@@ -154,7 +181,7 @@ function render() {
 	var mlist = problemlist[i].mlist
 	for (var j = 0; j < mlist.length; j++) {
 	    id = mlist[j];
-	    problemdata(id,Date.parse(problemlist[i].deadline));
+	    problemdata(id,parseUCT(problemlist[i].deadline));
 	}
     }
 }
@@ -165,13 +192,16 @@ function basicdata()
     // empty tables, problem ids
     var htmlBuffer = [];
     for (var i = 0; i < problemlist.length; i++) {
+        
+        date = parseUCT(problemlist[i].deadline);
+        datestr = date.toLocaleString();
 
-	timeleft = Date.parse(problemlist[i].deadline) - (Date.now());
+	timeleft = parseUCT(problemlist[i].deadline) - (Date.now());
 	timeleft = timeleft > 0 ? interval(timeleft)+" from now": "expired";
 
 	htmlBuffer.push("<div class=\"weektable\" id=\"weektable"+i+"\">");
 	htmlBuffer.push("<span class=\"weektitle\">"+problemlist[i].name+"</span><br>");
-	htmlBuffer.push("<span class=\"deadline\">Deadline: UCT "+problemlist[i].deadline+" ("+timeleft+")</span>");
+	htmlBuffer.push("<span class=\"deadline\">Deadline: "+datestr+" ("+timeleft+")</span>");
 	htmlBuffer.push("<div class=\"deadline\" id=\"solvedlevel"+i+"\">Loading</div>");
 	htmlBuffer.push("<table class=\"problemtable\" id=\"probtable"+i+"\">");
 	htmlBuffer.push("<tr class=\"tablehead\"><td>#</td><td>Name</td>");
@@ -193,6 +223,10 @@ function basicdata()
     document.getElementById("problemtable").innerHTML = htmlBuffer.join('\n');
     $(".weektable").click(function(){
                 $(this).find("table").toggle();
+    });
+
+    $(".weektable a").click(function (e) {
+	        e.stopPropagation();
     });
 }
 
@@ -301,7 +335,7 @@ function mysubmissions()
 		 for (var i=0; i < problemlist.length; i++) {
 		     var start = Math.floor(startdate/1000);
 		     var end = Math.floor(
-			 Date.parse(problemlist[i].deadline)/1000);
+			 parseUCT(problemlist[i].deadline)/1000);
 		     var mlist = problemlist[i].mlist;
 		     for (var j=0; j < mlist.length; j++) {
 			 var pid = mlist[j];
