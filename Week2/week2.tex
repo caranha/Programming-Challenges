@@ -378,8 +378,13 @@ int digits(int x, int y)
 \begin{frame}
   \frametitle{Complete Search Example 2: Simple Equations}
   \begin{block}{Problem Summary -- UVA 11565}
-    Find $x,y,z$ so that $x+y+z=A$, $x*y*z=B$, $x^2+y^2+C^2=C$, $1
-    \leq A,B,C \leq 10000$.
+    Find $x,y,z$ so that:
+    \begin{itemize}
+    \item $x+y+z=A$,
+    \item $x*y*z=B$,
+    \item $x^2+y^2+z^2=C$,
+    \item $1 \leq A,B,C \leq 10000$.
+    \end{itemize}
 
     \bigskip
   \end{block}
@@ -398,8 +403,10 @@ int digits(int x, int y)
   \frametitle{Example 2: Simple Equations -- initial pruning}
 
   \begin{block}{}
-    Consider $x^2 + y^2 + x^2 = C$. Since $C \leq 10000$, the maximum
-    range for $x,y,z$ must be $-100, 100$.
+    Consider $x^2 + y^2 + z^2 = C$.
+
+    Since $C \leq 10000$, and $x^2,y^2,z^2 \geq 0$, if $y =
+    z = 0$ then the range for $x$ must be $-100, 100$.
     
     \bigskip
 
