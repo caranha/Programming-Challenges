@@ -224,10 +224,6 @@ function basicdata()
     $(".weektable").click(function(){
                 $(this).find("table").toggle();
     });
-
-    $(".weektable a").click(function (e) {
-	        e.stopPropagation();
-    });
 }
 
 function problemdata(pid, dl)
@@ -246,6 +242,10 @@ function problemdata(pid, dl)
 	url = "http://uhunt.felix-halim.net/api/p/subs/"+
 	    pdata.pid+"/"+start+"/"+end;
 	ajax(url,classdata);
+
+    	$(".weektable a").click(function (e) {
+		 e.stopPropagation();
+    	});
     })
 }
 
