@@ -5,7 +5,7 @@
 \subtitle[]{Week 3 - Dynamic Programming (Part I)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-05-13,16\\{\tiny Last updated \today}}
+\date{2017-05-12,15\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -15,111 +15,78 @@
 \maketitle
 \end{frame}
 
-\subsection{Notes and Warnings}
+\subsection{Notes from Previous Classes}
+
+\input{previousclass.tex}
+
+\subsection{Outline}
 
 \begin{frame}
-  \frametitle{Last Week Results}
-  {\tiny
-    \begin{columns}[T]
-      \column{0.33\textwidth}
-      \begin{block}{Week 0 - Simple Problems}
-        Problems Solved\\
-        \begin{itemize}
-        \item Division Of Nlogonia: 28/28
-        \item Cancer Or Scorpio: 24/27
-        \item 3n+1: 25/25
-        \item Request for Proposal: 19/22
-        \end{itemize}
+  \frametitle{Quick Review of Last week}
+  \begin{itemize}
+  \item Definition of a \structure{Search Problem}
+  \item Three types of algorithms for search problems:
+    \begin{itemize}
+    \item Complete Search
+    \item Divide and Conquer
+    \item Greedy Search
+    \end{itemize}
+  \end{itemize}
 
-        \medskip
-
-        Manaba Submission: 29 Students
-      \end{block}
-      \column{0.33\textwidth}
-      \begin{block}{Week 1 - Data Structures}
-        Problems Solved\\
-        \begin{itemize}
-          \item Jolly Jumpers: 27/27
-          \item Army Buddies: 16/22
-          \item Rotated Square: 18/18
-          \item File Fragmentation: 5/6
-          \item Contest Scoreboard: 10/11
-          \item Multitasking: 5/7
-          \item Jolibee Tournament: 10/10
-        \end{itemize}
-
-        \medskip
-
-        Manaba Submission: 25 students
-      \end{block}
-      \column{0.33\textwidth}
-      \begin{block}{Week 2 - Search Problems}
-        Problems Solved (as of Thu 17:00)\\
-        \begin{itemize}
-        \item Division: 19/22
-        \item Social Constraints: 9/9
-        \item Simple Equations: 1/7
-        \item Bars: 11/13
-        \item Rat Attack: 9/10
-        \item Little Bishops: 2/2
-        \item Water Gate: 3/3
-        \item Through the Desert: 4/4
-        \item Dragon of Loowater: 12/13
-        \item Shoemaker's Problem: 5/6
-        \end{itemize}
-      \end{block}
-    \end{columns}
-  }
-
-  \begin{center}
-    Don't Give Up!
-  \end{center}
+  \bigskip
+  
+  \begin{block}{}
+    This week we introduce the last, and arguably most important
+    algorithm for search problems: \structure{Dynamic Programming}
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Special Notes}
-\end{frame}
-
-\section{Definition}
 \subsection{Definition of Dynamic Programming}
 \begin{frame}
-  \frametitle{Dynamic Programming (DP)}
+  \frametitle{What is Dynamic Programming (DP)?}
 
-  \structure{Dynamic programming (DP)} is a more challenging, but much
-  more versatile, approach for \structure{search algorithms}.
+  \structure{DP} is technique for \structure{Search Problems} which is
+  based on the idea of \alert{building partial solutions}.
 
-  \vfill
+  \bigskip
 
-  \begin{block}{Basic idea of DP}
-    Define a table with all unique search states of a problem, and 
-    fill that table (in a top-down or bottom up fashion) until the 
-    desired solution is found.
-  \end{block}
-
-  \begin{exampleblock}{Key skills needed for DP}
+  \begin{block}{Basic Idea of DP}
+    Create a 2D table where:
     \begin{itemize}
-    \item Determine state space for a problem;
-    \item Determine transition between spaces;
+    \item The rows are possible choices for the problem;
+    \item The columns are sub-solutions for the problem;
     \end{itemize}
-  \end{exampleblock}
+
+    \medskip
+    First, fill the first column with each possible choice.\\
+
+    \medskip
+    
+    Second, fill column n+1 with the combination of \structure{best
+      solution for n and best choice for n+1|n}.
+  \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Uses of DP} 
+  \frametitle{Characteristics of DP:}
 
-  DP is most often used in \emph{optimization} or \emph{counting}
-  problems.
+  \begin{block}{Used for \emph{optimization} or \emph{counting} problems}
+    \begin{itemize}
+    \item ``Count the number of solutions...''
+    \item ``Find the minimum cost...''
+    \item ``Find the maximum length...''
+    \end{itemize}
+  \end{block}
 
-  \vfill
-
-  If your problem can be described as:
-  \begin{itemize}
-  \item Maximize this...
-  \item Minimize that...
-  \item Count the ways to do...
-  \end{itemize}
-  Then there is a very high chance that you should use DP to solve it.
+  \begin{exampleblock}{DP depends on \emph{number of states} and \emph{induction}}
+      \begin{itemize}
+      \item The \structure{complexity} of DP is based on the size of the table;
+      \item The \structure{correctness} of DP is based on the idea of induction;
+      \end{itemize}
+  \end{exampleblock}  
 \end{frame}
+
+\section{Initial Example}
 
 \subsection{Introductory Problem: Wedding}
 
@@ -129,16 +96,29 @@
     \begin{block}{}
       Best way to understand DP is to \structure{do a lot of examples!}
     \end{block}
+
+    \vfill
     
-    Problem outline:
+    Buying problem:
     \begin{itemize}
-      \item Consider budget $M < 200$ to buy $C < 20$ classes;
-      \item Each class has $K_i < 20$ items, each with different cost;
-      \item \structure{Goal:} Choose one item from each class so that
-        the money used is maximum; \alert{Do not go over the budget!}
+    \item Buy one of each $C$ classes of items.
+    \item Maximize the cost, but \structure{do not exceed the budget} $M$
     \end{itemize}
 
-    \hfill \includegraphics[width=0.25\textwidth]{../img/weddingdress}\\
+    \medskip
+
+    \begin{columns}
+      \column{0.7\textwidth}
+      \begin{itemize}
+      \item $M < 200$, $C < 20$;
+      \item Each class has $K_i < 20$ options;
+      \item Total possible choices: $20^{20}$!
+      \end{itemize}
+
+      \column{0.3\textwidth}
+      \includegraphics[width=.8\textwidth]{../img/weddingdress}\\
+    \end{columns}
+    \vfill
     {\tiny
     \hfill Image CC-By-2.0 by \url{https://www.flickr.com/photos/vancouver125/5634967507}}
 
@@ -185,18 +165,23 @@
   \bigskip
 
   One approach: For each class, choose most expensive item:\\
-  $(8+10+1)$ -- It works! ... Not if $M = 12$...
+  \begin{itemize}
+  \item $(8+10+1)$ -- It works!
+  \item But if $M = 12$... It does not work anymore.
+  \end{itemize}
 
+    
   \medskip
 
-  How about \structure{divide and conquer}?
+  Also no idea for \structure{divide and conquer}?
 
 \end{frame}
 
 \begin{frame}
   \frametitle{Wedding Shopping (11450) -- Complete search}
-  How can we enumerate the search space? (all the solutions)
+  Let's image a solution using \structure{Complete Search}:
 
+  {\small
   \begin{block}{Recursive Approach}
     \begin{itemize}
     \item Function \structure{shop(m,g)} discovers the best item $k$
@@ -208,10 +193,10 @@
     \end{itemize}
 
   \end{block}
-
+  }
   \vfill
   
-  This works! ... but TLE.
+  This works! ... but Time Limit Exceeded.
 \end{frame}
 
 \begin{frame}
@@ -319,7 +304,7 @@
 %   - Different from divide and conquer, in DC the sub problems are distinct
 %%%%%%%%%%%%%
 
-\begin{frame}[fragile,single-slide]
+\begin{frame}[fragile]
   \frametitle{Wedding Shopping -- top-down DP}
 
 {\smaller
@@ -398,7 +383,7 @@ shop(m,g):
   \end{itemize}}
 \end{frame}
 
-\begin{frame}[fragile,singleframe]
+\begin{frame}[fragile]
   \frametitle{Wedding Shopping -- bottom-up DP}
   M=10, cost[1] = [2,4], cost[2] =(4,6), G3=(1,3,2,1)
   \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -562,7 +547,7 @@ for g in (0:G-1)
   \end{itemize}}  
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Example 2: Apple Field -- Let's see some code}
   {\smaller
 \begin{verbatim}
@@ -621,7 +606,7 @@ for i in (1:m):
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Search Approaches for 1D Range Sum}
   \begin{block}{Naive Complete Search O($n^3$)}
 
@@ -645,7 +630,7 @@ for i in (0:n):
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Search Approaches for 1D Range Sum}
   \begin{block}{Better Complete Search -- $O(n^2)$}
 
@@ -672,7 +657,7 @@ for (i in 0:n):
   We can do better!
 \end{frame}
 
-\begin{frame}[singleslide,fragile]
+\begin{frame}[fragile]
   \frametitle{1D Sum -- Kadane's Greedy Algorithm}
   \begin{block}{Greedly Max Sum O(n)}
       {\smaller
@@ -721,7 +706,7 @@ for (i in 0:n):
   How big would be a complete search for this problem?
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Maximum 2D Sum -- Complete Search}
 
 \begin{block}{}
@@ -746,7 +731,7 @@ for i in (0:n):
 }
 \end{frame}
 
-\begin{frame}[fragile, singleslide]
+\begin{frame}[fragile]
   \frametitle{Max 2D sum using partial sums}
   \begin{block}{}
     The ``partial sum'' algorithm used for 1D arrays can also be
@@ -796,7 +781,7 @@ for i,j in (0:n)(0:n):
   A = \{ \alert{-7}, 10, 9, \alert{2}, \alert{3}, \alert{8}, 8, 1\}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Longest Increasing Subsequence: Complete Search}
 
   The complete search for the LIS problem requires you to test 
@@ -859,7 +844,7 @@ for (i in 0:1<<n):
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Longest Increasing Subsequence -- DP approach}
   {\small
 \begin{verbatim}
@@ -882,7 +867,7 @@ for i in (1:n):
 \end{frame}
 
 \subsection{Knapsack problem}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Classic DP: 0-1 Knapsack Problem}
   {\smaller
   \begin{block}{Problem Definition -- also known as \emph{subset sum}}
@@ -959,7 +944,7 @@ value(id,size):
   \end{exampleblock}
 \end{frame}
 
-\begin{frame}[fragile,singleframe]
+\begin{frame}[fragile]
   \frametitle{Coin Change -- Complete Search Algorithm}
   {\smaller
   \begin{block}{Recursive Complete Search Again!}
@@ -1045,52 +1030,43 @@ Can you see the many overlapping subproblems?
 \end{frame}
 
 \subsection{This Week's Problems}
-\begin{frame}
-   \frametitle{This Week's Problems}
-   \begin{itemize}
-   \item Jill Rides Again -- Subset Sum (1D)
-   \item Maximum Sum on a Torus -- Subset Sum (2D)
-   \item Strategic Defense Initiative -- Longest Increasing Subsequence
-   \item Is bigger smarter? -- Longest Increasing Subsequence
-   \item Ferry Loading -- Knapsack
-   \item Unidirectional TSP -- Pathfinding
-   \item Flight Planner -- Pathfinding
-   \item e-Coins -- Coin Change
-   \end{itemize}
-\end{frame}
 
-\subsection{Extra}
-\begin{frame}
-  \frametitle{Extra -- ICPC Call to Arms!}
+\input{problemdiscussion.tex}
 
-  {\smaller
-  If you can solve complete search and DP problems quickly, \alert{you
-  probably can reach top 50\%} at the ICPC first round. Why not try it this year?
-  
-  \begin{block}{ICPC team registration -- Deadline 06/10 -- Contest 06/23}
-    Send message to caranha@cs.tsukuba.ac.jp with the following information:
-    \begin{itemize}
-    \item Team Name -- roman letters, numbers and symbols
-    \item Team Member 1 -- Name (letters), Name (japanese), e-mail, student ID
-    \item Team Member 2 -- Name (letters), Name (japanese), e-mail, student ID
-    \item Team Member 3 -- Name (letters), Name (japanese), e-mail, student ID
-    \end{itemize}
-  \end{block}}
-
-
-  {\tiny
-  \begin{itemize}
-  \item Japan 1st Round contest 2011 --\\
-    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2011&year_min=2011}
-  \item Japan 1st Round contest 2012 --\\
-    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2012&year_min=2012}
-  \item Japan 1st Round contest 2013 --\\
-    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2013&year_min=2013}
-  \item Japan 1st Round contest 2014 --\\
-    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2014&year_min=2014}
-  \end{itemize}}
-\end{frame}
 \end{document}
+
+%\subsection{Extra}
+%\begin{frame}
+%  \frametitle{Extra -- ICPC Call to Arms!}
+
+%  {\smaller
+%  If you can solve complete search and DP problems quickly, \alert{you
+%  probably can reach top 50\%} at the ICPC first round. Why not try it this year?
+%  
+%  \begin{block}{ICPC team registration -- Deadline 06/10 -- Contest 06/23}
+%    Send message to caranha@cs.tsukuba.ac.jp with the following information:
+%    \begin{itemize}
+%    \item Team Name -- roman letters, numbers and symbols
+%    \item Team Member 1 -- Name (letters), Name (japanese), e-mail, student ID
+%    \item Team Member 2 -- Name (letters), Name (japanese), e-mail, student ID
+%    \item Team Member 3 -- Name (letters), Name (japanese), e-mail, student ID
+%    \end{itemize}
+%  \end{block}}
+
+
+%  {\tiny
+%  \begin{itemize}
+%  \item Japan 1st Round contest 2011 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2011&year_min=2011}
+%  \item Japan 1st Round contest 2012 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2012&year_min=2012}
+%  \item Japan 1st Round contest 2013 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2013&year_min=2013}
+%  \item Japan 1st Round contest 2014 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2014&year_min=2014}
+%  \end{itemize}}
+%\end{frame}
+%\end{document}
 
 
 
