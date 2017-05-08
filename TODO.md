@@ -2,14 +2,9 @@
 
 ## General
 
-**New problem discussion format**:  
-At each class B. For each problem, explain the problem,
-then let a volunteer student explain a solution (or candidate solution). One student cannot
-explain more than one problem unless.  
-If no student volunteer, give some hints but do not solve the problem. Give more detailed
-hints if a student volunteers with an incomplete answer.
+-- Move Class 4 (DP 2) to the end of the course
+-- New DP2 class uses chapter 8 for "more hard DP problems", mixing DP with other themes.
 
-(By class 4, students kinda gave up on participating :-()
 
 ## Monitor.js
 * Add a query for "students who solved 0, 1, 2, 3, 4+ problems

@@ -3,16 +3,16 @@ class at the University of Tsukuba.
 
 
 # Course Outline:
-- **Week1** -- Introduction/Ad Hoc Problems
-- **Week2** -- Data Structures, Libraries, Bitmask
-- **Week3** -- Search Problems: Complete, D&C, Greedy
-- **Week4** -- Dynamic Programming: Classic, Simple
-- **Week5** -- Dynamic Programming: TSP, More complex ones
-- **Week6** -- Graphs Problems I
-- **Week7** -- Graphs Problems II
-- **Week8** -- Maths Problems
+- **Week0** -- Introduction/Ad Hoc Problems
+- **Week1** -- Data Structures, Libraries, Bitmask
+- **Week2** -- Search Problems: Complete, D&C, Greedy
+- **Week3** -- Dynamic Programming: Classic, Simple
+- **Week4** -- Dynamic Programming: TSP, More complex ones
+- **Week5** -- Graphs Problems I
+- **Week6** -- Graphs Problems II
+- **Week7** -- Maths Problems
+- **Week8** -- Geometry Problems
 - **Week9** -- String Problems
-- **Week10** -- Geometry Problems
 
 # Links
 
