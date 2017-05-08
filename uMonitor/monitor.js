@@ -52,6 +52,9 @@ var problemlist = [
     {name:"Week 2: Search Problems",
      deadline:"2017-05-12T14:59:59+09:00",
      mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
+    {name:"Week 3: Dynamic Programming I",
+     deadline:"2017-05-19T14:59:59+09:00",
+     mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
 ];
 
 var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 898790, 
