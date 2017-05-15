@@ -1,5 +1,4 @@
-18:% TODO: Fix many small typos in code
-19:% TODO: Add Function to find a new point based on two points and an additive angle (circle)
-20:% TODO: Add Function to obtain an angle based on two line segments (AOC in order) -- this already exists, reinforce
-762:      % TODO: Replace suffix trie image with one of my own design
-923:      % TODO: Japanese for pre-order visit
+11:%% TODO: Fix makefile so that chapters without TODO do not cause errors.
+270:      %% TODO: Explore this relationship more in the future
+379:% TODO: Add a DP math example (Yahtzee?)
+391:    %% TODO: Add an string problem

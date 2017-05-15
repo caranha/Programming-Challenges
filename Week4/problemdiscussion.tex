@@ -1,0 +1,147 @@
+\begin{frame}
+  \frametitle{This Week's Problems}
+  \begin{itemize}
+  \item Dominator;
+  \item Knight in a War grid;
+  \item Wetlands in Florida;
+  \item Battleships;
+  \item Pick up Sticks;
+  \item Place the Guards;
+  \item Street Directions;
+  \item Dominos;
+  \item Freckles;
+  \item Artic Network;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (0)}
+  \begin{itemize}
+  \item All the problems this week (and next week!) include graphs,
+    and probably need BFS and/or DFS;
+
+    \medskip
+
+  \item Prepare a ``template'' of an Adjacency list and DFS/BFS, and
+    put it in the code before starting;
+
+    \medskip
+
+  \item Try to draw the problem on paper before coding;
+
+    \medskip
+
+  \item Remember to test ``tricky'' cases: Graphs with 1 node,
+    disconnected graphs, self-edges, multi-edges;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (1)}
+  {\smaller
+  \begin{block}{Dominator}
+    \begin{itemize}
+    \item Remember: A node is not dominated by anyone if it is not connected to the root (node 0);
+    \item Basic algorithm discussed in class: Calculate all nodes
+      reachable from root. Then remove one node at a time, and node which ones are not reachable anymore;
+    \item If removing node $i$ makes node $j$ not reachable, then $i$ dominates $j$.
+    \item To ``remove'' a node, modify the DFS(root,i) so that it returns if $i$ is reached;
+    \end{itemize}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (2)}
+  {\smaller
+  \begin{block}{Knight in a War Grid}
+    \begin{itemize}
+    \item The problem only wants to know which squares are reachable,
+      it is not worried about minimum distance;
+    \item Be careful, $M$ or $N$ can be zero!
+    \item Be careful, if $M == N$, the graph becomes multigraph!
+    \item This graph is implicit, the connections are given by the
+      knight step, the board size, and the impossible squares;
+    \end{itemize}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (3)}
+  {\smaller
+  \begin{block}{Wetlands of Florida}
+    \begin{itemize}
+      \item Make a graph with 0 and 1 indicating water or no water;
+      \item Flood-fill the graph at the requested location;
+      \item Multiple-case input is a bit hard to read, make sure to test that;
+    \end{itemize}
+  \end{block}
+  \begin{block}{Battleships}
+    \begin{itemize}
+      \item Scan the graph (double fors). 
+      \item For each unvisited 'x' or '@', flood fill the ship (mark
+        visited) and add the ship;
+      \item A ship with only @'s should not be counted.
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (4)}
+  {\smaller
+  \begin{block}{Pick up sticks}
+    \begin{itemize}
+    \item The input gives you directed nodes. 
+    \item Try to build a topological order (follow the class code)
+    \item Any order is fine. If you find a cycle, print ``impossible''
+    \end{itemize}
+  \end{block}
+  \begin{block}{Palace Guards}
+    \begin{itemize}
+    \item Each junction is a node, each street is an edge. 
+    \item We have junctions with guards and without guards. (No guard can be near each other)
+    \item There is a solution if the graph is bipartite!
+    \item How do you calculate the smallest number of guards?
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (5)}
+  {\smaller
+  \begin{block}{Street Directions}
+    \begin{itemize}
+    \item We have to convert two way streets to one way streets 
+    \item Undirected graph to directd graph. 
+    \item When is a 2-way street \alert{necessary}?
+    \item How can you generate 1 way streets?
+    \item Hint: you need to draw the graph on paper
+    \end{itemize}
+  \end{block}
+  \begin{block}{Dominos}
+    \begin{itemize}
+    \item The dominos falling is a directed graph. 
+    \item Each domino that falls, we visit one node.
+    \item How many nodes do we need to start, to visit all nodes?
+    \end{itemize}
+  \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints (6)}
+  \begin{block}{Freckles}
+    \begin{itemize}
+    \item The problem requires the minimum ink (cost) among all freckles;
+    \item This is straight up MST code;
+    \item Be careful when rounding up values;
+    \end{itemize}    
+  \end{block}
+  \begin{block}{Arctic Network}
+    \begin{itemize}
+    \item Also wants to calculate the MST (minimum radio power necessary);
+    \item However, we can use $S$ ``satellite'' links, which cost 0;
+    \item Remember that two stations need a satellite link to talk;
+    \end{itemize}
+  \end{block}
+\end{frame}

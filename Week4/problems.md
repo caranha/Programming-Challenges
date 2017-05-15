@@ -1,21 +1,18 @@
-Week 4 - Dynamic Programming 2
+Week 5 - Graph Problems I
 ==============================
 
-# Sample problems
-10943 - How do you add (Book)
+# Just Search:
+11902 -- dominator (easy) -- 3053 (Just search)
+11906 -- Knight in a War Grid (medium) -- 3057
 
-# TSP
-10496 - Collecting Beepers -- TSP, Manhattan Distance;
-11284 - Shopping Trip - TSP with option of not visiting certain cities;
-        At each step, we have one more option: go home early;
-10721 - Bar Codes
-10003 - Cutting Strings - 944 (DP discussed in class, easy)
-1261 - String Popping (3702) - top down DP with set(string) to store state
+469 -- Wetlands of Florida (easy) -- 410
+11953 -- Battleships (medium) -- 3104
 
-10036 - Divisibility: (977) - Add/subtract numbers (N < 10000) to divide by K.
-        state: (i, modk), which modules we can reach at each state (+,-)
-	bad state (i, comb(N)) - too many N
+11686 -- Pick up Sticks (easy) -- 2733
+11080 -- Place the Guards (easy) -- 2021
 
-(1851) - Marks distribution (sum, same as how do you add)
+610 -- Street Directions (hard) -- 551
+11504 -- Dominos (medium) -- 2499
 
-(2402) - Squares (memoization/recursive of squares to sum to a number)
+10034 -- Freckles (very easy) -- 975 (Min spanning Tree)
+10369 -- Arctic Network (Medium) -- 1310

@@ -1,4 +1,4 @@
-TARGET = week9
+TARGET = week4
 TEXFILES = $(TARGET).tex
 
 $(TARGET).pdf: $(TEXFILES) TODO

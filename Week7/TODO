@@ -1,2 +1,22 @@
-8:% TODO: Silly Makefile
-952:%% TODO: Problem Discussion and example problems
+18:% TODO: Fix many small typos in code
+19:% TODO: Add Function to find a new point based on two points and an additive angle (circle)
+20:% TODO: Add Function to obtain an angle based on two line segments (AOC in order) -- this already exists, reinforce
+163:  %% TODO: Add some degeneracy image examples
+244:    %% TODO: Add image for Euclidean distance
+437:  % TODO: Add an image explaining the u conditional
+438:  % TODO: This is actually distance between point and segment. FIX.
+464:  % TODO: Explain why angle between segment works
+465:  % TODO: Make appropriate picture to illustrate angle btw segments
+504:  % TODO: Add image for this problem
+505:  % TODO: Add code for this problem
+536:  % TODO: Add image for this problem
+537:  % TODO: Add code for this problem
+586:      % TODO: Make my own image
+602:      % TODO: Make my own image, explain why these circles work.
+603:      % TODO: If I have 2 points on a circle, how do I calculate the angle between them?
+660:% TODO: Visual explanation of Heron's formula
+665:    % TODO: Add own image of incircle and outcircle triangles
+666:    % TODO: Explain how the calculations for the incircle work
+906:  % TODO: Add an image explaining Polygon cutting
+942:  % TODO: Add an image explaining the Convex Hull
+1028:%% TODO: Add polygon problem example

@@ -1,21 +1,21 @@
-Week 9 - Strings
-===============================
+Week 4 - Dynamic Programming 2
+==============================
 
-8 problems:
+# Sample problems
+10943 - How do you add (Book)
 
-# Ad Hoc (4)
-- Immediate Decodability (Easy) (585)
-- Caesar Cypher (495)
-- Ensuring Truth (2342)
-- Smeech (2266)
+# TSP
+10496 - Collecting Beepers -- TSP, Manhattan Distance;
+11284 - Shopping Trip - TSP with option of not visiting certain cities;
+        At each step, we have one more option: go home early;
+10721 - Bar Codes
+10003 - Cutting Strings - 944 (DP discussed in class, easy)
+1261 - String Popping (3702) - top down DP with set(string) to store state
 
-# Dynamic Programming (2)
+10036 - Divisibility: (977) - Add/subtract numbers (N < 10000) to divide by K.
+        state: (i, modk), which modules we can reach at each state (+,-)
+	bad state (i, comb(N)) - too many N
 
-- String Partition: Largest sum of integers from digit string (2225)
-- Prince and Princess: Longest Common Subsequence (1576)
+(1851) - Marks distribution (sum, same as how do you add)
 
-# String Matching (1)
-- Power Stings (1239) (Find smallest s in s+s+s+...)
-
-# Suffix Array (1)
-- Life Forms  (2048) (Find LCS present in more than half the strings)
+(2402) - Squares (memoization/recursive of squares to sum to a number)
