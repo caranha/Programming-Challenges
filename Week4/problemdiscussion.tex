@@ -1,147 +1,158 @@
 \begin{frame}
   \frametitle{This Week's Problems}
   \begin{itemize}
-  \item Dominator;
-  \item Knight in a War grid;
-  \item Wetlands in Florida;
-  \item Battleships;
-  \item Pick up Sticks;
-  \item Place the Guards;
-  \item Street Directions;
-  \item Dominos;
-  \item Freckles;
-  \item Artic Network;
+  \item Dominator
+  \item Forwarding Emails
+  \item Ordering
+  \item Place the Guards
+  \item Doves and Bombs
+  \item Come and Go
+  \item ACM Contest and Blackout
+  \item Ancient Messages
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (0)}
-  \begin{itemize}
-  \item All the problems this week (and next week!) include graphs,
-    and probably need BFS and/or DFS;
 
-    \medskip
+  {\smaller
+  \begin{block}{Library!}
+    For many of these problems, you will use a lot of repeated code:
+    \begin{itemize}
+    \item Visited Node arrays;
+    \item Adjacent lists;
+    \item Parent nodes;
+    \end{itemize}
 
-  \item Prepare a ``template'' of an Adjacency list and DFS/BFS, and
-    put it in the code before starting;
+    \bigskip
 
-    \medskip
-
-  \item Try to draw the problem on paper before coding;
-
-    \medskip
-
-  \item Remember to test ``tricky'' cases: Graphs with 1 node,
-    disconnected graphs, self-edges, multi-edges;
-  \end{itemize}
+    Prepare a template for the most common codes you use, and
+    copy-paste it whenever necessary!
+  \end{block}
+  \begin{block}{Tricky Cases}
+    \begin{itemize}
+    \item Graphs with 1 or 0 Vertex
+    \item Unconnected Graphs
+    \item Self Loops
+    \item Double edges
+    \end{itemize}
+  \end{block}
+  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Problem Hints (1)}
+  \frametitle{Problem Hints (1)}  
   {\smaller
-  \begin{block}{Dominator}
-    \begin{itemize}
-    \item Remember: A node is not dominated by anyone if it is not connected to the root (node 0);
-    \item Basic algorithm discussed in class: Calculate all nodes
-      reachable from root. Then remove one node at a time, and node which ones are not reachable anymore;
-    \item If removing node $i$ makes node $j$ not reachable, then $i$ dominates $j$.
-    \item To ``remove'' a node, modify the DFS(root,i) so that it returns if $i$ is reached;
-    \end{itemize}
-  \end{block}
+    \begin{block}{Dominator}
+      \begin{itemize}
+        \item If All paths from 0 to node B pass through node A, then node A {\bf dominates} node B;
+        \item For all pair of nodes $i,j$, output ``Y'' if $i$ {\bf dominates} $j$, or ``N'' if not;
+      \end{itemize}
+    \end{block}
+
+    \bigskip
+
+    The idea of this problem is one of ``reachability'' -- can I reach
+    node $j$ if I remove node $i$ from the graph?
+
+    \bigskip
+
+    Note: if $j$ is not connected to ``0'', then \emph{no one dominates j}
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (2)}
   {\smaller
-  \begin{block}{Knight in a War Grid}
+    \begin{block}{Forwarding Emails}
+      Every person $i$ sends e-mail only to person $j$.
+      
+      \bigskip
+      
+      What is the longest email chain?
+      
+      \bigskip
+      
+      Where does it start?
+    \end{block}
+    
     \begin{itemize}
-    \item The problem only wants to know which squares are reachable,
-      it is not worried about minimum distance;
-    \item Be careful, $M$ or $N$ can be zero!
-    \item Be careful, if $M == N$, the graph becomes multigraph!
-    \item This graph is implicit, the connections are given by the
-      knight step, the board size, and the impossible squares;
-    \end{itemize}
-  \end{block}
+    \item How do you deal with loops?
+    \item Time limit is not very large, Try to find an O(n) solution!
+    \end{itemize} 
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (3)}
   {\smaller
-  \begin{block}{Wetlands of Florida}
-    \begin{itemize}
-      \item Make a graph with 0 and 1 indicating water or no water;
-      \item Flood-fill the graph at the requested location;
-      \item Multiple-case input is a bit hard to read, make sure to test that;
-    \end{itemize}
-  \end{block}
-  \begin{block}{Battleships}
-    \begin{itemize}
-      \item Scan the graph (double fors). 
-      \item For each unvisited 'x' or '@', flood fill the ship (mark
-        visited) and add the ship;
-      \item A ship with only @'s should not be counted.
-    \end{itemize}
-  \end{block}}
+    \begin{block}{Ordering}
+      Print all possible Orderings of a Direct Acyclic Graph
+
+      \bigskip
+
+      Generalize the DAG ordering algorithm which we discussed in class.
+    \end{block}
+    
+    \begin{block}{Palace Guards}
+      \begin{itemize}
+        \item How do you represent the roads and junctions as a Graph?
+        \item Find a ``guard-no guard'' assignment to vertices of the
+          graph.
+        \item First test if a solution is possible!
+      \end{itemize}
+    \end{block}    
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (4)}
   {\smaller
-  \begin{block}{Pick up sticks}
-    \begin{itemize}
-    \item The input gives you directed nodes. 
-    \item Try to build a topological order (follow the class code)
-    \item Any order is fine. If you find a cycle, print ``impossible''
-    \end{itemize}
-  \end{block}
-  \begin{block}{Palace Guards}
-    \begin{itemize}
-    \item Each junction is a node, each street is an edge. 
-    \item We have junctions with guards and without guards. (No guard can be near each other)
-    \item There is a solution if the graph is bipartite!
-    \item How do you calculate the smallest number of guards?
-    \end{itemize}
-  \end{block}}
+    \begin{block}{Doves and Bombs}
+      This problem is about finding ``critical vertices'' in a
+      graph. But how do you calculate the ``pigeon value'' of a
+      vertex?
+    \end{block}
+
+    \begin{block}{Come and Go}
+      Straight implementation of ``Strong Connected Components''. Be
+      careful with tricky graphs!
+    \end{block}    
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (5)}
   {\smaller
-  \begin{block}{Street Directions}
+    \begin{block}{ACM Contest and Blackout}
+      Goal: Find the {\bf First} minimum spanning Tree and the {\bf
+        Second} minimum spanning Tree
+    \end{block}
+
+    \bigskip
+    
     \begin{itemize}
-    \item We have to convert two way streets to one way streets 
-    \item Undirected graph to directd graph. 
-    \item When is a 2-way street \alert{necessary}?
-    \item How can you generate 1 way streets?
-    \item Hint: you need to draw the graph on paper
+    \item In this class we discussed how to find the Minimum Spanning Tree      
+    \item How would we find the {\bf second minimum?}
+    \item Idea: Maybe if we remove some edges from the graph?
     \end{itemize}
-  \end{block}
-  \begin{block}{Dominos}
-    \begin{itemize}
-    \item The dominos falling is a directed graph. 
-    \item Each domino that falls, we visit one node.
-    \item How many nodes do we need to start, to visit all nodes?
-    \end{itemize}
-  \end{block}}
+  }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Hints (6)}
-  \begin{block}{Freckles}
-    \begin{itemize}
-    \item The problem requires the minimum ink (cost) among all freckles;
-    \item This is straight up MST code;
-    \item Be careful when rounding up values;
-    \end{itemize}    
+  \begin{block}{Ancient Message -- Challenge problem!}
+    Count the symbols inside an image -- order does not matter!
+
+    \bigskip
+
+    What is the {\bf Main} difference between the symbols?
   \end{block}
-  \begin{block}{Arctic Network}
-    \begin{itemize}
-    \item Also wants to calculate the MST (minimum radio power necessary);
-    \item However, we can use $S$ ``satellite'' links, which cost 0;
-    \item Remember that two stations need a satellite link to talk;
-    \end{itemize}
-  \end{block}
+    
+  \begin{itemize}
+  \item The shape and size of the symbols is actually not important!
+  \item Before you begin programming, discover what is the real
+    difference between the symbols.
+  \item Hint: The numbers ``1'', ``0'', ``8'' have the same difference.
+  \end{itemize}    
 \end{frame}
