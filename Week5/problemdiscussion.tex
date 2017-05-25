@@ -1,0 +1,96 @@
+\begin{frame}
+  \frametitle{This Week's Problems}
+  \begin{itemize}
+  \item Wormholes;
+  \item Meeting Professor Miguel;
+  \item Full Tank?;
+  \item Degrees of Separation;
+  \item Avoiding your Boss;
+  \item Software Allocation;
+  \item Sabotage;
+  \item Gopher II;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Wormholes}
+    \begin{itemize}
+    \item {\bf Problem goal:} Find a negative weight loop in the graph
+    \item {\bf Hint:} Just follow the suggestions from the class
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Meeting Professor Miguel}
+    \begin{itemize}
+    \item {\bf Problem goal:} Find the shortest path from the student to the professor.
+    \item {\bf Trick:} Some edges only the student can walk, some
+      edges only the professor can walk;
+    \item {\bf Hint 1:} There are really two graphs: One for the student, one for the
+      professor;
+    \item {\bf Hint 2:} The graphs are really small;
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}  
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Full Tank?}
+    \begin{itemize}
+    \item {\bf Problem goal:} Find the path with least cost from $s$
+      to $t$;
+    \item {\bf Trick:} The cost is the value of the fuel in the nodes, not
+      the edges;
+    \item {\bf Hint 1:} Just follow the suggestions from the class
+    \item {\bf Hint 2:} for problems with costs on nodes, not edges, we can
+      usually modify the graph by breaking the node into Node-Edge-Node.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Degrees of Separation}
+    \begin{itemize}
+    \item {\bf Problem goal:} What is the largest path inside the graph?
+    \item {\bf Hint 1:} Easy problem - just find all paths in the
+      graph, and choose the largest one.
+    \item {\bf Hint 2:} Special case if the graph is not connected!
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Avoiding Your Boss}
+    \begin{itemize}
+    \item {\bf Problem Goal:} Find the shortest path that does not
+      meet your boss path;
+    \item {\bf Hint 1:} How can you modify the graph to avoid your
+      boss?
+    \end{itemize}
+  \end{block}
+  
+  \begin{exampleblock}{Software Allocation}
+    \begin{itemize}
+    \item {\bf Problem Goal:} Find an allocation of program instances
+      to free computers
+    \item {\bf Hint:} Use the Max Flow algorithm discussed in class
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Sabotage}
+    \begin{itemize}
+    \item {\bf Problem Goal:} Find the cost of the bipartite flow
+    \item {\bf Hint:} Standard max flow algorithm discussed in class
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Gopher II}
+    \begin{itemize}
+    \item {\bf Problem Goal:} Find a strategy that saves as many gophers as possible;
+    \item {\bf Hint:} Also bipartite flow variation
+    \item {\bf Hint:} Example of Implicit graph: what are the nodes?
+      What are the edges?
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}

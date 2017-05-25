@@ -16,10 +16,10 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 6 - Graph Problems (Part II)}
+\subtitle[]{Week 5 - Graph Problems (Part II)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-06-03,6\\{\tiny Last updated \today}}
+\date{2017-05-26,29\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -29,119 +29,75 @@
 \maketitle
 \end{frame}
 
-\subsection{Notes and Warnings}
+\subsection{Notes from Previous Classes}
+
+\input{previousclass.tex}
 
 \begin{frame}
-  \frametitle{Last Week Results}
-  \begin{block}{Week 5 - Graph I}
-  \begin{columns}[T]
-    \column{0.5\textwidth}
+  \frametitle{Graphs II -- Outline}
+  \begin{block}{Algorithms}
     \begin{itemize}
-    \item Denominator -- 17/31
-    \item Knight War Grid -- 10/31
-    \item Wetlands of Florida -- 8/31
-    \item Battleships -- 3/31
-    \item Pick up Sticks -- 1/31
+    \item Single Sourse Shortest Path;
+    \item All Pairs Shortest Path;
+    \item Network Flow;
     \end{itemize}
-    \column{0.5\textwidth}
-    \begin{itemize}
-    \item Place the Guards -- 1/31
-    \item Street Dominos -- 0/31
-    \item Dominos -- 0/31
-    \item Freckles -- 5/31
-    \item Artic Network -- 0/31
-    \end{itemize}
-  \end{columns}
-
-  \medskip
-  {\smaller
-    \begin{itemize}
-      \item 10 people solved: 0 problems;
-      \item 7 people solved: 1 problem;
-      \item 3 people solved: 2 problems;
-      \item 10 people solved: 3-4 problems;
-      \item 1 person solved: 7 problems!
-    \end{itemize}
-  }
   \end{block}
-\end{frame}
 
-\begin{frame}
-  \frametitle{Special Notes}
-  
-\end{frame}
+  \bigskip
 
-\begin{frame}
-  \frametitle{Week 5 and 6 -- Outline}
-  {\smaller
-  \begin{block}{Last Week - Graph I}
-    \begin{itemize}
-    \item Graph Basics review: Concepts and Data Structure;
-    \item Depth First Search and Breadth First Search;
-    \item Problems you solve with DFS and BFS;
-    \item Minimum Spanning Tree: Kruskal and Prim Algorithms;
-     \end{itemize}
-  \end{block}
-  \begin{block}{Next Week - Graph II}
-    \begin{itemize}
-    \item Single Sourse Shortest Path; (Friday)
-    \item All Pairs Shortest Path; (Friday)
-    \item Network Flow; (Monday)
-    \item Special Graphs and Related Problems; (Monday)
-    \end{itemize}
-  \end{block}}
-  Many variations in graph problems!
+  Also, we will see a few variations on these algorithms.
 \end{frame}
 
 \section{SSSP}
+
 \subsection{Single Source Shortest Path}
 \begin{frame}
   \frametitle{SSSP: Single Source Shortest Path}
+  \begin{block}{Problem Definition}
+    I want to go from vertex $s$ (source) to $t$ (target). What is
+    the path with the {\bf minimum sum of edge weights}?
+  \end{block}
+  
+  \bigskip
+  
   {\smaller
-    \begin{block}{Problem Definition}
-      Given a graph $G$ and a source $s$, what
-      are the shortest paths from $s$ to a target node $t$?
-    \end{block}
-
-    \bigskip
-
     Common solutions:
-
+    
     \begin{itemize}
     \item On \alert{unweighted} graphs, BFS is good enough, but it
       won't work correctly in weighted graphs;
-    \item Djikstra Algorithm (usually $O((V+E)\text{log}V)$)
+    \item Djikstra Algorithm $O((V+E)\text{log}V)$
     \item Bellman Ford's Algorithm $O(VE)$
     \end{itemize}
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Reminder: SSSP on unweighted graph (BFS)}
 
 {\smaller
     \begin{itemize}
-    \item Visit nodes from $s$ to $t$;
-    \item Calculate minimal cost from $s$ to $t$;
-    \item (optional) Print the path from $s$ to $t$;
+    \item Start in $s$, visit all nodes
+    \item Save cost and parent node in each visited node;
     \end{itemize}
 
 \begin{exampleblock}{}
 \begin{verbatim}
-vector <int> p; // list of parents
-void printPath(u) { // recursive print path s to u
-   if (u == s) { cout << s; return; } // base case
-   printPath(p[u]); cout << " " << u; }
+vector <int> p;                       // parent list
 
-vector <int> dist(V,INF); dist[s] = 0;
-queue <int> q; q.push(s);
+vector <int> dist(V,INF); dist[s] = 0;// initialize
+queue  <int> q;           q.push(s);
 while (!q.empty()) {
    int u = q.front(); q.pop();
-   for (int j = 0; j < (int)AdjList[u].size(); j++) {
-      pair <int,int> v = AdjList[u][j];
-      if (dist[v.first] == INF) { 
-         dist[v.first] = dist[u] + 1;
-         p[v.first] = u; q.push(v.first); }}}
+   for (int j = 0; j < AdjList[u].size(); j++) {
+      int v = AdjList[u][j];
+      if (dist[v] == INF) {           // not visited
+         dist[v] = dist[u] + 1;
+         p[v] = u; q.push(v); }}}
+
+void printPath(u) {                   // path from (u)
+   if (u == s) { cout << s; return; } 
+   printPath(p[u]); cout << " " << u; }
 \end{verbatim}
 \end{exampleblock}
 }
@@ -151,8 +107,8 @@ while (!q.empty()) {
   \frametitle{BFS: Problem with weighted graphs}
 
   \begin{block}{}
-    Simple BFS will give a wrong answer when there is a longer path
-    which is cheaper than a shorter one.
+    Just BFS is fast, but if the graph has weights, you may get a
+    WRONG ANSWER.
   \end{block}
   
   \medskip
@@ -176,53 +132,58 @@ while (!q.empty()) {
 
   \bigskip
 
-  In this graph, BFS would find $s \rightarrow e$ (cost 9) as the
-  shortest path from $s$ to $e$, instead of $s \rightarrow t
-  \rightarrow e$ (cost 8).
+  \begin{itemize}
+  \item BFS shortest path: $s \rightarrow e$ (cost 9)
+  \item Real shortest path: $s \rightarrow t \rightarrow e$ (cost 8)
+  \end{itemize}
 \end{frame}
 
 \subsection{SSSP with Weighted Graph}
 \begin{frame}
   \frametitle{Djikstra's Algorithm for weighted SSSP}
-  \begin{block}{Basic Idea}
-    Greedly selects the next edge that minimizes the total weight of the visited graph.
+  \begin{block}{Basic Idea: Greedy Algorithm}
+    Always add the edge with the shortest weight to the next node.
   \end{block}
 
   {\small
   \begin{itemize}
   \item Many different implementations (original paper has no implementation);
+
+    \bigskip
+    
   \item A simple way is to use C++ stl's \emph{Priority Queue};
   \item When visiting a node, store new edges in the priority queue;
-    {\smaller (priority queue sort edges as they are inserted)}
-  \item For every new edge visited, check if new path on target node
-    is cheaper than old one (if it is cheaper, visit the node again);
+  \item However! Deleting nodes in a priority queue is expensive!
+    \begin{itemize}
+    \item We gain a bit of time by ``skipping'' longer paths (trick!)
+    \end{itemize}
   \end{itemize}}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Djikstra's Algorithm: \_A\_ Implementation}
+\begin{frame}[fragile]
+  \frametitle{Djikstra's Algorithm: One Implementation Example}
   {\smaller
     \begin{exampleblock}{}
 \begin{verbatim}
-Vector<int> dist(V,INF); dist[s] = 0;
+typedef pair<int,int> ii;               // <node, weight>
 priority_queue<ii, vector<ii>, greater<ii>> pq; 
-pq.push(ii,(0,s));
-while (!pq.empty()) {
-   ii front = pq.top(); pq.pop(); 
-   // shortest unvisited vertex
-   int d = front.first; u = front.second;
-   if (d > dist[u]) continue; // *lazy deletion*
-   for (int j = 0; j < (int)AdjList[u].size(); j++) { 
-      ii v = AdjList[u][j];
-      if (dist[u] + v.second < dist[v.first]) { 
-         dist[v.first] = dist[u] + v.second // relax
-         pq.push(ii(dist[v.first],v.first));}}} 
-         // new node to queue
-\end{verbatim}
-    \end{exampleblock}
 
-    This implementation uses \emph{lazy deletion} to avoid deleting
-    nodes from the queue unless absolutely necessary;}
+Vector<int> dist(V,INF); dist[s] = 0;   // initial dist
+pq.push(ii,(0,s));
+
+while (!pq.empty()) {
+   ii front = pq.top(); pq.pop();       // first unvisited
+   int d = front.first; u = front.second;
+   if (d > dist[u]) continue;           // *lazy deletion*
+   for (int j = 0; j < AdjList[u].size(); j++) { 
+      ii v = AdjList[u][j];             // <node, weight>
+      if (dist[u] + v.second < dist[v.first]) { 
+                                        // update node
+         dist[v.first] = dist[u] + v.second;
+         pq.push(ii(dist[v.first],v.first));
+}}} 
+\end{verbatim}
+    \end{exampleblock}}
 \end{frame}
 
 \begin{frame}
@@ -253,22 +214,21 @@ while (!pq.empty()) {
 \subsection{Example: Full Tank?}
 \begin{frame}
   \frametitle{Problem Example: UVA 11367 -- Full Tank} 
-  {\smaller 
-    A big part of Graph problems is figuring out the correct graph
-    representation.
 
+  {\smaller
   \begin{block}{Problem Summary}
     In a graph $G$ of roads ($1 \leq V \leq 1000, 0 \leq E \leq
     10000$) with the following information:
     \begin{itemize}
-    \item cost $l_{ij}$ in units of fuel between cities $i$ and $j$;
-    \item price $p_{i}$ of buying fuel at city $i$;
-    \item tank capacity $c$ of a car;
+    \item It takes $F_{ij}$ units of fuel to go from $i$ to $j$;
+    \item You can buy one unit of fuel at $i$ for the price $p_{i}$;
+    \item The car has maximum capacity $c$;
     \end{itemize}
-    What is the least \structure{fuel price} from node $s$ to $e$; 
+
+    What is the {\bf minimum} price to go from $s$ to $e$?
   \end{block}
-  
-   \begin{center}
+
+  \begin{center}
     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
       \node[red vertex] (s) at (0,0) {s:4};
       \node[vertex] (0) at (2,1) {a:6};
@@ -280,14 +240,17 @@ while (!pq.empty()) {
       \draw[edge] (1) -- node[label] {$10$} (e);
     \end{tikzpicture}
   \end{center}
-  
-   The regular shortest path is $s$ to $e$, but the smallest fuel
-   price is buying fuel at $s$ (cost 4) and at $a$ (cost 1), for a total cost 26}
+
+  If you go straight from $s$ to $e$, you only use 10 fuel, but the fuel is expensive!\\
+  If you go $s\rightarrow a\rightarrow b\rightarrow e$ you pay less for the fuel.}
 \end{frame}
 
 \begin{frame}
   \frametitle{UVA 11367 -- Full Tank -- Problem modeling}
+
   {\smaller
+    Ok, but how do we implement this solution?
+               
     \begin{center}
       \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
         \node[red vertex] (s) at (0,0) {s:4};
@@ -302,35 +265,30 @@ while (!pq.empty()) {
     \end{center}
     
     \begin{block}{}
-    Simple Djikstra on the $l_{ij}$ graph will not solve this problem,
-    because we have to take into account the cost of buying fuel at
-    different nodes.
+      Using Djikstra directly is hard -- how do we model buying gas
+      for multiple vertices? One idea is to {\bf modify the graph}
     \end{block}
     
     \bigskip
-    
-    To model this problem, we modify the graph:
     \begin{itemize}
     \item Transform nodes $(i)$ into nodes $(i,f)$ (how much fuel left
       we have at $i$);
-    \item An edge $(i,f)\rightarrow(j,f-l_{ij})$ exists if $f-l_{ij}
-      \geq 0$ and has cost 0 (spend existing fuel);
-    \item An edge $(i,f)\rightarrow(i,f+1)$ has cost $p_i$ (buy fuel at the city)
-    \item Use regular djikstra on the new graph;
+    \item An edge $(i,f)\rightarrow(j,f-F_{ij})$ exists if $f-F_{ij}
+      \geq 0$. This edge has cost 0;
+    \item An edge $(i,f)\rightarrow(i,f+1)$ has cost $p_i$ (buy one unit of fuel at node $i$)
     \end{itemize}
-
+    We can use djikstra on this new graph, but it has many more nodes!
   }
 \end{frame}
 
 \subsection{SSSP with Negative Cycle}
 \begin{frame}
-  \frametitle{Djikstra Problem with negative cycles}
+  \frametitle{A Problem with Djikstra}
 
   {\smaller
-    \begin{block}{}
-      The djikstra implementation suggested earlier \structure{can deal}
-      with negative weights, but will enter an infinite loop if the graph
-      has a \alert{negative loop}.
+    \begin{block}{What happens if our graph has negative weights?}
+      The djikstra implementation we discussed works with {\bf negative weights},
+      but not with {\bf negative loops}!
     \end{block}
 
     \begin{center}
@@ -339,7 +297,7 @@ while (!pq.empty()) {
         \node[vertex] (0) at (1,1) {a};
         \node[vertex] (1) at (2,0) {b};
         \node[vertex] (e) at (4,0) {e};
-        \draw[edge] (s) -- node[label] {-2 or 3} (0);
+        \draw[edge] (s) -- node[label] {-2} (0);
         \draw[edge] (s) -- node[label] {2} (1);
         \draw[edge] (1) -- node[label] {-2} (0);
       \draw[edge] (1) -- node[label] {2} (e);
@@ -347,23 +305,51 @@ while (!pq.empty()) {
     \end{center}
     
     \begin{itemize}
-    \item The Djikstra implementation above will keep adding negative
-      nodes as smaller totals are generated: -2, -4, -6, -8...
-    \item The Problem is that it does not include an explicit check
-      for \emph{non-simple} paths;
-    \item To deal with negative loops, one alternative is the
+    \item Our initial Djikstra implementation will find repeated smaller costs
+      from $s$ to $a$: -2, -4, -6, -8...
+    \item It needs a check to avoid {\bf using the same edge two times}
+    \item One simple way to solve this problem is using the 
       \structure{Bellman Ford's algorithm}
     \end{itemize}
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
+  \frametitle{Bellman Ford's Algorithm $O(VE)$}
+
+  {\smaller
+  \structure{Main Idea}: update all $i \leftarrow j$ weights $V-1$ times;
+
+  \begin{exampleblock}{Version using Edge List}
+\begin{verbatim}
+vector<int> dist(V, INF); dist[s] = 0;// Start Condition
+int edges[E][3];                   // Edge list (i,j,w)
+for (int i = 0; i < V - 1; i++)    // repeat V-1 times
+ for (int u = 0; u < E; u++) {     // for all edges
+  dist[edges[u][1]] = min(dist[edges[u][1],
+                          dist[edges[u][0]+edges[u][2]);
+ }
+\end{verbatim}
+  \end{exampleblock}
+  
+  \medskip
+
+  \structure{How does it work?}:
+  \begin{itemize}
+  \item At the start, \emph{dist[s]} has the correct minimal distance;
+  \item When we update all edges, one new node now has correct distance;
+  \item After $V-1$ updates, all nodes have correct minimal distance;
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{Bellman Ford's Algorithm $O(VE)$}
 
   {\smaller
   \structure{Main Idea}: Relax all $E$ edges in the graph $V-1$ times;
 
-  \begin{exampleblock}{}
+  \begin{exampleblock}{Version using Adjacency Matrix -- Cost $O(V^3)$}
 \begin{verbatim}
 vector<int> dist(V, INF); dist[s] = 0;
 for (int i = 0; i < V - 1; i++) // repeat V-1 times
@@ -377,11 +363,10 @@ for (int i = 0; i < V - 1; i++) // repeat V-1 times
   
   \medskip
 
-  \structure{How does it work?}:
   \begin{itemize}
-  \item At the start, \emph{dist[s]} has the correct minimal distance;
-  \item When relax all edges, at least one node now has correct minimal distance;
-  \item After \emph{V-1} iterations, all nodes have correct minimal distances;
+  \item This version is one order of magnitude more expensive!
+  \item But depending on the input, maybe it is difficult to get an edge list;
+  \item Think about the input size before choosing!
   \end{itemize}
   }
 \end{frame}
@@ -409,7 +394,7 @@ for (int i = 0; i < V - 1; i++) // repeat V-1 times
   \begin{itemize}
   \item \structure{BFS}: $O(V+E)$, only for unweighted graphs
   \item \structure{Djikstra}: $O(E+V\text{log}V)$, problem with negative loops
-  \item \structure{Bellman Ford}: $O(EV)$, can find negative loops\\(simple to code)
+  \item \structure{Bellman Ford}: $O(EV)$ or $O(V^3)$, can find negative loops
   \end{itemize}
 
   \bigskip
@@ -434,13 +419,13 @@ for (int i = 0; i < V - 1; i++) // repeat V-1 times
   \item One way to do it would be for every node $i$, calculate
     Djikstra(s,i) + Djikstra(i,e);
   \item This would cost $O(V(E+V\text{log}(V)))$;
-  \item If the graph is \structure{small} $(|V| \leq 400)$, there is a
-    simpler-to-code algorithm that costs $O(V^3)$
+  \item There is a simpler algorithm that costs $O(V^3)$. You can use
+    it if the graph is \emph{small}
   \end{itemize}
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{The Floyd-Warshall Algorithm -- $O(V^3)$}
 
 {\smaller
@@ -474,8 +459,8 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
   {\smaller
   \begin{block}{Basic Idea: Bottom-up Dynamic Programming}
     FW uses this recursive idea: ``The shortest path S between $i$ and
-    $j$ is either $S(i,j)$, or $S(i,v) + S(v,j)$ for all nodes $v$
-    between $0$ to $k$.''
+    $j$ is the minimum of $S(i,j)$ or $(S(i,v) + S(v,j))$ for all nodes $v$
+    between $0$ and $k$.''
 
     \medskip
 
@@ -517,21 +502,6 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
     $FW[i][i] < 0$;
   \item ``Diameter'' of a Graph: $i,j$ where $FW[i][j]$ is maximum;
   \end{itemize}
-\end{frame}
-
-\subsection{Problem Discussion}
-\begin{frame}
-  \frametitle{SSSP and ASPS problem discussion}
-  % TODO: Add discussion of problems
-  {\smaller
-  \begin{itemize}
-    \item From Dusk Until Down;
-    \item Wormholes; 
-    \item Mice and Maze; 
-    \item Degrees of Separation;
-    \item Avoiding your Boss;
-    \item Arbitrage;
-  \end{itemize}}
 \end{frame}
 
 \section{Network Flow}
@@ -582,7 +552,7 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
 \end{frame}
 
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Ford Fulkerson Method}
 
   {\smaller
@@ -594,18 +564,18 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
   
   \medskip
 
-  Basic Idea:
   \begin{enumerate}
   \item Create \structure{residual graph} with flow capacity between nodes;
-  \item Initial residual graph = weight graph. Non existing edges have capacity 0;
+  \item Initial residual graph = directed weight graph. Non existing
+    edges have capacity 0;
   \item Find a path between $s$ and $t$;
   \item \alert{Remove value} of lowest weight from all edges in residual graph;
   \item \alert{Add value} of lowest weight to all reverse edges in residual graph;
-  \item goto 3;
+  \item Do 3 again until you cannot find a path anymore;
   \end{enumerate}}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Ford Fulkerson -- Pseudocode}
 {\smaller
   \begin{exampleblock}{}
@@ -631,7 +601,7 @@ while (P = FindPath(s,t)) > 0) {
 \end{frame}
 
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Ford Fulkerson Implementation: Finding Paths}
 
   {\smaller
@@ -640,9 +610,8 @@ while (P = FindPath(s,t)) > 0) {
 while (P = FindPath(s,t) > 0) {...}
 \end{verbatim}
 
-A key part of the algorithm is finding paths from $s$ to $t$, and
-calculating the flow of the path (minimum edge weigth). We can use any
-algorithm to implement this search.
+You can use any path algorithm here (BFS, DFS, Djikstra, etc). Depends
+on your graph!
     \end{block}
 
 \begin{exampleblock}{Idea 1: Find augmenting paths using DFS;}
@@ -656,7 +625,7 @@ algorithm to implement this search.
 \hfill{\tiny Image from Competitive Programming, 3rd edition}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Edmond Karp's Algorithm}
 
   {\smaller
@@ -682,7 +651,7 @@ void augment(int v, int minEdge) { // traverse BFS s->t
 }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Edmond Karp's Algorithm (2)}
   {\smaller
   \begin{block}{O(|f*|E) is too expensive!}
@@ -738,11 +707,8 @@ while (1) { f = 0; vi dist(MAX_V,INF): dist[s] = 0;
     }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{NF Example: UVA 259 -- Software Allocation}
-
-
-
 
   {\smaller
 \begin{verbatim}
@@ -905,7 +871,7 @@ P4 35789;
 
 
 \subsection{Titanic}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Network Flow Example 2: Titanic (UVA 11380)}
 
   {\smaller
@@ -1006,36 +972,9 @@ P4 35789;
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{This Week's Problems}
-  {\smaller
-  \begin{itemize}
-    \item From Dusk Until Down;
-    \item Wormholes; 
-    \item Mice and Maze; 
-    \item Degrees of Separation;
-    \item Avoiding your Boss;
-    \item Arbitrage;
-    \item \alert{Software Allocation};
-    \item \alert{Sabotage};
-    \item \alert{Little Red Riding Hood};
-    \item \alert{Gopher II};
-  \end{itemize}}
-\end{frame}
+\subsection{Problem Discussion}
 
-\begin{frame}
-  \frametitle{Next Weeks}
-  \begin{itemize}
-  \item Week 7 -- Math Problems;
-  \item Week 8 -- Computational Geometry;
-  \item Week 9 -- String Problems;
-  \end{itemize}
-
-  \vfill
-  
-  Hang in there a little bit more! :-)
-  
-\end{frame}
+\input{problemdiscussion.tex}
 
 \end{document}
 
