@@ -11,13 +11,11 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 8 - Computational Geometry}
+\subtitle[]{Week 7 - Computational Geometry}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-06-17,20\\{\tiny Last updated \today}}
-% TODO: Fix many small typos in code
-% TODO: Add Function to find a new point based on two points and an additive angle (circle)
-% TODO: Add Function to obtain an angle based on two line segments (AOC in order) -- this already exists, reinforce
+\date{2015-06-9,12\\{\tiny Last updated \today}}
+
 
 \begin{document}
 
@@ -27,194 +25,161 @@
 \maketitle
 \end{frame}
 
-\subsection{Notes and Warnings}
+\subsection{Last Class}
 
+\input{previousclass.tex}
+
+\subsection{Outline}
 \begin{frame}
-  \frametitle{Last Week Results}
-  \begin{block}{Week 6 - Graph II}
-    {\smaller
-      \begin{columns}[T]
-        \column{0.5\textwidth}
-        \begin{itemize}
-        \item Division -- 16/31
-        \item What Base is This? -- 6/31
-        \item Divisibility of Factors -- 11/31
-        \item Triangle Counting -- 11/31
-        \item Help my Brother (II) -- 4/31
-        \item Marbles -- 1/31
-        \item Ocean Deep! Make it Shallow! -- 9/31
-        \item Winning Streak -- 0/31
-        \end{itemize}
-        \column{0.5\textwidth}
-        \begin{itemize}
-        \item  14 people: 0 problems; 
-        \item  6 people: 1-2 problems;
-        \item  6 people: 3-4 problems;
-        \item  4 people: 5-6 problems;
-        \item  1 people: 7-8 problems!
-        \end{itemize}
-      \end{columns}
-    }
-  \end{block}
-\end{frame}
+  \frametitle{This Week: Computational Geometry}
 
-\begin{frame}
-  \frametitle{Special Notes -- Grade Relaxation}
-  {\smaller
-    The following rule will relax the grades requisites a bit:
-
-    \begin{itemize}      
-      \item \structure{Base grade C}: You need 1 problem each
-        week. {\bf ALSO, every two problems above the minimum
-          ``fix'' a week with 0 problems}.
-
-      \item \structure{Base grade B}: You need 2 problems each
-        week. {\bf Also, every two problems above the minimum
-          ``fix'' a week with 1 problem}.
-        
-      \item \structure{Base grade A}: You need 3 problems each
-        week. {\bf No change in requirement.}
-    \end{itemize}
-
-    \vfill
-
-    \begin{block}{Example}
-      \begin{itemize}
-      \item 3 0 2 2 0: Grade: C
-      \item 3 1 2 2 3: Grade: B
-      \item 4 2 3 3 4: Grade: B
-      \end{itemize}
-    \end{block}
-  }
-\end{frame}
-
-\subsection{Characteristics}
-\begin{frame}
-  \frametitle{Topic of the Week -- Computational Geometry}
   {\small
-  
+
+    \structure{Computational Geometry} problems involve answering
+    questions about \structure{lines, points and angles};
+
+    \bigskip
+    
     \begin{itemize}
-    \item \structure{Computational Geometry} problems are generally
-      considered to be difficult, both in terms of understanding the
-      solution, and programming the solution;
-
-      \vfill
-
-    \item One trick for these problems is to \structure{prepare} a
-      large library of basic geometric operations (distances,
-      intersections, angle operations, etc); \\
-
-      \begin{itemize}
-        \item {\smaller Focus of this class is the implementation of these
-          operations.}
-      \end{itemize}
-
-      \vfill
-
-    \item Special attention is needed to deal with \alert{degeneracies};
+    \item What is the area of the smallest poligon that covers points
+      $S_1, S_2, S_3$?
+    \item If we have $N$ rectangles, $x_1,y_1,w_1,h_1; \ldots; x_N,
+      y_N, w_N, h_N$, what is the smallest length of lines that
+      connect all of them?
+    \item How many triangles fit in this area?
+    \item How many lines do you need to divide a polygon, so this set
+      of points are in separate regions?
     \end{itemize}
+
+    \bigskip
+    
+    However, it is very easy to take \alert{WE (wrong answer)} in
+    geometric problems.
+  
   }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Degeneracies: Special cases}
+  \frametitle{Geometry problems are easy for mistakes}
 
   {\smaller
-    \begin{block}{}
-      Two types of degeneracies: \structure{Special cases} and
-      \structure{Precision errors}
+
+    It is very easy to receive a \alert{WE} in a geometry problem.
+
+    \bigskip
+    
+    \begin{block}{Problem 1 -- Special Cases}
+      Many special cases: Two points in the same place; Collinear
+      points; Vertical lines; Parallel Lines; Intersection at
+      extremes; etc, etc.
+    \end{block}
+
+    \begin{block}{Problem 2 -- Precision Errors}
+      Computational Geometry functions involve many multiplications
+      and divisions. Floating point errors propagate very easily and
+      can affect your final result.
     \end{block}
 
     \bigskip
 
-    (some) Special cases:
-    \begin{itemize}
-    \item Lines parallel to the vertical axis
-    \item Colinear Lines
-    \item Overlapping Segments
-    \item Concave polygons
-    \item Etc...
-    \end{itemize}
-
-    \medskip
-
-    Good implementations should deal with common special cases.
+    You need to deal with these problems carefully!
   }
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Degeneracies: Precision errors}
+\begin{frame}[fragile]
+  \frametitle{Geometry problems are easy for mistakes -- solution}
 
-  Representation of \structure{floating point} numbers in computers
-  has a limited precision. So for multiple operations on very small
-  numbers, we may start to see calculation errors.
+  {\smaller
+    
+    \begin{block}{Solving Special Cases}
+      \begin{itemize}
+      \item Learn the common special cases for each geometric structure;
+      \item Think about the possible special cases before programming;
+      \item Prepare basic functions that deal with special cases;
+      \end{itemize}
+    \end{block}
+    
+    \begin{block}{Solving Precision Errors}
+      \begin{itemize}
+      \item Whenever possible, convert all values to integers
+      \item When it is not possible, use an EPSILON constant
+        to make comparisons:\\
+\begin{verbatim}
+if (float.1 == float.2) then            // Don't do this
+if (fabs(float.1 - float.2) < EPS) then // Do this!
+\end{verbatim}
 
-  \medskip
-
-  Some ways to avoid floating point precision errors:
-
-  \begin{itemize}
-  \item Whenever possible, convert the float numbers to integers
-  \item Never compare ``float x == float y''. 
-  \item Instead, use this: ``fabs(x - y) < EPS'' (float EPS$ = 0.00000001$)
-  \end{itemize}
-
-  %% TODO: Add some degeneracy image examples
+      \end{itemize}
+    \end{block}
+    
+    
+    In both cases, the solution for not getting \alert{WE} in geometry
+    problems is \structure{Build a good library of basic cases!}
+  }
 \end{frame}
 
+\begin{frame}
+  \frametitle{Class Outline}
+  \begin{itemize}
+  \item Implementation of basic Geometric Functions    
+  \item Implementation of circles and triangles
+  \item Algorithms on polygons
+  \end{itemize}
 
+  \bigskip
 
-\section{Points and Lines}
+  And of course some examples.
+\end{frame}
+
+\section{Basic Functions}
 \subsection{Points}
-\begin{frame}[fragile,singleslide]
-  \frametitle{Point Representation}  
-  {\smaller
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Points 1}  
 
+  {\smaller
     \begin{columns}
       \column{0.6\textwidth}
-      Points are the building blocks of geometric objects.
-      In C/C++, we can represent them using a struct with two members:
+      You will use these functions many times
+      when solving geometric problems. Make sure to write
+      (and test!) them carefully.
       \column{0.4\textwidth}
       \includegraphics[width=.65\textwidth]{../img/geom2}
     \end{columns}
 
-    \begin{exampleblock}{}
+    \begin{exampleblock}{Point Representation}
 \begin{verbatim}
-// When possible, use int coordinates
-struct point_i { int x, y;
+struct point_i { int x, y;  // Using int coordinates.
   point_i() { x = y = 0; }
   point_i(int _x, int _y) : x(_x), y(_y) {}};
 
-// Floating point variation
-struct point { double x, y;
-  point() { x = y =0.0;}
+struct point { double x, y; // Using floats
+  point() { x = y = 0.0;}
   point(double _x, double _y) : x(_x), y(_y) {}};
 \end{verbatim}
     \end{exampleblock}
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Point Operations}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Points 2}
 
   {\smaller
-    To compare two points, or test for equality, we can 
-    overload the \emph{equal} or \emph{less} operator in the point struct.
-
-    \begin{exampleblock}{}
+    Comparing (and sorting) points using overloaded operators:
+    
+    \begin{exampleblock}{Point Comparison}
 \begin{verbatim}
 struct point { double x, y;
    point() { x = y = 0.0;
    point(double _x, double _y) : x(_x), y(_y) {}
 
-   // override less than operator -- useful for sorting
-   bool operator < (point other) const { 
+   // Sorting by coordinate  -- sorting by angle also used
+   bool operator < (point other) const {
       if (fabs(x - other.x) > EPS)
          return x < other.x;
       return y < other.y; }
 
-   // override equal operator, takes EPS into account
+   // Equality testing -- Note the use of EPS
    bool operator == (point other) const {
       return (fabs(x - other.x) < EPS &&  
              (fabs(y - other.y) < EPS)); }
@@ -224,17 +189,22 @@ struct point { double x, y;
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Point: Euclidean Distance}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Points 3}
   {\smaller
 
+    Most common distance measure: Euclidean distance. Sometimes
+    Manhattan distance (Taxicab distance) is also used.
+    
     \begin{exampleblock}{}
 \begin{verbatim}
 #define hypot(dx,dy) sqrt(dx*dx + dy*dy)
 
 double dist(point p1, point p2) {
-  return hypot(p1.x - p2.x, p1.y - p2.y);
-}
+  return hypot(p1.x - p2.x, p1.y - p2.y); }
+
+double taxicab(point p1, point p2) {
+  return fabs(p1.x - p2.x) + fabs(p1.y - p2.y); }
 \end{verbatim}
     \end{exampleblock}
 
@@ -245,12 +215,15 @@ double dist(point p1, point p2) {
   }
 \end{frame}
   
-\begin{frame}[fragile,singleslide]
-  \frametitle{Point: Rotation around origin}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Points 4}
+
   {\smaller
-    \begin{exampleblock}{}
+              
+    \begin{exampleblock}{Rotating a point around the origin}
 \begin{verbatim}
-#define PI           3.14159265358979323846  /* pi */
+#define PI           3.14159265358979323846 // Pi const
+double PI = 2 * acos(0.0)                   // Better Pi
 #define DEG_to_RAD(X) (X*PI)/180.0
 
 // theta is in degrees
@@ -263,25 +236,26 @@ point rotate(point p, double theta) {
     \begin{center}
       \includegraphics[width=0.8\textwidth]{../img/rotation_halim}
     \end{center}
+
+    {\bf Quiz:} What do you do if you want to rotate a point around $x_0, y_0$?
   }
 \end{frame}
 
 \subsection{Lines}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Line Representation}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Lines 1}
 
   {\small
-  How to represent a line?
+  There are many ways to specify a line:
 
   \begin{itemize}
-  \item \structure{Two points}. Problem: cannot generalize for other
-    points of the line easily;
-  \item \structure{y = mx + c}. Problem: cannot handle vertical lines (m is infinite)
-  \item \structure{ax + by + c = 0}. Better representation for ``most'' cases.
+  \item \structure{$ax + by + c = 0$} -- useful for most cases.
+  \item \structure{$y = mx + c$} -- useful for angle manipulation, but special cases
+  \item \structure{$x_0,y_0,x_1,y_1$} -- two points, not very useful for programming.
   \end{itemize}
 
-  \begin{exampleblock}{}
+  \begin{exampleblock}{Point to Line}
 \begin{verbatim}
 struct line { double a,b,c; };
 
@@ -289,7 +263,7 @@ void pointsToLine(point p1, point p2, line &l) {
    if (fabs(p1.x - p2.x) < EPS { 
       l.a = 1.0; l.b = 0.0; l.c = -p1.x; }
    else {
-      l.a = -(double) (p1.y-p2.y)/(p1.x-p2.x);
+      l.a = -(double) (p1.y - p2.y)/(p1.x - p2.x);
       l.b = 1.0; l.c = -(double) (l.a*p1.x) - p1.y;}
 }
 \end{verbatim}
@@ -297,8 +271,8 @@ void pointsToLine(point p1, point p2, line &l) {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Line: Parallel and Identical lines}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Line 2}
   {\smaller
 
     \begin{columns}
@@ -309,9 +283,9 @@ void pointsToLine(point p1, point p2, line &l) {
       \item Remember that we force $b$ to be 0 or 1;
       \end{itemize}
       \column{0.4\textwidth}
-      \includegraphics[width=.8\textwidth]{../img/geom3}
+      \includegraphics[width=.7\textwidth]{../img/geom3}
     \end{columns}
-  \begin{exampleblock}{}
+  \begin{exampleblock}{Parallel and identical lines}
 \begin{verbatim}
 bool areParallel(line l1, line l2) {
    return (fabs(l1.a-l2.a) < EPS) && 
@@ -325,21 +299,22 @@ bool areSame(line l1, line l2) {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Line: Intersection} 
-  {\smaller 
-    
-    If two lines are not parallel, then they will intersect at a
-    point. This point (x,y) is found by solving the system of two
-    linear equations: 
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Line 3} 
 
-    \begin{equation*}
-      a_1x+b_1y+c_1 = 0 \text{ and } a_2x+b_2y+c_2 = 0
-    \end{equation*}
+  {\smaller
+
+    The {\bf intersection} point $x_I, y_I$ is where two lines
+    meet. We can find this point by solving the following system of
+    linear equations:
+    
+    \begin{eqnarray*}
+      a_1x+b_1y+c_1 = 0\\a_2x+b_2y+c_2 = 0
+    \end{eqnarray*}
 
     \vfill
 
-    \begin{exampleblock}{}
+    \begin{exampleblock}{Computing the intersection}
 \begin{verbatim}
 bool areIntersect(line l1, line l2, point &p) {
    if (areParallel(l1,l2)) return False;
@@ -358,19 +333,18 @@ bool areIntersect(line l1, line l2, point &p) {
 \end{frame}
 
 \subsection{Segments}
-\begin{frame}[fragile,singleslide]
-  \frametitle{Segments and Vectors}
+\begin{frame}[fragile]
+  \frametitle{Basic Library -- Vectors}
   {\smaller
     \begin{columns}
-      \column{0.7\textwidth}
+      \column{0.8\textwidth}
       \begin{itemize}
-      \item A \structure{Line Segment} is a line limited by two points and finite length;
-      \item A \structure{Vector} is a segment with an associated direction;
-      \item Often vectors are represented by a single point
-        (the other assumed to be the origin);
+      \item A \structure{Vector} indicates direction and length;
+      \item Represented as a $x,y$ point in relation to the origin;
+      \item Operations: Scale, Translation, Addition, Product;
       \end{itemize}
       \column{0.3\textwidth}
-      \includegraphics[width=.95\textwidth]{../img/geom4}
+      \includegraphics[width=.9\textwidth]{../img/geom4}
     \end{columns}
     \begin{exampleblock}{}
 \begin{verbatim}
@@ -406,7 +380,7 @@ point translate(point p, vec v) {
   \end{center}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Distance between point and line}
 
   {\smaller
@@ -432,8 +406,8 @@ double distToLine(point p, point a, point b, point &c) {
 }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
-  \frametitle{Distance between segment and line} 
+\begin{frame}[fragile]
+  \frametitle{Distance between point and segment} 
   % TODO: Add an image explaining the u conditional
   % TODO: This is actually distance between point and segment. FIX.
 
@@ -460,7 +434,7 @@ double distToLineSegment(point p, point a,
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   % TODO: Explain why angle between segment works
   % TODO: Make appropriate picture to illustrate angle btw segments
   \frametitle{Angles between segments}
@@ -505,58 +479,62 @@ collinear(point p, point q, point r) {
   % TODO: Add code for this problem
   {\small
     \begin{block}{Summary}
-    Given two points $p_1$ and $p_2$, and a rectangle, test whether
-    the segment $p_1p_2$ intersects the rectangle.
+      You are given the following:
+      \begin{itemize}
+      \item Two points that define a segment:
+        \begin{itemize}
+        \item $x_{p1}, y_{p1}, x_{p2}, y_{p2}$
+        \end{itemize}
+      \item Four points that define a rectangle:
+        \begin{itemize}
+        \item $x_{r1}, y_{r1}, x_{r2}, y_{r2}, x_{r3}, y_{r3}, x_{r4}, y_{r4}$
+        \end{itemize}
+      \end{itemize}
+      
+      Calculate if the segment {\bf intersects} the rectangle or not.
     \end{block}
 
-    Strategy
-    \uncover<2->{
+    \bigskip
+    
+    What are the steps necessary to calculate this?
+    
+    \begin{onlyenv}<2>
       \begin{itemize}
-      \item Test if points $p_1$ or $p_2$ are in the rectangle (easy tests first)
-      \item Test if $p_1p_2$ intersects with any side of the rectangle. 
-      \item ``Hard'' Way:
-        \uncover<3->{
-          {\smaller
-          \begin{itemize}
-          \item Find the intersection between lines $p_1p_2$, and top/bottom/left/right
-          \item Test if the intersection point is in line $p_1p_2$;
-          \item Test if the intersection point is in the rectangle;
-          \end{itemize}}
-        }
-      \uncover<4>{\item There is an easier way that takes into account vertical/horizontal sides}
-
+      \item Test if $p_1$ or $p_2$ are inside the rectangle (how?)
+      \item Test if the segment intersects any side of the rectangle (how?)
       \end{itemize}
-    }
-
+    \end{onlyenv}
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Problem Example: UVA -- Waterfalls}
-  % TODO: Add image for this problem
-  % TODO: Add code for this problem
   {\small
     \begin{block}{Summary}
-      Given a list of water sources, and a list of segments, calculate the position that 
-      each water source will arrive at the bottom.
+      \begin{itemize}
+        \item A waterfall falls from the {\bf source} straight down to $y = 0$.
+        \item Barriers are diagonal segments represented by two points $x_1, x_2$
+        \item What are the $x$ position of the sources when they reach the ground?     
+      \end{itemize}
     \end{block}
 
-    Strategy:
-    \begin{itemize}
-    \item For each water source, calculate all the segments that intersect it (easy because vertical line)
-    \item For each segment, calculate the intersection point - get the highest one.
-    \item New position of the water source is the lowest point of that segment.
-      
-      \bigskip
+    \bigskip
+    
+    What are the steps necessary to calculate this?
 
-    \uncover<2>{\item \alert{Problem:} No limit of segments or water sources. How do you avoid TLE?}
-    \end{itemize}
+    \begin{onlyenv}<2>
+      \begin{itemize}
+      \item A watersource is a vertical line.
+      \item Each segment changes the position of the water source
+      \item Scan the movement from top to bottom
+      \end{itemize}
+    \end{onlyenv}
   }
 \end{frame}
 
 \section{Circles and Triangles}
 \subsection{Circles}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Circles}
   {\smaller
   \begin{itemize}
@@ -659,7 +637,7 @@ int insideCircle(point_i p, point_i c, int r) {
 
 % TODO: Visual explanation of Heron's formula
 \subsection{incircle}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Incircle Triangle}
   {\smaller
     % TODO: Add own image of incircle and outcircle triangles
@@ -701,7 +679,7 @@ def radiusInCircle(p1,p2,p3):
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Incircle Triangle}
   {\smaller
     \begin{exampleblock}{Calculating the Center (Code)}
@@ -783,7 +761,7 @@ int inCircle(point p1, point p2, point p3,
 
 \section{Polygons}
 \subsection{Polygons}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygons}
   {\smaller    
   \begin{block}{Definition}
@@ -813,7 +791,7 @@ P.push_back(P[0]); // important: loop back
 
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon Algorithms}
   {\smaller
     \begin{exampleblock}{Perimeter of a Poligon -- sum of distances}
@@ -843,7 +821,7 @@ double area(const vector<point> &P) {
 \end{frame}
 
 
-\begin{frame}[fragile, singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon -- Concave and Convex check}
   {\smaller
     \begin{block}{Convex Polygons}
@@ -872,7 +850,7 @@ bool isConvex(const vector<point> &P) {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon -- Testing Inside or outside}
   {\smaller
     \begin{block}{There are many ways to test if a point $P$ is in a polygon.}
@@ -901,7 +879,7 @@ bool inPolygon(point pt, const vector<point> &P) {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon -- Cutting}
   % TODO: Add an image explaining Polygon cutting
   {\smaller
@@ -965,7 +943,7 @@ vector<point> cutPolygon(point a, point b, const vector<point> &Q){
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon -- Graham's Scan (1)}
 
 {\tiny 
@@ -1002,7 +980,7 @@ vector<point> CH(vector<point> P) {
 \end{exampleblock}}
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Polygon -- Graham's Scan (2)}
   {\tiny
     \begin{exampleblock}{}
@@ -1031,35 +1009,8 @@ vector<point> CH(vector<point> P) {
 \section{Conclusion}
 
 \subsection{Problem Discussion}
-\begin{frame}
-  \frametitle{Problem Discussion}
-  \begin{itemize}
-  \item Sunny Mountains
-  \item Bright Lights
-  \item Rope Crisis in Ropeland
-  \item Bounding Box
-  \item Soya Milk
-  \item SCUD Bursters
-  \item Trash Removal
-  \item The Sultan's Problem
-  \end{itemize}
-\end{frame}
+\input{problemdiscussion.tex}
 
-\subsection{Conclusion}
-\begin{frame}
-  \frametitle{Class Summary}
-  Computational Geometry
-  \begin{itemize}
-  \item Basic Concepts
-  \item Triangles
-  \item Circles
-  \item Polygons
-  \end{itemize}
-
-  \begin{block}{}
-    Final Week: String Problems!
-  \end{block}
-\end{frame}
 
 \end{document}
 
