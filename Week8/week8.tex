@@ -11,13 +11,10 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 9 - String Problems}
+\subtitle[]{Week 8 - String Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-06-24,27\\{\tiny Last updated \today}}
-% TODO: Fix many small typos in code
-% TODO: Add Function to find a new point based on two points and an additive angle (circle)
-% TODO: Add Function to obtain an angle based on two line segments (AOC in order) -- this already exists, reinforce
+\date{2017-06-16,19\\{\tiny Last updated \today}}
 \begin{document}
 
 \section{Introduction}
@@ -29,118 +26,66 @@
 \hfill{\tiny Suffix Trie pictures from ``Competitive Programming 3'' by Steven Halim}
 \end{frame}
 
-\subsection{Notes and Warnings}
+\subsection{Notes from last week}
+\input{previousclass.tex}
 
-\begin{frame}
-  \frametitle{Last Week Results}
-  \begin{block}{Week 8 - Computational Geometry}
-    \begin{itemize}
-    \item Sunny Mountains -- 14/30
-    \item Bright Lights -- 4/30
-    \item Rope Crisis -- 7/30
-    \item Bounding Box -- 6/30
-    \item Soya Milk -- 22/30
-    \item SCUD Busters -- 1/30
-    \item Trash Removal -- 0/30
-    \item Sultan's Problem -- 0/30
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Special Notes (1): Course Evaluation} 
-
-  Please take 20-30 minutes to complete the course evaluation. 
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Special Notes (2): Final Deadlines}
-
-  \begin{itemize}
-  \item FINAL deadline for late submissions: \alert{July 8th, 00:01}
-  \item Submissions after this grade will not be considered.
-  \item Grades will be announced on Manaba after this deadline.
-  \item Deadline for questions/comments on grades: July 14th.
-  \end{itemize}
-\end{frame}
-
-\section{String Basics}
 \subsection{Outline}
 
 \begin{frame}
   \frametitle{Final Week: String Problems}
   {\smaller
-  
-    \begin{block}{}
-      In Programming Contests, string-based problems have become less
-      popular. Some reasons:
-      \begin{itemize}
-        \item String problems are often troublesome to code, with many special checks;
-        \item Not as many ``beautiful'' algorithms as in math probems
-      \end{itemize}
-    \end{block}
 
     \begin{exampleblock}{}
-      On the other hand, string problems still often turn up in real
-      life applications, such as:
+      String manipulation is very common in real life applications:
+
       \begin{itemize}
-      \item Pre-processing of data for analysis;
-      \item Bioinformatics;
-      \item Human Interfaces;
+      \item Pre-processing of data for analysis; -- (JSON, CSV, Code)
+      \item Bioinformatics; -- (Manipulation of symbols)
+      \item Human Interfaces; -- (Text input/Output)
       \end{itemize}
     \end{exampleblock}
 
-    This week, we will see a few representatives of string problems in
-    programming contests.
+    \begin{block}{Characteristics of String Problems}
+      \begin{itemize}
+      \item Many ``parsing'' problems: special input, special output;
+      \item Algorithms are usually derivated from DP;
+      \item Special data structures for substrings;
+      \end{itemize}
+    \end{block}
+
+    This week, we will see some of these algorithms.
   }
 \end{frame}
-
-% Strings have become less common in programming contests, because they are 
-% Problematic, and more boring than difficult
-
-% But they are still very used in real life, such as when reading medical data, or data from
-% website users
-
-% In programming challenges, most string problems are either the input/output of a ``real''
-% problem, or are ad-hoc. But there are some exceptions, which we will discuss here.
 
 \begin{frame}
   \frametitle{Representative Ad-hoc string problems}
   {\smaller
 
-  String problems in programming contests usually take one of the
-  following forms:
-
+    ``Pure'' string problems are usually found in these forms:
+    
   \begin{exampleblock}{}
     \begin{itemize}
-    \item \structure{Pre-processing}: Input data is in string form, but
-      the underlying problem is of another type.
-    \item \structure{String Matching}: Compare two strings for
-      similarities/differences. We will see more of this towards the end
-      of the class.
-    \item \structure{Encode/Decode}: Find rules to transform encrypted
-      text into normal text (or vice-versa). Usually requires comparing
-      multiple possible transformations, and deciding which one is
-      correct.
-    \item \structure{Parsing}: A grammar (sometimes recursive) is defined, 
-      and you must parse the input following this grammar rules. Sometimes
-      you have to discover the minimal grammar based on the input.
-    \item \structure{Substring}: Find a substring with certain
-      properties inside a larger strings;
+    \item \structure{Pre-processing/Parse}: Input data is in string, but
+      the main problem is just numbers.
+    \item \structure{String Matching}: Compare two (or more) strings for
+      similarities/differences. Find substrings.
+    \item \structure{Encode/Decode}: Transform encoded (encrypted)
+      text into normal text (or vice-versa). Usually many solutions are
+      possible (search for maximum solution).
     \end{itemize}
   \end{exampleblock}
 
   \bigskip
 
-  The last three types of problems are usually solved using some sort
-  of search, recursion, or DP.
+  Use of DP is very common!
   }
 \end{frame}
 
+\section{String Basics}
+
 \subsection{String Primer}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (1)}
   {\smaller
     \begin{block}{String Representation}
@@ -148,7 +93,7 @@
         \column{0.45\textwidth}
 \begin{verbatim}
 // C/C++
-char[100] str; //last is \0
+char[100] str; // needs \0 in the end!
 
 #include<string> 
 str s;
@@ -160,6 +105,9 @@ String str;
 \end{verbatim}
       \end{columns}
     \end{block}
+
+Important to know that Java strings are immutable!
+    
     \begin{block}{Data Input}
       \begin{columns}[T]
         \column{0.45\textwidth}
@@ -187,7 +135,7 @@ str = sc.nextLine();
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (2)}
   {\smaller
     \begin{block}{String Output and formatting}
@@ -230,7 +178,7 @@ result =
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (3)}
   {\smaller
     \begin{block}{Combining Two or More Strings}
@@ -272,10 +220,10 @@ for (int i=0;str[i];i++)
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (4)}
   {\smaller
-    \begin{block}{String Tokenizer}
+    \begin{block}{String Tokenizer -- Breaks a string in ``words''}
       \begin{columns}[T]
         \column{0.45\textwidth}
 \begin{verbatim}
@@ -307,7 +255,7 @@ while (st.hasMoreTokens())
     }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (5)}
   {\smaller
     \begin{block}{Finding a Substring in a String}
@@ -351,7 +299,7 @@ sort(s.begin(),s.end());
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (6)}
   {\smaller
     \begin{block}{Sorting an array of strings or characters}
@@ -381,52 +329,136 @@ Collections.sort(S);
 
 \subsection{Ad-Hoc Problem Discussion}
 \begin{frame}
-  \frametitle{Discussion of Ad-hoc problems}
+  \frametitle{Discussion of Ad-hoc problems -- 1}
+
   {\smaller
-    \begin{itemize}
-    \item \structure{Immediate Decodability}: Goal is to make sure no
-      binary string is a prefix of another one. Full search by string. Is it 
-      possible to find a mathematical solution? Why/Why not?
-    \item \structure{Caesar Cypher}: This was a real cypher used by
-      Ancient Romans. Also complete search: where is the loop?
-    \item \structure{Ensuring Truth}: A SAT problem is NP-complex, but this 
-      problem is much easier. What do you have to evaluate?
-    \item \structure{Smeech}: What is the formula of the expected values?
-      Problem requires recursive parsing of the expression.
-    \end{itemize}
-        }
+    \begin{block}{}
+      The first four problems are ``ad-hoc''. What string operations
+      are necessary to solve them?
+    \end{block}
+
+    \begin{exampleblock}{Problem 2 -- Caesar Cypher}
+      This problem requires you to find the correct \emph{rotational
+        cypher}. For example:
+
+      \medskip
+      
+      Dictionary:
+      \begin{itemize}
+      \item CAT
+      \item MOUSE
+      \item TIGER
+      \item GET
+      \end{itemize}
+
+      \medskip
+      ECR RGECP      
+    \end{exampleblock}
+
+    What is the general function needed to test a dictionary?    
+  }
 \end{frame}
+
+\begin{frame}
+  \frametitle{Discussion of Ad-hoc problems -- 2}
+
+  {\smaller
+    \begin{block}{}
+      The first four problems are ``ad-hoc''. What string operations
+      are necessary to solve them?
+    \end{block}
+
+    \begin{exampleblock}{Problem 1 -- Immediate decodability}
+      Given a set of binary symbols, you must answer the question:
+      Are all symbols \emph{immediately unique}?
+
+      \begin{itemize}
+      \item 001
+      \item 100
+      \item 11011
+      \item 10101
+      \item \alert{10}
+      \end{itemize}
+    \end{exampleblock}
+
+    \vfill
+    
+    What is the algorithm to test uniqueness?
+    \begin{itemize}
+    \item By Brute force?
+    \item A better algorithm?
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Discussion of Ad-hoc problems -- 2}
+
+  {\smaller
+    \begin{block}{}
+      The first four problems are ``ad-hoc''. What string operations
+      are necessary to solve them?
+    \end{block}
+
+    \begin{exampleblock}{Problem 3 and 4 -- Parsers}
+      Problems 3 and 4 are both parsers. They require you to parse the
+      input and make a simple operation:
+
+      \medskip
+      
+      {\bf Problem 3: Parsing logical equation:}\\
+      (x\&y)|(x\&z)|(y\&\~ y)
+
+      \medskip
+
+      {\bf Problem 4: Parsing nested function:}\\
+      (0.5 3 (0.2 (0.5 3 3) (0.4 2 3)))
+    \end{exampleblock}
+
+    \begin{itemize}
+    \item How do you parse each problem?
+    \item In each case, do you calculate the problem {\bf during} or {\bf after}
+      parsing?
+    \end{itemize}
+  }
+\end{frame}
+
 
 \section{String Matching} % (6.4)
 \subsection{Definition}
 
 \begin{frame}
   \frametitle{String Matching}
-  \begin{block}{Problem Definition}
-    Given a pattern string P, can P be found in the longer string T?
-  \end{block}
 
-  \begin{center}
-    OBEY
+  {\smaller
+  \begin{block}{}
+    Many String problems include some form or \structure{string matching}
 
     \medskip
 
-    ASPBOBEBLEOLBOBEYEYBEOLBEAY
-  \end{center}
+    Can you find a substring $P$ inside of string $T$?
+  \end{block}
+  \begin{itemize}
+  \item $P$ = OBEY
+  \item $T$ = ASPBOBEBLEOLB\alert{OBEY}EYBEOLBEAY
+  \end{itemize}
 
   \bigskip
 
-  {\smaller
-  \begin{itemize}
-  \item Easiest solution: use the string library as we described before;
-  \item However, sometimes the matching has to be modified for special cases;
-  \item Useful to know efficient matching algorithms;
-  \end{itemize}
-  }
+  \begin{block}{}
+    \begin{itemize}
+    \item The easiest solution: Use strstr from the standard library!
+    \item But... what if the search has special conditions? (ex: $0 == O$)
+    \item Better study algorithms for string matching!
+    \end{itemize}
+  \end{block}
 
+  What is the complexity of a Complete search?
+  
+  }
 \end{frame}
 
-\begin{frame}[fragile, singleslide]
+\begin{frame}[fragile]
   \frametitle{String Matching: Naive Algorithm}
 
   {\smaller 
@@ -455,7 +487,7 @@ int naiveMatching() {
 \end{frame}
 
 \subsection{Knuth-Morris-Pratt}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
   
   \begin{block}{Basic Idea}
@@ -471,22 +503,24 @@ int naiveMatching() {
 \begin{verbatim}
 N = COLIN COMBWELL CALLED A CO-CO-CO-COMBO BREAKER
 M = CO-COMBO
-    CO....
-          CO.......
-                   C........
-                            CO-CO.
-                               co-CO.
-                                  co-COMBO 
+    COXXXX
+          COXXXXXXX
+                   CXXXXXXXX
+                            CO-COX
+                               CO-COX
+                                  CO-COMBO 
 \end{verbatim}
 \end{frame}
 
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
   {\smaller
     \begin{block}{How it works}
-      To determine to where in $M$ the algorithm should rewind in case
-      of a MISS, the KMP prepares and keeps a ``back table''.
+
+      The KMP needs to construct a ``rewind table'' $b$. This
+      table is used to determine where in $M$ the algorithm
+      should \structure{try again} in case of a miss.
       
 \begin{verbatim}
 m =  0 1 2 3 4 5 6 7
@@ -500,7 +534,7 @@ string at $m=b[5]=2$ (-).
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm -- Code}
   {\smaller
   \begin{exampleblock}{}
@@ -556,7 +590,7 @@ void kmpSearch() {
 \end{frame}
 
 \subsection{Edit Distance}
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{String DP: Edit Distance}
   {\smaller
   \begin{block}{Problem Definition}
@@ -633,7 +667,7 @@ Trying to solve this by brute force would quickly get TLE ($O(3^n)$).
 
 \subsection{Longest Common Subsequence}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Longest Common Subsequence}
   {\smaller
     \begin{block}{Problem Definition}
@@ -959,7 +993,7 @@ LCS: ACATC
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Suffix Array: Implementation (1)}
   {\smaller
     \begin{exampleblock}{Simple Implementation}
@@ -984,7 +1018,7 @@ int main() {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Suffix Array: Implementation (2.1)}
   {\smaller
     \begin{exampleblock}{O(n log n) implementation using ``ranking pairs/radix sort''}
@@ -1010,7 +1044,7 @@ void countingSort(int k) {
   }
 \end{frame}
 
-\begin{frame}[fragile,singleslide]
+\begin{frame}[fragile]
   \frametitle{Suffix Array: Implementation (2.2)}
   {\smaller
     \begin{exampleblock}{O(n log n) implementation using ``ranking pairs/radix sort''}
@@ -1080,30 +1114,15 @@ void constructSA() {
 \section{Conclusion}
 
 \subsection{Problem Discussion}
+\input{problemdiscussion.tex}
+
 \begin{frame}
-  \frametitle{Problem Discussion}
+  \frametitle{Next Week}
   \begin{itemize}
-  \item Immediate Decodability
-  \item Caesar Cypher
-  \item Ensuring Truth
-  \item Smeech
-  \item String Partition
-  \item Prince and Princess
-  \item Power Strings
-  \item Life Forms
+  \item Final Class: Problems Remix
+  \item Class Evaluation
+  \item See you!
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Final Message}
-  \begin{center}
-    Thank you for participating in this class!\\
-    I hope your programming abilities have improved!
-
-    \vfill
-
-    Remember: Your brain is like a muscle, it needs constant practice to keep itself smart
-  \end{center}
 \end{frame}
 
 \end{document}

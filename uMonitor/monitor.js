@@ -66,7 +66,10 @@ var problemlist = [
      mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
     {name:"Week 7: Computational Geometry",
      deadline:"2017-06-16T14:59:59+09:00",
-     mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]}
+     mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]},
+    {name:"Week 8: String Manipulation",
+     deadline:"2017-06-23T14:59:59+09:00",
+     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]}
 ];
 
 var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 898790, 
@@ -251,7 +254,7 @@ function problemdata(pid, dl)
 	// name and link
 	document.getElementById("n"+pdata.pid).innerHTML =
 	    "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
-	    "option=com_onlinejudge&Itemid=8&category=24&"+
+	    "option=com_onlinejudge&Itemid=8&"+
 	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
 	// class stats
 	url = "http://uhunt.felix-halim.net/api/p/subs/"+
