@@ -1,17 +1,7 @@
-// TODO: Decouple data loading from data showing:
-
-// "big table" of users x problems. For each cell, list
-// Sucessfull, Failed, Late submissions
-// Make a button that load this data per problem (or re-load at a reasonable time frame)
-
-// Function that displays the data into the page -- should be reloaded whenever
-// the table gets "dirty" -- set dirty flag on the end of data loading, set clean flag
-// on the end of datashowing. Should repeat from time to time.
-
-// Get statistics on the number of API calls, and probably on the quantity of data
-// Pause updating button, Force updating button.
-
-// Probably still nee
+// TODO: When loading problem, save to a big list of student submissions
+// Status[student][week][problem] -- Where status = 0- not solved, 1- wrong, 2- late, 3- solved
+// Time[student][week][problem] -- Where time is the time of the first successful submission
+// Use these two tables to build data for each student without needing extra API calls
 
 // UCT date parsing incantation from Norman Gray
 // http://stackoverflow.com/questions/439630/how-do-you-create-a-javascript-date-object-with-a-set-timezone-without-using-a-s
@@ -69,7 +59,10 @@ var problemlist = [
      mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]},
     {name:"Week 8: String Manipulation",
      deadline:"2017-06-23T14:59:59+09:00",
-     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]}
+     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
+    {name:"Week 9: Interesting Problem Remix!",
+     deadline:"2017-06-30T14:59:59+09:00",
+     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
 
 var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 898790, 

@@ -1,5 +1,5 @@
-18:% TODO: Fix many small typos in code
-19:% TODO: Add Function to find a new point based on two points and an additive angle (circle)
-20:% TODO: Add Function to obtain an angle based on two line segments (AOC in order) -- this already exists, reinforce
-762:      % TODO: Replace suffix trie image with one of my own design
-923:      % TODO: Japanese for pre-order visit
+- Need to add code for assembling the return table in Knuth-Morris-Pratt
+- For DP, make the "common substring" before the "edit distance" -- Also 
+  Add image of the DP process.
+- Trie section is very hard to understand.
+
