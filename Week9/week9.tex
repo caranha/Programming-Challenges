@@ -31,7 +31,6 @@
 \input{classnotes.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Solving Problems}
 \subsection{Solving Problems}
 \begin{frame}
   \frametitle{Course Summary -- Solving a problem}
@@ -352,9 +351,10 @@
       \item We have visited all cities, and must return to the origin:\\
         shortest\_path($S_{\text{all}},s_k$) = $D(s_k,0)$
       \item We have visited some cites ($S$), and must find the next one:\\
-        shortest\_path($S,s_k$) = {\bf minimum}$(D(s_k,s_i) + \text{shortest\_path}(S\cup s_i,s_i))$
+        shortest\_path($S,s_k$) = $\text{min}_{s_i\notin S}
+        (D(s_k,s_i) + \text{shortest\_path}(S\cup s_i,s_i))$
       \item Initial call:\\
-        shortest\_path($\emptyset$,0)
+        shortest\_path($S = \emptyset$,0)
       \end{itemize}
     \end{block}
   }
@@ -412,19 +412,19 @@ visit(p,v):
   \frametitle{UVA 10003 -- Cutting Sticks}
   
   {\smaller
-  \begin{block}{Problem Description}
-    Given a stick of length $1 \leq l \leq 1000$ and $1 \leq n \leq
-    50$ cuts (positions) to be made, the cost of a cut is given by the length of 
-    the stick being cut.
-
-    \medskip
-
-    Find a cutting sequence that minimizes the cost of cutting the stick.
+    \begin{block}{Problem Description}
+      \begin{itemize}
+      \item In a stick of length $l$ ($1 \leq l \leq 1000$)
+      \item Make $N$ cuts at positions $\text{cuts} = \{c_1, c_2,
+        \ldots, c_N\}$ $(1 \leq N \leq 50)$
+      \item The cost of a cut is the size of the sub-stick that you cut.
+      \item What order of cuts \structure{minimize the cost}?
+      \end{itemize}
   \end{block}
   
   \medskip
 
-  \structure{Example:} $l=100, n=3, cuts=\{25,50,75\}$
+  \structure{Example:} $l=100, N=3, \text{cuts}=\{25,50,75\}$
 
   \begin{center}
     \includegraphics[width=0.6\textwidth]{../img/cuttingsticks}
@@ -434,167 +434,491 @@ visit(p,v):
   \item Sequence 1: 25, 50, 75. Cost: 100 + 75 + 50 = 225
   \item Sequence 2: 50, 25, 75. Cost: 100 + 50 + 50 = 200
   \end{itemize}
+  }
+\end{frame}
 
+\begin{frame}
+  \frametitle{UVA 10003 -- Cutting Sticks -- Questions}
+
+  {\smaller
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{../img/cuttingsticks}
+      \begin{itemize}
+      \item Sequence 1: 25, 50, 75. Cost: 100 + 75 + 50 = 225
+      \item Sequence 2: 50, 25, 75. Cost: 100 + 50 + 50 = 200
+      \end{itemize}
+    \end{center}
+
+    \begin{exampleblock}{Quiz 1}
+      \begin{itemize}
+      \item What is the algorithm for a full search?
+      \item What is the complexity of this algorithm? And the maximum time?
+      \end{itemize}
+    \end{exampleblock}
+    
+    \begin{exampleblock}{Quiz 2}
+      \begin{itemize}
+      \item This problems smells of {\bf DP}...
+      \item But what are the {\bf states}, and what is the {\bf transition}?
+      \end{itemize}
+    \end{exampleblock}
+    
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{UVA 10003 -- Cutting Sticks -- Recurrence}
+  {\smaller
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{../img/cuttingsticks}
+      \begin{itemize}
+      \item Sequence 1: 25, 50, 75. Cost: 100 + 75 + 50 = 225
+      \item Sequence 2: 50, 25, 75. Cost: 100 + 50 + 50 = 200
+      \end{itemize}
+    \end{center}
+
+    \begin{block}{Recurrence}
+      Let's think of a \structure{Top-down DP} based on a recursive function:
+      \begin{itemize}
+      \item $A = \{0, c_1, c_2, \ldots c_N, N+2\}$ is the set of all cutting
+        points, plus the start and end point.
+      \item $\text{cost}(a_i,a_j) = \text{dist}(a_i,a_j) + \text{min}_{i\leq k\leq j}
+        (\text{cost}(a_i,a_k) + \text{cost}(a_k,a_j))$
+      \item $\text{cost}(a_i,a_i) = 0$
+      \end{itemize}
+      This requires at most a $(N,N)$ DP table for memoization, and O(N) for each iteration.
+    \end{block}
+    
+  }
+\end{frame}
+
+\subsection{ACORN}
+\begin{frame}
+  \frametitle{UVA 1231 -- ACORN}
+
+  {\smaller
+  \begin{columns}
+    \column{0.4\textwidth}
+    \includegraphics[width=1.2\textwidth]{img/acorn}
+    \column{0.6\textwidth}
+    
+    \begin{itemize}
+    \item Begin at the top of a tree, and get the maximum number of acorns.
+    \item You can go down {\bf 1 height} on the tree.
+    \item OR {\bf change tree} for the cost of {\bf f height}\\
+      (In this figure, $f = 2$)
+      
+      \bigskip
+      
+    \item Number of trees: $ 1 \leq T \leq 2000$
+    \item Height of trees: $ 1 \leq H \leq 2000$
+    \item Length of fall : $ 1 \leq f \leq 500$         
+    \end{itemize}
+  \end{columns}
+
+  \bigskip
+  
   \begin{block}{}
-  What is the recurrence to find the minimum cost?
+    Let's skip the full search. This smells of DP, but how to solve it?
+
+    \medskip
+    
+    \alert{QUIZ:} Describe the {\bf transition} and the {\bf state table}
   \end{block}
   }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Cutting Sticks -- Recurrence}
+  \frametitle{UVA 1231 -- ACORN -- Simple Recurrence}
   {\smaller
-    \structure{Basic Idea}: Price(start,end) = end-start + Price(start,cut) + Price(cut,end)
-
-    \medskip
-
-    \alert{Problem}: Using start/end, we have 1000*1000 states.
-
-    \medskip
-    
-    \structure{Solution}: We use cut indexes instead! (50*50 states)
-
-    \vfill
-
-    \begin{block}{Recurrence using cut index:}
-    \begin{itemize}
-    \item Price(i,i+1) = 0 
-    \item Price(i,j) = min(Size[j] - Size[i] + Price(i,k) + Price(k,j))\\
-      (for all $i < k < j$)        
-    \end{itemize}
+  \begin{columns}[T]
+    \column{0.2\textwidth}
+    \includegraphics[width=1.2\textwidth]{img/acorn}
+    \column{0.8\textwidth}
+    \begin{block}{Simple Recurrence}
+      \begin{itemize}
+      \item acorn$[t_i][h]$ -- number of acorns in tree {\bf $t_i$} at height {\bf $h$}
+        \bigskip
+        
+      \item cost$(t_i,0)$ = acorn$[t_i][0]$
+        \bigskip
+        
+      \item cost$(t_i,j)$ = acorn$[t_i][j]$ + \\
+        \hspace{1.6cm}max$_{k\neq t_i}($cost$(t_i,j-1)$, cost$(t_k,j-f))$\\
+        (Don't forget to check $j-f < 0$)
+        \bigskip
+        
+      \item Final cost: max$_{1\leq i \leq T}($cost$[t_i][H])$
+      \end{itemize}
     \end{block}
+  \end{columns}
+  
+  \vfill
+  
+  \begin{center}
+    \alert{QUIZ:} What is the problem with this recurrence?
+  \end{center}
+  }
+\end{frame}
 
+\begin{frame}
+  \frametitle{UVA 1231 -- ACORN -- Better DP table}
+
+  {\smaller
+    \begin{alertblock}{}
+      The DP table of last slide is A[H][T], with size $2000*2000=4M$.
+      Each function call is $O(H*T*T)$, so total complexity is
+      $4M*2000=8B$
+    \end{alertblock}
 
     \medskip
-    
-    Note that the recurrence costs $O(n)$, and the table size is $O(n^2)$, 
-    so the total cost is $O(n^3)$ }
-\end{frame}
 
-
-\section{More Examples}
-\subsection{DP on Math Problems}
-
-\begin{frame}
-  \frametitle{DP on Math Problems}
-  Many math problems can be implemented as DP:
-  \begin{itemize}
-  \item Combinatoric problems often have recursive formulas, and
-    overlapping subproblems;
     \begin{itemize}
-    \item Fibonacci Number: $f(n) = f(n-1)+f(n-2)$
+    \item Cost of changing tree is constant for any two trees.
+    \item It is not necessary to keep all trees, only the best.
     \end{itemize}
-  \item Probability problems often require you to search the entire
-    probability space (tree). These trees usually have overlapping branches.
-  \item Maths problems on static data (sum, min, max)
-  \end{itemize}
-\end{frame}
 
-% TODO: Add a DP math example (Yahtzee?)
-%\begin{frame}
-%  \frametitle{DP on Math Problems}
-%\end{frame}
+    \medskip
 
-
-\begin{frame}
-  \frametitle{DP on Strings}
-  \begin{itemize}
-  \item edit distance, substring manipulation, etc.
-  \item Usually, we don't send the string in the recurrence, but
-    \structure{indexes on the string}\\
-    %% TODO: Add an string problem
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{DP Issues}
-  
-  {\small
-  \begin{itemize}
-  \item Many DP problems look like ``non DP'' problems. 
-
-    \begin{block}{Example}
-      Select positions for a set of flags that cover a certain
-      radius, in order to maximize area coverage. 
+    \begin{block}{Better Recurrence -- $O(H*T)$}
+      We use the table dp$[H]$ which contains the best solution at height H.
 
       \medskip
-      
-      The area calculation requires geometry, but the flag selection is 
-      usually DP.
-    \end{block}
-    
-    \medskip
-    
-  \item Some problem have sub-problems, but they are not overlapping.\\
-    (In this case, DP will not work, but maybe Divide and Conquer?)
-  \end{itemize}}
+
+      \begin{itemize}
+      \item $\text{dp}[0] = \text{max}_{1\leq j\leq T}\text{acorn}[j][0]$
+       \medskip
+        
+      \item $\text{acorn}[j][i] += \text{max}(\text{acorn}[j][i-1], \text{maxac}[i-f])$
+        \medskip
+        
+      \item $\text{dp}[i] = \text{max}_{1\leq j\leq T}(\text{acorn}[j][i])$
+      \end{itemize}
+    \end{block}    
+  }
 \end{frame}
 
-\subsection{A few more problems}
-% Add discussion for a few more problems
+%\begin{frame}
+%  \frametitle{UVA 1238 -- Free Parenthesis}
+%\end{frame}
 
-
-\section{Conclusion}
-\subsection{Conclusion}
+\section{Composite Problems}
+\subsection{Fatman}
 \begin{frame}
-  \frametitle{That's all for DP!}
-  This is what we've seen for weeks 3 and 4:
-
-  \begin{itemize}
-  \item DP = Complete Search + State table;
-  \item Good when many \structure{overlapping subproblems} exist;
-  \item Top-Down (recursive) and Bottom-Up (nested loops);
-  \item Classical DP problems;
-  \item (some!) non-classical DP problems;
-  \end{itemize}
-
-  \vfill
-
-  For the next two weeks, the theme will be \structure{graph algorithms}!
-\end{frame}
-
-\subsection{Week 4 Problems}
-\begin{frame}
-  \frametitle{Problems for Week 4}
-  \begin{itemize}
-  \item Collecting Beepers
-  \item Shopping Trip
-  \item Bar Codes
-  \item Cutting Sticks
-  \item String Popping
-  \item Divisibility
-  \item Marks Distribution
-  \item Squares
-  \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{World Finals Problem - 2016 Problem C}
-  {\smaller
-  \begin{block}{Problem Description -- Ceiling Function}
-    Given $n$ arrays with $K$ values each, each array 
-    is organized in a binary search tree in the order of input. 
-
-    \bigskip
-    
-    In other words, the first element is the root, the second
-    is the left child of the root if smaller, right child if bigger, 
-    so on.
-
-    \bigskip
-
-    Count the number of different trees generated by the input data.    
-  \end{block}
-
+  \frametitle{UVA 295 -- Fatman!}
   \begin{center}
-    \includegraphics[width=0.7\textwidth]{../img/worldfinal2016}
+    \includegraphics[width=0.6\textwidth]{img/fatman}
   \end{center}
 
+  {\smaller
+    \begin{block}{Problem Description}
+      Find the {\bf maximum diameter D of the circle} that can pass the corridor.
+      \begin{itemize}
+      \item The corridor has length $L$ and width $W$;
+      \item The corridor has $0 \leq N \leq 100$ obstacles, represented by $(x_i,y_i)$;
+      \item Obstacles are {\bf points} with $0 \leq x_i \leq L, 0\leq y_i \leq W$;
+      \end{itemize}
+    \end{block}
+
+    \alert{QUIZ:} How do you solve this problem? (to 4 decimal places)
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{UVA 295 -- Fatman -- Breaking up the problem}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/fatman}
+  \end{center}
+
+  {\smaller
+  One way to solve some problems is to break them down into smaller
+  components.
+
+  \bigskip
+
+  We can break this problem into two sub-problems:
+  \begin{block}{}
+  \begin{enumerate}
+  \item Is it possible for a circle of size $0 \leq R \leq W$ to pass?
+  \item What is the maximum $R$ that can pass?
+  \end{enumerate}
+  \end{block}
+
+  \alert{QUIZ}: Assume that (2) is ``fast enough'', how do we solve (1)?
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{UVA 295 -- Fatman -- Binary Search}
+
+  {\smaller
+    \begin{block}{}
+      \begin{itemize}
+      \item Is it possible for a circle of size $0 \leq R \leq W$ to pass?
+      \item What is the maximum $R$ that can pass?
+      \end{itemize}
+    \end{block}
+
+    Assuming that we have a ``fast'' algorithm to test if $R$ can
+    pass ($T(R)$), we could use \structure{Binary Search} to find the maximum
+    R:
+
+    \bigskip
+    
+    \begin{enumerate}
+    \item Start with $R_l = 0, R_h = W$, Test $T(R_l+R_h /2)$;
+    \item If fails, $R_h = R_l+R_h/2$, else $R_l = (R_l+R_h)/2$; repeat $T(R_l+R_h/2)$.
+    \item Repeat until $R_h - R_l < 0.0001$.
+    \end{enumerate}
+
+    This requires log$_2(100*10000) = 20$ operations.
+
+    \bigskip
+
+    \alert{QUIZ:} How can we test $T(R)$ ``fast enough''?
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{UVA 295 -- Fatman -- Squeezing through}
+
+  {\smaller
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{img/fatman}
+    \end{center}
+
+    \begin{itemize}
+    \item R can pass between two objects $i$ and $j$ if \emph{euclid}$(i,j) \geq R$
+    \item R can pass between an object $i$ and a wall if $y_i \geq R || y_i \leq W-R$
+    \end{itemize}
+
+    \bigskip
+
+    \begin{exampleblock}{Algorithm for T(R)}
+      \begin{itemize}
+      \item Create a Graph $G$ where the obstacles and walls are vertices;
+      \item If R can {\bf not} pass between $i$ and $j$, add an Edge $E_{ij}$;
+      \item If there is a {\bf path} between both walls, \alert{R cannot pass};
+      \end{itemize}
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{UVA 295 -- Fatman -- Squeezing through}
+
+  {\smaller
+  \begin{block}{T(R) sample code -- part 1, construct graph}
+\begin{verbatim}
+def test(R):
+  nb = []                  # list of neighbor list
+  for i in range(len(N)+2): nb[i] = list()
+
+  for i in range(len(N)):  # N is list (x,y) of obstacles
+    if (N[i][1] < R): nb[0].append(i+1)
+    if (W - N[i][1] < R): nb[len(N)+1].append(i+1)
+    if (i+1) in nb[0] and (i+1) in nb[len(N)+1]: return 0
+       # quick check 1
+  if not (len(nb[0]) and len(nb[len(N)+1]): return 1
+       # quick check 2
+
+  for i in range(len(N)):
+    for j in range(len(N)):
+      if dist(N[i],N[j]) < R: nb[i+1].append(j+1)
+
+  ... next we test the graph ...
+\end{verbatim}
+  \end{block}
   }
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{UVA 295 -- Fatman -- Squeezing through}
+
+  
+  {\smaller
+    \alert{QUIZ:} What is the total cost of this approach?
+    
+    \begin{block}{T(R) sample code -- part 2, testing the graph}
+\begin{verbatim}
+def test(R):
+  nb = []                  # list of neighbor list
+  for i in range(len(N)+2): nb[i] = list()
+  for i in range(len(N)):   ... border test ...
+  for i in range(len(N)):
+    for j in range(len(N)): ... build graph ...
+
+  curnode = 0; visited = list(); tovisit = list()
+  while 1: # DFS
+    if (curnode == len(N)+1) return 0   # reached wall
+    visited.add(curnode)
+    for i in nb[curnode]: tovisit.append(i)
+    while(curnode in visited):
+       if not (len(tovisit)): return 1  # not reached wall
+       curnode = tovisit.pop()
+\end{verbatim}
+    \end{block}
+  }
+\end{frame}
+
+\subsection{Copying Books}
+\begin{frame}[fragile]
+  \frametitle{UVA 714 -- Copying books}
+  
+  {\smaller
+    \begin{block}{Problem Description}
+      \begin{itemize}
+      \item There are $M$ books and $K$ scribes $(1 \leq K \leq M \leq 500)$. 
+      \item The each book has $p_i$ pages $(1 \leq p_i \leq 1000000)$
+      \item Assign books to each scribe, and {\bf minimize} maximum job.
+      \item Books must be assigned in blocks.
+      \end{itemize}
+    \end{block}
+
+\begin{verbatim}
+9 3
+Input 1: 100 200 300 400 500 600 700 800 900
+Output 1: 100 200 300 400 500 / 600 700 / 800 900 (max 1700)
+
+5 4
+Input 2: 100 100 100 100 100
+Output 2: 100 / 100 / 100 / 100 100 (max 200)
+\end{verbatim}
+
+\begin{itemize}
+\item \alert{QUIZ:} Describe the full search (and complexity)
+\item \alert{QUIZ:} Describe a better algorithm?
+\end{itemize}
+
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{UVA 714 -- Copying books -- Decomposition approach}
+
+  {\smaller
+
+\begin{verbatim}
+9 3
+Input 1: 100 200 300 400 500 600 700 800 900
+Output 1: 100 200 300 400 500 / 600 700 / 800 900 (max 1700)
+
+5 4
+Input 2: 100 100 100 100 100
+Output 2: 100 / 100 / 100 / 100 100 (max 200)
+\end{verbatim}
+
+\vfill
+    
+    \begin{itemize}
+    \item Someone has probably suggested DP. It is certainly possible.
+    \item We could also use ``Binary Search + Test'' from the last problem:
+      \begin{itemize}
+      \item Binary search the maximum cost (100000*500 = 26 comparisons)
+      \item Test if the maximum cost is possible (T(max))
+      \item \alert{QUIZ:} What is a ``fast enough'' algorithm for T(max)?
+      \end{itemize}
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{UVA 714 -- Copying books -- Testing a solution}
+  {\smaller
+
+\begin{verbatim}
+9 3
+Input 1: 100 200 300 400 500 600 700 800 900
+Output 1: 100 200 300 400 500 / 600 700 / 800 900 (max 1700)
+\end{verbatim}
+
+\vfill
+
+\begin{block}{One possible Test: Greedy Algorithm to test Maximum M}
+\begin{verbatim}
+def test(M):
+  scribe = 0; book = 0; 
+  while scribe < K:
+    sum = 0
+    while sum + page[book] < M:
+      sum += page[book]; book += 1
+      if book == M: return 1   # assigned all books
+    scribe ++
+  return 0                     # did not assign all books
+\end{verbatim}
+\end{block}
+
+\begin{alertblock}{}
+  Caution: This code gives WA -- in case of tie, you need lowest jobs first!
+\end{alertblock}
+  }
+\end{frame}
+
+%\subsection{How Big is it?}
+%\begin{frame}
+%  \frametitle{UVA 10012 -- How big is it?}
+%\end{frame}
+
+\section{The Last Problem!}
+
+\subsection{Messages}
+\begin{frame}
+  \frametitle{Take-home messages}
+
+  {\smaller
+    \begin{block}{Composite Problems}
+      Many interesting problems use a combination of algorithms:
+      \begin{itemize}
+      \item Blackbeard: BFS + TSP
+      \item Fatman: Geometry + Graph + Binary Search
+      \item Books: Greedy + Binary Search
+      \end{itemize}
+    \end{block}
+
+    \vfill
+    
+    \begin{alertblock}{Do not forget simple approaches}
+      Binary-search-and-test is {\bf very powerful} if:
+      \begin{itemize}
+      \item You need to find a bounded maximum or minimum;
+      \item The feasibility test is simple to perform; (code-simple)
+      \end{itemize}
+  \end{alertblock}
+  }
+\end{frame}
+
+\subsection{A careful Approach}
+\begin{frame}[fragile]
+  \frametitle{UVA 1079 -- A careful Approach}
+
+  {\smaller
+    \begin{block}{Problem Description}
+      \begin{itemize}
+      \item Choose the landing time $t_i$ for $2 \leq N \leq 8$ planes;
+      \item The minimum gap $|t_i - t_j|$ must be as large as possible;
+      \item Each plane $i$ has a maximum and minimum allowed landing time:\\
+        $0 \leq \text{min}_i \leq t_i \leq \text{max}_i \leq 1440$
+      \end{itemize}
+    \end{block}
+
+\begin{verbatim}
+Input:               Solution:
+3 planes             Maximum Minimum Gap: 7.5 minutes
+1- 0 to 10           P1 - Arrive at 0
+2- 5 to 15           P2 - Arrive at 7.5
+3- 10 to 15          P3 - Arrive at 15
+\end{verbatim}
+  }
+
+  \alert{Final Quiz:} Let's solve this problem\\
+  (hint: it is composite of 3 problems!)
+\end{frame}
+
+\section{The end!}
+\subsection{Conclusion}
+
+\input{problemdiscussion.tex}
 \end{document}
 
 

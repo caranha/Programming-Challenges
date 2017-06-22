@@ -1,14 +1,14 @@
 DP 2 -- Remix Class
 ===================
 
+# Future TODO
+- Add discussion/problem about Meet In The Middle (MITM)
+
 # lecture Preparation
 ## Grades Summary, Final Deadline
 ## DP on Graph -- Implicit graph and TSP
 ## Special DPs -- Cutting Sticks and Free Parenthesis
 
-- Computational Geometry Problem ?
-- Meet in the middle Problem ?
-- DP with multiple levels Problem ?
 
 # Problems
 - 10937 -- Blackbeard the Pirate (1878) -- TSP with implicit graph, page 323
