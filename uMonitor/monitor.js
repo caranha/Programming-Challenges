@@ -1,7 +1,13 @@
-// TODO: When loading problem, save to a big list of student submissions
-// Status[student][week][problem] -- Where status = 0- not solved, 1- wrong, 2- late, 3- solved
-// Time[student][week][problem] -- Where time is the time of the first successful submission
-// Use these two tables to build data for each student without needing extra API calls
+// TODO: Rewrite the API calling to use: /api/subs-user/{user-id}
+//
+// This gets all the submissions of a particular user. You can call this once for each student
+// To get all necessary data in fewer function calls.
+// For each submission of each user, test if it is a submission in this class, and test the time
+// Set the submission in a [user][week][problem] table: 0 no sub, 1 problem, 2 late, 3 successful
+// Set helper tables (total week, total students) as necessary.
+
+// With this, you don't need extra API calls to show the data of a particular student.
+
 
 // UCT date parsing incantation from Norman Gray
 // http://stackoverflow.com/questions/439630/how-do-you-create-a-javascript-date-object-with-a-set-timezone-without-using-a-s
