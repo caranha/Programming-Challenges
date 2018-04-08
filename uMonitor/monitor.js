@@ -37,50 +37,44 @@ function parseUCT(dateString) {
 //** Data **//
 var problemlist = [
     {name:"Non-grading Problems",
-     deadline:"2017-07-29T23:59:59+09:00",
+     deadline:"2018-07-29T14:59:59+09:00",
      mlist:[3710,3565,2113]},
     {name:"Week 0: Introduction and Problem Solving",
-     deadline:"2017-04-20T14:59:59+09:00",
+     deadline:"2018-04-26T14:59:59+09:00",
      mlist:[36,2827,2595,2899,834,1146,97,388]},
-    {name:"Week 1: Data Structures",
-     deadline:"2017-04-28T14:59:59+09:00",
-     mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
-    {name:"Week 2: Search Problems",
-     deadline:"2017-05-12T14:59:59+09:00",
-     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
-    {name:"Week 3: Dynamic Programming I",
-     deadline:"2017-05-19T14:59:59+09:00",
-     mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
-    {name:"Week 4: Graphs I",
-     deadline:"2017-05-26T14:59:59+09:00",
-     mlist:[3053, 3873, 813, 2021, 1706, 2938, 1541, 3544]},
-    {name:"Week 5: Graphs II",
-     deadline:"2017-06-02T14:59:59+09:00",
-     mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
-    {name:"Week 6: Mathematics",
-     deadline:"2017-06-09T14:59:59+09:00",
-     mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
-    {name:"Week 7: Computational Geometry",
-     deadline:"2017-06-16T14:59:59+09:00",
-     mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]},
-    {name:"Week 8: String Manipulation",
-     deadline:"2017-06-23T14:59:59+09:00",
-     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
-    {name:"Week 9: Interesting Problem Remix!",
-     deadline:"2017-06-30T14:59:59+09:00",
-     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
+//   {name:"Week 1: Data Structures",
+//     deadline:"2017-04-28T14:59:59+09:00",
+//     mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
+//    {name:"Week 2: Search Problems",
+//     deadline:"2017-05-12T14:59:59+09:00",
+//     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
+//    {name:"Week 3: Dynamic Programming I",
+//     deadline:"2017-05-19T14:59:59+09:00",
+//    mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
+//    {name:"Week 4: Graphs I",
+//     deadline:"2017-05-26T14:59:59+09:00",
+//     mlist:[3053, 3873, 813, 2021, 1706, 2938, 1541, 3544]},
+//    {name:"Week 5: Graphs II",
+//     deadline:"2017-06-02T14:59:59+09:00",
+//     mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
+//    {name:"Week 6: Mathematics",
+//     deadline:"2017-06-09T14:59:59+09:00",
+//     mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
+//    {name:"Week 7: Computational Geometry",
+//     deadline:"2017-06-16T14:59:59+09:00",
+//     mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]},
+//    {name:"Week 8: String Manipulation",
+//     deadline:"2017-06-23T14:59:59+09:00",
+//     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
+//    {name:"Week 9: Interesting Problem Remix!",
+//     deadline:"2017-06-30T14:59:59+09:00",
+//     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
 
-var studentlist = [161504, 161945, 769683, 769718, 898781, 898787, 898789, 898790, 
-898792, 898794, 898798, 898799, 898800, 898801, 898803, 898804, 898805, 898806, 
-898807, 898809, 898810, 898812, 898815, 898817, 898818, 898819, 898820, 898821, 
-898822, 898826, 898830, 898835, 898838, 898850, 898863, 899020, 899005, 898949,
-898839, 898944, 899051, 898942, 899097, 898811, 898802, 899086, 899051, 899183,
-898796, 898791, 899199, 899172, 899115, 899311, 898826
-];
+var studentlist = [161945];
 
-var startdate = parseUCT("2017-03-30T00:00:00+09:00");
-var enddate = parseUCT("2017-07-30T00:00:00+09:00");
+var startdate = parseUCT("2018-04-07T00:00:00+09:00");
+var enddate = parseUCT("2018-07-30T00:00:00+09:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {
@@ -249,14 +243,14 @@ function problemdata(pid, dl)
     var start = Math.floor(startdate/1000);
     var end = Math.floor(dl/1000);
 
-    ajax("http://uhunt.felix-halim.net/api/p/id/" + pid, function(pdata) {
+    ajax("http://uhunt.onlinejudge.org/api/p/id/" + pid, function(pdata) {
 	// name and link
 	document.getElementById("n"+pdata.pid).innerHTML =
 	    "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
 	    "option=com_onlinejudge&Itemid=8&"+
 	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
 	// class stats
-	url = "http://uhunt.felix-halim.net/api/p/subs/"+
+	url = "http://uhunt.onlinejudge.org/api/p/subs/"+
 	    pdata.pid+"/"+start+"/"+end;
 	ajax(url,classdata);
 
@@ -323,7 +317,7 @@ function mysubmissions()
 
     // load data for a user from her username
     username = document.getElementById('uname').value;
-    ajax("http://uhunt.felix-halim.net/api/uname2uid/" + username,
+    ajax("http://uhunt.onlinejudge.org/api/uname2uid/" + username,
 	 function (uid)
 	 {
 	     if (uid != 0) {

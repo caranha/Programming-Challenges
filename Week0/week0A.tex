@@ -6,7 +6,7 @@
 \subtitle[]{Week 0 - Introduction}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
-\date{2017/4/14\\{\smaller(last updated: \today)}}
+\date{2018/4/13\\{\smaller(last updated: \today)}}
 
 \begin{document}
 
@@ -27,8 +27,8 @@
     
     \medskip
     
-    \url{https://manaba.tsukuba.ac.jp/ct/course_781339}\\
-    Registration Code: 8467527
+    \url{https://manaba.tsukuba.ac.jp/ct/course_971789}\\
+    Registration Code: 1473177
   \end{block}
   \begin{exampleblock}{Language}
     \begin{itemize}
@@ -53,15 +53,13 @@
         
         \medskip
 
-      \item \structure{Research:} Artificial Intelligence, Genetic
-        Algorithms, Deep Learning;
+      \item \structure{Research:} Artificial Intelligence,
+        Evolutionary Algorithms, Genetic Programming;
       \item \structure{Language:} Python, R;
-      \item \structure{Hobbies:} Game Programming, Geocaching, Twitter
-        Bots;
+      \item \structure{Hobbies:} Game Programming, Geocaching;
         
         \medskip
 
-      \item \structure{twitter:} \href{http://www.twitter.com/caranha}{@caranha}
       \item \structure{webpage:}\\ {\smaller \url{http://conclave.cs.tsukuba.ac.jp}}
     \end{itemize}
     }
@@ -139,9 +137,10 @@
 
   \begin{alertblock}{2- Course Language}
     \begin{itemize}
+    \item The teacher's Japanese is very bad T\_T
     \item All the course materials are in English;
     \item Importantly: All the homework is in English;
-    \item You can submit your programs/questions in Japanese;
+    \item You can make your homework in Japanese;
 
       \bigskip
 
@@ -157,18 +156,22 @@
 \begin{frame}
   \frametitle{What is a ``Programming Challenge''?}
 
-  A programming challenge is a puzzle that can be solving by making a
+  A programming challenge is a puzzle that you solve by making a
   computer program.
 
   \bigskip
 
-  The challenge describes the \structure{inputs} and the
-  \structure{rules} of the problem, and you must write a program that
-  finds out the \structure{correct output}.
-
+  \begin{itemize}
+  \item Description of the problem
+  \item Standard input
+  \item Standard output
+  \item Examples
+  \end{itemize}
+  
   \bigskip
 
-  Let's see an example.
+  You must write a program that \structure{reads the input} and
+  \structure{prints the correct output}.
   
 \end{frame}
 
@@ -204,23 +207,25 @@
   \frametitle{Example Challenge: ``Relational Operator'' (3)}
   
   \begin{block}{Problem Description}
-    {\small 
-      Some operator checks about the relationship between two values,
-      these operators are called relational operators. Given two
-      numerical values, your job is just to find out the relationship
-      between them. That is (i) First one is greater than the second,
-      (ii) First one is less than the second or (iii) First and second
-      one is equal.
+    {\smaller Some operator checks about the relationship between two
+      values, these operators are called relational operators. Given
+      \structure{two numerical values}, your job is just to find out
+      the relationship between them.
+      \begin{itemize}
+      \item First one is greater than the second
+      \item First one is smaller than the second
+      \item First one is equal to the second
+      \end{itemize}
     }
   \end{block}
   \begin{block}{Input}
-    {\small
+    {\smaller
       First line is the number $t$ of tests ($t < 15$). Following t lines 
       are two integers $a$ and $b$.
     }
   \end{block}
   \begin{block}{Output}
-    {\small
+    {\smaller
       For each line of input, print one line of output with '>','<' or '=', 
       according to the relationship of $a$ and $b$.
     }
@@ -258,32 +263,127 @@ int main()
 \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{A Python Solution (python 3)}
+  \begin{block}{}
+\begin{verbatim}
+n = int(input())
+
+while (n > 0):
+   line = input()
+   tokens = line.split()
+   a,b = int(tokens[0]),int(tokens[1])
+
+   if a > b: print(">")
+   if a < b: print("<")
+   if a == b: print("=")
+
+   n -= 1
+\end{verbatim}
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A Java Solution}
+
+  {\tiny
+  \begin{block}{}
+\begin{verbatim}
+import java.io.*;
+class Main
+{
+   public static void main(String args[])
+   {
+      BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+      BufferedWriter stdout = new BufferedWriter(new OutputStreamWriter(System.out));
+      try {
+      String line;
+      line = stdin.readLine();      
+      int n = Integer.parseInt(line);
+      
+      for (int i = 0; i < n; i++)
+      {
+         line = stdin.readLine();
+         String[] tokens = line.split("\\s+");
+         long a = Integer.parseInt(tokens[0]);
+         long b = Integer.parseInt(tokens[1]);
+         
+         if (a > b)
+            stdout.write(">\n");
+         if (a < b)
+            stdout.write("<\n");
+         if (a == b)
+            stdout.write("=\n");
+         stdout.flush();
+      }
+      stdout.close();
+      } catch (IOException ioe) { System.out.println("I/O Exception");}
+   }
+}
+\end{verbatim}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Java Solution -- Keep in Mind}
+
+  \begin{itemize}
+  \item All code must be in the same source file (can define many
+    classes in this file)
+
+    \medskip
+
+  \item All programs must begin in a static main method in a
+    \structure{Main} class.
+
+    \medskip
+
+  \item Do not use public classes. Even Main must be non public.
+
+    \medskip
+
+  \item Use Buffered I/O to avoid time limit exceeded.
+  \end{itemize}
+\end{frame}
+
+
+
+
 \subsection{Submission}
 
 \begin{frame}
   \frametitle{How to submit a problem} 
   
-  After you finish your programs, \alert{and make sure they are
-    correct}, you can submit it.
+  Your weekly routine should have five steps:
 
-  \bigskip
-
-  Your weekly routine should have four steps:
   \begin{enumerate}
-    \item Think about how to solve each problem;
-    \item Submit each problem to the UVA website, and check it is correct;
-    \item Prepare your MANABA package (code + comment file);
-    \item Submit your MANABA package to MANABA;
+  \item Read the problem and think how to solve it;
+    \medskip
+    
+  \item Write the program, and submit it to UVA website;
+    \medskip
+    
+  \item If the program is correct go to 4, else go to 2;
+    \medskip
+    
+  \item Prepare your source zip file (all code + comment file);
+    \medskip
+    
+  \item Submit your zip file to MANABA;
   \end{enumerate}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Submitting the problem to UVA (1)}
+  \frametitle{Submitting the problem to UVA}
 
   {\small
   UVA is an \structure{Automated Robotic Judge}. It will test your
   program on a set of inputs, and check if the outputs are correct.
 
+  \medskip
+  
   From the problem page, click on the \structure{submit} button. 
   
   \begin{center}
@@ -295,12 +395,12 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{Submitting the problem to UVA (2)}
+  \frametitle{Submitting the problem to UVA}
 
   {\small
-    After you submit the program, the judge will output one of the
-    following results: Accepted, Wrong Answer, Time Limit Exceeded,
-    Memory Limit Exceeded, Runtime Error, etc.
+
+    After you submit the program, the judge gives you the result
+    (Verdict) and the Run time.
     
     \begin{center}
       \includegraphics[width=.8\textwidth]{../img/submissionpage}
@@ -315,17 +415,24 @@ int main()
   \begin{itemize}
   \item \structure{Accepted}: Your program is correct!
     Congratulations!
+
+    \bigskip
+    
   \item \structure{Wrong Answer}: Your program is incorrect. Debugging
     time.
+
+    \bigskip
+
   \item \structure{Time/Memory limit exceeded}: Your program is
-    inefficient. Think more.
+    inefficient. You need a better algorithm.
+
+    \bigskip
   \item \structure{Runtime Error}: Your program is crashing. To the
     debugger!
+
+    \bigskip
   \end{itemize}
 
-  \bigskip
-
-  We will see how to deal with some of these problems in the next class.
 \end{frame}
 
 \begin{frame}
@@ -372,28 +479,6 @@ int main()
   Submission to the UVA judge without a submission to MANABA will not
   be accepted!
   \end{alertblock}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Some warnings about Java:}
-
-  \begin{itemize}
-  \item All code must be in the same source file (can define many
-    classes in this file)
-
-    \medskip
-
-  \item All programs must begin in a static main method in a
-    \structure{Main} class.
-
-    \medskip
-
-  \item Do not use public classes. Even Main must be non public.
-
-    \medskip
-
-  \item Use Buffered I/O to avoid time limit exceeded.
-  \end{itemize}
 \end{frame}
 
 \section{Course Rules}
@@ -448,21 +533,16 @@ int main()
   \bigskip
   
   \begin{itemize}
-  \item \structure{C}: One problem per lecture, or $X_c$ problems total
+  \item \structure{C}: You Solved One problem every week;
 
     \medskip
 
-  \item \structure{B}: Two problems per lecture, or $X_b$ problems total
+  \item \structure{B}: You Solved Two problems every week;
 
     \medskip
 
-  \item \structure{A}: Three problems per lecture, or $X_a$ problems total
+  \item \structure{A}: You Solved Three problems every week;
   \end{itemize}
-
-  \vfill
-
-  {\small
-  Parameters $X_{a,b,c}$ will be decided at a later date. \alert{Do not rely on this}}
 
 \end{frame}
 
@@ -480,10 +560,10 @@ int main()
   \medskip
   \begin{exampleblock}{Bonus: Grade Up}
     \begin{itemize}
-    \item Participation in class and MANABA
-    \item Submit corrections/suggestions to lecture notes
-    \item Consistently good Comment/Kaisetsu file
-    \item Best $N$ students in number of submissions
+    \item Students with the largest number of solutions in each
+        category (A,B,C)
+    \item Students with exceptional comment files
+    \item Great participation in Class
     \end{itemize}
   \end{exampleblock}
   \begin{alertblock}{Penalty: Grade Down}
@@ -555,9 +635,9 @@ number of people instead.
   \frametitle{Useful Links}
   \begin{itemize} 
   \item
-    \href{https://manaba.tsukuba.ac.jp/ct/course_781339}
+    \href{https://manaba.tsukuba.ac.jp/ct/course_971789}
          {\structure{\underline{Manaba Page}}}: All the class material
-         will be here. Access Code is: 8467527
+         will be here. Access Code is: 1473177
 
     \medskip
 
@@ -587,22 +667,16 @@ number of people instead.
 
 
 % Books
-% TODO: Add images for the books (week 0A)
-% TODO: Add japanese books
+% TODO: Add japanese books % Needs CJK package (or book images)
 \begin{frame}
-  \frametitle{Books}
+  \frametitle{Course Book}
 
   \begin{itemize}
-  \item \structure{Main Book:} Competitive Programming, 3rd Edition
-    \href{http://cpbook.net/}{Link}
+  \item Competitive Programming, 3rd Edition
+    (\href{http://cpbook.net/}{http://cpbook.net})
     
     \bigskip
 
-  \item \structure{Old Course Book:} Programming Challenges
-    \href{https://books.google.co.jp/books/about/Programming_Challenges.html?id=dNoLBwAAQBAJ&source=kp_cover&redir_esc=y}{Link}
-
-    \bigskip
-    
   \item For suggestions of books in Japanese, please check the Manaba materials!
   \end{itemize}
 \end{frame}
@@ -649,16 +723,11 @@ number of people instead.
   \begin{itemize}
   \item \structure{e-mail}: caranha@cs.tsukuba.ac.jp
   \item \structure{website}: \url{http://conclave.cs.tsukuba.ac.jp}
-  \item \structure{twitter}: @caranha
+  %\item \structure{twitter}: @caranha
 
     \bigskip
 
-  \item \structure{Room}: SB1012\\
-    Best times to find me:
-    \begin{itemize}
-    \item Morning (9:00 -- 11:00): Monday, Wednesday, Friday
-    \item Evening (17:00 -- 19:00): Monday, Tuesday, Wednesday
-    \end{itemize}
+  \item \structure{Room}: SB1012 -- Send an e-mail and we can talk!\\
   \end{itemize}
 
   \bigskip
