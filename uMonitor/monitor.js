@@ -247,14 +247,14 @@ function problemdata(pid, dl)
     var start = Math.floor(startdate/1000);
     var end = Math.floor(dl/1000);
 
-    ajax("http://uhunt.onlinejudge.org/api/p/id/" + pid, function(pdata) {
+    ajax("https://uhunt.onlinejudge.org/api/p/id/" + pid, function(pdata) {
 	// name and link
 	document.getElementById("n"+pdata.pid).innerHTML =
 	    "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
 	    "option=com_onlinejudge&Itemid=8&"+
 	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
 	// class stats
-	url = "http://uhunt.onlinejudge.org/api/p/subs/"+
+	url = "https://uhunt.onlinejudge.org/api/p/subs/"+
 	    pdata.pid+"/"+start+"/"+end;
 	ajax(url,classdata);
 
@@ -321,7 +321,7 @@ function mysubmissions()
 
     // load data for a user from her username
     username = document.getElementById('uname').value;
-    ajax("http://uhunt.onlinejudge.org/api/uname2uid/" + username,
+    ajax("https://uhunt.onlinejudge.org/api/uname2uid/" + username,
 	 function (uid)
 	 {
 	     if (uid != 0) {
@@ -341,8 +341,8 @@ function mysubmissions()
 		     sum += StudentWeekSolved[student][i];
 		 }
 		 var output =
-		     "Problems for user "+username+ " <br>(Total: "+sum+", per week:";
-		 var output = output + problemarray.join('/') + ")";
+		     "Problems for user "+username+ " <br>(Total: "+sum+", Week Total: ";
+		 var output = output + problemarray.join(' - ') + ")";
 		 
 		 document.getElementById("username").innerHTML =
 		     output;
@@ -354,7 +354,7 @@ function mysubmissions()
 		     var mlist = problemlist[i].mlist;
 		     for (var j=0; j < mlist.length; j++) {
 			 var pid = mlist[j];
-			 ajaxp("http://uhunt.felix-halim.net/api/subs-pids/"+
+			 ajaxp("https://uhunt.onlinejudge.org/api/subs-pids/"+
 			      uid+"/"+pid+"/0",end,
 			      function (data,end) {
 				  if (data[uid].subs.length == 0) { return; }
