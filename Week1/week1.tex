@@ -5,7 +5,7 @@
 \subtitle[]{Week 1 - Data Structures}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-04-22,25\\{\tiny Last updated \today}}
+\date{2018-04-27,5-7\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -55,40 +55,99 @@
   Structures'' class for the theory.  
 \end{frame}
 
-\begin{frame}
-  \frametitle{Example 1: 8 Queen Problem (UVA 750)}
+\begin{frame}[fragile]
+  \frametitle{Example 0: 8 Queen Problem (UVA 750)}
+  \includegraphics[width=0.25\textwidth]{../img/8queen}\\
 
-  \begin{columns}
-    \column{0.25\textwidth}  
-    \includegraphics[width=1\textwidth]{../img/8queen}
-    \column{0.75\textwidth}
+  For a board of size $n \times n$, find \alert{how many} safe
+  configurations of $n$ queens exist.
 
-    How to represent a solution?
+  \bigskip
 
-    \vfill
+  Because we need to find \alert{how many} configurations exist,
+  we need to test ``all'' configurations.
 
-    {\small
-    \begin{itemize}
-    \item Queen $i$ at position $x,y \rightarrow (64! / 56!)$ total solutions
-      
-      \bigskip
-      
-    \item Queen $i$ at column $c \rightarrow 8^8$ total solutions
-      
-      \bigskip
-      
-    \item Permutation of rows $ \rightarrow 8!$ total solutions
-    \end{itemize}}
-  \end{columns}
-
-  \vspace{3cm}
+  \bigskip
   
-  \hrulefill\\
+\begin{verbatim}
+for i = 0 to #configurations do
+  sum = testIfConfigurationIsSafe(i)
+\end{verbatim}
+
   {\tiny\hfill Image by Lee Daniel Crocker. CC-BY-SA 3.0}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Example 0: 8 Queen Problem (UVA 750)}
+
+  \includegraphics[width=0.25\textwidth]{../img/8queen}\\
+
+  How can we represent a configuration?
+
+  \bigskip
+
+  Idea one: Represent the position $x,y$ of every queen:
+
+  \bigskip
+  
+\begin{verbatim}
+Vector conf<array[n*2]>;
+conf[0] = {0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0}
+conf[1] = {0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,1}
+conf[2] = {0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,2}
+\end{verbatim}
+
+Total configurations: $n^{n^2}$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example 0: 8 Queen Problem (UVA 750)}
+
+  \includegraphics[width=0.25\textwidth]{../img/8queen}\\
+
+  How can we represent a configuration?
+
+  \bigskip
+
+  Idea one: Represent the row $r$ of every queen:
+
+  \bigskip
+  
+\begin{verbatim}
+Vector conf<array[n]>;
+conf[0] = {0,0,0,0,0,0,0,0}
+conf[1] = {0,0,0,0,0,0,0,1}
+conf[2] = {0,0,0,0,0,0,0,2}
+\end{verbatim}
+
+Total configurations: $n^n$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example 0: 8 Queen Problem (UVA 750)}
+
+  \includegraphics[width=0.25\textwidth]{../img/8queen}\\
+
+  How can we represent a configuration?
+
+  \bigskip
+
+  Idea one: Represent a permutation of row positions.
+
+  \bigskip
+  
+\begin{verbatim}
+Vector conf<array[n]>;
+conf[0] = {0,1,2,3,4,5,6,7}
+conf[1] = {0,1,2,3,4,5,7,6}
+conf[2] = {0,1,2,3,4,6,5,7}
+\end{verbatim}
+
+Total configurations: $n!$ or $(n\times n-1\times n-2\times n-3\ldots)$
+\end{frame}
+
 \begin{frame}
-  \frametitle{Example 2: The Towers of Hanoi}
+  \frametitle{Example 1: The Towers of Hanoi}
   
   \begin{center}
     \includegraphics[width=0.5\textwidth]{img/hanoi}
@@ -111,58 +170,122 @@
 
 \begin{frame}
   \frametitle{Another way to visualize the Towers of Hanoi}
+  A string with ``n'' disks, from smaller to larger.
   \begin{center}
-    \includegraphics[width=0.7\textwidth]{img/hanoi_graph}
+    \includegraphics[width=0.65\textwidth]{img/hanoi_graph}
   \end{center}
   {\tiny \hfill Image created by nonenmac}
 \end{frame}
 
+\subsection{Example 3 -- Army Buddies}
+
 \begin{frame}
-  \frametitle{Explaining the Tower of Hanoi Data Structure}
-  \begin{columns}[c]
-    \column{0.7\textwidth}
-    {\small
+  \frametitle{Example 2: Army Buddies (UVA 12356)}
+  \framesubtitle{Problem Description}
+
+  \begin{block}{}
     \begin{itemize}
-    \item Each node identifies one state in the problem;
-    \item The string represents the position of each disk;
-    \item At most {\bf Three} state transitions at any time;
-    \item We can solve the problem from {\bf any start state} to {\bf
-      any end state};
-    \item Just find a path between the states!
-    \item (just beware of state explosion)      
+    \item There is a line of $S$ soldiers: $0,1,2,3,4,5,6,7$
+    \item There are $B$ bomb attacks that kill all soldiers from $i$ to $j$:
+      \begin{itemize}
+      \item 2,4
+      \item 6,7
+      \item 1,1
+      \end{itemize}
+    \item After each bomb attack, list the surviving soldier to the
+      \alert{left} and to the \alert{right}.
+      \begin{itemize}
+      \item 1,5
+      \item 5,*
+      \item *,5
+      \end{itemize}
     \end{itemize}
-    }
-    \column{0.3\textwidth}    
-    \includegraphics[width=0.9\textwidth]{img/hanoi_graph}
-    \vfill
-  \end{columns}
-\end{frame}
-
-\begin{frame}
-  \frametitle{One Important Reminder:}
-
-  \begin{block}{Know your libraries!}
-    Array, Tree, Vector, Matrix, Graph... How do you implement them?
-
-    \bigskip
-
-    Most of these have standard functions in the library (STL,
-    java.util), but do you remember it?
-
-    \bigskip
-
-    Use it many times until you don't need to google anymore.
   \end{block}
 
-  \vfill
-  
-  \begin{exampleblock}{}
-    Complex data structures (trees, edge matrices) are great
-    candidates for your \structure{personal library}!
-  \end{exampleblock}
+  \bigskip
+
+  How do we solve this problem?
 \end{frame}
 
-\section{Arrays and Vectors}
+\begin{frame}
+  \frametitle{Example 2: Army Buddies (UVA 12356)}
+  \framesubtitle{A solution using linked lists}
+
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/army-list}
+  \end{center}
+
+  \begin{itemize}
+  \item Represente the line of soldiers as a linked list.
+  \item Find the first soldier $(O(n))$
+  \item Find the second soldier $(O(n))$
+  \item Print the neighbors, and update the list.
+  \end{itemize}
+  \bigskip
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example 2: Army Buddies (UVA 12356)}
+  \framesubtitle{A solution using linked lists}
+
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{img/army-list}
+  \end{center}
+
+  What is the problem with this solution?
+
+  \bigskip
+
+  \begin{itemize}
+  \item $1 \leq S \leq 10^5$
+  \item $1 \leq B \leq 10^5$
+  \end{itemize}
+
+  Can you think of a different solution? (10 minutes)
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Example 2: Army Buddies (UVA 12356)}
+  \framesubtitle{A solution using arrays}
+
+  \includegraphics[width=0.8\textwidth]{img/army-array}
+
+  \begin{itemize}
+  \item \alert{Problem}: We do not want to update ALL soldiers, just the edge soldiers.
+  \item Idea: Neighbor Array
+    \begin{itemize}
+    \item Array of Right side neighbors (R)
+    \item Array of Left side neighbors (L)
+    \end{itemize}
+  \item Question: how do we update R and L after a bomb $(r,l)$ explodes?\\
+    \medskip
+    \only<2>{\structure{$L[R[r]] = L[l]; R[L[l]] = R[r];$}}
+  \end{itemize}
+\end{frame}
+
+\subsection{Thinking about Data Structures}
+\begin{frame}
+  %% TODO: Improve this frame
+  \frametitle{Thinking about Data Structures}
+  \begin{itemize}
+  \item Choice of Data structures can change the \structure{efficiency} of a program;
+  \item Choice of Data Structures can also change the \alert{Implementation Complexity} of a solution;
+    \bigskip
+  \item Efficiency $\times$ Complexity Balance:
+    \begin{itemize}
+    \item Can you use Data structures from the standard library?
+    \item Do you need special modifications for the solution?
+    \end{itemize}
+    \bigskip
+  \item Every solution begins with the choice of data structure!\\
+    {\small Sometimes it is obvious, sometimes not...}
+  \end{itemize}
+\end{frame}
+
+
+\section{Linear Data Structures}
 \subsection{Basics}
 
 \begin{frame}
@@ -170,44 +293,28 @@
   Arrays are the simplest data structure, but also the most often used.
 
   \bigskip
-  
+
+  \structure{Merits}
   \begin{itemize}
-  \item Preserve \emph{Programmer Efficiency}
-  \item No worries about pointers;
-  \item Random access;
-  \item Library Functions;
+  \item Easy to implement! No worries about pointers;
+  \item Can simulate pointers using index operations;
+  \item Many library Functions;
+  \end{itemize}
+
+  \bigskip
+
+  \alert{Concerns}
+  \begin{itemize}
+  \item Reordering many items can be expensive;
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Make arrays, not lists}
-
-  \begin{block}{Example: Army Buddies (12356)}
-    A line of soldiers, each soldier must know who is in his {\bf
-      left} and {\bf right} neighbor.
-
-    \medskip
-    
-    If some soldier dies, you need to {\bf update} the left and right
-    neighbors.
-  \end{block}
-
-  \medskip
-
-  \only<1>{\structure{Linked List Approach:} Regular idea.}
-  \only<2>{\structure{Array Approach:} $L[R[r]] = L[l]; R[L[l]] = R[r];$}
-
-  \begin{center}
-  \includegraphics<1>[width=0.5\textwidth]{img/army-list}
-  \includegraphics<2>[width=0.8\textwidth]{img/army-array}
-  \end{center}
-\end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Implementing arrays}
+  \frametitle{Implementing arrays/vectors (C++)}
   {\small
 \begin{verbatim}
-#include <vector>         // for C++ vectors
+#include <vector>         
 
 int arr[5] = {7,7,7};     // arr = {7,7,7,0,0}
 vector<int> v(5, 5);      // v = {5,5,5,5,5}
@@ -221,19 +328,20 @@ v.push_back(6);           // v = {5,5,5,5,5,6}
 \end{verbatim}
   }
 
-  \begin{block}{}
-    Learn the different functions of your language of choice!
-  \end{block}
-  
+  \begin{alertblock}{}
+    Trying to access indexes outside of an array is a common source of
+    Runtime Errors (RTE)
+  \end{alertblock}
+
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Implementation Matters: Resetting}
+  \frametitle{How do you reset an array?}
+  \framesubtitle{Implementation matters}
 {\small
 \begin{verbatim}
 #include <vector>
 #include <string.h>
-
 vector<int> v(10000,7)
 
 memset(v, 0, 10000*__SIZEOF_INT__);       // Method 1
@@ -252,180 +360,80 @@ Method      |  executable size  |  Time Taken (in sec) |
 \end{verbatim}
 }
 \end{frame}
-  
 
-\subsection{Queue and Stack}
+\subsection{Sorting and Searching}
 
-\begin{frame}[fragile]
-  \frametitle{Queue and Stacks}
-
-  \begin{block}{}
-    Queues and Stacks are useful to simplify common cases of vectors
-  \end{block}
-
-  Queue example: List of nodes to visit in pathfinding
-{\small
-\begin{verbatim}
-#include <queue>
-#include <vector>
-#include <utility>
-
-// index and neighbor list
-queue <pair <int, vector <int>>> visit_list;
-
-// ... data initialization
-
-pair <int, vector <int>> cur = visit_list.front();
-
-for (int i = 0; i < neighbor[cur.first]; i++)
-   visit_list.push(cur.second[i]);
-\end{verbatim}
-}
-  
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Queue and Stacks}
-
-  \begin{block}{}
-    Queues and Stacks are useful to simplify common cases of vectors
-  \end{block}
-
-  Stack Example: Testing if a set of parenthesis is balanced.
-{\small
-\begin{verbatim}
-#include <stack>
-stack<char> s;
-char c;
-
-while(cin >> c) {
-  if (c == '(') s.push(c);
-  else { 
-    if (s.size() == 0) { s.push('*'); break; }
-    s.pop();
-  }
-}
-cout << (s.size() == 0 ? "balanced" : "unbalanced");
-
-\end{verbatim}}
-\end{frame}
-
-
-
-\subsection{Sorting}
-% Sorting
 \begin{frame}
-  \frametitle{Sorting}
+  \frametitle{Sorting and Searching in Arrays and Vectors}
 
-  Sorting is an extremely important operation. Many algorithms begin
-  or end with sorting the data.
+  \begin{block}{Consider this problem -- Vito's Family (UVA 10041)}
+    {\bf Input:} You receive a list of street addresses:\\
+
+    \smallskip
+    
+    10, 20, 10, 10, 40, 80, 30, 90, 20, 55, 20
+
+    \bigskip
+
+    {\bf Output:} You have to choose the address that \emph{minimizes}
+    the distance to all other addresses:\\
+
+    \smallskip
+
+    10: $0+10+0+0+30+70+20+80+10+45+10 = 275$\\
+    40: $30+20+30+30+0+40+10+50+20+15+20 = 265$\\
+  \end{block}
 
   \bigskip
-  
-  {\small
-    \begin{itemize}
-    \item Finding the n-th highest value;
-    \item Finding duplicate values;
-    \item Pre-processing data for binary search;
-    \item etc...
-    \end{itemize}
-  }
-  
-  
-  \begin{block}{}
-    You should know how to sort in your chosen language with your eyes closed!
-  \end{block}
-  
-  % A very important operation on arrays is sorting
-  % You should get used to doing it with your eyes closed!
+
+  How do we solve this problem?
+
 \end{frame}
   
 \begin{frame}[fragile]
-  \frametitle{Sorting Example -- Vito's Family (UVA 10041)}
+  \frametitle{Sorting and Searching in Arrays and Vectors}
+
+  \begin{itemize}
+  \item The solution to this problem is the \structure{Median} house number.
+  \item To find the median, we \structure{sort the address array}, and
+    select the middle index.
+  \end{itemize}
   
-  \begin{exampleblock}{Problem description}
-    A gangster is looking for a new house. The distance from the new
-    house to {\bf each and all} family members should be minimal.
-  \end{exampleblock}
-
-  \medskip
-
-  This program can be summarized as ``find the median of the addresses
-  and calculate the distance to all the houses.''
-
-  \medskip
-
-  \begin{block}{}
-    {\small
+{\small
 \begin{verbatim}
 #include <algorithm>
 
-int addr[m] // positions (0-5000) of each house.
-// read positions from input.
+int addr[11] = {10, 20, 10, 10, 40, 
+                80, 30, 90, 20, 55, 20};
 
-sort(addr,addr+m); 
-// if vector, sort(addr.begin(), addr.end())
-med = add[(m/2)];
+sort(addr,addr+11); 
+
+result = add[5];
 \end{verbatim}}
-  \end{block}
-\end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Sorting with specific sorting function}
-  \begin{block}{}
-    Remember, in the function, the main comparison should come first.
-  \end{block}
-
-  {\small
-\begin{verbatim}
-#include <algorithm>
-#include <vector>
-#include <string>
-struct team{ string n; int p; int g; 
-             team(string _n, int _p, int _g) : 
-                n(_n), p(_p), g(_g){} };
-
-bool cmp(team a, team b) {
-  if (a.p != b.p) return a.p < b.p;
-  if (a.g != b.g) return a.g > b.g;
-  return 1; }
-
-vector<team> v;
-sort(v.begin(), v.end(), cmp); // sort using cmp
-reverse(v.begin(), v.end()); // and reverse
-\end{verbatim}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{To sort or not to sort?}
-
-  Let's say we want to find an specific value $k$
+  \frametitle{Using Sorting}
+  Sorting can be used for many, many things:
 
   \bigskip
-  
-  \begin{block}{Checking each value in the array with $n$ elements}
-    \begin{itemize}
-    \item Cost for searching once: $O(n)$
-    \item Cost for searching $m$ times {\bf in the same array}: $O(m*n)$
-    \end{itemize}
-  \end{block}
 
-  \begin{alertblock}{Sort and binary search}
+  {\smaller
     \begin{itemize}
-    \item Cost for searching once: $O(n\text{log}n + \text{log}n)$
-    \item Cost for searching $m$ times in the same array: $O(n\text{log}n + m\text{log}n)$
+    \item Finding the Highest $n$ values
+    \item Finding duplicate Values
+    \item Binary Search
+    \item Pre-processing for many algorithms
     \end{itemize}
-  \end{alertblock}
-  
-  \bigskip
-
-  The best one depends on the problem!
+  }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Binary Search}
+  \frametitle{Binary Search in an vector}
   
-  {\small You can use algorithm::lower\_bound and algorithm::upper\_bound
+  {\small algorithm::lower\_bound and algorithm::upper\_bound
+    will find the indexes for the value you want to search.
    
   \begin{block}{}
 \begin{verbatim} 
@@ -444,242 +452,66 @@ int main () {
   cout <<"lower at "<<(low-v.begin())<< '\n';
   cout <<"upper at "<<(up -v.begin())<< '\n';
 
-  return 0; // up and low are memory indexes. }
+  return 0; // up and low are memory indexes.
 \end{verbatim}
-    \end{block}
+  \end{block}
 }
 \end{frame}
-
-
-\section{Other Data Structures}
-\subsection{Maps}
-
-\begin{frame}
-  \frametitle{Maps and Sets}
-
-  Maps and sets are useful if you have a group of unique items. It
-  is easy to test for the {\bf Presence of Abscense} of a particular
-  item.
-
-  \vfill
-
-  Also, if the number of elements is too large (example, problem CD),
-  maps are usually really fast.
   
-\end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Map implementation (1)}
-  {\small
-\begin{verbatim}
-#include <map>
-#include <set>
-
-set<int> used_values;      used_values.clear();
-map<string, int> mapper;   mapper.clear();
-
-mapper["john"] = 78;   used_values.insert(78);
-mapper["billy"] = 69;  used_values.insert(69);
-mapper["andy"] = 80;   used_values.insert(80);
-mapper["steven"] = 77; used_values.insert(77);
-mapper["felix"] = 82;  used_values.insert(82);
-
-for (map<string, int>::iterator it = mapper.begin(); 
-     it != mapper.end(); it++) {
-    cout << " " << ((string)it->first).c_str();
-    cout << " " << it->second; 
-} 
-\end{verbatim}}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Map implementation (2)}
-  {\small
-\begin{verbatim}
-// interesting usage of lower_bound and upper_bound
-// display data between ["f".."m") ('felix', 'john')
-for (map<string, int>::iterator it = 
-     mapper.lower_bound("f"); 
-     it != mapper.upper_bound("m"); it++)
-  printf("%s %d\n", 
-         ((string)it->first).c_str(),
-         it->second);
-
-// O(log n) search of a value:
-set<int>::iterator f = used_values.find(79);
-if (f == used_values.end())
-  cout << "not found!\n";
-else
-  cout << *f;
-\end{verbatim}}
-\end{frame}
-
-\subsection{Union-Find}
-\begin{frame}
-  \frametitle{Union-Find Disjoint Set}
+  \frametitle{Sorting with specific sorting function}
+{\small
+  Imagine you need to sort by number of points (bigger is best),
+  penalty (smaller is best), and name (alphabetical order)
 
   \begin{block}{}
-    Sometimes we need to create our own data sets.
-  \end{block}
+\begin{verbatim}
+#include <algorithm>
+#include <vector>
+#include <string>
+struct team{ string name; int point; int penal; 
+             team(string _n, int _po, int _pe) : 
+               name(_n), point(_p), penal(_g){} };
+
+bool cmp(team a, team b) {
+  if (a.point != b.point) return a.point > b.point;
+  if (a.penal != b.penal) return a.penal < b.penal;
+  return strcmp(a.name,b.name); }
+
+vector<team> v;
+sort(v.begin(), v.end(), cmp); // sort using cmp
+reverse(v.begin(), v.end()); // and reverse
+\end{verbatim}
+\end{block}}
+\end{frame}
+
+\subsection{Binary Arrays and Bit Sets}
+
+%% TODO: Motivating problem for bitset (which is not DP for TSP)
+
+\begin{frame}
+  \frametitle{Bitmasks}
+  \framesubtitle{A small sidequest...}
+
+  Bitmasks are lightweight sets of booleans.
 
   \bigskip
 
+  We can use \structure{integers or long integers} to represent a set
+  of booleans, and \structure{bitwise operations} to manipulate this set.
+
+  \bigskip
+
+  There are many uses for bitmasks in Programming Challenges:
+  
   \begin{itemize}
-  \item The UFDS represent a {\bf set of items} that can be in one of many {\bf groups}
-
-    \bigskip
-    
-  \item For example, we can have a set of {\bf people} who can be in one of many {\bf families}
-
-    \bigskip
-
-  \item This can be useful to finding {\bf unconnected components} in graphs
-
-    \bigskip
-
-  \item A good implementation of UFDS can test if a item belongs to a group in close to O(1);    
+  \item You can use them as indexes of sets. Ex: Partial distances in full graph
+    paths;
+  \item You can use them to quickly operate on true/false values;
+  \item You can use them to manipulate states in simulations;
+  \item etc...
   \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{UFDS Implementation (1/3) }
-
-  {\small
-\begin{verbatim}
-typedef vector<int> vi; // use shorthand for vectors
-
-class UnionFind { 
-private: 
-  vi p, rank, setSize;  // vi -- vector <int>
-  int numSets;
-public:
-  UnionFind(int N) {
-    setSize.assign(N, 1); // each element in a set 
-    numSets = N; 
-    rank.assign(N, 0);    // everyone is root
-    p.assign(N, 0); 
-    for (int i = 0; i < N; i++) p[i] = i; }
-
-  int findSet(int i) { 
-    return (p[i] == i) ? i : (p[i] = findSet(p[i])); }
-\end{verbatim}
-  }
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{UFDS Implementation (2/3)}
-
-  {\small
-\begin{verbatim}             
-  // continue UnionFind class
-
-  bool isSameSet(int i, int j) 
-     { return findSet(i) == findSet(j); }
-  void unionSet(int i, int j) { 
-    if (!isSameSet(i, j)) { numSets--; 
-    int x = findSet(i), y = findSet(j);
-    // rank is used to keep the tree short
-    if (rank[x] > rank[y]) 
-      { p[y] = x; setSize[x] += setSize[y]; }
-    else                   
-      { p[x] = y; setSize[y] += setSize[x];
-        if (rank[x] == rank[y]) rank[y]++; } } }
-  int numDisjointSets() { return numSets; }
-  int sizeOfSet(int i) { return setSize[findSet(i)]; }
-};
-\end{verbatim}}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{UFDS Implementation (3/3)}
-
-  {\small
-\begin{verbatim}
-int main() {
-  UnionFind UF(5); // create 5 disjoint sets
-  printf("%d\n", UF.numDisjointSets()); // 5
-  UF.unionSet(0, 1);
-  printf("%d\n", UF.numDisjointSets()); // 4
-  UF.unionSet(2, 3);
-  printf("%d\n", UF.numDisjointSets()); // 3
-  UF.unionSet(4, 3);
-  printf("%d\n", UF.numDisjointSets()); // 2
-  printf("isSameSet(0, 3) = %d\n", UF.isSameSet(0, 3)); 
-    // will return 0 (false)
-  printf("isSameSet(4, 3) = %d\n", UF.isSameSet(4, 3)); 
-    // will return 1 (true)
-  UF.unionSet(0, 3);
-  printf("%d\n", UF.numDisjointSets()); // 1
-}
-\end{verbatim}
-}
-  
-\end{frame}
-
-
-\subsection{Bitmasks}
-
-\begin{frame}[fragile]
-  \frametitle{Using Bitmasks}
-  {\smaller
-  A \structure{bitmask} is a lightweight version of a
-  \structure{bitset}. You can use an unsigned integer or an unsigned
-  long directly as a proxy for a bitset.
-
-  \begin{block}{}
-\begin{verbatim}
-#include <iostream>
-
-using namespace std;
-
-int main() {
-    unsigned long bb = 3432;
-    unsigned long kk = 14;
-    cout << (bb & kk) << endl;
-    cout << (bb << 3) << endl;
-}
-\end{verbatim}
-  \end{block}
-
-  In a programming contest, they are very useful for quickly
-  manipulating sets (specially if you need to modify a large number of
-  members at the same time).
-  }
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{When to use bitmasks} 
-  
-  {\smaller In programming challenges, bitmasks are useful for quickly
-    manipulating sets of items. Specially if you need to modify
-    multiple sets at the same time.  
-
-    \begin{block}{}
-      $S = 34 = 100010$\\
-      \medskip
-      Can be seen as a set with elements 1 and 5 present.\\ 
-      The index increase with the digit significance.
-    \end{block}
-    
-    \bigskip
-
-    In regular programming, bitmasks are often used to quickly
-    set/check flags or options.
-    
-    \begin{block}{Bitmasks in regular programming}
-      \begin{itemize}
-      \item Parameter setting/testing
-\begin{verbatim}
-Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | 
-                GL20.GL_DEPTH_BUFFER_BIT );
-\end{verbatim}
-      \item Collision/Filtering in computer graphics
-\begin{verbatim}
-if( isFilled(sprite1Pixel) && isFilled(sprite2Pixel))
-    return true;
-\end{verbatim}
-      \end{itemize}
-    \end{block}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -754,223 +586,437 @@ int main() {
 }
 \end{verbatim}
 
+\begin{block}{}
+  You can also use the \structure{bitset} class, which supports all of these
+  operations, but can't really be used for indexing arrays.
+\end{block}
+
   }
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Queue and Stack}
+
+%% TODO: Add Motivating Problem For Queue
+
+\begin{frame}[fragile]
+  \frametitle{Queue and Stacks}
+
+  \begin{block}{}
+    Queues and Stacks are useful to simplify common cases of vectors
+  \end{block}
+
+  Queue example: List of nodes to visit in pathfinding
+{\small
+\begin{verbatim}
+#include <queue>
+#include <vector>
+#include <utility>
+
+// index and neighbor list
+queue <pair <int, vector <int>>> visit_list;
+
+// ... data initialization
+
+pair <int, vector <int>> cur = visit_list.front();
+
+for (int i = 0; i < neighbor[cur.first]; i++)
+   visit_list.push(cur.second[i]);
+\end{verbatim}
+}
+  
+\end{frame}
+
+%% TODO: Add Motivating Problem for Stack
+
+\begin{frame}[fragile]
+  \frametitle{Queue and Stacks}
+
+  \begin{block}{}
+    Queues and Stacks are useful to simplify common cases of vectors
+  \end{block}
+
+  Stack Example: Testing if a set of parenthesis is balanced.
+{\small
+\begin{verbatim}
+#include <stack>
+stack<char> s;
+char c;
+
+while(cin >> c) {
+  if (c == '(') s.push(c);
+  else { 
+    if (s.size() == 0) { s.push('*'); break; }
+    s.pop();
+  }
+}
+cout << (s.size() == 0 ? "balanced" : "unbalanced");
+
+\end{verbatim}}
+\end{frame}
+
+
+\section{Non-Linear Data Structures}
+\subsection{Balanced Search Tree (BST) -- Maps and Sets}
+
+\begin{frame}
+  \frametitle{Problem Example: CD -- 11849}
+
+  \begin{block}{}
+    {\bf Input:}
+    \begin{itemize}
+    \item Jack CD collection: Up to $10^6$ CDs, with ID up to $10^9$
+    \item Jill CD collection: Up to $10^6$ CDs, with ID up to $10^9$
+    \end{itemize}
+
+    {\bf Output:}
+    \begin{itemize}
+    \item How Many CDs are in both Collections?
+    \end{itemize}
+    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Example: CD -- 11849}
+
+  Naive Solution:
+
+  \begin{enumerate}
+  \item Store all IDs in collection 1 in a Vector (n)
+  \item Sort the Vector (nlogn)
+  \item For each ID in collection 2, test if it exists in Vector with \structure{Binary Search} (nlogn)
+  \end{enumerate}
+
+  Total Cost: $n + n\text{log}n + n\text{log}n$
+  
+  \bigskip
+
+  How can we improve?
+  \begin{itemize}
+  \item Using a \structure{Balanced Search Tree} -- $n\text{log}n + n\text{log}n$
+  \item Using a \structure{Hash Table} -- $nH + nH$
+  \end{itemize}
+\end{frame}
+
+\subsection{Balanced Search Trees}
+
+% TODO: Improve this side: Prettier with better insights
+% https://visualgo.net/en/bst
+\begin{frame}
+  \frametitle{Balanced Search Trees}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/BST}
+  \end{center}
+  \begin{itemize}
+  \item \emph{Search Trees} Keep items in an ordered relationship.
+  \item For example: Left children always have smaller values, Right
+    children always have larger values;
+  \item Insertion/Search/Deletion in a tree costs $O(h)$, where $h$ is
+    the height of the tree;
+  \item For a tree with $n$ elements, the \structure{minimum} height
+    is $\text{log}n$
+  \item For a balanced tree, the \structure{maximum} height is also
+    $\text{log}n$
+  \item How to keep the tree balanced?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Balanced Search Trees}
+  \framesubtitle{How to keep the tree balanced?}
+
+  There are many Tree implementations/algorithms for keeping an BST
+  balanced, and minimizing the tree height efficiently:
+  \begin{itemize}
+  \item AVL Tree (Adelson-Velskii-Landis);
+  \item Red-Black Tree;
+  \item B-Tree;
+  \item Splay Tree;
+  \end{itemize}
+  \bigskip
+
+  However, in a programming context (or even day to day life),
+  implementing these trees from scratch is \alert{Dangerous}.
+
+  \bigskip
+
+  Luckly, most standard libraries include some implementation of BST.
+\end{frame}
+
+\begin{frame}
+  \frametitle{ABLs in C++: Map and Set}
+
+  \begin{itemize}
+  \item In C++, the \emph{Map} and \emph{Set} classes are implemented
+    using BSTs
+  \item \emph{Map} Accept Key-value pairs;
+  \item \emph{Set} Accepts only Keys;
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Using Map in C++}
+  {\small
+\begin{verbatim}
+#include <map>
+map<string, int> ages;   ages.clear();
+
+ages["john"] = 40;   
+ages["billy"] = 39;  
+ages["andy"] = 29;   
+ages["steven"] = 42; 
+ages["felix"] = 33;  
+
+// What is the age of andy?
+map<string, int>::iterator it = ages.find("andy");
+cout << it->second << endl;
+
+// Which names are between "f" and "m" ?? 
+for (map<string, int>::iterator it = 
+     age.lower_bound("f");              // finds felix
+     it != age.upper_bound("m"); it++)  // finds johm
+        cout << " " << ((string)it->first).c_str();
+\end{verbatim}}
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Bitsets}
-  {\smaller
-
-  Bitsets can also be used in place of integer bitmasks:
-
-  \begin{block}{}
+  \frametitle{Using Set in C++}
+  {\small
 \begin{verbatim}
-#include <bitset>
-#include <iostream>
+#include <set>
+set<int> CDs;      
+CDs.clear();
 
-using namespace std;
+// Adding some values
+CDs.insert(1000); CDs.insert(999); CDs.insert(1337);
+CDs.insert(1313); CDs.insert(100020);
 
-int main() {
-    bitset<12> b(3432);
-    cout << "3432 in binary is " << b << endl;
-    
-    bitset<12> k(14);
-    cout << (b & k) << endl;
-    cout << (b<<3) << endl;
-}
-\end{verbatim}
-  \end{block}
-  }
+// Testing if a particular value exists (O(logn))
+set<int>::iterator f = used_values.find(79);
+if (f == used_values.end())
+  cout << "not found!\n";
+else
+  cout << *f;    // Index!
+\end{verbatim}}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Bitsets and Bitmasks}
+\subsection{Hash Tables}
+\begin{frame}[fragile]
+  \frametitle{Hash Tables}
 
-  {\smaller
-  Most bitmask operations are also supported by bitsets. (But you can't mix them!)
+  \includegraphics[width=0.95\textwidth]{img/hash}
 
   \begin{itemize}
-  \item All binary operations are supported;
-  \item Bitsets are of fixed size, but not limited to 32 and 64 bits.
-  \item Bitset standard output is a bit string, not a decimal (but
-    outputing a decimal is possible);
-  \item But maybe bitmasks are more efficient?
+  \item Very fast insertion and Search -- Slow iteration;
+  \item Simple implementation using \emph{unordered\_map};
+  \item Important: Policies about collisions;
+  \item Learn more about hash tables here: \url{https://visualgo.net/ja/hashtable}
   \end{itemize}
-  
-  More information about bitmasks 
-
-  \url{http://www.drdobbs.com/the-standard-librarian-bitsets-and-bit-v/184401382}
-  }
 \end{frame}
 
-\subsection{Other Examples}
-\begin{frame}
-  \frametitle{And many more examples}
+%% TODO: More Details about Hash table / hashes from the above link
+%% TODO: Implementations: Unordered Map, DAT, simple hand made class
 
-  These are just a few examples of data structures that are common in
-  programming challenges. There are many more that you should study
-  and add to your library. For example:
+\section{Other Data Structures}
+\subsection{Motivation}
+\begin{frame}
+  \frametitle{Hand-making Data Structures}
+
+  \begin{itemize}
+  \item Sometimes, it is necessary to extend the standard data structures
+    (arrays, maps, etc)
+    \bigskip
+    
+  \item Other times, it is necessary to implement data structures not
+    included in the standard libraries (graphs, UFDS, etc)
+    \bigskip
+    
+  \item Let's see a few examples.
+  \end{itemize}
+\end{frame}
+
+\subsection{Union-Find}
+\begin{frame}
+  \frametitle{Union-Find Disjoint Set (UFDS)}
+  \framesubtitle{Motivating Problem}
+
+  \begin{block}{Network Connections -- UVA793}
+    In a network with $n$ computers, some are connected to others.\\
+    \bigskip
+    
+    {\bf Input:} A series of ``commands''
+    \begin{itemize}
+    \item c i j -- Means computer $i$ is connected to computer $j$
+    \item q i j -- Question: is computer $i$ connected to computer $j$?
+    \end{itemize}
+
+    \bigskip
+    
+    {\bf Output:} The number of ``q'' with answer yes, and the number
+    of ``q'' with answer no.
+    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Union-Find Disjoint Set (UFDS)}
+  \framesubtitle{Motivating Problem -- Naive answer}
+
+  \begin{itemize}
+  \item One idea: Use a Neighborhood Matrix $(n\times n)$ initalized with zeros.
+  \item For every ``c i j'', $N_{i,j}, N_{j,i}$ becomes 1.
+  \item We can follow the graph to answer ``q i j''.
+  \end{itemize}
 
   \bigskip
 
+  How good is this solution?
   \begin{itemize}
-  \item Binary Tree (2.3)
-  \item Segment Tree (2.4.3)
-  \item Hashing (2.3)
-  \item etc...
+  \item Cost to insert a new connection: O(1)
+  \item Cost to check if ``q i j'': O(n) (worst case)
   \end{itemize}
+
+  \bigskip We can do better!
 \end{frame}
 
-\section{Extra}
-\subsection{Problem Hints}
-
 \begin{frame}
-  \frametitle{}
+  \frametitle{Union-Find Disjoint Set}
 
   \begin{center}
-    Hints
+    \includegraphics[width=.9\textwidth]{img/ufds1}
   \end{center}
-  
-\end{frame}
 
-\begin{frame}
-  \frametitle{Jolly Jumpers}
-  Test a ``jolly'' sequence.
   \begin{itemize}
-  \item Very easy problem, convert the input correctly?
-  \item Do you need to store the input values?
-  \item What information do you need to memorize?
+  \item The UFDS keeps \structure{sets of items}, each is represented by a \structure{parent};
+  \item When you join two sets \structure{You join their parents};
+  \item When you test the parent of an item \structure{You flatten the tree};
+  \item Test\_item and Join\_item are both O(1);
+  \item More Information \url{https://visualgo.net/ja/ufds};
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Newspaper}
+\begin{frame}[fragile]
+  \frametitle{UFDS Implementation using Arrays}
 
-  This is an example of a {\bf DAT} -- Direct Address Table -- a kind
-  of hashing.
+  {\small
+\begin{verbatim}
+int p[MAX], r[MAX];
+int find(int x) {
+    return x == p[x] ? x : p[x]=find(p[x]);
+}
+int join(int x, int y) {
+    x = find(x), y = find(y);
+    if(x != y) {
+        if(r[x] < r[y])
+            p[x] = y, r[y] += r[x];
+        else
+            p[y] = x, r[x] += r[y];
+        return 1;
+    }
+    return 0;
+}
+void init() {
+    for(int i = 0; i < MAX; i++)
+        p[i] = i, r[i] = 1; }
 
-  \bigskip
-
-  Be careful that any symbol can appear in the text -- negative values
-  from signed chars are a common source of bugs.
+\end{verbatim}
+}
   
 \end{frame}
 
 \begin{frame}
-  \frametitle{Army Buddies}
-
-  We need to keep track of changes in the neighbors of the
-  soldiers.
-
-  \bigskip
-  
-  The time limit is very tight.
-
-  \bigskip
-
-  You cannot afford to use a O(n) method to update the army.
-
-  \bigskip
-
-  One idea is the two-array structure discussed earlier.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Grid Successors}
-
-  In this exercise, you need to find a loop in the sequence of grids.
-
-  \bigskip
-
-  What is the easiest structure to store this loop?
-  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Football (aka Soccer)}
-
-  The problem is easy, but you need to know the library to deal with
-  the complex input.
-\end{frame}
-
-\begin{frame}
-  \frametitle{File Fragmentation}
-  Find the original bit string.
-  \begin{itemize}
-  \item Understanding the problem: What are looking for here?
-  \item Finding out the correct combination:
+  \frametitle{Union Find Disjoint Set}
+  \framesubtitle{Problem II -- War}
+  {\small
+  \begin{block}{}
+    From a set of 10k people, some are friends, other are enemies.
     \begin{itemize}
-    \item Method1: Elimination;
-    \item Method2: Counting;
+      \item If A,B are friends, and B,C are friends, then A,C are friends
+      \item If A,B are friends, and B,C are enemies, then A,C are enemies
+      \item If A,B are enemies, and B,C are enemies, then A,C are friends
     \end{itemize}
-  \end{itemize}
+
+    {\bf Input:} A series of commands from the set below:
+    \begin{itemize}
+    \item SetFriends(i,j)
+    \item SetEnemies(i,j)
+    \item TestFriends(i,j)
+    \item TestEnemies(i,j)
+    \end{itemize}
+
+    {\bf Output:}
+    \begin{itemize}
+    \item If a ``SetFriends'' or ``SetEnemies'' is impossible, output ``-1''
+    \item For a ``TestFriends'', ``TestEnemies'', output 0 - false, 1 - true
+    \end{itemize}    
+  \end{block}}
+  
 \end{frame}
 
 \begin{frame}
-  \frametitle{CD}
+  \frametitle{Union Find Disjoint Set}
+  \framesubtitle{Problem II -- War}
 
-  The problem is very easy: given two collections of numbers, find the
-  numbers in both collections.
+  This problem is similar to ``Networking'', but now you need to keep
+  track of {\bf TWO} relations.
+
+  \bigskip
+
+  Some ideas:
+  \begin{itemize}
+  \item Keep UFDS for friends, and UFDS for enemies?
+  \item Keep an ``enemy'' flag for each person?
+  \item Add ``negative people'' to friend-set on UFDS?
+  \end{itemize}
+
+  \bigskip
+
+  Which idea is easier to implement? 
+\end{frame}
+
+\subsection{Segment Tree and Fenwick Tree}
+\begin{frame}
+  \frametitle{Segment Tree and Fenwick Tree (Self Study)}
+
+  There are many more specific data structures
+  which are common in programming contests.
+
+  \bigskip
+
+  Two suggestions for you to study by yourself:
 
   \bigskip
   
-  However, the input data is HUGE -- you need to use an efficient data
-  structure.
-\end{frame}
+  \begin{itemize}
+  \item Segment Tree (section 2.4.3): Finds and update the
+    largest values in intervals in an unordered set.
 
-\begin{frame}
-  \frametitle{War}
-
-  You need to use the UFDS as a basis, but you need to add {\bf
-    something extra}. This one is a challenge for you!
-\end{frame}
-
-
-\subsection{Fun Stuff}
-
-\begin{frame}
-  \frametitle{}
-
-  Some Extra Stuff...
-\end{frame}
-
-\begin{frame}
-  \frametitle{How many sorting Algorithms are there?}
-  \begin{columns}[c]
-    \column{0.5\textwidth}
-    {\tiny
-    \begin{itemize}
-    \item bubblesort
-    \item insertion sort
-    \item selection sort
-    \item heapsort
-    \item mergesort
-    \item quicksort
-    \item radix sort
-    \item bin sort
-    \item gnome sort
-    \item library sort
-    \item comb sort
-    \item tree transversal
-    \item sorting networks
-    \item cocktail shaking sort
-    \item bucket sort
-    \item bogo sort
-    \item bitonick sort
-    \item ...
-    \item And many more!
-    \end{itemize}}
-    \column{0.5\textwidth}
-    \includegraphics<2>[width=1\textwidth]{../img/fliptable}
-  \end{columns}
-\end{frame}
-
-\begin{frame}
-  \frametitle{What do sorting algorithms sound like?}
-
-  sorting.mp4
+  \item Fenwick Tree (section 2.4.4): Finds and update the
+    sum of values in intervals in an unordered set.
+  \end{itemize}
   
+  % TODO: Make these sections for next year
+\end{frame}
+
+\section{The End}
+\subsection{The End}
+\begin{frame}
+  \frametitle{Before ending the class}
+
+  Final Discussions:
+  \begin{itemize}
+  \item Problem Hints: File Fragmentation, Grid Successors
+  \item Any Questions?
+  \item Silly Video: Sorting Music
+  \end{itemize}  
+  
+\end{frame}
+
+\begin{frame}
+  End of the Class!
 \end{frame}
 
 \end{document}
