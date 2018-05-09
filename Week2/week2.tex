@@ -5,7 +5,7 @@
 \subtitle[]{Week 2 - Problem Solving Paradigms (Search)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-04-28,05-08\\{\tiny Last updated \today}}
+\date{2018-05-11,05-14\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -23,25 +23,29 @@
 
 \begin{frame}
   \frametitle{Quick Review of Last Week}
-  \begin{itemize}
-  \item \structure{Linear Arrays} (unidimensional and bidimensional) are 
-    KISS data structures;
+  \begin{itemize}    
+  \item \structure{Linear Structures (Arrays, Vectors)}
     \begin{itemize}
-    \item A lot of problems can be solved by iterating on arrays
-    \item Always allocate a bit more than you need.
+    \item Are good for many problems
+    \item Sorting and binary search
+    \item Using bitmasks
     \end{itemize}
 
     \medskip
 
-  \item \structure{Bitmasks} are quick and efficient ways to store sets of
-    True/False values;
+  \item \structure{Tree Structures (Map, Set)}
+    \begin{itemize}
+    \item Are fast for querying data
+    \item Use the standard libraries!
+    \end{itemize}
 
     \medskip
-    
-  \item \structure{Tree data structures} can search very efficiently
+
+  \item \structure{Union-Find Disjoint Set (UFDS)}
     \begin{itemize}
-    \item Instead of implementing your own, learn to use the
-      structures available from the library.
+    \item Can be used to form multiple sets quickly
+    \item Are not very good for querying
+    \item Are simple to implement!
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -189,12 +193,16 @@
   \bigskip
 
   Imagine the following problems:
-  \begin{itemize}
+  \begin{enumerate}
   \item Find the Largest and the smallest element of $A$;
   \item Find the $k^{th}$ smallest element of $A$;
   \item Find the largest gap $G$ such that $x,y \in A$ and $G = |x-y|$;
   \item Find the longest increasing subsequence of A;
-  \end{itemize}
+  \end{enumerate}
+
+  \bigskip
+
+  \alert{Question:} What is the complexity of each problem?
 \end{frame}
 
 \begin{frame}

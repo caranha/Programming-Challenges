@@ -45,9 +45,9 @@ var problemlist = [
     {name:"Week 1: Data Structures",
      deadline:"2018-05-10T14:59:59+09:00",
      mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
-//    {name:"Week 2: Search Problems",
-//     deadline:"2017-05-12T14:59:59+09:00",
-//     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
+    {name:"Week 2: Search Problems",
+     deadline:"2018-05-17T14:59:59+09:00",
+     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
 //    {name:"Week 3: Dynamic Programming I",
 //     deadline:"2017-05-19T14:59:59+09:00",
 //    mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
@@ -67,7 +67,7 @@ var problemlist = [
 //     deadline:"2017-06-23T14:59:59+09:00",
 //     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
 //    {name:"Week 9: Interesting Problem Remix!",
-//     deadline:"2017-06-30T14:59:59+09:00",
+//     deadline:"2018-06-30T14:59:59+09:00",
 //     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
 
