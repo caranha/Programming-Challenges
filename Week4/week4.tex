@@ -19,7 +19,7 @@
 \subtitle[]{Week 4 - Graph Problems (Part I)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-05-19,22\\{\tiny Last updated \today}}
+\date{2018-05-25,28\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -52,32 +52,90 @@
     \item Bipartite Graph Matching and related Problems;
     \end{itemize}
   \end{block}}
-  Many variations in graph problems!
+  %% Many variations in graph problems!
 \end{frame}
 
 %%% Simple Concepts in Graph Theory
 \section{Graph Basics}
-\subsection{A Quick Review}
+
+\subsection{Motivation Problem}
+\begin{frame}
+  \frametitle{Motivation Problem -- UVA 11902: Dominator}
+  {\smaller
+    \begin{block}{Problem Summary}
+      We define that vertex $X$ \structure{dominates} vertex $Y$ if
+      every path from a start vertex $0$ to $Y$ must go through $X$.
+
+      \bigskip
+
+      For all Vertices, determine which nodes dominate which other.
+  \end{block}}
+
+  \vspace{1cm}
+
+  \begin{center}
+    \begin{columns}[T]
+      \column{0.5\textwidth}
+      \begin{tikzpicture}[scale=1.3,auto,swap]
+        \tikzset{edge/.style = {->,>=latex'}}
+        \node[vertex] (a) at (0,0) {0};
+        \node[vertex] (b) at (1,1) {1};
+        \node[vertex] (c) at (1,-1) {2};
+        \node[vertex] (d) at (2,0) {3};
+        \node[vertex] (e) at (3,0) {4};
+        \draw[edge] (a) to (b);
+        \draw[edge] (a) to (c);
+        \draw[edge] (b) to (d);
+        \draw[edge] (c) to (d);
+        \draw[edge] (d) to (e);
+      \end{tikzpicture}
+      \column{0.5\textwidth}
+      \begin{itemize}
+      \item 0 dominates all nodes;
+      \item 3 dominates 4;
+      \item 1 does not dominate 3;
+
+        \bigskip
+
+        How do you solve it?
+
+      \end{itemize}
+    \end{columns}
+  \end{center}
+  %% Simple graph problems (quick modification of DFS/BFS)
+  % Dominator: UVA 11902 - Page 148
+\end{frame}
+
+\subsection{Structure and Representation}
 
 \begin{frame}
-  \frametitle{Quick Review of Graph Terms (1)}
+  \frametitle{Base definition}
+
+  \begin{block}{}
+    A \structure{graph} $G = {V,E}$ is defined as a set of
+    \structure{vertices} $V$, and \structure{edges} $E$. Each edge
+    connects exactly two vertices.
+  \end{block}
   {\smaller
-    \begin{block}{}
-      You probably know all of these. If not, ask questions!
-    \end{block}
 
     \begin{columns}[T]
       \column{0.6\textwidth}
       \begin{itemize}
-      \item A Graph $G$ is made of a set of \structure{vertices} $V$
-        and \structure{edges} $E$.
-      \item Edges can be \structure{directed}\\ (has source and destination vertices);
-      \item Edges can be \structure{weighted} or not\\ (all weigths = 1);
-      \item Sets of nodes can be \structure{connected}\\ or \structure{disconnected}
-      \item Directed Graphs can be \structure{Strongly Connected}
+      \item Edges can be \structure{directed} or \structure{undirected};
+      \item Edges and can be \structure{weighted} (and sometimes vertices too!);
       \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}
       \end{itemize}
+
+      \bigskip
+
+      Graph Problems:
+      \begin{itemize}
+      \item Find a vertex or edge with a certain characteristic;
+      \item Find a relationship between vertices or edges;
+      \end{itemize}
+      
       \column{0.4\textwidth}
+      
 
       \begin{tikzpicture}[scale=.8,auto,swap]
         \tikzset{edge/.style = {->,>=latex'}}
@@ -111,149 +169,55 @@
   }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Quick Review of Graph Terms (2)}
-
-  {\smaller
-    \begin{block}{}
-      You probably know all of these. If not, ask questions!
-    \end{block}
-
-    \begin{columns}[T]
-      \column{0.6\textwidth}
-      \begin{itemize}
-      \item A \structure{path} is a set of vertices connected by edges;
-      \item A \structure{cycle} is a path with first and last vertices identical;
-      \item \structure{Labelled} graphs and \structure{Isomorphic} graphs;
-      \item A \structure{tree} is a acyclical, undirected graph;
-      \item A \structure{spanning tree} is a subset of edges from E'
-        that form a tree, connecting all nodes $V \in G$;
-      \item A \alert{spamming tree} houses very noisy insects in summer;
-      \end{itemize}
-      \column{0.4\textwidth}
-      \begin{tikzpicture}[scale=1,auto,swap]
-        \node[vertex] (s) at (0,0) {a};
-        \node[vertex] (a1) at (-1,-1) {b};
-        \node[vertex] (a2) at (1,-1) {c};
-        \node[vertex] (b1) at (-1,-2) {d};
-        \node[vertex] (b2) at (0,-2) {e};
-        \draw[edge] (s) to (a1);
-        \draw[edge] (s) to  (a2);
-        \draw[edge] (a1) to  (b1);
-        \draw[edge] (a1) to  (b2);
-        \draw[black edge] (b1) to (b2);
-        \draw[black edge] (a2) to (b2);
-      \end{tikzpicture}
-
-      \vspace{.5cm}
-
-      \begin{tikzpicture}[scale=1,auto,swap]
-        \node[vertex] (s) at (0,0) {e};
-        \node[vertex] (a1) at (-1,-1) {d};
-        \node[vertex] (a2) at (1,-1) {b};
-        \node[vertex] (b1) at (-1,-2) {c};
-        \node[vertex] (b2) at (0,-2) {a};
-        \draw[edge] (s) to (a1);
-        \draw[edge] (s) to  (a2);
-        \draw[edge] (a1) to  (b1);
-        \draw[edge] (a1) to  (b2);
-        \draw[black edge] (b1) to (b2);
-        \draw[black edge] (a2) to (b2);
-      \end{tikzpicture}
-  \end{columns}}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{Quick Review of Graph Terms (3)}
-
-  {\smaller
-    \begin{block}{}
-      You probably know all of these. If not, ask questions!
-    \end{block}
-
-    \begin{columns}[T]
-      \column{0.6\textwidth}
-      \begin{itemize}
-      \item The \structure{degree} of a node is the number of edges
-        connected to it;
-      \item Directed graphs have \structure{in-degrees} and
-        \structure{out-degrees};
-      \item A \structure{bipartite} graph can be divided in two sets
-        of unconnected vertices;
-      \item A \structure{Match} or \structure{Pairing} is a set of
-        edges that connects the nodes in the bipartite graph;
-      \end{itemize}
-      \column{0.4\textwidth}
-      \begin{tikzpicture}[scale=.8,auto,swap]
-        \node[vertex] (a) at (0,0) {deg: 2};
-        \node[vertex] (b) at (2,1) {};
-        \node[vertex] (c) at (2,-1) {};
-        \node[vertex] (d) at (4,0) {in,out:1};
-        \draw[edge] (a) to (b);
-        \draw[edge] (a) to (c);
-        \tikzset{edge/.style = {->,>=latex'}}
-        \draw[edge] (c) to (d);
-        \draw[edge] (d) to (b);
-      \end{tikzpicture}
-      
-      \vspace{.5cm}
-
-      \begin{tikzpicture}[scale=.8,auto,swap]
-        \node[vertex] (a1) at (0,0) {};
-        \node[vertex] (b1) at (0,2) {};
-        \node[vertex] (a2) at (1,0) {};
-        \node[vertex] (b2) at (2,2) {};
-        \node[vertex] (a3) at (3,0) {};
-        \node[vertex] (b3) at (3,2) {};
-        \node[vertex] (a4) at (5,0) {};
-        \node[vertex] (b4) at (4,2) {};
-        \draw[red edge] (a1) to (b1);
-        \draw[red edge] (a2) to (b3);
-        \draw[red edge] (a3) to (b4);
-        \draw[red edge] (a4) to (b2);
-        \draw[edge] (a1) to (b1);
-        \draw[edge] (a1) to (b2);
-        \draw[edge] (a2) to (b1);
-        \draw[edge] (a2) to (b3);
-        \draw[edge] (a2) to (b4);
-        \draw[edge] (a3) to (b1);
-        \draw[edge] (a3) to (b4);
-        \draw[edge] (a4) to (b3);
-        \draw[edge] (a4) to (b2);
-      \end{tikzpicture}
-  \end{columns}}
-\end{frame}
-
-\subsection{graph representation}
 \begin{frame}[fragile]
-  \frametitle{Data Structures for Graphs (1)}
+  \frametitle{How do we implement a graph?}
 {\smaller
   \begin{block}{Adjacency Matrix - Stores connection between Vertices}
 \begin{verbatim}
+
 int adj[100][100];
-// adj[i][j] is 0 if no edge between i,j
+// adj[i][j] is 0 or -1 if no edge between i,j
 // adj[i][j] is A if edge of weight A links i,j
 \end{verbatim}
 
     \begin{itemize}
-    \item \structure{Pro}: Very simple to program, manipulate;
-    \item \alert{Con}: Cannot store multigraph; Wastes space for sparse
-      graphs; Requires time $O(V)$ to calculate number of neighbors;
+    \item \structure{Pro}: Very simple to program and use;
+    \item \alert{Con}:
+      \begin{itemize}
+      \item Cannot store multigraph;
+      \item Waste space for sparse graphs;
+      \item Time $O(V)$ to calculate number of neighbors;
+      \end{itemize}
     \end{itemize}
   \end{block}
+  }
+\end{frame}
 
-  \begin{block}{Edge List -- Stores Edges list for each Vertex}
+\begin{frame}[fragile]
+  \frametitle{How do we implement a graph?}
+
+  {\smaller
+  \begin{block}{Vector-Edge List -- Stores Edges list for each Vertex}
 \begin{verbatim}
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-vector<vii> AdjList;
+
+typedef pair<int,int> edge; // <destination, weight> pair
+typedef vector<edge> neighb;// all the neighbors of one V
+vector<neighb> AdjList;     // all vertices
+
+AdjList[2];                 // Adjency list of vertex 2
+
+vector<double> Vcost;       // Array with Vertex weights
 \end{verbatim}
 
     \begin{itemize}
     \item \structure{Pro}: $O(V+E)$ space, efficient if graph is sparse; Can store multigraph; 
-    \item \alert{Con}: A (bit) more code than Adjacency Matrix
+    \item \alert{Con}: Code is more complex than adjacency list; $O(\text{log}V)$
+      to test if two vertices are adjacent.
     \end{itemize}
+
+    \bigskip
+
+    If you need special Vertex data, you can save it in a separate array.
   \end{block}
 
   }
@@ -262,51 +226,57 @@ vector<vii> AdjList;
 \begin{frame}[fragile]
   \frametitle{Data Structures for Graphs (2)}
   {\smaller
-    \begin{block}{Edge List}
+    \begin{block}{Edge List -- stores only the edges}
 \begin{verbatim}
-vector< pair <int,ii>> Edgelist;
+
+pair <int,int> edge; // Edge between i and j
+vector<pair <int,ii>> Elist; // Store edges and weights
 \end{verbatim}
 
-    Stores a list of all the edges in the graph. Vertices are implicit
-    from the edge list. This is useful for Kruskal's algorithm (which
-    we will see later), but otherwise complicates things.
-    \end{block}
+\bigskip
 
-    \begin{block}{Implicit Graph}
-      Some graphs \alert{do not} need to be stored in a special
-      structure if they have very clear rules about when two vertices connect.
-      \medskip
-
-      Examples:
-      \begin{itemize}
-      \item A square grid;
-      \item Knight's chess moves;
-      \item Two vertices $i,j$ connect if $i+j$ is prime;
-      \end{itemize}
+This is a very unusual structure! It is used by \structure{Kruskal's
+  Algorithm}
 
     \end{block}
+
+    \vfill 
+
+    \begin{itemize}
+    \item Some algorithms require specialized data structures.
+    \item Use arrays to save data about vertices.
+    \end{itemize}
+    
   }
 \end{frame}
 
 
-\subsection{Breadth-First-Search/Depth-First-Search}
+\subsection{BFS, DFS}
 \begin{frame}
   \frametitle{Searching in a Graph: BFS and DFS}   
   {\small
-  Almost all graph problems involve visiting each of its vertices in
-  some form. There are two approaches for visiting the nodes in a graph:
+
+    \begin{itemize}
+    \item Almost every Graph algorithm uses BFS or DFS;
+    \item Learn to do this with your eyes closed;
+    \item Of course, some problems require special implementation;
+    \end{itemize}
 
   \begin{block}{Depth First Search -- DFS}
-    DFS is commonly implemented as a recursive search. For every node
-    visited, immediately visit the first edge in it, backtracking when 
-    a loop is reached, or no more edges can be followed.
+    \begin{itemize}
+    \item Easy to implement with Recursion;
+    \item Visit first edge of each vertice until you find a loop;
+    \end{itemize}
   \end{block}
 
   \begin{block}{Breadth First Search -- BFS}
-    BFS is commonly implemented iterating over a FIFO queue. For every
-    node visited, all new edges are put on the back of the queue. Visit
-    the next edge at the top of the queue.
-  \end{block}}
+    \begin{itemize}
+    \item Easy to implement on a loop;
+    \item Put every edge on a FIFO queue, then visit next vertex;
+    \end{itemize}
+  \end{block}
+
+  }
 \end{frame}
 
 \begin{frame}
@@ -384,98 +354,109 @@ vector< pair <int,ii>> Edgelist;
 \begin{frame}[fragile]
   \frametitle{BFS/DFS: Implementation}
   {\smaller
-  There are many ways to implement BFS/DFS, here is a suggestion.
+
+    Implementing DFS with an adjacency list:
 
   \begin{exampleblock}{DFS}
 \begin{verbatim}
-vector<int> dfs_vis; // initially all set to UNVISITED
-void dfs(int v) {
-   dfs_vis = VISITED;
-   for (int i; i < (int)Adj_list[v].size(); i++) {
-      pair <int,int> u = Adj_list[u][i];
-      if (dfs_vis[u.first] == UNVISITED) dfs(v.first)      
-}}
-\end{verbatim}
-  \end{exampleblock}
-  \begin{exampleblock}{BFS}
-\begin{verbatim}
-vector<int> d(V,INF); d[s] = 0; queue<int> q; q.push(s);
-while(!q.empty()) {
-   u = q.front(); q.pop();
-   for (int i=0; i < (int)Adj_list[q].size(); i++) {
-   pair <int,int> v = Adj_list[u][i]; //same as dfs
-   if (d[v.first] == INF) {   
-      d[v.first] = d[u] + 1; q.push(v.first);
-}}}
-\end{verbatim}
-  \end{exampleblock}
-  
+#define UNVISITED 0
+#define VISITED 1
 
+vector<int> dfs_vis; // list visited nodes
+
+void dfs(int v) {
+   dfs_vis[v] = VISITED;
+   for (int i; i < (int) Adj_list[v].size(); i++) {
+      pair <int,int> u = Adj_list[v][i];
+      if (dfs_vis[u.first] == UNVISITED) 
+         dfs(v.first);
+      // else -- Found Loop!
+   }
+}
+
+dfs(1);
+\end{verbatim}
+  \end{exampleblock}
   }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Simple BFS/DFS -- UVA 11902: Dominator}
+\begin{frame}[fragile]
+  \frametitle{BFS/DFS: Implementation}
+
   {\smaller
-  \begin{block}{Problem Summary}
-    Vertex $X$ \structure{dominates} vertex $Y$ if every path from a
-    start vertex $0$ to $Y$ must go through $X$. Determine which
-    nodes dominate which other.
-  \end{block}}
+    Implementing BFS with an adjacency matrix:\\
+    \alert{Note that this implementation is $O(N^2)$!}
 
-  \vspace{1cm}
+               
+  \begin{exampleblock}{BFS}
+\begin{verbatim}
+#define INF 1000000
+int s = 1;                       // Start Vertice
 
+vector<int> d(N,INF); d[s] = 0;  // Distance array
+queue<int> q; q.push(s);
+
+while(!q.empty()) {
+  int u = q.front(); q.pop();
+  for (int i=0; i < N; i++) {
+    if (adj[u][i] && d[i] == INF) {
+      d[i] = d[u] + 1;           // Visiting node
+      q.push(i);
+    }
+  }
+}
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\subsection{Back to the Dominator}
+
+\begin{frame}[fragile]
+  \frametitle{Back to the Dominator Problem}
+  
+  {\smaller
+  \begin{exampleblock}{Thinking about the problem again}
+    X is \structure{Dominated} by Y if \structure{all paths} from
+    the root to Y go through X.
+
+    \bigskip
+  \end{exampleblock}}
+  
   \begin{center}
-    \begin{columns}[T]
-      \column{0.5\textwidth}
-      \begin{tikzpicture}[scale=1.3,auto,swap]
-        \tikzset{edge/.style = {->,>=latex'}}
-        \node[vertex] (a) at (0,0) {0};
-        \node[vertex] (b) at (1,1) {1};
-        \node[vertex] (c) at (1,-1) {2};
-        \node[vertex] (d) at (2,0) {3};
-        \node[vertex] (e) at (3,0) {4};
-        \draw[edge] (a) to (b);
-        \draw[edge] (a) to (c);
-        \draw[edge] (b) to (d);
-        \draw[edge] (c) to (d);
-        \draw[edge] (d) to (e);
-      \end{tikzpicture}
-      \column{0.5\textwidth}
-      \begin{itemize}
-      \item 0 dominates all nodes;
-      \item 3 dominates 4;
-      \item 1 does not dominate 3;
-
-        \bigskip
-
-        How do you solve it?
-
-      \end{itemize}
-    \end{columns}
+    \begin{tikzpicture}[scale=0.9,auto,swap]
+      \tikzset{edge/.style = {->,>=latex'}}
+      \node[vertex] (a) at (0,0) {0};
+      \node[vertex] (b) at (1,1) {1};
+      \node[vertex] (c) at (1,-1) {2};
+      \node[vertex] (d) at (2,0) {3};
+      \node[vertex] (e) at (3,0) {4};
+      \draw[edge] (a) to (b);
+      \draw[edge] (a) to (c);
+      \draw[edge] (b) to (d);
+      \draw[edge] (c) to (d);
+      \draw[edge] (d) to (e);
+    \end{tikzpicture}
   \end{center}
-  %% Simple graph problems (quick modification of DFS/BFS)
-  % Dominator: UVA 11902 - Page 148
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Simple BFS/DFS -- UVA 11902: Dominator}
+  \frametitle{Back to the Dominator Problem}
   
   {\smaller
-  \begin{exampleblock}{Solution}
+  \begin{exampleblock}{$N^2$ solution: DFS $N$ times}
 \begin{verbatim}
-DFS(0); 
-for i in (0:N): 
-   if i is reached: dominate[0][i] = 1;
+def DFS2(S,P): ...  // Modified DFS: never visits P; 
+
+DFS2(0,-1)
+Mark every VISITED vertex as DOMINATED by 0
 
 for i in (1:N):
-   remove i from graph;
-   DFS(0)
-   for j in (1:N):
-       if (j is not reached) and (dominate[0][j] == 1):
-           dominate[i][j] = 1
-   return i to graph
-
+   reset VISITED array
+   DFS2(0,i)
+   For every NOT-VISITED vertex j:
+      if j is DOMINATED by 0:
+         j is DOMINATED by i
 \end{verbatim}
   \end{exampleblock}}
   
@@ -496,88 +477,385 @@ for i in (1:N):
   \end{center}
 \end{frame}
 
-\section{Common Algorithms}
-\subsection{Algorithms using BFS/DFS}
-\begin{frame}[fragile]
-  \frametitle{Common Algorithms: Connected Components}
-  {\smaller
-    \begin{block}{}
-      With small modifications to BFS/DFS, we can solve many simple problems
-    \end{block}
 
-    Since a single run of DFS/BFS finds all connected nodes, we can
-    use it to find (and count) all the connected components (CC) of an
-    \structure{undirected} graph.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \subsection{Graph Terms}
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (1)}
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item A Graph $G$ is made of a set of \structure{vertices} $V$
+%%         and \structure{edges} $E$.
+%%       \item Edges can be \structure{directed}\\ (has source and destination vertices);
+%%       \item Edges can be \structure{weighted} or not\\ (all weigths = 1);
+%%       \item Sets of nodes can be \structure{connected}\\ or \structure{disconnected}
+%%       \item Directed Graphs can be \structure{Strongly Connected}
+%%       \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \tikzset{edge/.style = {->,>=latex'}}
+%%         \node[vertex] (a) at (0,0) {};
+%%         \node[vertex] (b) at (2,3) {};
+%%         \node[vertex] (c) at (4,2) {};
+%%         \node[vertex] (d) at (4,0) {};
+%%         \draw[edge] (a) to (b);
+%%         \draw[edge] (a) to[bend left] (c);
+%%         \draw[edge] (c) to[bend left] (a);
+%%         \draw[edge] (d) to (c);
+%%         \draw[edge] (d) to[loop left] (d);
+%%         \draw[edge] (d) to[loop right] (d);
+%%       \end{tikzpicture}
+
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (a) at (0,2) {a};
+%%         \node[vertex] (b) at (0,0) {b};
+%%         \node[vertex] (c) at (2,1) {c};
+%%         \node[vertex] (d) at (4,0) {d};
+%%         \node[vertex] (e) at (4,1) {e};
+%%         \draw[edge] (a) -- node[weight] {$7$} (b);
+%%         \draw[edge] (b) -- node[weight] {$-2$} (c);
+%%         \draw[edge] (c) -- node[weight] {$3$} (a);
+%%         \draw[edge] (c) -- node[weight] {$5$} (d);
+%%       \end{tikzpicture}
+
+%%     \end{columns}
+%%   }
+%% \end{frame}
+
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (2)}
+
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item A \structure{path} is a set of vertices connected by edges;
+%%       \item A \structure{cycle} is a path with first and last vertices identical;
+%%       \item \structure{Labelled} graphs and \structure{Isomorphic} graphs;
+%%       \item A \structure{tree} is a acyclical, undirected graph;
+%%       \item A \structure{spanning tree} is a subset of edges from E'
+%%         that form a tree, connecting all nodes $V \in G$;
+%%       \item A \alert{spamming tree} houses very noisy insects in summer;
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (s) at (0,0) {a};
+%%         \node[vertex] (a1) at (-1,-1) {b};
+%%         \node[vertex] (a2) at (1,-1) {c};
+%%         \node[vertex] (b1) at (-1,-2) {d};
+%%         \node[vertex] (b2) at (0,-2) {e};
+%%         \draw[edge] (s) to (a1);
+%%         \draw[edge] (s) to  (a2);
+%%         \draw[edge] (a1) to  (b1);
+%%         \draw[edge] (a1) to  (b2);
+%%         \draw[black edge] (b1) to (b2);
+%%         \draw[black edge] (a2) to (b2);
+%%       \end{tikzpicture}
+
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (s) at (0,0) {e};
+%%         \node[vertex] (a1) at (-1,-1) {d};
+%%         \node[vertex] (a2) at (1,-1) {b};
+%%         \node[vertex] (b1) at (-1,-2) {c};
+%%         \node[vertex] (b2) at (0,-2) {a};
+%%         \draw[edge] (s) to (a1);
+%%         \draw[edge] (s) to  (a2);
+%%         \draw[edge] (a1) to  (b1);
+%%         \draw[edge] (a1) to  (b2);
+%%         \draw[black edge] (b1) to (b2);
+%%         \draw[black edge] (a2) to (b2);
+%%       \end{tikzpicture}
+%%   \end{columns}}
+
+%% \end{frame}
+
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (3)}
+
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item The \structure{degree} of a node is the number of edges
+%%         connected to it;
+%%       \item Directed graphs have \structure{in-degrees} and
+%%         \structure{out-degrees};
+%%       \item A \structure{bipartite} graph can be divided in two sets
+%%         of unconnected vertices;
+%%       \item A \structure{Match} or \structure{Pairing} is a set of
+%%         edges that connects the nodes in the bipartite graph;
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \node[vertex] (a) at (0,0) {deg: 2};
+%%         \node[vertex] (b) at (2,1) {};
+%%         \node[vertex] (c) at (2,-1) {};
+%%         \node[vertex] (d) at (4,0) {in,out:1};
+%%         \draw[edge] (a) to (b);
+%%         \draw[edge] (a) to (c);
+%%         \tikzset{edge/.style = {->,>=latex'}}
+%%         \draw[edge] (c) to (d);
+%%         \draw[edge] (d) to (b);
+%%       \end{tikzpicture}
+      
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \node[vertex] (a1) at (0,0) {};
+%%         \node[vertex] (b1) at (0,2) {};
+%%         \node[vertex] (a2) at (1,0) {};
+%%         \node[vertex] (b2) at (2,2) {};
+%%         \node[vertex] (a3) at (3,0) {};
+%%         \node[vertex] (b3) at (3,2) {};
+%%         \node[vertex] (a4) at (5,0) {};
+%%         \node[vertex] (b4) at (4,2) {};
+%%         \draw[red edge] (a1) to (b1);
+%%         \draw[red edge] (a2) to (b3);
+%%         \draw[red edge] (a3) to (b4);
+%%         \draw[red edge] (a4) to (b2);
+%%         \draw[edge] (a1) to (b1);
+%%         \draw[edge] (a1) to (b2);
+%%         \draw[edge] (a2) to (b1);
+%%         \draw[edge] (a2) to (b3);
+%%         \draw[edge] (a2) to (b4);
+%%         \draw[edge] (a3) to (b1);
+%%         \draw[edge] (a3) to (b4);
+%%         \draw[edge] (a4) to (b3);
+%%         \draw[edge] (a4) to (b2);
+%%       \end{tikzpicture}
+%%   \end{columns}}
+%% \end{frame}
+
+
+\section{Common Algorithms}
+\subsection{Connected Components}
+\begin{frame}[fragile]
+  \frametitle{Common Algorithms Using DFS/BFS}
+  {\smaller
+    \begin{exampleblock}{}
+      With small modifications to BFS/DFS, we can solve many simple problems
+    \end{exampleblock}
+
+    \vfill
+    
+    \begin{block}{Problem Example: Extra cables}
+      You own a network of $N$ computers;
+
+      \bigskip
+
+      You have a list of every pair of computers connected by cable ($i,j$)
+
+      \bigskip
+
+      You need to buy $M$ extra cables to connect ALL computers. How
+      many cables do you need?      
+    \end{block}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Common Algorithms Using DFS/BFS}
+  \framesubtitle{Connected Components}
+
+  This problem is defined in graph theory as finding
+  \structure{Connected Components}.
+  
+  \begin{center}
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (a) at (0,2) {a};
+      \node[vertex] (b) at (0,0) {b};
+      \node[vertex] (c) at (2,1) {c};
+      \node[vertex] (d) at (4,0) {d};
+      \node[vertex] (e) at (4,1) {e};
+      \node[vertex] (1) at (8,2) {1};
+      \node[vertex] (2) at (9,0) {2};
+      \draw[edge] (a) to (b);
+      \draw[edge] (b) to (c);
+      \draw[edge] (c) to (a);
+      \draw[edge] (c) to (d);
+      \draw[edge] (1) to (2);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Common Algorithms Using DFS/BFS}
+  \framesubtitle{Connected Components}
+
+  {\smaller
+    One way to find all connected components, is to repeat
+    a BFS (or DFS) until all nodes are visited.
 
     \begin{exampleblock}{}
 \begin{verbatim}
-numCC = 0;
-dfs_num.assign(V,UNVISITED);
-for (int = 0; i < V; i++)
-   if (dfs_num[i] == UNVISITED)
-      cout << "\nCC " << ++numCC << ":"; dfs(i);
-      // modify dfs() to print every node it visits
+int cables = 0;
+// dfs(x) from slide 11
+
+for (int = 0; i < N; i++)
+   if (dfs_vis[i] == UNVISITED) // New unvisited!
+   {
+      dfs(i);                   // Visit some vertices
+      cables += 1;
+   }
+cout << cables - 1 << "\n";
 \end{verbatim}
     \end{exampleblock}}
 
-\begin{columns}
-  \column{0.5\textwidth}
-  \hfill
+\begin{center}
   \begin{tikzpicture}[scale=1,auto,swap]
-      \node[vertex] (a) at (0,0) {0};
-      \node[vertex] (b) at (0,1) {1};
-      \node[vertex] (c) at (1,0) {2};
-      \node[vertex] (d) at (1,1) {3};
-      \node[vertex] (e) at (2,0) {4};
-      \node[vertex] (f) at (2,1) {5};
-      \draw[edge] (a) to (b);
-      \draw[edge] (a) to (c);
-      \draw[edge] (b) to (c);
-      \draw[edge] (d) to (f);
-    \end{tikzpicture}
-  \column{0.5\textwidth}
-\begin{verbatim}
-CC 1: 0 1 2
-CC 2: 3 5
-CC 3: 4
-\end{verbatim}
-\end{columns}
+    \node[vertex] (a) at (0,0) {0};
+    \node[vertex] (b) at (0,1) {1};
+    \node[vertex] (c) at (1,0) {2};
+    \node[vertex] (d) at (1,1) {3};
+    \node[vertex] (e) at (2,0) {4};
+    \node[vertex] (f) at (2,1) {5};
+    \draw[edge] (a) to (b);
+    \draw[edge] (a) to (c);
+    \draw[edge] (b) to (c);
+    \draw[edge] (d) to (f);
+  \end{tikzpicture}
+\end{center}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Common Algorithms Using DFS/BFS}
+  \framesubtitle{Connected Components}
+
+  We can also find the connected components using \alert{UFDS}.
+
+  \bigskip
+
+  How would you implement it?
+\end{frame}
+
+\subsection{Flood Fill}
+
+\begin{frame}[fragile]
+  \frametitle{More Common Algorithms Using DFS/BFS}
+  \framesubtitle{Is this a graph problem?}
+
+  \begin{block}{Problem: The Biggest Island}
+    You want to build a new castle in the game of CraftMine. For this,
+    you need to find the biggest island in the world map.
+
+    \bigskip
+
+    \structure{Input:} The following 2D map of the map:
+\begin{verbatim}
+....................................
+.###.......###.....#.....###.####...
+.#####....#####.##.#####.##....#....
+.###........###..#...##..#....###...
+......###.......###...####...##.....
+....####.............######.....###.
+....####.......#.......###......###.
+....................................
+\end{verbatim}
+  \end{block}
+
+  \bigskip
+
+  Is this even a graph???
+\end{frame}
+
+\begin{frame}
+  \frametitle{More Common Algorithms Using DFS/BFS}
+  \framesubtitle{Implicit Graphs and Floodfill}
+
+  
+  \begin{columns}
+    \column{0.7\textwidth}
+    {\smaller
+    \begin{itemize}
+    \item \structure{Implict Graphs} suggest graph organization;
+    \item But it is not necessary to store the vertices and edges;
+    \item \structure{Example:} Game boards; Distances; Grids;
+
+      \bigskip
+
+    \item No graph Structure, but same graph algorithms;
+    \end{itemize}
+    }
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (00) at (0,0) {};
+      \node[vertex] (01) at (0,1) {};
+      \node[vertex] (02) at (0,2) {};
+      \node[vertex] (03) at (0,3) {};
+      \node[vertex] (04) at (0,4) {};
+      \node[vertex] (05) at (0,5) {};
+      \node[vertex] (10) at (1,0) {};
+      \node[vertex] (11) at (1,1) {};
+      \node[vertex] (12) at (1,2) {};
+      \node[vertex] (13) at (1,3) {};
+      \node[vertex] (14) at (1,4) {};
+      \node[vertex] (15) at (1,5) {};
+      \node[vertex] (20) at (2,0) {};
+      \node[vertex] (21) at (2,1) {};
+      \node[vertex] (22) at (2,2) {};
+      \node[vertex] (23) at (2,3) {};
+      \node[vertex] (24) at (2,4) {};
+      \node[vertex] (25) at (2,5) {};
+      \draw[edge] (00) to (01);\draw[edge] (00) to (10);
+      \draw[edge] (01) to (02);\draw[edge] (01) to (11);
+      \draw[edge] (02) to (03);\draw[edge] (02) to (12);
+      \draw[edge] (03) to (04);\draw[edge] (03) to (13);
+      \draw[edge] (04) to (05);\draw[edge] (04) to (14);
+      \draw[edge] (10) to (11);\draw[edge] (10) to (20);
+      \draw[edge] (11) to (12);\draw[edge] (11) to (21);
+      \draw[edge] (12) to (13);\draw[edge] (12) to (22);
+      \draw[edge] (13) to (14);\draw[edge] (13) to (23);
+      \draw[edge] (14) to (15);\draw[edge] (14) to (24);
+      \draw[edge] (20) to (21);\draw[edge] (21) to (22);
+      \draw[edge] (22) to (23);\draw[edge] (23) to (24);
+      \draw[edge] (24) to (25);\draw[edge] (15) to (25);
+      \draw[edge] (05) to (15);
+    \end{tikzpicture}
+  \end{columns}
+  
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{Flood Fill}
   {\smaller
-    \begin{columns}[T]
-      \column{0.7\textwidth}
-      A simple twear of the BFS (or DFS) can be used to
-      \structure{label/color} and count the size of each CC.
-      
-      \medskip
-      
-      ``flood fill`` is often used in problems involving implicit 2D
-      grids.
-      \column{0.3\textwidth}
-\begin{verbatim}
-####..#
-#.###.#
-#..@.##
-##d.###
-#..####
-\end{verbatim}
-    \end{columns}
+      We can solve the ``Biggest Island'' problem with
+      \structure{Flood Fill}, which is just a variation of
+      BFS/DFS for grids.
 
   \begin{exampleblock}{}
 \begin{verbatim}
 int dr[] = {1,1,0,-1,-1,-1,0,1}; // trick to explore an
 int dc[] = {0,1,1,1,0,-1,-1,-1}; // implicit NESW graph
 
-int floodfill(int y, int x, char c1, char c2) {
+int floodfill(int y, int x) {
   if (y < 0 || y >= R || x < 0 || x >= C) return 0;
-  if (grid[y][x] != c1) return 0;
+  if (grid[y][x] != '#') return 0;
   int ans = 1;
-  grid[y][x] = c2;
+  grid[y][x] = '.';              // CHANGE the map
   for (int d = 0; d < 8; d++)
-     ans += floodfill(y+dr[d], x+dc[d], c1, c2);
+     ans += floodfill(y+dr[d], x+dc[d]);
   return ans;
 }
 \end{verbatim}
@@ -585,34 +863,102 @@ int floodfill(int y, int x, char c1, char c2) {
   }
 \end{frame}
 
+\subsection{Topological Sort}
+
+\begin{frame}[fragile]
+  \frametitle{Another Classical Problem}
+  \framesubtitle{Preparing a Course Curriculum}
+  {\smaller
+  \begin{block}{Problem Outline}
+    You are a teacher and you have to prepare a course curriculum.
+    You have a list of topics, but some topics are pre-requisite to others.
+
+    \bigskip
+
+    \structure{Input}: M, N, The list of M topics, followed by N ordered pairs of topics.
+
+    \structure{Output}: A sorted list with all topics.
+    
+  \end{block}
+\begin{verbatim}
+5 4 Graphs DP Search Flow Programming
+Programming Search
+Search DP
+Graph Flow
+Search Graph
+
+
+=====================
+Result: Programming Search DP Graph Flow
+\end{verbatim}
+
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Another Classical Problem}
+  \framesubtitle{Topological sort}
+
+  \begin{itemize}
+  \item A \structure{directed} graph has a \structure{topological
+    sort} if it has \alert{no cycles};
+  \item We can use the \structure{in-degrees} and
+    \structure{out-degrees} to calculate the topological sort;
+  \end{itemize}
+  
+  \begin{center}
+    \begin{tikzpicture}[scale=.8,auto,swap]
+      \node[vertex] (a) at (0,0) {out: 2};
+      \node[vertex] (b) at (2,1) {};
+      \node[vertex] (c) at (2,-1) {};
+      \node[vertex] (d) at (4,0) {in: 2 out:1};
+      \node[vertex] (e) at (6,0) {};
+      \tikzset{edge/.style = {->,>=latex'}}
+      \draw[edge] (a) to (b);
+      \draw[edge] (a) to (c);
+      \draw[edge] (c) to (d);
+      \draw[edge] (b) to (d);
+      \draw[edge] (d) to (e);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
 \begin{frame}[fragile]
   \frametitle{Topological Sort (Directed Acyclic Graphs)} 
-
+  
   {\smaller 
-    A Topological sort is a linear ordering of vertices of a DAG so
-    that vertex $u$ comes before vertex $v$ if edge $u \rightarrow v$
-    exits in the DAG.  Topological Sorts are useful for problems
-    involving the ordering of pre-requisites.
 
     \begin{exampleblock}{Khan's algorithm for Topological sort (modified edge-BFS)}
 \begin{verbatim}
 Q = queue(); toposort = list();
 for j in edge:
    in_degree[j.destination] += 1
-for i in node:
+for i in node:                      // Start nodes to queue
    if in_degree[i] == 0: Q.add(i);
 while (Q.size() > 0):
    u = Q.dequeue(); toposort.add(u);
-   for i in u.out_edges():
+   for i in u.out_edges():          // reduce in-degree
        v = i.destination
        in_degree[v] =- 1
-       if in_degree[v] == 0:
+       if in_degree[v] == 0:        // new start node
           Q.add(v);
 \end{verbatim}
     \end{exampleblock}
-
   }
 \end{frame}
+
+\begin{frame}
+  \frametitle{Topological Sort and Bottom-Up Dynamic Programming}
+
+  %TODO
+  What is the relationship between Topological Sort and Bottom-up DP?
+
+  \bigskip
+
+  Bottom-up DP are Topological sorts on Tables!
+\end{frame}
+
+\subsection{Bipartite Checking}
 
 \begin{frame}[fragile]
   \frametitle{Bipartite Check}
@@ -705,6 +1051,8 @@ while (!q.empty() && isBipartite) {
     \end{exampleblock}}
   \end{columns}
 \end{frame}
+
+\subsection{Articulation Points}
 
 \begin{frame}
   \frametitle{Articulation Points and Bridges}
@@ -807,6 +1155,8 @@ void dfs_a(u){
 \end{verbatim}
   \end{exampleblock}}
 \end{frame}
+
+\subsection{Strongly Connected Components}
 
 \begin{frame}
   \frametitle{Strongly Connected Components (Directed Graph)}
@@ -1294,7 +1644,8 @@ while (!pq.empty()) {
 \section{Conclusion}
 \subsection{Conclusion}
 \begin{frame}
-  \frametitle{Summary}
+  \frametitle{Class Summary}
+  \framesubtitle{What did we learn?}
   \begin{itemize}
   \item Graphs come in a wide variety of types;
   \item Graph problems also have many different types;
@@ -1303,8 +1654,36 @@ while (!pq.empty()) {
 \end{frame}
 
 \begin{frame}
+  \frametitle{Class Summary}
+  \frametitle{Hints on solving Problems}
+
+  
+  {\smaller
+    \begin{block}{Keep a code Library}
+      Graph problems/algorithms use a lot of common code. Store a
+      template, and copy/paste as necessary!
+      \bigskip
+      \begin{itemize}
+      \item Structures for keeping visited flags and vertex distances;
+      \item Structures for keeping parent and children lists;
+      \item Adjacency lists;
+      \end{itemize}
+      
+  \end{block}
+  \begin{block}{Common tricky cases -- Be careful!}
+    \begin{itemize}
+    \item Graphs with 0 or 1 Vertices;
+    \item Unconnected Graphs;
+    \item Self loops;
+    \item Double edges;
+    \end{itemize}
+  \end{block}
+  }
+\end{frame}
+
+\begin{frame}
   \frametitle{Next Week}
-  More Graphs!
+  \framesubtitle{More Graphs! Specially path finding}
   \begin{itemize}
   \item Shortest Paths (Single Source and All Pairs);
   \item Network Flow (and related problems);
@@ -1312,7 +1691,6 @@ while (!pq.empty()) {
   \end{itemize}
 \end{frame}
 
-\subsection{Problem Hints}
 
 \input{problemdiscussion.tex}
 

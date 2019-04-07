@@ -1,5 +1,10 @@
-- Need to add code for assembling the return table in Knuth-Morris-Pratt
-- For DP, make the "common substring" before the "edit distance" -- Also 
-  Add image of the DP process.
-- Trie section is very hard to understand.
+- Remove two of the ad hoc problems, and replace with common substring or string editing problems
 
+- Knuth-Morris-Pratt
+    - Add state machine image and some examples of strings after preprocessing
+
+- String Editing and Common Substring:
+    - Add images with DP table
+    
+- Longest Palindrome
+    - add example code, improve explanation (Only one way to solve palindrome).

@@ -14,7 +14,7 @@
 \subtitle[]{Week 7 - Computational Geometry}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-06-9,12\\{\tiny Last updated \today}}
+\date{2018-06-15,18\\{\tiny Last updated \today}}
 
 
 \begin{document}
@@ -31,118 +31,208 @@
 
 \subsection{Outline}
 \begin{frame}
-  \frametitle{This Week: Computational Geometry}
+  \frametitle{Computational Geometry}
+  \framesubtitle{What is it?}
 
   {\small
 
     \structure{Computational Geometry} problems involve answering
-    questions about \structure{lines, points and angles};
+    questions about \structure{lines, points and angles}. Some example
+    questions:
 
     \bigskip
     
-    \begin{itemize}
-    \item What is the area of the smallest poligon that covers points
-      $S_1, S_2, S_3$?
-    \item If we have $N$ rectangles, $x_1,y_1,w_1,h_1; \ldots; x_N,
-      y_N, w_N, h_N$, what is the smallest length of lines that
-      connect all of them?
-    \item How many triangles fit in this area?
-    \item How many lines do you need to divide a polygon, so this set
-      of points are in separate regions?
-    \end{itemize}
+    \begin{block}{}
+    \only<1>{Given $N$ points $(s_1, s_2, s_3, \ldots, s_N)$, what is
+      the area of the poligon that covers all the points?}
 
-    \bigskip
+    \only<2>{Given $N$ rectangles, $x_1,y_1,w_1,h_1; \ldots; x_N, y_N,
+      w_N, h_N$, what is the length of lines needed to connect them?}
+
+    \only<3>{Given a polygon, and $N$ points, what is the line
+      that divides the polygon in equal areas, so that the same
+      number of points are in each area?}
+    \end{block}
+
+    \begin{center}
+      \includegraphics<1>[width=0.8\textwidth]{img/sampleproblem_1.png}
+      \includegraphics<2>[width=0.6\textwidth]{img/sampleproblem_2.png}
+      \includegraphics<3>[width=0.4\textwidth]{img/sampleproblem_3.png}
+    \end{center}
     
-    However, it is very easy to take \alert{WE (wrong answer)} in
-    geometric problems.
-  
   }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Geometry problems are easy for mistakes}
+  \frametitle{Computational Geometry}
+  \framesubtitle{The good and the bad}
 
-  {\smaller
-
-    It is very easy to receive a \alert{WE} in a geometry problem.
-
-    \bigskip
+  \begin{itemize}
+  \item \structure{Good}: Geometry problems are fun
+  \item \structure{Good}: You have to draw pretty pictures
+  \item \structure{Good}: Mostly algorithms from high school
+  \item \structure{Good}: Code is highly re-usable
     
+    \bigskip
+
+  \item \alert{Bad}: You have to write a lot of code (in the beginning!)
+  \item \alert{Bad}: Very easy to get WE...
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Easy Mistakes in Geometry Problems}
+
+  {\small
     \begin{block}{Problem 1 -- Special Cases}
-      Many special cases: Two points in the same place; Collinear
-      points; Vertical lines; Parallel Lines; Intersection at
-      extremes; etc, etc.
+      \begin{itemize}
+      \item Multiple points in the same place;
+      \item Collinear points;
+      \item Vertical lines;
+      \item Parallel Lines;
+      \item Intersection at end of segment;
+      \item etc;
+      \end{itemize}
     \end{block}
 
     \begin{block}{Problem 2 -- Precision Errors}
-      Computational Geometry functions involve many multiplications
-      and divisions. Floating point errors propagate very easily and
-      can affect your final result.
+      \begin{itemize}
+      \item Functions require many multiplications and divisions;
+      \item Easy to propagate floating point errors;
+      \end{itemize}
     \end{block}
-
-    \bigskip
-
-    You need to deal with these problems carefully!
   }
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Geometry problems are easy for mistakes -- solution}
+  \frametitle{Easy Mistakes in Geometry Problems}
 
   {\smaller
     
-    \begin{block}{Solving Special Cases}
+    \begin{block}{Dealing Special Cases}
       \begin{itemize}
-      \item Learn the common special cases for each geometric structure;
-      \item Think about the possible special cases before programming;
-      \item Prepare basic functions that deal with special cases;
+      \item Make sure to add special cases to your
+        library functions;
       \end{itemize}
     \end{block}
     
     \begin{block}{Solving Precision Errors}
       \begin{itemize}
-      \item Whenever possible, convert all values to integers
-      \item When it is not possible, use an EPSILON constant
-        to make comparisons:\\
+      \item If possible, convert all values to integers
+      \item Use an EPSILON constant for comparisons:
+        
 \begin{verbatim}
-if (float.1 == float.2) then            // Don't do this
-if (fabs(float.1 - float.2) < EPS) then // Do this!
+if (float.1 == float.2) then            // NO
+if (fabs(float.1 - float.2) < EPS) then // YES!
 \end{verbatim}
 
       \end{itemize}
     \end{block}
-    
-    
-    In both cases, the solution for not getting \alert{WE} in geometry
-    problems is \structure{Build a good library of basic cases!}
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Class Outline}
   \begin{itemize}
-  \item Implementation of basic Geometric Functions    
-  \item Implementation of circles and triangles
-  \item Algorithms on polygons
+  \item Example Problems;
+  \item Basic Geometric Functions;
+  \item Circles;
+  \item Triangles;
+  \item Polygons;
   \end{itemize}
-
-  \bigskip
-
-  And of course some examples.
 \end{frame}
 
+
+
 \section{Basic Functions}
+
+\subsection{Problem Example -- 1}
+\begin{frame}
+  \frametitle{Problem Example: UVA 191 -- Intersection}
+
+  {\small
+    \begin{block}{Summary}
+      \begin{itemize}
+      \item {\bf Input}\\
+        A rectangle and a line:\\
+        xstart ystart xend yend xleft ytop xright ybottom
+        
+      \item {\bf Output}\\
+        T - if the line intersects the rectangle\\
+        F - if the line does not intersect the rectangle\\
+      \end{itemize}
+    \end{block}
+
+    \includegraphics[width=0.35\textwidth]{img/intersection_uva}
+    }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Example: UVA 191 -- Intersection}
+
+  \includegraphics[width=0.45\textwidth]{img/intersection_uva}
+
+  \bigskip
+    % TODO: Add code side by side with image
+  Steps to calculate the solution:
+
+  
+  \begin{itemize}
+  \item Test if $p_1$ or $p_2$ are inside the rectangle;
+  \item Test if the segment intersects a side of the rectangle;
+  \item (optional) make a bullet hell game;
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Problem Example -- 2}
+
+\begin{frame}
+  \frametitle{Problem Example: UVA -- Waterfalls}
+  {\small
+    \begin{block}{Summary}
+      \begin{itemize}
+      \item {\bf Input}\\
+        List of line segments in the waterfall\\
+        List of water sources
+      \item {\bf Output}\\
+        X position where each water source falls\\
+      \end{itemize}
+    \end{block}
+
+    \includegraphics[width=0.4\textwidth]{img/waterfall}
+  }
+\end{frame}
+\begin{frame}
+  \frametitle{Problem Example: UVA 833 -- Waterfalls}
+
+  \includegraphics[width=0.4\textwidth]{img/waterfall}
+
+  {\smaller
+  For each water source:
+  \begin{itemize}
+  \item Identify all segments that it intersects with;
+  \item Select the highest segment;
+  \item Move the source to the bottom of the segment;
+  \item Repeat;
+  \end{itemize}
+
+  \begin{block}{}
+    Many opportunities for pruning and pre-computing! (if necessary)
+  \end{block}
+  }
+\end{frame}
+
 \subsection{Points}
 \begin{frame}[fragile]
-  \frametitle{Basic Library -- Points 1}  
+  \frametitle{Implementing Graphical Problems}
+  \framesubtitle{Point Representation}
 
   {\smaller
     \begin{columns}
       \column{0.6\textwidth}
-      You will use these functions many times
-      when solving geometric problems. Make sure to write
-      (and test!) them carefully.
       \column{0.4\textwidth}
       \includegraphics[width=.65\textwidth]{../img/geom2}
     \end{columns}
@@ -162,10 +252,10 @@ struct point { double x, y; // Using floats
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Basic Library -- Points 2}
+  \frametitle{Implementing Graphical Problems}
+  \framesubtitle{Comparing and Sorting Points}
 
   {\smaller
-    Comparing (and sorting) points using overloaded operators:
     
     \begin{exampleblock}{Point Comparison}
 \begin{verbatim}
@@ -173,7 +263,7 @@ struct point { double x, y;
    point() { x = y = 0.0;
    point(double _x, double _y) : x(_x), y(_y) {}
 
-   // Sorting by coordinate  -- sorting by angle also used
+   // Sorting by coordinate
    bool operator < (point other) const {
       if (fabs(x - other.x) > EPS)
          return x < other.x;
@@ -211,7 +301,6 @@ double taxicab(point p1, point p2) {
     \begin{center}
       \includegraphics[width=0.5\textwidth]{../img/geom1}
     \end{center}
-    %% TODO: Add image for Euclidean distance
   }
 \end{frame}
   
@@ -472,67 +561,24 @@ collinear(point p, point q, point r) {
 }
 \end{frame}
 
-\subsection{Problem Example}
-\begin{frame}
-  \frametitle{Problem Example: UVA -- Intersection}
-  % TODO: Add image for this problem
-  % TODO: Add code for this problem
-  {\small
-    \begin{block}{Summary}
-      You are given the following:
-      \begin{itemize}
-      \item Two points that define a segment:
-        \begin{itemize}
-        \item $x_{p1}, y_{p1}, x_{p2}, y_{p2}$
-        \end{itemize}
-      \item Four points that define a rectangle:
-        \begin{itemize}
-        \item $x_{r1}, y_{r1}, x_{r2}, y_{r2}, x_{r3}, y_{r3}, x_{r4}, y_{r4}$
-        \end{itemize}
-      \end{itemize}
-      
-      Calculate if the segment {\bf intersects} the rectangle or not.
-    \end{block}
-
-    \bigskip
-    
-    What are the steps necessary to calculate this?
-    
-    \begin{onlyenv}<2>
-      \begin{itemize}
-      \item Test if $p_1$ or $p_2$ are inside the rectangle (how?)
-      \item Test if the segment intersects any side of the rectangle (how?)
-      \end{itemize}
-    \end{onlyenv}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Example: UVA -- Waterfalls}
-  {\small
-    \begin{block}{Summary}
-      \begin{itemize}
-        \item A waterfall falls from the {\bf source} straight down to $y = 0$.
-        \item Barriers are diagonal segments represented by two points $x_1, x_2$
-        \item What are the $x$ position of the sources when they reach the ground?     
-      \end{itemize}
-    \end{block}
-
-    \bigskip
-    
-    What are the steps necessary to calculate this?
-
-    \begin{onlyenv}<2>
-      \begin{itemize}
-      \item A watersource is a vertical line.
-      \item Each segment changes the position of the water source
-      \item Scan the movement from top to bottom
-      \end{itemize}
-    \end{onlyenv}
-  }
-\end{frame}
 
 \section{Circles and Triangles}
+\subsection{Problem Example}
+\begin{frame}
+  \frametitle{Problem Example: UVA 10589 Area}
+
+  \includegraphics[width=0.4\textwidth]{img/area_uva}
+  
+  \begin{block}{}
+    \begin{itemize}
+    \item What is the area of the shaded part of the rectangle?
+    \item You are given the radius of 4 circles, each centered
+      in the corners of the rectangle.
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
 \subsection{Circles}
 \begin{frame}[fragile]
   \frametitle{Circles}
@@ -558,11 +604,11 @@ int insideCircle(point_i p, point_i c, int r) {
 
 \begin{frame}
   \frametitle{Circles (2)}
-  {\smaller
+  {\small
 
     \begin{center}
       % TODO: Make my own image
-      \includegraphics[width=0.65\textwidth]{../img/circle_halim}
+      \includegraphics[width=0.85\textwidth]{../img/circle_halim}
     \end{center}
 
     \begin{itemize}
@@ -580,7 +626,7 @@ int insideCircle(point_i p, point_i c, int r) {
       % TODO: Make my own image, explain why these circles work.
       % TODO: If I have 2 points on a circle, how do I calculate the angle between them?
       % 
-      \includegraphics[width=0.65\textwidth]{../img/circle_halim}
+      \includegraphics[width=0.75\textwidth]{../img/circle_halim}
     \end{center}
   
   \begin{itemize}
@@ -593,19 +639,43 @@ int insideCircle(point_i p, point_i c, int r) {
 \end{frame}
 
 
-\subsection{Problem Example}
-\begin{frame}
-  \frametitle{Problem Example: Area}
 
-  \begin{block}{Summary}
-    Given 4 circles, determine the proportion of points that fall in all four circles.
-  \end{block}
-  
-\end{frame}
 
 
 
 \subsection{Triangles}
+
+\begin{frame}
+  \frametitle{Example: UVA 11909 - Soya milk}
+  \begin{block}{}
+    \begin{itemize}
+    \item {\bf Input}:\\
+      The dimensions of a Milk box, and its inclination:\\
+      $l, w, h, \theta$
+    \item {\bf Output}:\\
+      The amount of milk left in the box.
+    \end{itemize}
+  \end{block}
+
+  \includegraphics[width=0.4\textwidth]{img/milk_uva}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example: UVA 10577 - Bounding Box}
+  \begin{block}{}
+    Given three vertices of a \structure{regular} polygon,
+    calculate the minimal square necessary to cover the polygon.
+  \end{block}
+
+
+  \bigskip
+  
+  {\smaller
+
+    \structure{Hint:} You don't actually need to calculate any polygons
+  }
+\end{frame}
+
 \begin{frame}
   \frametitle{Triangle Basics}
   {\smaller
@@ -735,29 +805,6 @@ int inCircle(point p1, point p2, point p3,
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Example: UVA 11909 - Soya milk}
-  \begin{block}{Problem Description}
-    Given the dimensions of a milk box and its inclination, calculate
-    the amount of milk left in the box.
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Example: UVA 10577 - Bounding Box}
-  \begin{block}{}
-    Given three vertices of a \structure{regular} polygon,
-    calculate the minimal square necessary to cover the polygon.
-  \end{block}
-
-
-  \bigskip
-  
-  {\smaller
-
-    \structure{Hint:} You don't actually need to calculate any polygons
-  }
-\end{frame}
 
 \section{Polygons}
 \subsection{Polygons}
@@ -944,9 +991,10 @@ vector<point> cutPolygon(point a, point b, const vector<point> &Q){
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Polygon -- Graham's Scan (1)}
+  \frametitle{Polygon -- Graham's Scan}
+  \framesubtitle{Helping Functions}
 
-{\tiny 
+{\small
 \begin{exampleblock}{}
 \begin{verbatim}
 point pivot(0, 0);
@@ -954,51 +1002,85 @@ point pivot(0, 0);
 bool angleCmp(point a, point b) { // angle-sorting
   if (collinear(pivot, a, b)) // special case
     return dist(pivot, a) < dist(pivot, b);
-  // check which one is closer
+  // check which one is closer to X axis
   double d1x = a.x - pivot.x, d1y = a.y - pivot.y;
   double d2x = b.x - pivot.x, d2y = b.y - pivot.y;
   return (atan2(d1y, d1x) - atan2(d2y, d2x)) < 0; }
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Polygon -- Graham's Scan}
+  \framesubtitle{Convex Hull -- Initializing the algorithm}
+
+  {\small
+    \begin{exampleblock}{}
+\begin{verbatim}
 vector<point> CH(vector<point> P) {
   int i, j, n = (int)P.size();
+  // Special Case: Polygon with 3 points
   if (n <= 3) {
-    if (!(P[0]==P[n-1])) P.push_back(P[0]); // special case
+    if (!(P[0]==P[n-1])) P.push_back(P[0]); 
     return P; }
-  // first, find P0 = point with lowest Y and, if tied, righmost X
+
+  // Find Initial Point: Low Y or Right X
   int P0 = 0;
   for (i = 1; i < n; i++)
     if (P[i].y < P[P0].y || 
         (P[i].y == P[P0].y && P[i].x > P[P0].x))
       P0 = i;
   point temp = P[0]; P[0] = P[P0]; P[P0] = temp;
-
-  // second, sort points by angle w.r.t. pivot P0
-  pivot = P[0];
-  // use this global variable as reference
-  sort(++P.begin(), P.end(), angleCmp);
 \end{verbatim}
 \end{exampleblock}}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Polygon -- Graham's Scan (2)}
-  {\tiny
+  \frametitle{Polygon -- Graham's Scan}
+  \framesubtitle{Convex Hull -- More initialization}
+  {\small
     \begin{exampleblock}{}
 
 \begin{verbatim}
-  // third, the ccw tests
+
+  // second, sort points by angle with pivot P0
+  pivot = P[0];
+  sort(++P.begin(), P.end(), angleCmp);
+
+  // S holds the Convex Hull
+  // We initialize it with first three points
   vector<point> S;
-  S.push_back(P[n-1]); S.push_back(P[0]); S.push_back(P[1]);
-  // initial S
+  S.push_back(P[n-1]); 
+  S.push_back(P[0]); 
+  S.push_back(P[1]);
+  
+  // We start on the third point
   i = 2;
-  // then, we check the rest
-  while (i < n) {
-    // note: N must be >= 3 for this method to work
+\end{verbatim}
+
+    \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Polygon -- Graham's Scan}
+  \framesubtitle{Convex Hull -- Main Loop}
+
+  {\small
+    \begin{exampleblock}{}
+\begin{verbatim}  
+  while (i < n) {   
     j = (int)S.size()-1;
-    if (ccw(S[j-1], S[j], P[i])) S.push_back(P[i++]); 
-    // left turn, accept
-    else S.pop_back(); }
-    // or pop the top of S until we have a left turn
+ 
+    // If the next point is left of CH, keep it.
+    // Else, pop the last CH point and try again.
+
+    if (ccw(S[j-1], S[j], P[i])) 
+      S.push_back(P[i++]); 
+    else 
+      S.pop_back(); 
+    }
   return S; }
 \end{verbatim}
 \end{exampleblock}}

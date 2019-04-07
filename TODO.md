@@ -1,95 +1,43 @@
 # Ideas for improving the course
 
-## General
+## Per Week improvement
+- Write a Lecture Plan for every Week
 
--- Move Class 4 (DP 2) to the end of the course
--- New DP2 class uses chapter 8 for "more hard DP problems", mixing DP with other themes.
+### Week 0: Ad Hoc Problems (introduction)
+- Rename to "Ad Hoc Problems"
+- Explicitely Mention memoization techniques (which will be renamed top down DP later)
+- Rewrite Week0B -- More example, less trivial information
+- Remove some trivial problems (only 1 trivial problem)
 
+### Week 1: Data Structures
+- Move Jolly Jumpers to Week 0
+- Remove CD problem, replace with a more interesting "map/set" problem
+- Add Segment Tree and Fenwick tree
+- Add problem sample with queues and Stacks
 
-## Monitor.js
-* Add a query for "students who solved 0, 1, 2, 3, 4+ problems
-* Add a query for "students who tried 0, 1, 2, 3, 4+ problems
-* Separate query functions from draw functions
-* Student query -- make a summary for each week at the bottom: tried/submitted/submitted late
+### Week 2: Search
+- Add Lecture Plan
 
-## For each class
-Do not forget the TODO file in each class
+### Week 3: DP
+- DP week one was OK.
+- DP week two needs more figures for the "classical DP problems", including explicit tables to show what 
+  is happening to the students.
 
-### Week 0
-* Rename week to "Ad Hoc Problems"
-* Add "memoization techniques" to 3n+1 Discussion  
+### Week 4: Graph Part I AB
+- Materials need more examples and discussion in the middle section (Common Algorithms) for 2019
 
-### Week 1
-* Add more examples/code for class A.
-* Class B was good in 2016
+### Week 5: Graph Part II AB
+- Lecture is generally good, but need more graph images showing the progress of the algorithm step by step.
 
-### Week 2
-* Week 2A went all the way up to "Divide and Conquer"
-* Working on actual examples was a good idea
-* Notes about not being able to access UVA should go to class 0
-* Should remember students on Class A to consider solutions for class B
+### Week 6: Mathematics 
+- BAD LECTURE -- NEEDS TO BE REWRITTEN!
 
-### Week 3 -- Dynamic Programming
+### Week 7: Geometry
+- Overall good lecture -- See TODO for suggested improvements
 
-* Class A: introduction to DP with two examples (wedding, apple trees)
-* Class B: classical DPs except TSP (no time)
-
-### Week 4 -- Dynamic Programming
-
-* Class A: TSP + other problems (OK)
-* Class B: No topics, asked students to participate, failure. (Only one TSP class next year?)
-
-### Week 5 -- Graph Part I AB
-Class A
-* Review of Graph Terms
-* BFS and DFS
-* BFS/DFS algorithms: Connected components/Topological Sort/Bipartite Check
-* Spanning Tree, Cycles, Strongly Connected Components
-* Minbimum Spanning Tree: Kruskal and Prim's algorithm, MST Variants
-
-Class B
-* Pathfinding: SSSP, Djikstra, Bellman Ford (NOT)
-* All Pairs Shortest Path: Floyd Warshall/implementation (NOT)
-* Tricks with APSP: Minimum Cycle, Negative Cycle, Diameter of a Graph (NOT)
-* Problems
-
-### Week 6 -- Graph Part II AB
-* Students seemed to enjoy code with "why it works". 
-* Class A: SSSP, Djikstra, BellmanFord, Floyd Warshall
-* Class B: Max Flow, Min Flow, Special Graphs
-
-
-
-### Others
-Idea: put everything in a single class and break by time. Add examples as necessary.
-Idea: There is a lot to cover on graphs. I will cover the most interesting bits, but 
-      see the materials for the parts that I skipped.
-
-* Review of Graph related terms
-* BFS and DFS programming examples 
-  (Many graph problems are variants and specializations of DFS and BFS)
-** Simple graph problems (quick modification of DFS/BFS)
-
-** Connected Components/Flood Fill
-** Topological Sort
-** Bipartite Check
-
-** DFS Spanning Tree (edge type: tree edge/back edge/forward edge)
-** Finding Cycles (back edges exist)/Finding articulations and Bridges
-** Finding Strongly connected components (undirected graphs)
-
-** Minimum Spanning Tree/Kruskal Algorithm
-** Prim's Algorithm
-** Minimum Spanning Tree Variants: Maximum Spanning Tree, MS Forest, MS subgraph
-
-** Single Source Shortest Paths (Djikstra) -- Djikstra Original Paper does not specify an implementaton.
-** Bellman Ford Algorithm for shortest path with negative loop (slower than djikstra)
-
-** All pairs Shortest path (Floyd Warshall) ## Main attractiveness: Very simple to program
-** Explain the idea of Floyd Warshall (DP!)
-** Tricks with all pairs shortest path: Minimum Cycle/Negative Cycle: Check the diagonal for the cost of i,i
-** Diameter of a graph: Maximum shortest path between any i,j of a graph
-
-
-* Network Flow (Class II?)
-* Graph Matching (Class II?)
+## Improve Monitor.js
+- On page load, monitor queries each student for all their solved problems, 
+  and stores solved entries, earliest solve time. To avoid having to reload for each student query, and each
+  week query.
+  
+- Add a list of "top students", with ICPC-like solved+penalty score

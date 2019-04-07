@@ -620,7 +620,11 @@ for (x = -100; x <= 100 && !sol; x++)
 % Queries for each root, using binary search == O(QlogN)
 
 \begin{frame}
-  \frametitle{Binary Search on open ended problems -- Bisection}
+  \frametitle{Binary Search on Simulation Problems}
+
+  Simulation problems usually require us to find a value that solves
+  a complex simulation. 
+  
   \begin{block}{Problem Example: Paying the debt}
     You have to pay $V$ dollars. You pay $D$ dollars per month, in $M$
     months. Each month, before paying, your debt increases by $i$. 
@@ -630,12 +634,40 @@ for (x = -100; x <= 100 && !sol; x++)
     If we fix $M$,$I$ and $V$, what is the minimal $D$?
   \end{block}
 
-  Bisection approach:
+  \bigskip
+
+  $V = 1000$, $M = 2$, $i = 1.1$, what is the minimum $D$?
+
   \begin{itemize}
-  \item Estimate a good min,max interval for $D$.
-  \item Select the middle value and simulate the result.
-  \item If the result is bigger/smaller than the desired, modify the
-    interval accordingly.
+  \item $D = 500$:
+    \begin{itemize}
+    \item $m_1: V_0 *1.1 - D = 600, m_2: v_1*1.1 - D = 160$
+    \end{itemize}
+  \item $D = 600$:
+    \begin{itemize}
+    \item $m_1: V_0 *1.1 - D = 500, m_2: v_1*1.1 - D = -50$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Solving the Simulation Problem}
+
+  \structure{Reverse Engineering Approach:}
+  \begin{itemize}
+  \item Find the derivative of the simulation and solve it to zero.
+  \item Start from the end state of the simulation and calculate the correct value.
+  \item Some sort of Dynamic programming.
+  \item \alert{Can be hard for complex simulations!}
+  \end{itemize}
+
+  \bigskip
+  
+  \structure{Binary Search Approach:}
+  \begin{itemize}
+  \item Estimate a minimum and maximum possible answer $(a,b)$
+  \item Suggest the mean value as the solution, and simulate the result;
+  \item If the result is too big, or too small, correct $(a,b)$
   \item Repeat.
   \end{itemize}
 \end{frame}
@@ -676,9 +708,21 @@ Do a binary search for d in this range
 
 \medskip
 
-{\smaller
-Total number of iterations is $O(log_2((b-a)/e))$\\
-UVA - 11936 - Through the desert - uses this logic}
+Total number of iterations is $O(log_2((b-a)/e))$
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bisection Method Principle}
+
+  \begin{itemize}
+  \item {\bf Principle}: Search on the solution space and test the answer.
+    \bigskip
+    
+  \item Another example: UVA 11936 - Through the desert
+    \bigskip
+
+  \item This technique requires the solution space to be \alert{Unimodal}
+  \end{itemize}
 \end{frame}
 
 %%%% 3.4 Greedy 
@@ -707,6 +751,55 @@ UVA - 11936 - Through the desert - uses this logic}
 \end{frame}
 
 \begin{frame}
+  \frametitle{Greedy Example 0 -- Minimal Coverage}
+
+  \begin{block}{}
+    Consider an interval [A,B], and a set of $n$ intervals $S =
+    [(a_1,b_1), (a_2,b_2), \ldots (a_n,b_n)]$.
+
+    \medskip
+
+    Find the minimal subset
+    of $S$ which completely covers [A,B].
+  \end{block}
+
+  \bigskip
+  
+  \begin{itemize}
+  \item A = 10, B = 50;
+
+    \bigskip
+
+    
+  \item S = [(5,15), (8,12), (40,60), (30,40), (20,40), (13,25),
+    (33,55), (18,30)]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Greed Example 0 -- Minimal Coverage}
+
+  \begin{itemize}
+  \item Consider the subset $S_a$, of all intervals that cover $A$.
+    \bigskip
+    
+  \item If we choose the item from this subset with the {\bf maximum} end value,
+    we have a new point $A_{\text{new}}$. We can discard all other items.
+    \bigskip
+    
+  \item Repeat the process using $A_{\text{new}}$
+  \end{itemize}
+
+  \bigskip
+  
+  \begin{block}{}
+    Greedy Methods are often found in problems of ``find the subset''
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}
   \frametitle{Greedy Example 1 -- Coin Change}
 
   Given a target value $V$ and a list of coin sizes $S$, what is the
@@ -715,20 +808,28 @@ UVA - 11936 - Through the desert - uses this logic}
   \bigskip
 
   \begin{block}{Example:}
-    $V = 42, Coins = 25, 10, 5, 1$\\
-    {\small (a 1\$ coin means we can always make any value)}
+    $V = 42, \text{Coins} = 25, 10, 5, 1$\\
+    %{\small (a 1\$ coin means we can always make any value)}
   \end{block}
+\end{frame}
 
-  \bigskip
+\begin{frame}
+  \frametitle{Greed Example 2 -- Coin Change}
+  
+  \begin{itemize}
 
-  We can solve this case by always taking the biggest coing that fits
-  the remaining cost: 25x1, 10x1, 5x1, 1x2;
+  \item We can solve this case by always taking the biggest coing that fits
+    the remaining cost: 25x1, 10x1, 5x1, 1x2;
 
   \medskip
 
-  However, if V = 6, and coins = 4,3,1, this greedy algorithm does not
-  reach an optimal solution.
+  \item However, if V = 6, Coins = 4, 3, 1, the greedy algorithm will
+    \alert{not} find an optimal solution.
 
+  \end{itemize}
+
+  \bigskip
+  
   \begin{center}
     Be careful that \alert{a greedy algorithm can be wrong!}
   \end{center}
@@ -738,16 +839,21 @@ UVA - 11936 - Through the desert - uses this logic}
   \frametitle{Greedy Example 2 -- Load Balancing UVA 410}
 
   \begin{block}{Problem Description}
-    
 
-  You have C chambers, and S < 2C specimens with different positive
-  weights. You need to decide where each specimen should go to
-  minimize ``imbalance''.
+    \begin{itemize}
+    \item There are $C$ chambers, and $S < 2C$ items.
+    \item Each item has a positive weight $M_i$.
+    \item You need to assign each item to a chamber in order to minimize ``imbalance''
+    \end{itemize}
+
+    \begin{equation*}
+      A = \sum^S_{i=1}M_i/S
+    \end{equation*}
+    \begin{equation*}
+      \text{Imbalance} = \sum^C_{i=1} |X_i - A|
+    \end{equation*}
   \end{block}
-  
-  \begin{equation*}
-    \text{Imbalance} = \sum_{i=1}^C |CM_i - AM|
-  \end{equation*}
+
 
   Can you figure out a greedy search solution?
 \end{frame}

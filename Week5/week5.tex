@@ -66,7 +66,7 @@
     \begin{itemize}
     \item On \alert{unweighted} graphs, BFS is good enough, but it
       won't work correctly in weighted graphs;
-    \item Djikstra Algorithm $O((V+E)\text{log}V)$
+    \item Dijstra Algorithm $O((V+E)\text{log}V)$
     \item Bellman Ford's Algorithm $O(VE)$
     \end{itemize}
   }
@@ -140,7 +140,7 @@ void printPath(u) {                   // path from (u)
 
 \subsection{SSSP with Weighted Graph}
 \begin{frame}
-  \frametitle{Djikstra's Algorithm for weighted SSSP}
+  \frametitle{Dijkstra's Algorithm for weighted SSSP}
   \begin{block}{Basic Idea: Greedy Algorithm}
     Always add the edge with the shortest weight to the next node.
   \end{block}
@@ -161,7 +161,7 @@ void printPath(u) {                   // path from (u)
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Djikstra's Algorithm: One Implementation Example}
+  \frametitle{Dijkstra's Algorithm: One Implementation Example}
   {\smaller
     \begin{exampleblock}{}
 \begin{verbatim}
@@ -187,17 +187,17 @@ while (!pq.empty()) {
 \end{frame}
 
 \begin{frame}
-  \frametitle{Djikstra's implementation trick: Lazy deletion}
+  \frametitle{Dijkstra's implementation trick: Lazy deletion}
   {\smaller
     \begin{itemize}
-    \item Djikstra Requires us to store the edge to vertex $v$ with
+    \item Dijkstra Requires us to store the edge to vertex $v$ with
       cheapest weight in the queue;
     \item Removing an edge from the queue is expensive;
     \item Instead, we keep all edges, and test each visited edge;
     \end{itemize}
   
 
-  % TODO: Redraw Djikstra graph by hand
+  % TODO: Redraw Dijkstra graph by hand
   \begin{center}
     \includegraphics[width=0.6\textwidth]{../img/djikstra_halim}
   \end{center}
@@ -265,7 +265,7 @@ while (!pq.empty()) {
     \end{center}
     
     \begin{block}{}
-      Using Djikstra directly is hard -- how do we model buying gas
+      Using Dijkstra directly is hard -- how do we model buying gas
       for multiple vertices? One idea is to {\bf modify the graph}
     \end{block}
     
@@ -283,7 +283,7 @@ while (!pq.empty()) {
 
 \subsection{SSSP with Negative Cycle}
 \begin{frame}
-  \frametitle{A Problem with Djikstra}
+  \frametitle{A Problem with Dijkstra}
 
   {\smaller
     \begin{block}{What happens if our graph has negative weights?}

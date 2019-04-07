@@ -1,13 +1,22 @@
-// TODO: Rewrite the API calling to use: /api/subs-user/{user-id}
-//
-// This gets all the submissions of a particular user. You can call this once for each student
-// To get all necessary data in fewer function calls.
-// For each submission of each user, test if it is a submission in this class, and test the time
-// Set the submission in a [user][week][problem] table: 0 no sub, 1 problem, 2 late, 3 successful
-// Set helper tables (total week, total students) as necessary.
+/**
 
-// With this, you don't need extra API calls to show the data of a particular student.
+  TODO 3: Use the API : /api/p to load all problem names at once, instead of calling the names one by one.
 
+  TODO 1: Consider Rewriting the Ajax code to use: /api/subs-user/{user-id}
+
+  This should reduce greatly the number of API calls (one per student, instead of one per problem + one per student),
+  and each call should be much smaller.
+
+  TODO 2: Consider Saving some of the Data to local storage:
+
+  If the client has local storage, we can store the data retrieved above and just load new
+  submissions from each user by using: /api/subs-user/{user-id}/{min-sid}
+
+  This should cut the loading time even further.
+
+  When calling each user, add to a "user processed count", and call the "display" function at the end of the callback.
+  The display function only updates the display + save data after all the ajax is done.
+**/
 
 // UCT date parsing incantation from Norman Gray
 // http://stackoverflow.com/questions/439630/how-do-you-create-a-javascript-date-object-with-a-set-timezone-without-using-a-s
@@ -37,48 +46,44 @@ function parseUCT(dateString) {
 //** Data **//
 var problemlist = [
     {name:"Non-grading Problems",
-     deadline:"2018-07-29T14:59:59+09:00",
+     deadline:"2019-07-05T14:59:59+09:00",
      mlist:[3710,3565,2113]},
     {name:"Week 0: Introduction and Problem Solving",
-     deadline:"2018-04-26T14:59:59+09:00",
+     deadline:"2019-04-18T14:59:59+09:00",
      mlist:[36,2827,2595,2899,834,1146,97,388]},
-    {name:"Week 1: Data Structures",
-     deadline:"2018-05-10T14:59:59+09:00",
-     mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
-    {name:"Week 2: Search Problems",
-     deadline:"2018-05-17T14:59:59+09:00",
-     mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
-//    {name:"Week 3: Dynamic Programming I",
-//     deadline:"2017-05-19T14:59:59+09:00",
-//    mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
-//    {name:"Week 4: Graphs I",
-//     deadline:"2017-05-26T14:59:59+09:00",
-//     mlist:[3053, 3873, 813, 2021, 1706, 2938, 1541, 3544]},
-//    {name:"Week 5: Graphs II",
-//     deadline:"2017-06-02T14:59:59+09:00",
-//     mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
-//    {name:"Week 6: Mathematics",
-//     deadline:"2017-06-09T14:59:59+09:00",
-//     mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
-//    {name:"Week 7: Computational Geometry",
-//     deadline:"2017-06-16T14:59:59+09:00",
-//     mlist:[861, 1868, 946, 2934, 3060, 3552, 2232, 1593]},
-//    {name:"Week 8: String Manipulation",
-//     deadline:"2017-06-23T14:59:59+09:00",
-//     mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
-//    {name:"Week 9: Interesting Problem Remix!",
-//     deadline:"2018-06-30T14:59:59+09:00",
-//     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
+    // {name:"Week 1: Data Structures",
+    //  deadline:"2018-05-10T14:59:59+09:00",
+    //  mlist:[979,2315,3778,2628,1135,1073,2949,1099]},
+    // {name:"Week 2: Search Problems",
+    //  deadline:"2018-05-17T14:59:59+09:00",
+    //  mlist:[2267,1018,691,3886,2842,1301,2612,3086]},
+    // {name:"Week 3: Dynamic Programming I",
+    //  deadline:"2018-05-24T14:59:59+09:00",
+    // mlist:[2445, 448, 777, 1072, 2890, 1760, 2512, 52]},
+    // {name:"Week 4: Graphs I",
+    //  deadline:"2018-05-31T14:59:59+09:00",
+    //  mlist:[3053, 3873, 813, 2021, 1706, 2938, 1541, 3544]},
+    // {name:"Week 5: Graphs II",
+    //  deadline:"2018-06-07T14:59:59+09:00",
+    //  mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
+    // {name:"Week 6: Mathematics",
+    //  deadline:"2018-06-14T14:59:59+09:00",
+    //  mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
+    // {name:"Week 7: Computational Geometry",
+    //  deadline:"2018-06-21T14:59:59+09:00",
+    //  mlist:[861, 774, 2934, 2093, 1518, 3060, 3552, 1593]},
+    // {name:"Week 8: String Manipulation",
+    //  deadline:"2018-06-28T14:59:59+09:00",
+    //  mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
+    // {name:"Week 9: Interesting Problem Remix!",
+    //  deadline:"2018-07-05T14:59:59+09:00",
+    //  mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
 
-var studentlist =[161945,962008,962330,962528,962001,961984,961725,961994,962019,
-961998,961980,961982,961697,962544,961988,961983,962456,961963,961563,962000,
-962002,962365,962913,962593,962381,961973,962570,961996,961992,962007,
-961991,961993,961997,962011,961986,853198,962459,772732,961987,961989,
-961990,962004,962377,961979,962006];
+var studentlist = [161945];
 
-var startdate = parseUCT("2018-04-07T00:00:00+09:00");
-var enddate = parseUCT("2018-07-30T00:00:00+09:00");
+var startdate = parseUCT("2019-04-08T00:00:00+09:00");
+var enddate = parseUCT("2019-07-05T14:59:59+09:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {
@@ -121,7 +126,7 @@ function parseURLParams(url) {
 }
 
 // asynchronously load from uhunt-api
-function ajax(api_url, result_callback) {
+function ajax(api_url, result_callback, ...params) {
   var xhr = window.XMLHttpRequest ?
 	new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
   xhr.onload = function() {
@@ -129,29 +134,7 @@ function ajax(api_url, result_callback) {
       if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
 	  // Parse the text into Javascript object.
-        result_callback(data); // Notify the caller.
-      } else {
-        console.error(xhr.statusText);
-      }
-    }
-  }
-  xhr.open("GET", api_url, true);
-    // Use asynchronous call so that your browser does not hang.
-  xhr.onerror = function (e) { console.error(xhr.statusText); };
-    // Log to console if there is an error.
-  xhr.send();
-}
-
-// asynchronously load from uhunt-api
-function ajaxp(api_url, p, result_callback) {
-  var xhr = window.XMLHttpRequest ?
-        new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-  xhr.onload = function() {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
-        var data = JSON.parse(xhr.responseText);
-          // Parse the text into Javascript object.
-        result_callback(data, p); // Notify the caller.
+        result_callback(data, params); // Notify the caller.
       } else {
         console.error(xhr.statusText);
       }
@@ -193,11 +176,11 @@ function render() {
 
     // load problem data and class data
     for (var i = 0; i < problemlist.length; i++) {
-	var mlist = problemlist[i].mlist
-	for (var j = 0; j < mlist.length; j++) {
-	    id = mlist[j];
-	    problemdata(id,parseUCT(problemlist[i].deadline));
-	}
+	     var mlist = problemlist[i].mlist
+	     for (var j = 0; j < mlist.length; j++) {
+	        id = mlist[j];
+	        problemdata(id,parseUCT(problemlist[i].deadline));
+	     }
     }
 }
 
@@ -207,7 +190,7 @@ function basicdata()
     // empty tables, problem ids
     var htmlBuffer = [];
     for (var i = 0; i < problemlist.length; i++) {
-        
+
         date = parseUCT(problemlist[i].deadline);
         datestr = date.toLocaleString();
 
@@ -243,25 +226,26 @@ function basicdata()
 
 function problemdata(pid, dl)
 {
-    // load problemdata and class data
-    var start = Math.floor(startdate/1000);
-    var end = Math.floor(dl/1000);
+  // load problemdata and class data
+  var start = Math.floor(startdate/1000);
+  var end = Math.floor(dl/1000);
 
-    ajax("https://uhunt.onlinejudge.org/api/p/id/" + pid, function(pdata) {
-	// name and link
-	document.getElementById("n"+pdata.pid).innerHTML =
-	    "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
-	    "option=com_onlinejudge&Itemid=8&"+
-	    "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
-	// class stats
-	url = "https://uhunt.onlinejudge.org/api/p/subs/"+
-	    pdata.pid+"/"+start+"/"+end;
-	ajax(url,classdata);
+  ajax("https://uhunt.onlinejudge.org/api/p/id/" + pid,
+       function(pdata) {
+	     // get name and link
+	       document.getElementById("n"+pdata.pid).innerHTML =
+	        "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
+          "option=com_onlinejudge&Itemid=8&"+
+          "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
+	     // class stats
+	       url = "https://uhunt.onlinejudge.org/api/p/subs/"+
+	             pdata.pid+"/"+start+"/"+end;
 
-    	$(".weektable a").click(function (e) {
-		 e.stopPropagation();
-    	});
-    })
+         ajax(url,classdata);
+         $(".weektable a").click(function (e) {
+	          e.stopPropagation();
+          });
+      })
 }
 
 function classdata(cdata)
@@ -279,16 +263,16 @@ function classdata(cdata)
                 if (cdata[i].uid == studentlist[j]) {
                     if (submitted[j] == 0) {
                         submitted[j] = 1;
-                        nsubmitted += 1;                        
+                        nsubmitted += 1;
                     }
                     if (cdata[i].ver == 90 && solved[j] == 0) {
                         nsolved += 1;
-                        solved[j] = 1;                        
-                    }                    
+                        solved[j] = 1;
+                    }
                 }
-            }            
+            }
         }
-        document.getElementById("sol"+cdata[0].pid).innerHTML = 
+        document.getElementById("sol"+cdata[0].pid).innerHTML =
             nsolved+"/"+nsubmitted+"/"+total;
 
        // Counting how many students solved how many problems per week
@@ -332,7 +316,7 @@ function mysubmissions()
 		     if (studentlist[i] == uid) { student = i;}}
 		 if (student == -1) {
 		     document.getElementById("username").innerHTML = "Invalid User";
-		     return; 
+		     return;
 		 }
 		 var problemarray = [];
 		 var sum = 0;
@@ -343,7 +327,7 @@ function mysubmissions()
 		 var output =
 		     "Problems for user "+username+ " <br>(Total: "+sum+", Week Total: ";
 		 var output = output + problemarray.join(' - ') + ")";
-		 
+
 		 document.getElementById("username").innerHTML =
 		     output;
 
@@ -354,8 +338,8 @@ function mysubmissions()
 		     var mlist = problemlist[i].mlist;
 		     for (var j=0; j < mlist.length; j++) {
 			 var pid = mlist[j];
-			 ajaxp("https://uhunt.onlinejudge.org/api/subs-pids/"+
-			      uid+"/"+pid+"/0",end,
+			 ajax("https://uhunt.onlinejudge.org/api/subs-pids/"+
+			      uid+"/"+pid+"/0",
 			      function (data,end) {
 				  if (data[uid].subs.length == 0) { return; }
 				  var status = 0;
@@ -384,7 +368,8 @@ function mysubmissions()
 				  case 3: v = "<div class=\"ac\">Accepted</div>"; break;
 				  }
 				  document.getElementById("st"+id).innerHTML = v;
-			      });
+        },
+      end);
 		     }
 		 }
 	     }
@@ -395,4 +380,3 @@ function s2d(t)
 {
     return (t/(3600*24));
 }
-

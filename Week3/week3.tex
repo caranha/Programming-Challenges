@@ -2,10 +2,10 @@
 \input{../tools/beamerpreamble.tex}
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 3 - Dynamic Programming (Part I)}
+\subtitle[]{Week 3 - Dynamic Programming}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-05-12,15\\{\tiny Last updated \today}}
+\date{2018-05-18,21\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -110,8 +110,8 @@
     \begin{columns}
       \column{0.7\textwidth}
       \begin{itemize}
-      \item $M < 200$, $C < 20$;
-      \item Each class has $K_i < 20$ options;
+      \item $M \leq 200$, $C \leq 20$;
+      \item Each class has $0 < K_i \leq 20$ options;
       \item Total possible choices: $20^{20}$!
       \end{itemize}
 
@@ -307,7 +307,9 @@
 \begin{frame}[fragile]
   \frametitle{Wedding Shopping -- top-down DP}
 
+
 {\smaller
+\begin{block}{}
 \begin{verbatim}
 memset(table,-1,sizeof(table))  ** DP <3 memset **
 
@@ -318,6 +320,7 @@ shop(m,g):
    return table[m][g] = max(shop(m-price[g][k],g+1) 
                             for every k)
 \end{verbatim}  
+\end{block}
 % TODO: check if M - money is a good return value
 \vfill
 
@@ -398,6 +401,7 @@ shop(m,g):
   \end{tabular}
 
   {\smaller
+  \begin{block}{}
 \begin{verbatim}
 memset(table,0,sizeof(table))
 
@@ -409,6 +413,7 @@ for g in (0:G-1)
        for k in C[g+1]:
           table[g+1][i-cost[k]] = 1
 \end{verbatim}
+\end{block} 
   }
 
 \end{frame}
@@ -550,6 +555,7 @@ for g in (0:G-1)
 \begin{frame}[fragile]
   \frametitle{Example 2: Apple Field -- Let's see some code}
   {\smaller
+  \begin{block}{}
 \begin{verbatim}
 // Assume apple[0,] and apple[,0] are all zeroes.
 int apple[m][n]// Input.
@@ -564,6 +570,7 @@ for i in (1:m):
     else:
        parent[m][n][0] = m-1, parent[m][n][1] = n
 \end{verbatim}
+\end{block}
   }
 \end{frame}
 
@@ -738,6 +745,7 @@ for (i in 0:n):
   for the sum), for a total complexity of O($n^6$).
 \end{block}
 
+\begin{block}{}
 {\smaller
 \begin{verbatim}
 minvalue = -MIN_INT
@@ -753,6 +761,7 @@ for i in (0:n):
             minvalue = sum
 \end{verbatim}
 }
+\end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -763,6 +772,7 @@ for i in (0:n):
     principle.
   \end{block}
 
+\begin{block}{}
 {\smaller
 \begin{verbatim}
 for i in (0:n):
@@ -782,6 +792,7 @@ for i,j in (0:n)(0:n):
       maxsum = max(sum,maxsum)   
 \end{verbatim}
 }
+\end{block}
 
 \end{frame}
 
@@ -870,6 +881,7 @@ for (i in 0:1<<n):
 
 \begin{frame}[fragile]
   \frametitle{Longest Increasing Subsequence -- DP approach}
+  \begin{block}{}
   {\small
 \begin{verbatim}
 LIS[0:n] = 1
@@ -881,6 +893,7 @@ for i in (1:n):
          parent[i] = j
 \end{verbatim}
   }
+  \end{block}
 
 \vfill
 
@@ -1002,12 +1015,12 @@ Can you see the many overlapping subproblems?
 
 
 
-\subsection{Travelling Salesman Problem}
-\begin{frame}
-  \frametitle{Classical DP -- Travelling Salesman Problem}
-
-  We will talk about TSP with DP Next Class!
-\end{frame}
+%\subsection{Travelling Salesman Problem}
+%\begin{frame}
+%  \frametitle{Classical DP -- Travelling Salesman Problem}
+%
+%  We will talk about TSP with DP Next Class!
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Travelling Salesman Problem (bitmask again)
@@ -1036,13 +1049,13 @@ Can you see the many overlapping subproblems?
 
    \vfill
 
-   \begin{block}{Next Class (20/5, 23/5)}
-     \begin{itemize}
-     \item DP on non-classical problems
-     \item Relationship between DP and DAG
-     \item Other ``cool'' DP techniques.
-     \end{itemize}
-   \end{block}
+%   \begin{block}{Next Class (20/5, 23/5)}
+%     \begin{itemize}
+%     \item DP on non-classical problems
+%     \item Relationship between DP and DAG
+%     \item Other ``cool'' DP techniques.
+%     \end{itemize}
+%   \end{block}
 \end{frame}
 
 \begin{frame}
