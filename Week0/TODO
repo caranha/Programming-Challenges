@@ -1,1 +1,5 @@
-Need to rewrite Week0B -- more examples, less trivial information.
+# Rewrite Week0B:
+- Rename to Ad Hoc problems
+- Explicitely Mention memoization techniques (which will be renamed top down DP later)
+- Remove trivial information/problems, and add some
+  examples (ex: solve lights problem?)

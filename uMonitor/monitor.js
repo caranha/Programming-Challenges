@@ -47,10 +47,10 @@ function parseUCT(dateString) {
 var problemlist = [
     {name:"Non-grading Problems",
      deadline:"2019-07-05T14:59:59+09:00",
-     mlist:[3710,3565,2113]},
+     mlist:[2113,3710,3565]},
     {name:"Week 0: Introduction and Problem Solving",
      deadline:"2019-04-18T14:59:59+09:00",
-     mlist:[36,2827,2595,2899,834,1146,97,388]},
+     mlist:[36,2827,2595,2899,834,1146,97,979]},
     // {name:"Week 1: Data Structures",
     //  deadline:"2018-05-10T14:59:59+09:00",
     //  mlist:[979,2315,3778,2628,1135,1073,2949,1099]},

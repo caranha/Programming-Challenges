@@ -6,36 +6,110 @@
 \subtitle[]{Week 0 - Introduction}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
-\date{2018/4/13\\{\smaller(last updated: \today)}}
+\date{2019/4/12\\{\smaller(last updated: \today)}}
 
 \begin{document}
 
 \section{Introduction}
-\subsection{About the Course}
-
 \begin{frame}
 \maketitle
 \end{frame}
 
+\subsection{Crash Course}
+\begin{frame}
+  \frametitle{What is a Programming Challenge? - 0}
+
+  Consider a string with $N$ characters chosen from $G,C,T,A$. Ex:
+
+  \begin{center}
+    \emph{\alert<2>{GACA\alert<4>{CATACAG}AT}TA\alert<3>{CATTAC}AGA ... GATACCAGATA}
+  \end{center}
+
+  When you receive pair of indexes $s$ and $e$, calculate the number of "CA"s between $N_s$ and $N_e$. Ex:
+
+  \begin{itemize}
+    \item \only<2->{s = 0, e = 12\hfill 3 repetitions}
+    \item \only<3->{s = 15, e = 20\hfill 1 repetition}
+    \item \only<4>{s = 4, e = 10\hfill 2 repetitions}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{What is a Programming Challenge? - 1}
+
+  \begin{center}
+    \emph{GACACATACAGATTACATTACAGA ... GATACCAGATA}
+    \only<2>{\emph{000112222333333344444555 ... 88888899999}}
+  \end{center}
+
+  \begin{block}{Algorithm Idea 1}
+    Start a counter $c = 0$, loop from $N_s$ to $N_e$,
+    and every time you find "CA", add to the counter.
+    \bigskip
+
+    \alert{Problem: If we have many queries, can we do faster?}
+  \end{block}
+
+  \begin{onlyenv}<2>
+
+  \begin{block}{Algorithm Idea 2}
+    Creat an auxiliary array $A$, that keeps the \alert{Cummulative sum} of "CA"s from $N_0$ to $N_i$.
+
+    \bigskip
+
+    If we want to know the answer, we calculate $A_e - A_s$.
+  \end{block}
+  \end{onlyenv}
+\end{frame}
+
 
 \begin{frame}
-  \frametitle{Before Anything else: Important Notices}
+  \frametitle{What is a Programming Challenge? - 2}
+
+  \begin{itemize}
+    \item Program Challenges are good for \structure{Practicing Algorithms}
+    \bigskip
+
+    \item Program Challenges are good for \structure{Rapid Prototyping}
+    \bigskip
+
+    \item Program Challenges are used for \structure{Work Recruiting}
+    \bigskip
+
+    \item Program Challenges are also \structure{very fun puzzles!}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{This course is about Programming Challenges}
+
+  The Goal of this course is \structure{solve programming challenges} to \alert{become better at programming}.
+
+  \vfill
+
+  We will study \structure{algorithms and techniques} that are common in
+  \structure{programming competitions}
+\end{frame}
+
+\subsection{Course Outline}
+\begin{frame}
+  \frametitle{First Things First: Important Notices}
 
   \begin{block}{Manaba Page}
     All lecture notes and announcements for this course will be done
     through MANABA. Access the url below:
-    
+
     \medskip
-    
-    \url{https://manaba.tsukuba.ac.jp/ct/course_971789}\\
-    Registration Code: 1473177
+
+    \url{https://manaba.tsukuba.ac.jp/ct/course_1149028}\\
+    Registration Code: 7255921
   \end{block}
   \begin{exampleblock}{Language}
     \begin{itemize}
-      \item Lectures: Japanese
-      \item Slides and materials: English
-      \item Exercises: English
-      \item Questions, Mails and Homework: Any language
+      \item \structure{Lectures}: Japanese
+      \item \structure{Slides and materials}: English
+      \item \structure{Exercises}: English
+      \item \structure{Questions, Mails and Homework}: Any language
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -50,14 +124,14 @@
     \begin{itemize}
       \item \structure{Name:} Claus Aranha;
       \item \structure{Country:} Brazil;
-        
+
         \medskip
 
       \item \structure{Research:} Artificial Intelligence,
         Evolutionary Algorithms, Genetic Programming;
       \item \structure{Language:} Python, R;
       \item \structure{Hobbies:} Game Programming, Geocaching;
-        
+
         \medskip
 
       \item \structure{webpage:}\\ {\smaller \url{http://conclave.cs.tsukuba.ac.jp}}
@@ -68,17 +142,15 @@
 
 \begin{frame}
   \frametitle{What is this course about?}
-  
-  You have learned many programming techniques...\\\hfill ...but can you use them?
 
-  \begin{block}{Course Philosophy: Learning by Practice}
+  You have learned many programming techniques...\\\hfill \structure{...but can you use them?}
+
+  \begin{block}{Course Objective: Learning by Practice}
     \begin{itemize}
       {\small
-    \item Every week, you will be asked to solve some programming
-      problems;
-    \item You have to decide the best \structure{data structure}, and
-      \structure{algorithm} to solve each problem;
-    \item Each problem has a \alert{max time}, and \alert{max memory};
+    \item Every week: Solve 8 programming challenges;
+    \item \structure{Choose} and \structure{implement} the {\bf best algorithm} for each problem;
+    \item Be careful with \alert{max time}, and \alert{max memory};
     \item We will discuss algorithms, techniques and tricks;
       }
     \end{itemize}
@@ -90,43 +162,11 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why you should do this class?}
-  \begin{itemize}
-  \item \structure{You like to program, you think programming is fun}
-
-    \smallskip
-    
-  \item You learned a lot of programming theory, but you need more
-    programming practice;
-    
-    \smallskip
-
-  \item You have not written many programs yet;
-
-    \smallskip
-
-  \item You want to think about program efficiency;
-
-    \smallskip
-
-  \item You want a class where skill is more important than memorization;
-
-    \smallskip
-
-  \item You want to practice your technical English;
-
-    \smallskip
-
-  \item You want to participate in Programming Contests;
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{Warnings about this class}
   \begin{alertblock}{1- Heavy Workload}
     \begin{itemize}
-    \item Challenges start easy, but end very hard;
-    \item Expect to use a few hours per week on homework;
+    \item Starts easy, but hard in the end;
+    \item A few hours/week of homework;
     \item Lots of debugging;
 
       \bigskip
@@ -137,9 +177,8 @@
 
   \begin{alertblock}{2- Course Language}
     \begin{itemize}
-    \item The teacher's Japanese is very bad T\_T
+    \item My Japanese is not very good ;-) Let's talk in C++!
     \item All the course materials are in English;
-    \item Importantly: All the homework is in English;
     \item You can make your homework in Japanese;
 
       \bigskip
@@ -156,87 +195,133 @@
 \begin{frame}
   \frametitle{What is a ``Programming Challenge''?}
 
-  A programming challenge is a puzzle that you solve by making a
-  computer program.
+  A \structure{puzzle} that you solve by \structure{programming}.
 
   \bigskip
 
+  Parts of a Programming Challenge:
   \begin{itemize}
-  \item Description of the problem
-  \item Standard input
-  \item Standard output
-  \item Examples
+  \item Description;
+  \item Standard input;
+  \item Standard output;
+  \item Examples;
   \end{itemize}
-  
+
   \bigskip
 
-  You must write a program that \structure{reads the input} and
-  \structure{prints the correct output}.
-  
+  Task: Write a program that:
+  \begin{itemize}
+    \item Reads the input;
+    \item Prints the \structure{correct} output;
+    \item And nothing else!
+  \end{itemize}
 \end{frame}
 
+\subsection{Tutorial}
 \begin{frame}
-  \frametitle{Example Challenge: ``Relational Operator'' (1)}
+  \frametitle{Tutorial: ``Relational Operator'' (1)}
 
-  {\small
-  The challenges for this course are listed at the page:\\
+  All challenges are listed at the page:\\
   {\smaller \url{http://conclave.cs.tsukuba.ac.jp/lecture/monitor.html}}
+
+  \bigskip
+
+  Let's click on "Relational Operator"
 
   \begin{center}
     \includegraphics[width=.7\textwidth]{../img/monitorpage}
   \end{center}
 
-  Click on the title to go to the problem page.}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Example Challenge: ``Relational Operator'' (2)}
+  \frametitle{Tutorial: ``Relational Operator'' (2)}
 
-  Clicking on the title will take you to the problem page.
-  
+  The link takes you to the UVA (University of Valladolid) homepage (\alert{Please use an ad blocker!}).
+
+  \bigskip
+
+  Here you can see the problem description, and the links to submit the problem.
+
   \begin{center}
     \includegraphics[width=.9\textwidth]{../img/relationaloperator}
   \end{center}
+\end{frame}
 
-  Here you can read the problem and submit a solution.\\
-  (You will need an UVA account!)
+\begin{frame}
+  \frametitle{Tutorial: ``Relational Operator'' (3)}
+
+  \begin{block}{Description}
+    {\smaller \emph{
+    Some operators checks about the relationship between two values and these
+    operators are called relational operators. Given two numerical values \alert{your
+    job is} just to find out the relationship between them that is (i) First one
+    is greater than the second (ii) First one is less than the second or (iii)
+    First and second one is equal.}}
+  \end{block}
+
+  \begin{itemize}
+    \item Reading the description can be the hardest part!
+    \item For this challenge, you just need to:
+    \begin{itemize}
+      \item If the first number is bigger than the second; print ">"
+      \item If the first number is smaller than the second; print "<"
+      \item If both numbers are equal, print "="
+    \end{itemize}
+  \end{itemize}
+  Very easy!
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Tutorial: ``Relational Operator'' (4)}
+
+  \begin{block}{Input and Output}
+    {\smaller
+    \alert{Input}\\
+    First line of the input file is an integer $t (t < 15)$ which denotes how many sets of inputs are there.
+    Each of the next t lines contain two integers a and b (|a|, $|b| < 1000000001$).
+    \medskip
+
+    \alert{Output}\\
+    For each line of input produce one line of output. This line  contains any one of the relational operators
+    ''>'', ''<'' or ''='', which indicates the relation that is appropriate for the given two numbers.
+  }
+  \end{block}
+
+  \begin{itemize}
+    \item It is important to read the \alert{size} of the problem!
+    \item Pay attention to the \alert{shape} of the output!
+  \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Example Challenge: ``Relational Operator'' (3)}
-  
-  \begin{block}{Problem Description}
-    {\smaller Some operator checks about the relationship between two
-      values, these operators are called relational operators. Given
-      \structure{two numerical values}, your job is just to find out
-      the relationship between them.
-      \begin{itemize}
-      \item First one is greater than the second
-      \item First one is smaller than the second
-      \item First one is equal to the second
-      \end{itemize}
-    }
+  \frametitle{Tutorial: ``Relational Operator'' (5)}
+  \begin{block}{Examples}
+  \alert{Sample Input}\\
+  3\\
+  10 20\\
+  20 10\\
+  10 10\\
+  \alert{Sample Output}\\
+  <\\
+  >\\
+  =\\
   \end{block}
-  \begin{block}{Input}
-    {\smaller
-      First line is the number $t$ of tests ($t < 15$). Following t lines 
-      are two integers $a$ and $b$.
-    }
-  \end{block}
-  \begin{block}{Output}
-    {\smaller
-      For each line of input, print one line of output with '>','<' or '=', 
-      according to the relationship of $a$ and $b$.
-    }
-  \end{block}
+
+  \begin{itemize}
+    \item Use the samples to test/debug your program.
+    \item Use your own samples too!
+    \item Use the samples to \structure{understand} the challenge.
+  \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}[fragile]
-  \frametitle{Solving ``Relational Operator''}
-    
+  \frametitle{Solution: C++}
+
 \begin{block}{}
 {\smaller
 \begin{verbatim}
@@ -250,7 +335,7 @@ int main()
 {
     int n; long a, b;
 
-    cin >> n;    
+    cin >> n;
     for (; n > 0; n--)
     {
         cin >> a >> b;
@@ -264,7 +349,7 @@ int main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{A Python Solution (python 3)}
+  \frametitle{Solution: Python}
   \begin{block}{}
 \begin{verbatim}
 n = int(input())
@@ -281,11 +366,11 @@ while (n > 0):
    n -= 1
 \end{verbatim}
   \end{block}
-  
+
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{A Java Solution}
+  \frametitle{Solution: Java}
 
   {\tiny
   \begin{block}{}
@@ -299,16 +384,16 @@ class Main
       BufferedWriter stdout = new BufferedWriter(new OutputStreamWriter(System.out));
       try {
       String line;
-      line = stdin.readLine();      
+      line = stdin.readLine();
       int n = Integer.parseInt(line);
-      
+
       for (int i = 0; i < n; i++)
       {
          line = stdin.readLine();
          String[] tokens = line.split("\\s+");
          long a = Integer.parseInt(tokens[0]);
          long b = Integer.parseInt(tokens[1]);
-         
+
          if (a > b)
             stdout.write(">\n");
          if (a < b)
@@ -330,13 +415,11 @@ class Main
   \frametitle{Java Solution -- Keep in Mind}
 
   \begin{itemize}
-  \item All code must be in the same source file (can define many
-    classes in this file)
+  \item All code must be in the one file;
 
     \medskip
 
-  \item All programs must begin in a static main method in a
-    \structure{Main} class.
+  \item The \structure{static main} method must be in \structure{Main} class.
 
     \medskip
 
@@ -344,91 +427,63 @@ class Main
 
     \medskip
 
-  \item Use Buffered I/O to avoid time limit exceeded.
+  \item Use Buffered I/O for faster input/output.
   \end{itemize}
 \end{frame}
 
-
-
-
-\subsection{Submission}
-
-\begin{frame}
-  \frametitle{How to submit a problem} 
-  
-  Your weekly routine should have five steps:
-
-  \begin{enumerate}
-  \item Read the problem and think how to solve it;
-    \medskip
-    
-  \item Write the program, and submit it to UVA website;
-    \medskip
-    
-  \item If the program is correct go to 4, else go to 2;
-    \medskip
-    
-  \item Prepare your source zip file (all code + comment file);
-    \medskip
-    
-  \item Submit your zip file to MANABA;
-  \end{enumerate}
-\end{frame}
+\subsection{Submitting Your Program}
 
 \begin{frame}
   \frametitle{Submitting the problem to UVA}
-
-  {\small
-  UVA is an \structure{Automated Robotic Judge}. It will test your
-  program on a set of inputs, and check if the outputs are correct.
-
-  \medskip
-  
-  From the problem page, click on the \structure{submit} button. 
-  
   \begin{center}
-    \includegraphics[width=.8\textwidth]{../img/submitpage}
+    \includegraphics[width=1.1\textwidth]{../img/submitpage}
   \end{center}
-  
-  Select your language, choose the file, and press submit.\\
-  (You can use C, C++, Java, Python {\tiny and Pascal})}
+
+  \begin{itemize}
+    \item After you complete the program, use the \structure{submit} button in the UVA page;
+    \item Choose your language and submit your code;
+    \item You can choose C, C++, Java or Python.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Submitting the problem to UVA}
 
-  {\small
-
-    After you submit the program, the judge gives you the result
-    (Verdict) and the Run time.
-    
     \begin{center}
-      \includegraphics[width=.8\textwidth]{../img/submissionpage}
+      \includegraphics[width=1.1\textwidth]{../img/submissionpage}
     \end{center}
 
-    You can see this information on the ``my submissions'' page.
-  }
+    \begin{itemize}
+      \item UVA has an \structure{Automated Judge}.
+      \item After 2~5 minutes, you should receive an e-mail with the result.
+      \item All your results can be seen at "My Submissions" Page.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Submission Statues:}
+  \frametitle{Submitting the problem to UVA}
+
+  These are the possible results:
+
+  \bigskip
+
   \begin{itemize}
   \item \structure{Accepted}: Your program is correct!
     Congratulations!
-
-    \bigskip
-    
-  \item \structure{Wrong Answer}: Your program is incorrect. Debugging
-    time.
+  \item \structure{Presentation Error}: Small mistake in number of spaces. Congratulations!
 
     \bigskip
 
-  \item \structure{Time/Memory limit exceeded}: Your program is
-    inefficient. You need a better algorithm.
+  \item \alert{Wrong Answer}: Your program is incorrect. Time to debug.
 
     \bigskip
-  \item \structure{Runtime Error}: Your program is crashing. To the
-    debugger!
+
+  \item \alert{Time Limit Exceeded}: Your program is too slow.
+
+  \item \alert{Memory limit exceeded}: Your program uses too much memory.
+
+    \bigskip
+  \item \alert{Runtime Error}: Your program crashed (segmentation fault!)
 
     \bigskip
   \end{itemize}
@@ -436,15 +491,18 @@ class Main
 \end{frame}
 
 \begin{frame}
-  \frametitle{Back to the problem Monitor}
+  \frametitle{Problem Monitor Page}
 
-  In the problem monitor page, you can check how many people solved
-  each problem, which problems you still have to solve, and the
-  deadlines.
 
   \begin{center}
-    \includegraphics[width=.7\textwidth]{../img/monitorpage2}
+    \includegraphics[width=1\textwidth]{../img/monitorpage2}
   \end{center}
+
+  \begin{itemize}
+    \item All Problems and results;
+    \item All Deadlines;
+  \end{itemize}
+
 \end{frame}
 
 \subsection{Manaba Submission}
@@ -474,7 +532,7 @@ class Main
   }
 
   \medskip
-  
+
   \begin{alertblock}{Attention}
   Submission to the UVA judge without a submission to MANABA will not
   be accepted!
@@ -485,26 +543,28 @@ class Main
 \subsection{Course Structure}
 
 \begin{frame}
-    \frametitle{Outline}
-    
+    \frametitle{Course Rules}
+
     \begin{block}{Two classes per week}
-        \begin{itemize}   
-        \item Each week has a theme
+        \begin{itemize}
+        \item Each week has a theme (Graphs, Maths, etc...)
         \item Friday Class: Introduction
         \item Monday Class: Problem Solving and Q\&A
         \end{itemize}
     \end{block}
-    
+
     \begin{block}{Solving Problems}
         \begin{itemize}
-        \item Every week there are 6-10 programming assignments;
-        \item Assignments follow the weekly theme;
-        \item Automatic Submission and Evaluation System;
-        \item Program Deadline is Thursday 23:59
+        \item Every week there are 8 programming assignments;
+        \item Deadline is Thursday 23:59
+        \begin{itemize}
+          \item UVA Submission
+          \item MANABA Submission
+        \end{itemize}
         \end{itemize}
     \end{block}
 \end{frame}
-    
+
 \begin{frame}
   \frametitle{Outline}
   \begin{center}
@@ -515,96 +575,66 @@ class Main
 \subsection{Grading}
 
 \begin{frame}
-  \frametitle{Evaluation and Grading (1)}
+  \frametitle{Grading Algorithm}
 
-  Evaluation Criteria: \structure{Problems solved}, \structure{Code}
-  and \structure{Participation}
-  
-  \bigskip
+  Your Grade: {\bf Base Grade} \structure{+Bonus} \alert{-Penalty}
 
-  Evaluation Process: Base Grade \structure{+Bonus} \alert{-Penalty}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Evaluation and Grading (2) -- Base Grade}
-
-  The \structure{Base Grade} is based on homework submissions to UVA.
-
-  \bigskip
-  
   \begin{itemize}
-  \item \structure{C}: You Solved One problem every week;
+    \item {\bf Base Grade}:
+    \begin{itemize}
+      \item You solved 2/8 problem/week: "C"
+      \item You solved 3/8 problems/week: "B"
+      \item You solved 4/8 problems/week: "A"
+    \end{itemize}
 
-    \medskip
+    \bigskip
 
-  \item \structure{B}: You Solved Two problems every week;
+    \item \structure{+Bonus}
+    \begin{itemize}
+      \item 5\% of best student in each category.
+      \item Special collaboration to the class.
+    \end{itemize}
 
-    \medskip
-
-  \item \structure{A}: You Solved Three problems every week;
+    \bigskip
+    \item \alert{-Penalty}
+    \begin{itemize}
+      \item More than 25\% of homework submitted late.
+    \end{itemize}
   \end{itemize}
 
-\end{frame}
 
-\begin{frame}
-  \frametitle{Evaluation and Grading (3) -- Bonus and Penalty}
-  
-  {\small
-  A \structure{Bonus} or \structure{Penalty} will be added to the base grade.
-  \begin{itemize}
-    \item Bonus: grade one step up (C->B, B->A, A->A+)
-    \item Penalty: grade one step down (A+->A, B->C, \alert{C->C})
-  \end{itemize}
-  }
-
-  \medskip
-  \begin{exampleblock}{Bonus: Grade Up}
-    \begin{itemize}
-    \item Students with the largest number of solutions in each
-        category (A,B,C)
-    \item Students with exceptional comment files
-    \item Great participation in Class
-    \end{itemize}
-  \end{exampleblock}
-  \begin{alertblock}{Penalty: Grade Down}
-    \begin{itemize}
-    \item More than 25\% problems submitted after the deadline
-    \end{itemize}
-  \end{alertblock}
-
-  \tiny{Parameter $N$ will be decided at a later date.}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Evaluation and Grading (4) -- comment/kaisetsu file}
+  \frametitle{Evaluating and Grading: KAISETSU file}
 
-  When you submit your package every week, include a text file (no
-  Word!) with comments on each problem you tried to solve.
-    
+  \begin{itemize}
+    \item Submit a TEXT (not word) file with your impressions of the problems, class, life, together with your code.
+    \item Kaisetsu file can be in any Japanese or English.
+  \end{itemize}
+
+  \bigskip
+
   \begin{exampleblock}{Example}
     {\smaller
 \begin{verbatim}
 Name: Claus, ID: 98884735
 # Problem 1:
-To solve this problem, I sorted the input data, and 
-printed the input with the highest number of repeated 
-letters.
+This problem was very easy, but I did a stupid mistake
+and it took me three hours to solve. I found the solution
+when I tried a new test case.
 
-# Problem 2: 
-I tried to solve this problem with brute force, but 
-the time limit was exceeded. I had to use DP on the 
-number of people instead.
+# Problem 2:
+This problem was very hard, and I was very hungry, so I
+gave up.
 \end{verbatim}}
   \end{exampleblock}
 
-  \bigskip
-  
-  Comments may be in Japanese. {\small (FILENAMES must be in romaji)}
 \end{frame}
 
 \begin{frame}
   \frametitle{Evaluation and Grading (5) -- about plagiarism}
-  
+
   The assignments are \alert{individual}. Use your \structure{own
     strength} to solve the programs.
 
@@ -633,11 +663,11 @@ number of people instead.
 % Class Links
 \begin{frame}
   \frametitle{Useful Links}
-  \begin{itemize} 
+  \begin{itemize}
   \item
-    \href{https://manaba.tsukuba.ac.jp/ct/course_971789}
+    \href{https://manaba.tsukuba.ac.jp/ct/course_1149028}
          {\structure{\underline{Manaba Page}}}: All the class material
-         will be here. Access Code is: 1473177
+         will be here. Access Code is: 7255921
 
     \medskip
 
@@ -657,7 +687,7 @@ number of people instead.
     Working directory for lecture notes. Send me PR, issues!
 
     \medskip
-    
+
   \item
     \href{https://www.udebug.com/}{\structure{\underline{uDebug}}}:
     Web service that generates test inputs and test outputs for UVA
@@ -674,7 +704,7 @@ number of people instead.
   \begin{itemize}
   \item Competitive Programming, 3rd Edition
     (\href{http://cpbook.net/}{http://cpbook.net})
-    
+
     \bigskip
 
   \item For suggestions of books in Japanese, please check the Manaba materials!
@@ -685,8 +715,7 @@ number of people instead.
 \begin{frame}
   \frametitle{uDebug Tool}
 
-  If you are having problems, the uDebug site offers, for many
-  problems in UVA, the correct set of outputs for any input you give.
+  uDebug generates outputs for many different debugs. It can help you check why your program is wrong.
 
   \bigskip
 
@@ -699,22 +728,22 @@ number of people instead.
   \end{center}
 \end{frame}
 
-% Cat stream
-\begin{frame}
-  \frametitle{If you are still having problems...}
-
-  Watch a cat stream to relax!
-
-  \bigskip
-
-  \begin{center}
-    \includegraphics[width=.6\textwidth]{../img/catstream}
-  \end{center}
-
-  \bigskip
-
-  \url{http://livestream.com/FosterKittenCam/}
-\end{frame}
+% % Cat stream
+% \begin{frame}
+%   \frametitle{If you are still having problems...}
+%
+%   Watch a cat stream to relax!
+%
+%   \bigskip
+%
+%   \begin{center}
+%     \includegraphics[width=.6\textwidth]{../img/catstream}
+%   \end{center}
+%
+%   \bigskip
+%
+%   \url{http://livestream.com/FosterKittenCam/}
+% \end{frame}
 
 
 % Contact the professor (e-mail, twitter, webpage, room)
@@ -740,7 +769,7 @@ number of people instead.
 % Do we still have time? Ask me questions!
 
 \begin{frame}
-  \frametitle{Do we still have some time?}
+  \frametitle{What to do this weekend?}
 
   \begin{itemize}
   \item Create an account on UVA (if you already have an account, you can use that)
@@ -753,12 +782,25 @@ number of people instead.
 
   \item Ask any other questions you want to know!
   \end{itemize}
-
-  \bigskip
-
-  \begin{center}
-    Thank you for today!
-  \end{center}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Participate in ICPC!}
+  \begin{columns}
+    \column{0.5\textwidth}
+  \begin{itemize}
+    \item Fun challenges to choose the world champion!
+    \item Teams of 3 people!
+    \item Registration Deadline Early of June!
+  \end{itemize}
+
+  \includegraphics[width=1\textwidth]{icpc/DSC_0171}
+  \column{0.5\textwidth}
+  \includegraphics[width=1\textwidth]{icpc/DSC_0677}
+\end{columns}
+
+
+\end{frame}
+
 
 \end{document}
