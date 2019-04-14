@@ -3,14 +3,12 @@
 \input{../tools/beamerpreamble.tex}
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 0B - Solving Problems}
+\subtitle[]{Week 0B - Basic Hints and Ad-hoc Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha\@@cs.tsukuba.ac.jp}}
 \institute{Department of Computer Science}
-\date{2017/4/17\\{\smaller(last updated: \today)}}
+\date{2019/4/15\\{\smaller(last updated: \today)}}
 
 \begin{document}
-
-%% TODO: Add coding examples for each of the hints in this chapter
 
 \section{Introduction}
 \subsection{Class Outline}
@@ -22,87 +20,62 @@
 \begin{frame}
   \frametitle{Survey Results}
 
-  About 38 respondents:
-  \begin{itemize}
-  \item Students: Regular: 33, Tech School: 5\\
-    (Last year: 26 / 9)
+  \begin{tabular}{l|ccc}
+    Student Type & 2017 & 2018 & 2019 \\
+    \hline
+    Technical School & 9 & 5 & 3\\
+    Regular & 26 & 33 & 20\\
+  \end{tabular}
 
     \bigskip
-    
-  \item Contest Experience: 6 (20\%) / 3 (60\%)\\
-    (Last year: 9 (30\%)/ 5 (55\%))
 
-    \bigskip
-    
-  \item Favorite Contests: AtCoder, JOI, ICPC
-  \end{itemize}
+  \begin{tabular}{l|ccc}
+    Contest Experience & 2017 & 2018 & 2019\\
+    \hline
+    Yes & 14 & 9 & 3\\
+    No & 20 & 29 & 20\\
+  \end{tabular}
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Survey Results}
 
-  About 38 respondents:
-  \begin{itemize}
-  \item Why do you Program?
-    \begin{itemize}
-    \item Fun: 31 (Last year 19)
-    \item Money: 12 (Last year 15)
-    \item Save the World: 6 (Last year 5);
-    \end{itemize}
-    \bigskip
-    
-  \item Languages:
-    \begin{itemize}
-    \item C/C++: 9 (Last year 15)
-    \item Java: 11 (Last year 14)
-    \item Python: 7 (Last year 10)
-      \medskip
-      
-    \item Others:\\
-      C\#: 2, Assembly: 1, Haskell: 3, Rust: 3, Lisp 1,
-      GLSL 1, Swift 1, Clojure: 1, OCaml: 1, Javascript: 2,\\
-      PHP: 1, Julia: 1, Hy: 1
-    \item R: 0   T\_T
-    \end{itemize}
-  \end{itemize}
+  \begin{tabular}{l|ccc}
+    Why do you Program? & 2017 & 2018 & 2019\\
+    \hline
+    Fun & 19 & 31 & 19\\
+    Money & 15 & 12 & 12\\
+    Save the World & 5 & 6 & 5\\
+  \end{tabular}
+
+  \bigskip
+
+  \begin{tabular}{l|ccc}
+    Languages & 2017 & 2018 & 2019\\
+    \hline
+    C/C++ & 15 & 9 & 7\\
+    Java & 14 & 11 & 8\\
+    Python & 10 & 7 & 7\\
+  \end{tabular}
+
+  \bigskip
+
+  \begin{block}{Other Languages}
+    Ruby (4), Kotlin, OCaml, Rust, Javascript, Cuda
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Survey Results}
-  About 38 respondents:
-
-  \begin{itemize}
-  \item Expectation from the course: ``Improving Programming Skills''\\
-    \medskip
-    Please try to solve all the problems!
-    \bigskip
-
-  \item Messages:
-    \begin{itemize}
-    \item I want to use AtCoder instead of UVA / I want to use other languages\\
-      Please use AtCoder AND UVA!!
-      
-      \medskip
-      
-    \item Book Suggestion:\\      
-      ``Guide to Competitive Programming\\
-      Learning and Improving Algorithms Through Contests''\\
-      Antti Laaksonen\\
-      ISBN: 978-3-319-72547-5
-    \end{itemize}
-    
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Survey Results}
-  About 38 respondents:
-  \begin{itemize}
-  \item Favorite Meme:\\
-    \begin{center}
-      \includegraphics[width=0.8\textwidth]{img/meme2018}
-    \end{center}
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Survey Results}
+%   Comments:
+%
+%   \begin{itemize}
+%     \item Want to learn programming skills
+%     \item "Deep Learning Skills"
+%     \item "Japanese"
+%   \end{itemize}
+% \end{frame}
 
 
 \begin{frame}
@@ -113,26 +86,264 @@
   \end{center}
 
   \begin{block}{}
-    Very Good! It is going to get harder from here on.
+    Keep Going! Do not let the problems for the last minute!
   \end{block}
-  
+
 \end{frame}
 
 \begin{frame}
-  \frametitle{Today's Class: Solving Problems}
+  \frametitle{Today's Class: Ad Hoc Problems}
+
+  \begin{itemize}
+  \item \structure{Ad Hoc}: Problems that don't have a single algorithm;
+  \bigskip
+
+  \item Common forms of Input and Output
+  \bigskip
+
+  \item Debugging and Creating Test Cases
+  \bigskip
+
+  \item Some Problem Analysis
+  \end{itemize}
+
+\end{frame}
+
+\section{Problem Analysis: 3n+1}
+\subsection{Wrong Answer}
+\begin{frame}[fragile]
+  \frametitle{Reading the Problem: 3n+1}
+
   \begin{block}{}
-    Hints and ideas on how to solve programming challenges
+    For any two numbers $i$ and $j$, calculate the \structure{Maximum Cycle Length}.
   \end{block}
 
   \bigskip
 
+\begin{verbatim}
+Algorithm A(n)
+1. print n
+2. if n == 1 then STOP
+3. if n is odd then n = 3n + 1
+4. else n = n/2
+5. GOTO 2
+
+
+Example: A(22)
+22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+
+Size: 16
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Problem 3n+1 -- Solution 1}
+\begin{verbatim}
+while true:
+  try:
+    line = input()
+    max = 0
+    tk = line.split()
+    i, j = int(tk[0]), int(tk[1])
+    for n in range(i, j+1):
+      count = 1
+      while n != 1:
+        if n % 2 == 1: x = 3 * x + 1
+        else: n = n / 2
+        count += 1
+      if count > max: max = count
+      print (line, max)
+  except EOFError: break
+\end{verbatim}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Solution 1: Problem!}
+
   \begin{itemize}
-  \item Reading Problems
-  \item Considerations when programming
-  \item Input/Output
-  \item Debugging
-  \item Types of Problems
+    \item Solution 1 solves all \structure{Sample Input} correctly.
+    \bigskip
+
+    \item But we still get \alert{Wrong Answer!}
+    \bigskip
+
+    \item Why??? :-(
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solution 1: Traps!}
+
+  \begin{itemize}
+    \item Solution 1 solves all \structure{Sample Input} correctly.
+    \bigskip
+
+    \item If we try the input: \alert{20 10} -- output is \alert{nothing!}
+\begin{verbatim}
+for x in range(i, j+1):   <-- Error is here!
+  ...
+  print (line, max)
+\end{verbatim}
+    \bigskip
+
+    \item The sample input has \alert{no examples} with "\alert{$i > j$}"!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Solution 1: Traps!}
+
+    \begin{block}{Input Description}
+    The input will consist of a series of \alert{pairs of integers} i and j, one pair of
+    integers per line. All integers will be \alert{less than 10,000 and greater than 0.}
+
+    \bigskip
+
+    You should process all pairs of integers and for each pair determine the maximum
+    cycle length over \alert{all integers between and including i and j}.
+
+    \bigskip
+
+    You can \alert{assume that no operation overflows a 32-bit integer}.
+    \end{block}
+    \bigskip
+
+    The only rules are those \structure{expressely written!}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Solution 1: Traps!!!!!}
+
+  \begin{itemize}
+    \item First rule of Programming Challenges: \\ \hspace{1cm}\alert{Assume Worst Case}
+    \item Always try the worst case input!
+
+    \bigskip
+
+    \begin{itemize}
+      \item Number is Negative; Number is zero;
+      \item Number is out of order (or in order);
+      \item Number is repeated;
+      \smallskip
+
+      \item Graph is unconnected; Graph is Fully connected;
+      \item Lines are parallel; Points are in the same place;
+      \item Area is 0; Angle is 0;
+      \smallskip
+
+      \item Input is very long;
+      \item Input is very short;
+    \end{itemize}
+    \bigskip
+
+    \item If it is not against the rules: \alert{It will happen!}
+    \item This also happens in programs in the real world.
+  \end{itemize}
+\end{frame}
+
+\subsection{Time Limited Exceeded}
+
+\begin{frame}[fragile]
+  \frametitle{Problem 3n+1 -- Solution 2}
+\begin{verbatim}
+while true:
+  try:
+    line = input()
+    max = 0
+    tk = line.split()
+    i, j = int(tk[0]), int(tk[1])
+    for n in range(min(i, j), max(i, j)+1): # FIXED!
+      count = 0
+      while n != 1:
+        if n % 2 == 1: n = 3 * n + 1
+        else: n = n / 2
+        count += 1
+      if count > max: max = count
+      print (line, max)
+  except EOFError: break
+\end{verbatim}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Solution 2: Time Limited Exceeded!}
+  \begin{itemize}
+    \item All the inputs are correct.
+    \bigskip
+
+    \item But now we have \alert{Time Limited Exceeded}
+    \bigskip
+
+    \item Why?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solution 2: Cost Calculation}
+
+    \begin{block}{Input Description}
+    All integers will be \alert{less than 10,000 and greater than 0.}
+    \bigskip
+
+    You can \alert{assume that no operation overflows a 32-bit integer}.
+    \end{block}
+    \bigskip
+
+    \begin{itemize}
+      \item What happens when the input is \structure{1 10000}?
+\begin{verbatim}
+1 10000 262
+\end{verbatim}
+      \bigskip
+
+      \item The longest sequence in 1, 10000 has 262 steps.
+      \item But we calculate \alert{all} sequences between 1, 10000.
+      \item Worst case: 10000*262 = 2,000,000 steps!
+      \bigskip
+
+      \item For only one query!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solution 2: Memoization}
+
+  \begin{itemize}
+    \item Let's think about A();
+\begin{verbatim}
+A(22):  22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+A(11):  11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+A(17):  17 52 26 13 40 20 10 5 16 8 4 2 1
+A(13):  13 40 20 10 5 16 8 4 2 1
+A(10):  10 5 16 8 4 2 1
+A(8) :  8 4 2 1
+\end{verbatim}
+    \bigskip
+
+    \item Do we need to \alert{Recalculate} every time we see a new number?
+  \end{itemize}
+
+  \begin{block}{Good Technique: Memoization}
+    If we know that we will use a result again in the future,
+    we should \alert{store this result in the memory}.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solution 2: Memoization Idea}
+\begin{verbatim}
+  table = {}
+  table[1] = 1
+
+  def A(n):
+    if n in table.keys():
+      return table[n]
+    else:
+      if n % 2 == 1:
+        table[n] = 1 + A(3*n + 1)
+      else:
+        table[n] = 1 + A(n/2)
+    return table[n]
+\end{verbatim}
 \end{frame}
 
 \section{How to Solve Problems}
@@ -144,32 +355,48 @@
     \includegraphics[width=0.5\textwidth]{../img/breakingtheproblem}
   \end{center}
 
-  First trick of solving a hard problem: break it into simpler ones:
-  
-  {\smaller
+  Trick to solve problems without bugs: Break the problem down
+  \bigskip
+
   \begin{itemize}
-  \item Task 1: Understand the problem description;
-  \item Task 2: Understand the input/output;
-  \item Task 3: Choose the Algorithm;
+  \item How to calculate the function $A()$;
+  \item Imagine the worst possible cases ($i > j$);
+  \item Calculate cost of solution;
+  \item Improve speed with memoization;
+  \end{itemize}
+\end{frame}
+
+\subsection{Programming Challenge Workflow}
+\begin{frame}
+  \frametitle{A Programming Challenge Workflow}
+
+  Common Steps for Programming challenges:
+  \bigskip
+
+  \begin{itemize}
+  \item Task 1: Read the problem description;
+  \item Task 2: Read the input/output;
+  \item Task 3: Think about the algorithm;
   \item Task 4: Write the Code;
   \item Task 5: Test the program on example data;
   \item Task 6: Test the program on hidden data;
-  \end{itemize}}
+  \end{itemize}
 \end{frame}
+
 
 \subsection{Task 1: Reading The Problem}
 \begin{frame}
   \frametitle{Task 1: Understanding the Problem Description}
 
   The English description is so hard!
-  
+
   \bigskip
 
   \begin{block}{Don't Worry:}
   \begin{enumerate}
   \item Separate the text into \structure{flavor} and \structure{rules};
   \item Sometimes it is easy to read the input/output first, and then
-    the text;    
+    the text;
   \item Problems with a lot of \structure{flavor} are usually not very hard.;
   \end{enumerate}
   \end{block}
@@ -183,46 +410,37 @@
     As you didn't show up to the yearly general meeting of the Nordic
     Club of Pin Collectors, you were unanimously elected to organize
     this years excursion to Pin City.  You are free to choose from a
-    number of weekends this autumn, and have to  nd a suitable hotel
+    number of weekends this autumn, and have to find a suitable hotel
     to stay at, preferably as cheap as possible.
   \end{alertblock}
 
   \begin{exampleblock}{rules}
-    You have some \underline{constraints}: The total \underline{cost}
-    of the trip must be within \underline{budget}, of course. All
-    participants \underline{must stay at the same hotel}, to avoid
-    last years catastrophe, where some members got lost in the city,
-    never being seen again.
-  \end{exampleblock}
+    You have some \structure{\underline{constraints}}: The total
+    \structure{\underline{cost}} of the trip must be within
+    \structure{\underline{budget}}, of course. All participants
+    \structure{\underline{must}} stay at the same hotel, to avoid last years
+    catastrophe, where some members got lost in the city, never being seen
+    again.
+  \end{exampleblock}}
 
   \bigskip
 
   {\bf Keywords:} constraints, minimum, maximum, cost, rules, number,
-  etc...  }
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Extreme example: UVA 1124, Celebrity Jeopardy}
-  \includegraphics[width=0.9\textwidth]{../img/celebrityjeopardy}
-
-  \hrulefill\\
-  \alert{Real Problem:}
-  Copy the input into the output. (look at the examples)
+  etc...
 \end{frame}
 
 \begin{frame}
   \frametitle{Hints for hard to read problems}
-  
+
   \begin{columns}
     \column{0.7\textwidth}
     {\small
     \begin{itemize}
-    \item If it is hard, look at the examples;
-    \item If it is really hard, print on paper;
-    \item First read: mark keywords;
-    \item Second read: cut flavor;
-    \item Re-write the important parts in another file;
+    \item First, look at the \structure{sample input and output};
+    \item Write the idea of the problem on paper
+    \item Use the Paper: mark keywords;
+    \item Use the Paper: cut flavor;
+    \item \alert{Read the problem again!};
     \item \alert{Do not begin programming until you understand the problem!}
     \end{itemize}
     }
@@ -240,18 +458,18 @@
 \subsection{Task 2: Understanding the Input/Output}
 
 \begin{frame}
-  \frametitle{Task 2: Understanding the Input}
+  \frametitle{Task 2: Reading the Input/Output}
 
-  When you read the input, pay attention to:
-  
+  The Input Description is \alert{very important} (as we saw in 3n+1)
+
   \bigskip
 
   {\small
   \begin{itemize}
-  \item What is the problem size?
-  \item What is the end condition?
-  \item What type of data is it?
+  \item What is the size of the data?
+  \item What are the limits of the data?
   \item What is the format of the data?
+  \item What is the stop condition?
   \end{itemize}
   }
 \end{frame}
@@ -262,17 +480,14 @@
   The input size shows how big the problem gets.
 
   \begin{itemize}
-  \item If the problem is too small, you can try a brute force
-    algorithm;
-  \item If the problem is too big, you must use a more complex
-    algorithm;
+  \item Small Problem: Full Search; Simulation;
+  \item Big Problem: Complex Algorithms; Pruning;
   \end{itemize}
-  
+
   \begin{block}{Keep in Mind!}
     \begin{itemize}
     \item The average time limit in UVA is 1-3 seconds.
-    \item Assume around 10.000.000 operations per second (in the judge).
-    \item Use this as a \alert{rough measure} of time your program spends.
+    \item Expect maybe 10.000.000 operations per second.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -302,85 +517,89 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Task 2: Input Types}
+  \frametitle{Task 2: Input Format}
 
-  You should pay attention to the \structure{type and format} of the
-  input.
-
+  Three common patterns for input format:
   \vfill
 
   \begin{itemize}
-  \item Reading A fixed number of tokens;
-  \item Reading Until a condition;
-  \item Reading until the end of the input;
+  \item Read $N$, then read $N$ queries;
+  \bigskip
+
+  \item Read until a special condition;
+  \bigskip
+
+  \item Read until EOF;
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Task 2: Input Types}
-  \begin{block}{Reading a fixed number of tokens}
-    The first line of the input says the total number of
-    tokens/lines/cases to read;
-  \end{block}
+  \frametitle{Task 2: Input Format}
+  \begin{block}{}
+    Read $N$, and then read $N$ queries;
+    \bigskip
 
-{\smaller 
+    Remember $N$ when calculating the size of the problem!
+  \end{block}
+  Example: \structure{Cost Cutting}
+
+{\smaller
 \begin{verbatim}
 #include <iostream>
 using namespace std;
 
 int main()
 {
-    int n;    
+    int n;
     cin >> n;
 
     for (; n > 0; n--)
     {
        // Do something
-    }    
+    }
 }
 \end{verbatim}}
 
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Task 2: Input Types}
-  \begin{block}{Conditional Ending}
-    The problem specifies a special case to end the input.
+  \frametitle{Task 2: Input Format}
+  \begin{block}{}
+    Read Until a Special Condition.
+
+    Be careful: You can have \alert{many} queries before the condition!
   \end{block}
 
-  \bigskip
-
-  \structure{Example -- Request for Proposal:}\\
+  Example: \structure{Request for Proposal:}\\
   The input ends with a line containing two zeroes.
-  
+
 {\smaller
 \begin{verbatim}
 int main()
 {
    cin >> n >> p;
-   cin.ignore(1000, '\n'); 
-   // throws away the \n for a future getline
    while (n!=0 || p!=0)
    {
        // do something!
-       cin >> n >> p;               
-       cin.ignore(1000, '\n');
+       cin >> n >> p;
    }
 }
 \end{verbatim}}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Task 2: Input Types}
-  \begin{block}{Reading until the end of file}
+  \frametitle{Task 2: Input Format}
+  \begin{block}{}
+    Read until EOF.
+    \bigskip
 
-    Put your reading function (getline, cin) inside a conditional.
-    The input goes on until the end of the file. No explicit
-    terminating value.\\ \structure{Example:} 100 -- The N+1 Problem
+    Functions in C and Java return FALSE when they read EOF. Python requires
+    an exception. Very common in UVA.
   \end{block}
+  Example: \structure{3N+1 Problem, Jolly Jumpers}
+
 {\smaller
 \begin{verbatim}
-#include<string>
 int main()
 {
     int a, b;
@@ -394,12 +613,14 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{Reading the Output -- Correctness}
+  \frametitle{Task 2: Output Format}
 
-  The UVA judge will evaluate your code based on a simple \emph{diff}. 
-  Be \alert{very careful} to write your output exactly like stated.
+  The UVA judge decides the result based on a simple \alert{diff}.
+  \bigskip
 
-  \vfill
+  Be \alert{very careful} that the output is exactly right!
+
+  \vspace{3cm}
 
   \begin{columns}
     \column{0.2\textwidth}
@@ -410,43 +631,31 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{Easy to Miss errors in the output}
+  \frametitle{Task 2: Output Format -- Checklist}
 
   \includegraphics[width=0.15\textwidth]{../img/angryclient}
-  \begin{itemize}
-  \item Are the words uppercase, or lower case? (Case \structure{or} case)
-  \item Are there any mistakes in the words? (case \structure{or} caes)
-  \item Singular or plural? (1 hours \structure{or} 1 hour)
-  \item What is the precision of floating numbers? (3.051 \structure{or} 3.05)
-  \item Do you round up or round down? (3.62 $\rightarrow$ 3 \structure{or} 4)
-  \item Is there more than one answer?
-  \end{itemize}
+  \begin{enumerate}
+    \item DID YOU REMOVE DEBUG OUTPUT?
+    \item DID YOU REMOVE DEBUG OUTPUT?
+    \smallskip
+
+    \item Easy mistakes: UPPERCASE x lowercase, spleling mitsakes;
+    \item Boring mistakes: plural: 1 hour \structure{or} 2 hours;
+    \item What is the precision of \structure{float}? (3.051 \structure{or} 3.05)
+    \item Round up or Round down? (3.62 $\rightarrow$ 3 \structure{or} 4)
+    \item Multiple solutions: Which one do you output\\ (usually ortographical sort)
+  \end{enumerate}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Reading the problem: Identify Traps!}
+  \frametitle{Task 2: Input/Output -- Traps!}
 
-  Be very careful to find traps in the problem:
-
-  \vfill
-  
   \begin{block}{Example: 3n+1 Problem}
     \begin{itemize}
-    \item The two numbers $i$ and $j$ in the input can come in any
-      order.
-    \item But the output must be in the same order as the input!
+    \item $i$ and $j$ can come in any order.
     \end{itemize}
   \end{block}
-    
-  \vfill
-
-  \hfill \includegraphics[width=0.25\textwidth]{../img/trap}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Reading the problem: Identify Traps!}
-
 
   \begin{block}{Common Traps}
     \begin{itemize}
@@ -456,64 +665,94 @@ int main()
     \item Other special cases;
     \end{itemize}
   \end{block}
+  \vfill
 
   \hfill \includegraphics[width=0.25\textwidth]{../img/trap}
 \end{frame}
 
 \subsection{Task 3: Choosing the algorithm}
 
+
 \begin{frame}
   \frametitle{Task 3: Choosing the algorithm}
-  \begin{block}{3.1 What type of problem it is?}
-    \begin{itemize}
-    \item {\bf Full Search:} Tests all possible solutions;
-    \item {\bf Greedy:} Break the solution, and try each best subsolution;
-    \item {\bf Simulation:} Execute a series of steps, record the results;
-    \item {\bf Dynamic Programming:} Table of partial solutions;
-    \item {\bf Counting:} Calculate the number of possible solutions;
-    \item {\bf Ad-hoc:} No fixed category;
-    \item And many others;
-    \end{itemize}
-  \end{block}
-
+  The important part of choosing the algorithm is \alert{counting the time}
   \bigskip
-
-  First understand the problem; Then think; \alert{lastly code}.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Task 3: Choosing the algorithm}
-  Basic considerations for recursive and iterative algorithms:
 
   \begin{itemize}
-  \item An algorithm with k-nested loops of about n iterations each
-    has O(nk) complexity;
-  \item A recursive algorithm with b recursive calls per level, and L
-    levels, it should have O(bL) complexity;
-  \item Use pruning to reduce the complexity of algorithms.
-  \item An algorithm processing a $n*n$ matrix in O(k) per cell runs
-    in $O(kn^2)$ time. 
+    \item An algorithm with $k$-nested loops of and $n$ commands
+      has $O(nk)$ complexity;
+    \item A recursive algorithm with $b$ recursive calls per level, and $L$
+      levels, it should have $O(bL)$ complexity;
+    \item An algorithm with $p$ nested loops of size $n$ is $O(n^p)$
+    \item An algorithm processing a $n*n$ matrix in O(k) per cell runs
+      in $O(kn^2)$ time.
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Task 3: Choosing the algorithm}
-  
-  Example of Pruning: The 8-queen problem
-
-  \vfill
-  
-  \begin{block}{Pruning with a good data structure}
-    \begin{itemize}
-    \item 8x8 matrix, with 1 for each queen: 64*63*62... = 1.78e+14
-    \item 1 queen per column: 8*8*8*... = 1.67+e8
-    \item 1 queen per column/row: 8*7*6... = 40320
-    \end{itemize}
-  \end{block}
 
   \bigskip
 
-  You can prune even more by removing simmetries!
+  Use \alert{pruning} to reduce the complexity of your algorithm!\\
+  Also don't forget the number of queries!
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Task 3: Example of Pruning -- 8 queen problem}
+
+  \hfill \includegraphics[width=0.2\textwidth]{../img/8queen}
+
+  You want to find a position for 8 queens where no queen attack another queen.
+
+  \bigskip
+
+\begin{verbatim}
+Solution 1: All options:
+Queen1: a1 or a2 or a3 or a4 ... or h5 or h6 or h7 or h8
+Queen2: Same as Queen 1
+Queen3: Same as Queen 2
+...
+Queen8: Same as Queen 7
+
+Total Solutions: 64 x 64 x 64 x 64 = 64^8 ~ 10^14
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Task 3: Example of Pruning -- 8 queen problem}
+
+  \hfill \includegraphics[width=0.2\textwidth]{../img/8queen}
+
+  You want to find a position for 8 queens where no queen attack another queen.
+
+  \bigskip
+
+\begin{verbatim}
+Solution 2: One queen / column
+Queen1: a1 or a2 or a3 ...
+Queen2: b1 or b2 or b3 ...
+Queen3: c1 or c2 or c3 ...
+...
+Queen8: h1 or h2 or h3 ...
+
+Total Solutions: 8 x 8 x 8 ... = 8^8 ~ 10^7
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Task 3: Example of Pruning -- 8 queen problem}
+
+  \hfill \includegraphics[width=0.2\textwidth]{../img/8queen}
+
+  You want to find a position for 8 queens where no queen attack another queen.
+
+  \bigskip
+
+\begin{verbatim}
+Solution 3: One queen / row x column
+If Q1 is a1, Q2 in b2, Q3 must be c3-7...
+
+A solution is the order of rows: Ex: 1-3-5-2-7-4-8-6
+
+Total Solutions: 8 x 7 x 6 x 5 ... = 40320
+\end{verbatim}
 \end{frame}
 
 \subsection{Task 4: Coding}
@@ -555,7 +794,7 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{Task 4: Coding} 
+  \frametitle{Task 4: Coding}
 
   \begin{block}{Hint 3: Programmer Efficiency}
     Everyone knows about \structure{CPU efficiency} or
@@ -568,7 +807,7 @@ int main()
   \end{block}
 
   \vfill
-  
+
   \begin{itemize}
   \item Use standard library and macros;
   \item Your program just need to solve THIS problem;
@@ -583,7 +822,7 @@ int main()
   \frametitle{Task 5,6: Test and Hidden Data}
 
   The example data {\bf is not} all the data!
-  
+
   \bigskip
 
   \begin{columns}
@@ -603,7 +842,7 @@ int main()
       \end{itemize}
     \end{alertblock}
   \end{columns}
-  
+
   \medskip
 
   Generate your own set of hidden data before submitting!
@@ -649,7 +888,7 @@ int main()
   \end{block}
 \end{frame}
 
-\begin{frame} 
+\begin{frame}
   \frametitle{Thanks for Listening!}
   \begin{center}
     Any questions?
@@ -657,7 +896,11 @@ int main()
 \end{frame}
 
 \begin{frame}
-  \frametitle{BONUS I -- A very simple program}
+  \frametitle{BONUS -- Calculating Complexity in Research Experiments}
+\end{frame}
+
+\begin{frame}
+  \frametitle{BONUS -- A very simple program}
 
   \begin{block}{Ackermann's Function}
     \begin{eqnarray*}
@@ -666,7 +909,7 @@ int main()
       & A(m-1,A(m,n-1)) & \text{if } m > 0, n > 0\\
     \end{eqnarray*}
   \end{block}
-  
+
   \begin{itemize}
     \item $A(0,n) = 1$ step
     \item $A(1,n) = 2n+2$ steps
@@ -677,22 +920,22 @@ int main()
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{BONUS II -- ICPC 2018}
-
-  \begin{center}
-    \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0171}
-    \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0195}\\
-    \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0199}
-    \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0208}
-  \end{center}
-  
-  
-  \begin{itemize}
-  \item Application Deadline -- Beginning of June
-  \item Internet Contest Date -- July 6th (Fri)
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{BONUS II -- ICPC 2018}
+%
+%   \begin{center}
+%     \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0171}
+%     \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0195}\\
+%     \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0199}
+%     \includegraphics[width=0.45\textwidth]{icpc2018/DSC_0208}
+%   \end{center}
+%
+%
+%   \begin{itemize}
+%   \item Application Deadline -- Beginning of June
+%   \item Internet Contest Date -- July 6th (Fri)
+%   \end{itemize}
+% \end{frame}
 
 
 \end{document}
