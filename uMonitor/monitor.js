@@ -268,7 +268,7 @@ function classdata(cdata)
                         submitted[j] = 1;
                         nsubmitted += 1;
                     }
-                    if (cdata[i].ver == 90 && solved[j] == 0) {
+                    if ((cdata[i].ver == 90 || cdata[i].ver == 80)&& solved[j] == 0) {
                         nsolved += 1;
                         solved[j] = 1;
                     }
@@ -353,7 +353,7 @@ function mysubmissions()
 				      var s = 0;
 				      if (sub[4] > start) {
     					  s = 1;
-    					  if (sub[2] == 90) {
+    					  if (sub[2] == 90 || sub[2] == 80) {
     					      s = sub[4] > end ?
     						  2 : 3;
     					  }
