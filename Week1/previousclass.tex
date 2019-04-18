@@ -2,42 +2,36 @@
   \frametitle{Results for the Previous Week}
 
   \begin{center}
-    Here are the results for last week:
-
+    Results on Wednesday:
     \bigskip
-    
+
     \includegraphics[width=0.8\textwidth]{img/resultW0}
-    
-    \bigskip
-
-    Hope you enjoyed the warm up!
   \end{center}
+
+  \bigskip
+
+  \structure{Hint:} Take a quick look at all problems before solving!
 
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{More about input...}
+  \frametitle{Messages to Students:}
 
-  Do not enter the input by hand! Create an input file, and run your
-  program with the input file to save time and get more precise
-  results.
+  \begin{enumerate}
+    \item Be careful with the input: \alert{Worst cases and TLE}
+      \bigskip
 
-  \bigskip
+    \item Use \structure{{\bf pipes}} to avoid typing cases by hand!
 
-  \begin{block}{}
 \begin{verbatim}
-$ cat - > input.in
-1 10
-10 1
-10 10 
-$ g++ 100.cpp
-$ ./a.out < input.in
+$ java Main < input.in
 1 10 20
 10 1 20
 10 10 7
 \end{verbatim}
-  \end{block}
-  
+
+  \end{enumerate}
+
 \end{frame}
 
 %\begin{frame}
