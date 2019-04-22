@@ -8,7 +8,6 @@ Week 1 - Data Structures
 - Rewrite the "No-library data structures: Segment-Trees"
 - TODO: Add Fenwick Tree
 
-
 # CHANGES
 - Removed Jolly Jumpers and CD, added: Back to 8 queens, Frequent Values
 - Added Segment Tree
