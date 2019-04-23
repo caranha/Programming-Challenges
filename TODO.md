@@ -14,7 +14,7 @@
 
 ### Week 2: Search
 - Add Lecture Plan
-- Slides are mostly ok (maybe more images?)
+- Need More examples for D&C and Greedy
 
 ### Week 3: DP
 - DP week one was OK.

@@ -5,7 +5,7 @@
 \subtitle[]{Week 2 - Problem Solving Paradigms (Search)}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2018-05-11,05-14\\{\tiny Last updated \today}}
+\date{2019-04-26\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -23,12 +23,11 @@
 
 \begin{frame}
   \frametitle{Quick Review of Last Week}
-  \begin{itemize}    
+  \begin{itemize}
   \item \structure{Linear Structures (Arrays, Vectors)}
     \begin{itemize}
-    \item Are good for many problems
-    \item Sorting and binary search
-    \item Using bitmasks
+    \item Use them a lot!
+    \item Learn the Library: Sorting, Binary Search, Bitmasks
     \end{itemize}
 
     \medskip
@@ -43,9 +42,16 @@
 
   \item \structure{Union-Find Disjoint Set (UFDS)}
     \begin{itemize}
-    \item Can be used to form multiple sets quickly
-    \item Are not very good for querying
-    \item Are simple to implement!
+    \item Good for querying sets, not good for iteration.
+    \item Simple to implement!
+    \end{itemize}
+
+    \medskip
+
+  \item \structure{Segment Trees}
+    \begin{itemize}
+    \item Good for Max/Min Range Query and dynamic data
+    \item Hard to implement!
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -70,9 +76,9 @@
     When searching, we think of our \structure{Goal} (the thing we are
     searching), and the \structure{search space} (the number of places
     where the thing could be hidden)
-    
+
   \end{block}
-  
+
   {\smaller
   \hfill \emph{The thing you search is always in the last place you look}\\
   \hfill (\emph{By definition!})}
@@ -81,7 +87,7 @@
 \begin{frame}
   \frametitle{What is a ``Search Problem''?}
   {\small
-    
+
     We call a problem a search problem, if we can describe the problem
     as checking multiple \emph{answers} in order to find one or more
     \emph{solutions}.
@@ -104,7 +110,7 @@
 
 \begin{frame}
   \frametitle{Sample Search Problems}
-  \begin{block}{Traffic Lights (Week 0)}  
+  \begin{block}{Traffic Lights (Week 0)}
     You are given a set of traffic lights with different \emph{period lengths}
     \alert{Find} The moment in time when all trafic lights are in the
     green period.
@@ -127,46 +133,68 @@
 
 
 \begin{frame}
-  \frametitle{Now you are thinking with search spaces}
+  \frametitle{Thinking with search spaces}
 
-  When we define a problem as a search problem, we can use strategies
-  based on organizing the search space, and systematically examining
-  each solution contained in it.
+  Define a problem as a search space $\rightarrow$ Organize
+  the search space $\rightarrow$ Check every solution.
 
   \bigskip
 
   Questions about the algorithm:
   \begin{itemize}
-  \item How is the search space represented?
-  \item How are the solutions ordered?
-  \item In what order are the solutions tested?
-  \item How many solutions are tested?
+  \item How is the search space represented (What Data Structure)?
+  \item How are the solutions evaluated (Score)?
+  \item In what order are the solutions tested (What Loop/Recur)?
+  \item How many solutions are tested (Time)?
   \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Thinking with search spaces: File Fragmentation}
+  \begin{block}{Input}
+    A set of binary fragments:
+    \bigskip
+
+    0011
+    100
+    1100
+    00
+    00
+    001
+  \end{block}
+
+  \begin{exampleblock}{Output}
+    One binary string that fit all gragments:
+    \bigskip
+
+    001100
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}
   \frametitle{Thinking with search spaces: File Fragmentation}
   \begin{itemize}
   \item \structure{How is the search space represented?}\\
-    For each possible solution $n$, the binary representation of $n$ is stored.
-  \item \structure{How are the solutions ordered?}\\
-    The solutions are ordered by the number of fragments that do not match $n$;
+    We store every possible binary $B$ of size $n$
+  \item \structure{How are the solutions evaluated?}\\
+    The score of $B$ is the number of fragments that
+    match it.
   \item \structure{In what order are the solutions tested?}\\
-    We can test the solutions in increasing order;
+    Test in Number order: 0001, 0010, 0011, 0100...;
   \item \structure{How many solutions are tested?}\\
-    Any item that matches all fragments is returned.
-  \end{itemize}  
+    We need to test $2^n$ solutions.
+  \end{itemize}
 
   \bigskip
 
-  Of course, for many problems there is more than one way to fill this
-  pattern.
+  There are other possible solutions!
 \end{frame}
 
 \begin{frame}
   \frametitle{Search Paradigms}
   These are some common approaches for search problems:
-  
+
   \begin{itemize}
     \item Complete Search/Brute Force;
     \item Divide and Conquer;
@@ -176,7 +204,7 @@
 
   \bigskip
 
-  As we said before, some problems can use multiple approaches (but
+  Some problems can use multiple approaches (but
   not all of them are equally good!)
 \end{frame}
 
@@ -189,7 +217,7 @@
     You have an array $A$ of $n$ integers ($n < 10K$), where the value
     of each integer $a_i$ is ($0 \leq a_i \leq 100K$).
   \end{block}
-  
+
   \bigskip
 
   Imagine the following problems:
@@ -206,14 +234,14 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Theoretical Example (2)} 
+  \frametitle{Theoretical Example (2)}
 
   {\smaller
   How costly would be to search the solutions for each of the four
   problems described?
 
   \bigskip
-  
+
   \begin{itemize}
   \item Find the Largest and smallest element of $A$: O(n) - single
     pass, and we cannot really go faster than this.
@@ -234,7 +262,7 @@
     \item Dynamic programming: $O(n^2)$
     \item Greedy search: $O(n\text{log}k)$ -- can you prove this?
     \end{itemize}
-  \end{itemize}  
+  \end{itemize}
   }
 \end{frame}
 
@@ -269,18 +297,18 @@
     \bigskip
 
   \item Prune, Prune, Prune\\
-    Remove bad solutions (or bad sets of solutions) as you go, by 
-    ``breaking'' early form loops, or setting good ending conditions 
+    Remove bad solutions (or bad sets of solutions) as you go, by
+    ``breaking'' early form loops, or setting good ending conditions
     to the recursive calls.
   \end{itemize}
-  
+
 \end{frame}
 
 \subsection{True Example 1}
 \begin{frame}
   \frametitle{Complete Search Example: UVA 725 -- Division}
   \begin{block}{Problem Summary}
-    Given an integer N, find all pairs of numbers $abcde$ and $fghij$ so that 
+    Given an integer N, find all pairs of numbers $abcde$ and $fghij$ so that
     $fghij/abcde = N$ and all 10 digits are different.
 
     \bigskip
@@ -294,7 +322,7 @@
   \end{block}
 
   \vfill
-  
+
   Consider this problem for a bit before I show how to solve it using search.
 \end{frame}
 
@@ -303,7 +331,7 @@
   {\smaller
   \begin{block}{Full Search Solution:}
     A naive way to solve the problem is to test all $0 \leq x \leq
-    99999$, calculate $y = x*n$, and test whether $x$ and $y$ have 
+    99999$, calculate $y = x*n$, and test whether $x$ and $y$ have
     all different digits.
   \end{block}
 
@@ -318,13 +346,13 @@ for (int x = 0; x < 99999; x++)
 int digits(int x, int y)
 {
   int used = (x < 10000);
-  int tmp; 
+  int tmp;
   tmp = x; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
   tmp = y; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
   return used;
 }
 \end{verbatim}
-  
+
   }
 \end{frame}
 
@@ -339,7 +367,7 @@ int digits(int x, int y)
 
     \bigskip
 
-  \item Maximum for Y is also 98765, so the actual maximum for x is 
+  \item Maximum for Y is also 98765, so the actual maximum for x is
     $x < 98766/n$
 
     \bigskip
@@ -369,7 +397,7 @@ int digits(int x, int y)
     \item If you are running out of ideas, or take too many WAs;
     \item Prune, prune, prune!
     \end{itemize}
-    
+
     \bigskip
 
   \item Sometimes, you can use a simple complete search on a hard
@@ -403,8 +431,8 @@ int digits(int x, int y)
   these values?
 \end{frame}
 
-% First take x^2+y^2+z^2 = C. Since maximum C is 10000, and X,Y,Z must be 
-% different, the maximum range of x is -100 to 100. The Reasoning goes for 
+% First take x^2+y^2+z^2 = C. Since maximum C is 10000, and X,Y,Z must be
+% different, the maximum range of x is -100 to 100. The Reasoning goes for
 % Y and Z. With this we can do a triple loop with about 8M operations.
 
 \begin{frame}[fragile]
@@ -415,10 +443,10 @@ int digits(int x, int y)
 
     Since $C \leq 10000$, and $x^2,y^2,z^2 \geq 0$, if $y =
     z = 0$ then the range for $x$ must be $-100, 100$.
-    
+
     \bigskip
 
-    Therefore, here is the \structure{Complete Search Loop}    
+    Therefore, here is the \structure{Complete Search Loop}
   \end{block}
 
 {\smaller
@@ -437,7 +465,7 @@ for (x = -100; x <= 100 && !sol; x++)
 \begin{block}{}
   Can you think of other ways to prune the loop?
 
-  
+
 \end{block}
 }
 \end{frame}
@@ -467,7 +495,7 @@ for (x = -100; x <= 100 && !sol; x++)
 \begin{frame}
   \frametitle{Complete Search: TIPS 1}
   The biggest issue with ``Complete Search'' solutions is: Will it
-  pass the time limit? 
+  pass the time limit?
 
   \medskip
 
@@ -496,7 +524,7 @@ for (x = -100; x <= 100 && !sol; x++)
     \begin{block}{Tip 2 -- Prune Early}
       In the N queen problem, if we imagine a recursive solution that
       places 1 queen per column, we can prune rows, columns and
-      \structure{DIAGONALS}. 
+      \structure{DIAGONALS}.
 
       \smallskip
 
@@ -508,7 +536,7 @@ for (x = -100; x <= 100 && !sol; x++)
     \vfill
 
     \begin{block}{Tip 3 -- Pre-computation}
-      Sometimes it is possible to generate tables of partial solutions. 
+      Sometimes it is possible to generate tables of partial solutions.
 
       \medskip
 
@@ -542,10 +570,10 @@ for (x = -100; x <= 100 && !sol; x++)
       \medskip
 
       \structure{Backwards Approach}: Make a 1024x1024 matrix of
-      ``killed rats''. For each rat group, add its value to each cell in the 
+      ``killed rats''. For each rat group, add its value to each cell in the
       bomb radius: $n * d^2 = 20000*2500 = 50M + 1024*1024$.
     \end{block}
-    
+
   }
 \end{frame}
 
@@ -561,11 +589,11 @@ for (x = -100; x <= 100 && !sol; x++)
       \item Many other tips
 
         \bigskip
-        
+
       \item Don't forget the Time Optimization vs. Programmer
         Optimization tradoff!
       \end{itemize}
-      
+
     \end{block}
   }
 \end{frame}
@@ -602,7 +630,7 @@ for (x = -100; x <= 100 && !sol; x++)
   \item If $n$ is smaller/bigger than the middle, throw away the second/first half.
   \item Repeat
   \end{enumerate}
-  
+
   \vfill
 
   Search time: O(log n) plus sorting time if necessary.
@@ -623,11 +651,11 @@ for (x = -100; x <= 100 && !sol; x++)
   \frametitle{Binary Search on Simulation Problems}
 
   Simulation problems usually require us to find a value that solves
-  a complex simulation. 
-  
+  a complex simulation.
+
   \begin{block}{Problem Example: Paying the debt}
     You have to pay $V$ dollars. You pay $D$ dollars per month, in $M$
-    months. Each month, before paying, your debt increases by $i$. 
+    months. Each month, before paying, your debt increases by $i$.
 
     \medskip
 
@@ -662,7 +690,7 @@ for (x = -100; x <= 100 && !sol; x++)
   \end{itemize}
 
   \bigskip
-  
+
   \structure{Binary Search Approach:}
   \begin{itemize}
   \item Estimate a minimum and maximum possible answer $(a,b)$
@@ -717,7 +745,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \begin{itemize}
   \item {\bf Principle}: Search on the solution space and test the answer.
     \bigskip
-    
+
   \item Another example: UVA 11936 - Through the desert
     \bigskip
 
@@ -725,7 +753,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \end{itemize}
 \end{frame}
 
-%%%% 3.4 Greedy 
+%%%% 3.4 Greedy
 \section{Greedy}
 \subsection{Greedy}
 \begin{frame}
@@ -764,13 +792,13 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \end{block}
 
   \bigskip
-  
+
   \begin{itemize}
   \item A = 10, B = 50;
 
     \bigskip
 
-    
+
   \item S = [(5,15), (8,12), (40,60), (30,40), (20,40), (13,25),
     (33,55), (18,30)]
   \end{itemize}
@@ -782,16 +810,16 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \begin{itemize}
   \item Consider the subset $S_a$, of all intervals that cover $A$.
     \bigskip
-    
+
   \item If we choose the item from this subset with the {\bf maximum} end value,
     we have a new point $A_{\text{new}}$. We can discard all other items.
     \bigskip
-    
+
   \item Repeat the process using $A_{\text{new}}$
   \end{itemize}
 
   \bigskip
-  
+
   \begin{block}{}
     Greedy Methods are often found in problems of ``find the subset''
   \end{block}
@@ -815,7 +843,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
 
 \begin{frame}
   \frametitle{Greed Example 2 -- Coin Change}
-  
+
   \begin{itemize}
 
   \item We can solve this case by always taking the biggest coing that fits
@@ -829,7 +857,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \end{itemize}
 
   \bigskip
-  
+
   \begin{center}
     Be careful that \alert{a greedy algorithm can be wrong!}
   \end{center}
@@ -892,7 +920,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
 
   \vfill
 
-  \structure{Greedy algorithm:} Order the individuals by weight, and 
+  \structure{Greedy algorithm:} Order the individuals by weight, and
   put one in each chambers until the chambers are full, then add one
   in each chamber backwards.
 
@@ -936,7 +964,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
 \end{frame}
 
 \begin{frame}
-  \frametitle{Heuristic Example: A* Search} 
+  \frametitle{Heuristic Example: A* Search}
 
   A* is a search algorithm for finding a shortest path between two
   (x/y) coordinates.
@@ -969,7 +997,7 @@ Total number of iterations is $O(log_2((b-a)/e))$
   \bigskip
 
   One approach to NP-hard problems is to treat them as
-  \structure{search problems}, systematically testing solutions 
+  \structure{search problems}, systematically testing solutions
   (in polynomial time), until an acceptable solution is found.
 \end{frame}
 
