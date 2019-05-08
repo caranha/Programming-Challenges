@@ -5,7 +5,7 @@
 \subtitle[]{Week 3 - Dynamic Programming}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2018-05-18,21\\{\tiny Last updated \today}}
+\date{2019-05-10,13\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -34,7 +34,7 @@
   \end{itemize}
 
   \bigskip
-  
+
   \begin{block}{}
     This week we introduce the last, and arguably most important
     algorithm for search problems: \structure{Dynamic Programming}
@@ -61,7 +61,7 @@
     First, fill the first column with each possible choice.\\
 
     \medskip
-    
+
     Second, fill column n+1 with the combination of \structure{best
       solution for n and best choice for n+1|n}.
   \end{block}
@@ -83,7 +83,7 @@
       \item The \structure{complexity} of DP is based on the size of the table;
       \item The \structure{correctness} of DP is based on the idea of induction;
       \end{itemize}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \section{Initial Example}
@@ -98,7 +98,7 @@
     \end{block}
 
     \vfill
-    
+
     Buying problem:
     \begin{itemize}
     \item Buy one of each $C$ classes of items.
@@ -170,7 +170,7 @@
   \item But if $M = 12$... It does not work anymore.
   \end{itemize}
 
-    
+
   \medskip
 
   Also no idea for \structure{divide and conquer}?
@@ -195,13 +195,13 @@
   \end{block}
   }
   \vfill
-  
+
   This works! ... but Time Limit Exceeded.
 \end{frame}
 
 \begin{frame}
   \frametitle{Wedding Shopping (11450) - Complete search}
-  
+
   \alert{Time Limit Exceeded:}
 
   \bigskip
@@ -212,7 +212,7 @@
   \vfill
 
   \alert{Problem: Too many overlapping subproblems}
-  
+
 
   \begin{block}{Sample case 2: $C=4$}
 
@@ -230,7 +230,7 @@
       \end{tabular}
       \column{0.4\textwidth}
       How many times \emph{shop(15,3)} is called?
-      
+
       \bigskip
 
       Every time we call \emph{shop(15,3)}, the solution is the same.
@@ -295,7 +295,7 @@
 % Programming here is not "code", but a "tabular method" (table method)
 
 %% DP us normally used when
-% Program has optimal sub structure: 
+% Program has optimal sub structure:
 %   The optimal solution to the problem contain optimal solutions to sub problems
 %   - "similar" to the requirement of greedy
 %   - If you can make a complete search recurrent (recursive), then you have this
@@ -317,9 +317,9 @@ shop(m,g):
    if (m < 0) return -INF
    if (g == C) return M - money
    if (table[m][g]) != -1 return table[m][g]  **NEW**
-   return table[m][g] = max(shop(m-price[g][k],g+1) 
+   return table[m][g] = max(shop(m-price[g][k],g+1)
                             for every k)
-\end{verbatim}  
+\end{verbatim}
 \end{block}
 % TODO: check if M - money is a good return value
 \vfill
@@ -353,8 +353,8 @@ shop(m,g):
 
   \vfill
 
-  The main problem for bottom-up DP is finding the base cases and the 
-  ordering between the cases. In some good cases, the ordering is 
+  The main problem for bottom-up DP is finding the base cases and the
+  ordering between the cases. In some good cases, the ordering is
   just a list of nested loops!
 \end{frame}
 
@@ -413,7 +413,7 @@ for g in (0:G-1)
        for k in C[g+1]:
           table[g+1][i-cost[k]] = 1
 \end{verbatim}
-\end{block} 
+\end{block}
   }
 
 \end{frame}
@@ -422,13 +422,13 @@ for g in (0:G-1)
 
 \begin{frame}
   \frametitle{DP: Top-down or Bottom-up?}
-  
+
   \begin{block}{Top-Down}
     \structure{Pros:}\\ Easy to implement starting from a recursive
     search. Only compute states if necessary.
 
     \alert{Cons:}\\ Recursive calls are slower if there are many
-    levels, state table memory usually can't be reduced.    
+    levels, state table memory usually can't be reduced.
   \end{block}
 
   \begin{block}{Bottom-Up}
@@ -438,13 +438,13 @@ for g in (0:G-1)
     \alert{Cons:}\\ Not very intuitive. If there are X states, all
     states values will have to be checked.
   \end{block}
-    
+
 
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{DP: What about the decision set?}  
+  \frametitle{DP: What about the decision set?}
 
   \begin{block}{}
   In the previous example, we only cared about the final value of the
@@ -453,9 +453,9 @@ for g in (0:G-1)
   \end{block}
 
   \medskip
-  
-  Together with the \emph{state} table, keep a second \emph{parent} table. 
-  Every time you update a value on the state table, write in the parent table 
+
+  Together with the \emph{state} table, keep a second \emph{parent} table.
+  Every time you update a value on the state table, write in the parent table
   which cell(s) was used to update that value.
 
   \medskip
@@ -480,13 +480,13 @@ for g in (0:G-1)
 
   \begin{block}{}
   {\smaller
-  Farmer Tanaka is growing apples in his field. He has a robot to collect the apples, but 
-  the robot can only walk east and south. If you know how many apples there are in each 
+  Farmer Tanaka is growing apples in his field. He has a robot to collect the apples, but
+  the robot can only walk east and south. If you know how many apples there are in each
   tree of his $m * n$ field, can you calculate the path that the robot should make to collect
   most apples?}
   \end{block}
-  
-  \begin{center}  
+
+  \begin{center}
     \includegraphics[width=0.5\textwidth]{../img/applefield}
   \end{center}
 \end{frame}
@@ -514,7 +514,7 @@ for g in (0:G-1)
   \end{center}
 
   If the robot reached position (x,y) with k apples, it does not
-  matter how it did it. So the path from (x,y) to the goal is independent from 
+  matter how it did it. So the path from (x,y) to the goal is independent from
   the parent path.
 
   This smells like DP! Let's solve it with a bottom up approach.
@@ -535,11 +535,11 @@ for g in (0:G-1)
     used.
 
     \vfill
-    
-  \item \structure{initial condition:} We can fill the top row (x,1) of the 
+
+  \item \structure{initial condition:} We can fill the top row (x,1) of the
     table with the sum of apples from 1 to x. And we can fill the Left column
     with the sum of apples from 1 to y.
-    
+
     \medskip
 
     Alternatively, we can add an additional dummy ``-1'' column/line
@@ -547,9 +547,9 @@ for g in (0:G-1)
 
     \vfill
 
-  \item \structure{transition:} For each cell x,y, max(x,y) is either 
+  \item \structure{transition:} For each cell x,y, max(x,y) is either
     max(x-1,y) + apple(x,y) or max(x,y-1) + apple(x,y)
-  \end{itemize}}  
+  \end{itemize}}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -607,7 +607,7 @@ for i in (1:m):
   \end{center}
 
   \vfill
-  
+
   \begin{block}{What is a range sum?}
     A maximal range sum is two indexes $i,j, i < j$ in A that maximizes
     the sum $a_i + a_{i+1}, a_{i+2}, \ldots, a_j$.
@@ -668,14 +668,14 @@ for (i in 0:n):
   Using the $O(n^2)$ pre-computation:
 
   \bigskip
-  
+
   \begin{center}
     Input = 1, -3, 20, -2, -5, 10, 5, -4, 6, 47, -30, -3\\
     A = 1, -2, 18, 16, 11, 21, 26, 22, 28, 75, 45, 42\\
   \end{center}
 
   \bigskip
-  
+
   \begin{itemize}
   \item Subset: 2 to 9 = A[9] - A[2-1] = 75 - (-2) = 77;
   \item Subset: 0 to 9 = A[9] - 0 = 75;
@@ -685,7 +685,7 @@ for (i in 0:n):
   \bigskip
 
   Can we do better?
-  
+
 \end{frame}
 
 \begin{frame}[fragile]
@@ -781,7 +781,7 @@ for i in (0:n):
        if (i > 0) A[i][j] += A[i-1][j]
        if (j > 0) A[i][j] += A[i][j-1]
        // Avoid double count
-       if (i > 0 && j > 0) A[i][j] -= A[i-1][j-1]  
+       if (i > 0 && j > 0) A[i][j] -= A[i-1][j-1]
 
 for i,j in (0:n)(0:n):
    for k,l in (i:n)(j:n):
@@ -789,7 +789,7 @@ for i,j in (0:n)(0:n):
       if (i > 0) sum -= A[i - 1][j];
       if (j > 0) sum -= A[i][j-1];
       if (i > 0 && j > 0) sum += A[i-1][j-1]
-      maxsum = max(sum,maxsum)   
+      maxsum = max(sum,maxsum)
 \end{verbatim}
 }
 \end{block}
@@ -801,7 +801,7 @@ for i,j in (0:n)(0:n):
 \begin{frame}
   \frametitle{Classic DP: Longest Increasing Subsequence}
   \begin{block}{Problem Definition}
-    Given a sequence $A = \{A[0],A[1],\ldots,A[n]\}$, determine the 
+    Given a sequence $A = \{A[0],A[1],\ldots,A[n]\}$, determine the
     longest subsequence of increasing numbers.
 
     \smallskip
@@ -819,8 +819,8 @@ for i,j in (0:n)(0:n):
 \begin{frame}[fragile]
   \frametitle{Longest Increasing Subsequence: Complete Search}
 
-  The complete search for the LIS problem requires you to test 
-  all possible subsets. This takes $O(2^n)$. 
+  The complete search for the LIS problem requires you to test
+  all possible subsets. This takes $O(2^n)$.
 
   \bigskip
 
@@ -856,7 +856,7 @@ for (i in 0:1<<n):
 
     \medskip
 
-    The element at the end of that sequence is either $A[i]$, or an element 
+    The element at the end of that sequence is either $A[i]$, or an element
     before $A[i]$ with the same max sequence size.
   \end{block}
 
@@ -922,9 +922,9 @@ for i in (1:n):
     $S_i$ & 10 & 4 & 6 & 12\\
     \hline
   \end{tabular}
-  
+
   \smallskip
-  
+
   $S = 12$
 
   \begin{block}{Complete Search Recursive Solution -- Similar to Wedding Problem}
@@ -939,7 +939,7 @@ value(id,size):
    if size == 0, return 0 // bag is full
    if id == n, return 0 // checked all items
    if S[id] > size, return value(id+1,size) // too big
-   return max(value(id+1,size), 
+   return max(value(id+1,size),
               V[id] + value(id+1, size - S[id]))
 \end{verbatim}
   \end{block}
@@ -947,15 +947,15 @@ value(id,size):
 \end{frame}
 
 \begin{frame}
-  \frametitle{0-1 Knapsack Problem: DP Approaches} 
+  \frametitle{0-1 Knapsack Problem: DP Approaches}
 
-  {\small 
+  {\small
     We can easily modify the algorithm in the last slide to a Top-down
     DP.
 
     \bigskip
 
-    \alert{Just be careful}: the size of the state table is: $nS$.\\ 
+    \alert{Just be careful}: the size of the state table is: $nS$.\\
     If $S$ is too large ($>>1M$), this approach might be unfeasible.
   }
 \end{frame}
@@ -1003,7 +1003,7 @@ Can you see the many overlapping subproblems?
 \begin{itemize}
   \item By now you should know how to do the top-down DP from here;
   \item Can you modify the recurrence to show \structure{how many
-    different ways} you can complete a value?\\ 
+    different ways} you can complete a value?\\
     (hint: complexity does not change);
   \item If you have many queries $V$, but with the same set of coins
     $A$, you don't need to clear the table.
@@ -1026,11 +1026,11 @@ Can you see the many overlapping subproblems?
 % Travelling Salesman Problem (bitmask again)
 %% Travelling Salesman Problem (TSP)
 % State: tsp(pos,bitmask)
-% Transition: 
+% Transition:
 %   Each visited city is a bit in the bitmask
 %   - if every city has been visited: tsp(pos, 2^n -1) = dist[pos][0] (back to the start with 0 cities)
 %   - Else, try visiting unvisited cities one by one
-%   - tsp(pos,bitmask) = min (dist[pos][nxt] + tsp(nxt,bitmask|1<<nt))) for every nxt != pos, 
+%   - tsp(pos,bitmask) = min (dist[pos][nxt] + tsp(nxt,bitmask|1<<nt))) for every nxt != pos,
 %                                                                           and nxt not visited
 %                                                                           bitmask & 1<<nxt == 0
 
@@ -1079,7 +1079,7 @@ Can you see the many overlapping subproblems?
 %  {\smaller
 %  If you can solve complete search and DP problems quickly, \alert{you
 %  probably can reach top 50\%} at the ICPC first round. Why not try it this year?
-%  
+%
 %  \begin{block}{ICPC team registration -- Deadline 06/10 -- Contest 06/23}
 %    Send message to caranha@cs.tsukuba.ac.jp with the following information:
 %    \begin{itemize}
@@ -1104,6 +1104,3 @@ Can you see the many overlapping subproblems?
 %  \end{itemize}}
 %\end{frame}
 %\end{document}
-
-
-

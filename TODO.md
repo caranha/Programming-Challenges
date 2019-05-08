@@ -18,14 +18,16 @@
 
 ### Week 3: DP
 - DP week one was OK.
-- DP week two needs more figures for the "classical DP problems", including explicit tables to show what
-  is happening to the students.
+- DP week two needs more figures for the "classical DP problems",
+  including explicit tables to show what is happening to the students.
 
 ### Week 4: Graph Part I AB
-- Materials need more examples and discussion in the middle section (Common Algorithms) for 2019
+- Materials need more examples and discussion in the middle section
+  (Common Algorithms) for 2019
 
 ### Week 5: Graph Part II AB
-- Lecture is generally good, but need more graph images showing the progress of the algorithm step by step.
+- Lecture is generally good, but need more graph images showing the
+  progress of the algorithm step by step.
 
 ### Week 6: Mathematics
 - BAD LECTURE -- NEEDS TO BE REWRITTEN!
