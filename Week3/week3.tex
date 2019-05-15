@@ -786,8 +786,8 @@ for i in (0:n):
 for i,j in (0:n)(0:n):
    for k,l in (i:n)(j:n):
       sum = A[k][l]
-      if (i > 0) sum -= A[i - 1][j];
-      if (j > 0) sum -= A[i][j-1];
+      if (i > 0) sum -= A[i - 1][l];
+      if (j > 0) sum -= A[k][j-1];
       if (i > 0 && j > 0) sum += A[i-1][j-1]
       maxsum = max(sum,maxsum)
 \end{verbatim}
