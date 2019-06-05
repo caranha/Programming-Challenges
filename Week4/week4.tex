@@ -31,7 +31,7 @@
 
 \subsection{Notes from Previous Classes}
 
-\input{previousclass.tex}
+%\input{previousclass.tex}
 
 \begin{frame}
   \frametitle{Week 4 and 5 -- Outline}
@@ -47,7 +47,7 @@
   \begin{block}{Next Week - Graph II}
     \begin{itemize}
     \item Single Sourse Shortest Path (Djikstra);
-    \item All Pairs Shortest Path (Floyd Warshall);   
+    \item All Pairs Shortest Path (Floyd Warshall);
     \item Network Flow and related Problems;
     \item Bipartite Graph Matching and related Problems;
     \end{itemize}
@@ -59,46 +59,70 @@
 \section{Graph Basics}
 
 \subsection{Motivation Problem}
+
+\begin{frame}[fragile]
+  \frametitle{Initial Problem: UVA 11902 -- Dominator}
+  \begin{block}{}
+    You are given a directed graph. Node {\bf A} dominates
+    node {\bf B} if you \alert{must} pass {\bf B} to reach {\bf A}.
+    \bigskip
+
+    List the nodes that dominate each other.
+  \end{block}
+  \begin{center}
+    \begin{columns}[T]
+      \column{0.4\textwidth}
+      \input{graphs/dominator.tex}
+      \column{0.3\textwidth}
+      {\bf Input}
+\begin{verbatim}
+1
+5
+0 1 1 0 0
+0 0 0 1 0
+0 0 0 1 0
+0 0 0 0 1
+0 0 0 0 0
+\end{verbatim}
+\column{0.3\textwidth}
+{\bf Output}
+{\small
+\begin{verbatim}
+Case 1:
++---------+
+|Y|Y|Y|Y|Y|
++---------+
+|N|Y|N|N|N|
++---------+
+|N|N|Y|N|N|
++---------+
+|N|N|N|Y|Y|
++---------+
+|N|N|N|N|Y|
++---------+
+\end{verbatim}}
+    \end{columns}
+  \end{center}
+  %% Simple graph problems (quick modification of DFS/BFS)
+  % Dominator: UVA 11902 - Page 148
+\end{frame}
+
+
 \begin{frame}
-  \frametitle{Motivation Problem -- UVA 11902: Dominator}
-  {\smaller
-    \begin{block}{Problem Summary}
-      We define that vertex $X$ \structure{dominates} vertex $Y$ if
-      every path from a start vertex $0$ to $Y$ must go through $X$.
-
-      \bigskip
-
-      For all Vertices, determine which nodes dominate which other.
-  \end{block}}
-
-  \vspace{1cm}
+  \frametitle{Initial Problem: UVA 11902 -- Dominator}
+  \begin{block}{}
+    What do we need to do to solve this problem?
+  \end{block}
 
   \begin{center}
     \begin{columns}[T]
       \column{0.5\textwidth}
-      \begin{tikzpicture}[scale=1.3,auto,swap]
-        \tikzset{edge/.style = {->,>=latex'}}
-        \node[vertex] (a) at (0,0) {0};
-        \node[vertex] (b) at (1,1) {1};
-        \node[vertex] (c) at (1,-1) {2};
-        \node[vertex] (d) at (2,0) {3};
-        \node[vertex] (e) at (3,0) {4};
-        \draw[edge] (a) to (b);
-        \draw[edge] (a) to (c);
-        \draw[edge] (b) to (d);
-        \draw[edge] (c) to (d);
-        \draw[edge] (d) to (e);
-      \end{tikzpicture}
+      \input{graphs/dominator.tex}
       \column{0.5\textwidth}
       \begin{itemize}
-      \item 0 dominates all nodes;
-      \item 3 dominates 4;
-      \item 1 does not dominate 3;
-
-        \bigskip
-
-        How do you solve it?
-
+        \item Represent the graph as a data structure;\bigskip
+        \item Find the relationship between the nodes;\bigskip
+        \item Determine which nodes "dominate" each other;\bigskip
       \end{itemize}
     \end{columns}
   \end{center}
@@ -133,9 +157,9 @@
       \item Find a vertex or edge with a certain characteristic;
       \item Find a relationship between vertices or edges;
       \end{itemize}
-      
+
       \column{0.4\textwidth}
-      
+
 
       \begin{tikzpicture}[scale=.8,auto,swap]
         \tikzset{edge/.style = {->,>=latex'}}
@@ -171,17 +195,17 @@
 
 \begin{frame}[fragile]
   \frametitle{How do we implement a graph?}
-{\smaller
-  \begin{block}{Adjacency Matrix - Stores connection between Vertices}
+  \begin{block}{Adjacency Matrix - Connection between Vertices}
 \begin{verbatim}
-
 int adj[100][100];
-// adj[i][j] is 0 or -1 if no edge between i,j
-// adj[i][j] is A if edge of weight A links i,j
+
+for (int i = 0; i < n; i++)
+  for (int j = 0; i < n; j++)
+    cin >> adj[i][j]; // 0 if no edge, 1 if edge
 \end{verbatim}
 
     \begin{itemize}
-    \item \structure{Pro}: Very simple to program and use;
+    \item \structure{Pro}: Very simple to program;
     \item \alert{Con}:
       \begin{itemize}
       \item Cannot store multigraph;
@@ -190,7 +214,6 @@ int adj[100][100];
       \end{itemize}
     \end{itemize}
   \end{block}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -204,79 +227,74 @@ typedef pair<int,int> edge; // <destination, weight> pair
 typedef vector<edge> neighb;// all the neighbors of one V
 vector<neighb> AdjList;     // all vertices
 
-AdjList[2];                 // Adjency list of vertex 2
+int e;
+for (int i = 0; i < n; i++)
+  for (int j = 0; j < n; j++)
+    cin >> e;
+    if (e == 1)
+      AdjList[i].push_back(pair(j,1));
 
-vector<double> Vcost;       // Array with Vertex weights
 \end{verbatim}
 
     \begin{itemize}
-    \item \structure{Pro}: $O(V+E)$ space, efficient if graph is sparse; Can store multigraph; 
-    \item \alert{Con}: Code is more complex than adjacency list; $O(\text{log}V)$
+    \item \structure{Pro}: $O(V+E)$ space, efficient if
+      graph is sparse; Can store multigraph;
+    \item \alert{Con}: Code is more complex
+      than adjacency list; $O(\text{log}V)$
       to test if two vertices are adjacent.
     \end{itemize}
-
-    \bigskip
-
-    If you need special Vertex data, you can save it in a separate array.
   \end{block}
-
   }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Data Structures for Graphs (2)}
-  {\smaller
-    \begin{block}{Edge List -- stores only the edges}
+  \frametitle{How do we implement a graph?}
+  \begin{block}{Edge List}
 \begin{verbatim}
 
 pair <int,int> edge; // Edge between i and j
-vector<pair <int,ii>> Elist; // Store edges and weights
+vector<pair <int,ii>> Elist; // Store edges;
+
+int e;
+for (int i = 0; i < n; i++)
+  for (int j = 0; j < n; j++)
+    cin >> e;
+    if (e == 1)
+      Elist.push_back(pair(1, pair(i,j)));
 \end{verbatim}
-
-\bigskip
-
-This is a very unusual structure! It is used by \structure{Kruskal's
-  Algorithm}
-
-    \end{block}
-
-    \vfill 
+\end{block}
+    \vfill
 
     \begin{itemize}
+    \item Used by \structure{Kruskal's Algorithm}, among others.
     \item Some algorithms require specialized data structures.
     \item Use arrays to save data about vertices.
     \end{itemize}
-    
-  }
 \end{frame}
 
 
 \subsection{BFS, DFS}
 \begin{frame}
-  \frametitle{Searching in a Graph: BFS and DFS}   
-  {\small
-
+  \frametitle{Graph Search: BFS and DFS}
     \begin{itemize}
     \item Almost every Graph algorithm uses BFS or DFS;
     \item Learn to do this with your eyes closed;
-    \item Of course, some problems require special implementation;
     \end{itemize}
 
   \begin{block}{Depth First Search -- DFS}
     \begin{itemize}
-    \item Easy to implement with Recursion;
+    \item Easy to implement using Recursion;
     \item Visit first edge of each vertice until you find a loop;
     \end{itemize}
   \end{block}
 
   \begin{block}{Breadth First Search -- BFS}
     \begin{itemize}
-    \item Easy to implement on a loop;
-    \item Put every edge on a FIFO queue, then visit next vertex;
+    \item Easy to implement using loops, requires keeping track of
+      visited vertices on a queue;
+    \item Put edge/vertice on a FIFO queue, then visit next;
     \end{itemize}
   \end{block}
-
-  }
 \end{frame}
 
 \begin{frame}
@@ -352,69 +370,54 @@ This is a very unusual structure! It is used by \structure{Kruskal's
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{BFS/DFS: Implementation}
-  {\smaller
-
-    Implementing DFS with an adjacency list:
-
-  \begin{exampleblock}{DFS}
+  \frametitle{DFS Implementation}
+  \begin{exampleblock}{DFS with adjacency list}
 \begin{verbatim}
 #define UNVISITED 0
 #define VISITED 1
-
 vector<int> dfs_vis; // list visited nodes
 
 void dfs(int v) {
    dfs_vis[v] = VISITED;
-   for (int i; i < (int) Adj_list[v].size(); i++) {
+   for (int i; i < (int) Adj_list[v].size(); i++)
+   {
       pair <int,int> u = Adj_list[v][i];
-      if (dfs_vis[u.first] == UNVISITED) 
-         dfs(v.first);
-      // else -- Found Loop!
+      if (dfs_vis[u.first] == UNVISITED)
+         dfs(v.first); // else -- Found Loop!
    }
 }
-
 dfs(1);
 \end{verbatim}
   \end{exampleblock}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{BFS/DFS: Implementation}
-
-  {\smaller
-    Implementing BFS with an adjacency matrix:\\
-    \alert{Note that this implementation is $O(N^2)$!}
-
-               
-  \begin{exampleblock}{BFS}
+  \frametitle{BFS Implementation}
+  \begin{exampleblock}{BFS with adjacency matrix ($O(N^2)$!)}
 \begin{verbatim}
-#define INF 1000000
-int s = 1;                       // Start Vertice
+#define INF 1000000 // Not visited
+int s = 1; // Search started
 
-vector<int> d(N,INF); d[s] = 0;  // Distance array
+vector<int> d(N,INF); d[s] = 0;  // Distances
 queue<int> q; q.push(s);
-
 while(!q.empty()) {
   int u = q.front(); q.pop();
   for (int i=0; i < N; i++) {
     if (adj[u][i] && d[i] == INF) {
-      d[i] = d[u] + 1;           // Visiting node
+      d[i] = d[u] + 1;     // Update Distance
       q.push(i);
     }
   }
 }
 \end{verbatim}
   \end{exampleblock}
-  }
 \end{frame}
 
 \subsection{Back to the Dominator}
 
 \begin{frame}[fragile]
   \frametitle{Back to the Dominator Problem}
-  
+
   {\smaller
   \begin{exampleblock}{Thinking about the problem again}
     X is \structure{Dominated} by Y if \structure{all paths} from
@@ -422,7 +425,7 @@ while(!q.empty()) {
 
     \bigskip
   \end{exampleblock}}
-  
+
   \begin{center}
     \begin{tikzpicture}[scale=0.9,auto,swap]
       \tikzset{edge/.style = {->,>=latex'}}
@@ -442,11 +445,11 @@ while(!q.empty()) {
 
 \begin{frame}[fragile]
   \frametitle{Back to the Dominator Problem}
-  
+
   {\smaller
   \begin{exampleblock}{$N^2$ solution: DFS $N$ times}
 \begin{verbatim}
-def DFS2(S,P): ...  // Modified DFS: never visits P; 
+def DFS2(S,P): ...  // Modified DFS: never visits P;
 
 DFS2(0,-1)
 Mark every VISITED vertex as DOMINATED by 0
@@ -459,7 +462,7 @@ for i in (1:N):
          j is DOMINATED by i
 \end{verbatim}
   \end{exampleblock}}
-  
+
   \begin{center}
     \begin{tikzpicture}[scale=0.7,auto,swap]
       \tikzset{edge/.style = {->,>=latex'}}
@@ -618,7 +621,7 @@ for i in (1:N):
 %%         \draw[edge] (c) to (d);
 %%         \draw[edge] (d) to (b);
 %%       \end{tikzpicture}
-      
+
 %%       \vspace{.5cm}
 
 %%       \begin{tikzpicture}[scale=.8,auto,swap]
@@ -658,7 +661,7 @@ for i in (1:N):
     \end{exampleblock}
 
     \vfill
-    
+
     \begin{block}{Problem Example: Extra cables}
       You own a network of $N$ computers;
 
@@ -669,7 +672,7 @@ for i in (1:N):
       \bigskip
 
       You need to buy $M$ extra cables to connect ALL computers. How
-      many cables do you need?      
+      many cables do you need?
     \end{block}
   }
 \end{frame}
@@ -680,7 +683,7 @@ for i in (1:N):
 
   This problem is defined in graph theory as finding
   \structure{Connected Components}.
-  
+
   \begin{center}
     \begin{tikzpicture}[scale=1,auto,swap]
       \node[vertex] (a) at (0,2) {a};
@@ -783,7 +786,7 @@ cout << cables - 1 << "\n";
   \frametitle{More Common Algorithms Using DFS/BFS}
   \framesubtitle{Implicit Graphs and Floodfill}
 
-  
+
   \begin{columns}
     \column{0.7\textwidth}
     {\smaller
@@ -833,7 +836,7 @@ cout << cables - 1 << "\n";
       \draw[edge] (05) to (15);
     \end{tikzpicture}
   \end{columns}
-  
+
 \end{frame}
 
 
@@ -878,7 +881,7 @@ int floodfill(int y, int x) {
     \structure{Input}: M, N, The list of M topics, followed by N ordered pairs of topics.
 
     \structure{Output}: A sorted list with all topics.
-    
+
   \end{block}
 \begin{verbatim}
 5 4 Graphs DP Search Flow Programming
@@ -905,7 +908,7 @@ Result: Programming Search DP Graph Flow
   \item We can use the \structure{in-degrees} and
     \structure{out-degrees} to calculate the topological sort;
   \end{itemize}
-  
+
   \begin{center}
     \begin{tikzpicture}[scale=.8,auto,swap]
       \node[vertex] (a) at (0,0) {out: 2};
@@ -924,9 +927,9 @@ Result: Programming Search DP Graph Flow
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Topological Sort (Directed Acyclic Graphs)} 
-  
-  {\smaller 
+  \frametitle{Topological Sort (Directed Acyclic Graphs)}
+
+  {\smaller
 
     \begin{exampleblock}{Khan's algorithm for Topological sort (modified edge-BFS)}
 \begin{verbatim}
@@ -963,8 +966,8 @@ while (Q.size() > 0):
 \begin{frame}[fragile]
   \frametitle{Bipartite Check}
   {\smaller
-  To check whether a graph is bipartite, we perform a BFS or DFS on the graph, 
-  and set the color of every node to black or white, alternatively. Pay 
+  To check whether a graph is bipartite, we perform a BFS or DFS on the graph,
+  and set the color of every node to black or white, alternatively. Pay
   attention to collision conditions.
 
   \begin{exampleblock}{}
@@ -980,7 +983,7 @@ while (!q.empty() && isBipartite) {
          color[v.first] = 1 - color[i];
          q.push(v.first);}
       else if (color[v.first] == color[u]) {
-         isBipartite = False; 
+         isBipartite = False;
 }}}
 \end{verbatim}
   \end{exampleblock}
@@ -1099,7 +1102,7 @@ while (!q.empty() && isBipartite) {
       \end{enumerate}
       Since DFS/BFS is $O(V+E)$, this algorithm runs in $O(V^2+EV)$.
     \end{block}
-    
+
     \bigskip
 
     \hfill ... but we can do better!
@@ -1132,7 +1135,7 @@ while (!q.empty() && isBipartite) {
   \begin{center}
     \includegraphics[width=0.6\textwidth]{../img/graph_articulation}
   \end{center}
-  
+
 {\tiny
   \begin{exampleblock}{}
 \begin{verbatim}
@@ -1163,7 +1166,7 @@ void dfs_a(u){
   {\smaller
     \begin{block}{Problem Description}
       On a directed graph $G$, a Strongly Connected Component (SCC) is
-      a subset $G'$ where for every pair of nodes $a,b \in G'$, there is both 
+      a subset $G'$ where for every pair of nodes $a,b \in G'$, there is both
       a path $a \rightarrow b$ and a path $b \rightarrow a$.
     \end{block}
 
@@ -1227,7 +1230,7 @@ void dfs_a(u){
 \end{frame}
 
 \begin{frame}
-  \frametitle{Strongly Connected Components -- Algorithm} 
+  \frametitle{Strongly Connected Components -- Algorithm}
 
   We can use a simple modification of the algorithm for bridges and
   articulation points:
@@ -1255,7 +1258,7 @@ void dfs_a(u){
     \medskip
 
     A \structure{Minimum Spanning Tree} is a spanning tree where the
-    sum of edge's weights is minimal.    
+    sum of edge's weights is minimal.
   \end{block}
   }
 
@@ -1313,8 +1316,8 @@ void dfs_a(u){
   {\small
   \begin{block}{Problems using MST}
     Problems using MST usually involve calculating the minimum costs
-    of infrastructure such as roads or networks. 
-    
+    of infrastructure such as roads or networks.
+
     \medskip
 
     Some variations may require you to find the \alert{maximum}
@@ -1377,9 +1380,9 @@ void dfs_a(u){
 {\smaller
 \begin{exampleblock}{}
 \begin{verbatim}
-vector<pair<int, pair<int,int>> Edgelist; 
+vector<pair<int, pair<int,int>> Edgelist;
 sort(Edgelist.begin(),Edgelist.end());
-int mst_cost = 0; 
+int mst_cost = 0;
 UnionFind UF(V);
   // note 1: Pair object has built-in comparison;
   // note 2: Need to implement UnionSet class;
@@ -1456,7 +1459,7 @@ cout << "MST Cost: " << mst_cost << "\n"
         \draw[red edge] (a) -- node[label] {$6$} (d);
         \draw[black edge] (d) -- node[label] {$9$} (e);
       }
-      
+
       \uncover<6->{
         \node[red vertex] (e1) at (0,-2) {};
         \draw[red edge] (a) -- node[label] {$6$} (e);
@@ -1478,7 +1481,7 @@ void process (int v) {
    taken[v] = 1;
    for (int j = 0; j < (int)AdjList[v].size(); j++) {
       pair <int,int> ve = AdjList[v][j];
-      if (!taken[ve.first]) 
+      if (!taken[ve.first])
          pq.push(pair <int,int> (-ve.second,-ve.second)
 }}
 taken.assign(V,0);
@@ -1504,9 +1507,9 @@ while (!pq.empty()) {
     \begin{block}{}
       The \structure{Maximum Spanning Tree} variant requires the spanning
       tree to have maximum possible weight.
-      
+
       \bigskip
-      
+
       It is very easy to implement the Maximum MST by reversing the sort
       order of the edges (Kruskal), or the weighting of the priority Queue
       (Prim).
@@ -1577,7 +1580,7 @@ while (!pq.empty()) {
   \begin{block}{Problem Definition}
     Consider that you can order MST by their costs: $G_1, G_2, \ldots,
     G_n$.  This variant asks you to calculate the $n^{th}$ best
-    spanning tree.    
+    spanning tree.
   \end{block}
 
   \bigskip
@@ -1617,7 +1620,7 @@ while (!pq.empty()) {
         \draw[edge] (f) -- node[label] {$140$} (g);
       \end{tikzpicture}
     \end{center}
-  
+
   \begin{block}{Problem Definition}
     Given two vertices $i,j$, find a path $i \rightarrow j$ so that
     the cost of the most expensive edge is minimized;
@@ -1630,10 +1633,10 @@ while (!pq.empty()) {
 
   \begin{exampleblock}{How to solve}
     The MST finds the path that connects all nodes while keeping the
-    cost of individual edges minimal. 
+    cost of individual edges minimal.
 
     \medskip
-    
+
     To solve the minimax problem, we calculate the MST for $G$, and
     then find the path from $i$ to $j$ in the MST.
   \end{exampleblock}
@@ -1657,7 +1660,7 @@ while (!pq.empty()) {
   \frametitle{Class Summary}
   \frametitle{Hints on solving Problems}
 
-  
+
   {\smaller
     \begin{block}{Keep a code Library}
       Graph problems/algorithms use a lot of common code. Store a
@@ -1668,7 +1671,7 @@ while (!pq.empty()) {
       \item Structures for keeping parent and children lists;
       \item Adjacency lists;
       \end{itemize}
-      
+
   \end{block}
   \begin{block}{Common tricky cases -- Be careful!}
     \begin{itemize}
@@ -1698,26 +1701,26 @@ while (!pq.empty()) {
 
 %\begin{frame}[fragile]
 %  \frametitle{EXTRA: Union Find Disjoint Set}
-%  
+%
 %  {\tiny
 %    \begin{exampleblock}{Union Find Class}
 %\begin{verbatim}
 %class UnionFind {
 %private: vector<int> p, rank;
-%public: 
+%public:
 %   UnionFind(int N) {
 %      rank.assign(N,0);
 %      p.assign(N,0); for (int i=0; i<N; i++) p[i]=i;}
 %   int findSet(int i) {
 %      return (p[i] == i? i : (pi[i] = findSet(p[i]))); }
-%   bool isSameSet(int i, int j) { 
+%   bool isSameSet(int i, int j) {
 %      return findSet(i) == findSet (j); }
 %   void unionSet(int i, int j) {
-%      is (!isSameSet(int i, int j) { 
+%      is (!isSameSet(int i, int j) {
 %         int x = findSet(i), y = findSet(j);
-%         if (rank[x] > rank[y]) 
+%         if (rank[x] > rank[y])
 %            p[y] = x;
-%         else { 
+%         else {
 %            p[x] = y;
 %            if (rank[x] == rank[y]) rank[y]++; }
 %   }}
@@ -1733,4 +1736,3 @@ while (!pq.empty()) {
 % Dependence Graphs (Compilers, Pipelining, Scheduling)
 % Grammar Graphs (Compilers, NLP)
 \end{document}
-

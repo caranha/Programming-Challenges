@@ -11,10 +11,11 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 8 - String Problems}
+%\subtitle[]{Week 8 - String Problems}
+\subtitle[]{Week 6 - String Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-06-16,19\\{\tiny Last updated \today}}
+\date{2019-05-31,06-03\\{\tiny Last updated \today}}
 \begin{document}
 
 \section{Introduction}
@@ -26,15 +27,13 @@
 \hfill{\tiny Suffix Trie pictures from ``Competitive Programming 3'' by Steven Halim}
 \end{frame}
 
-\subsection{Notes from last week}
-\input{previousclass.tex}
+% \subsection{Notes from last week}
+% \input{previousclass.tex}
 
 \subsection{Outline}
 
 \begin{frame}
-  \frametitle{Final Week: String Problems}
-  {\smaller
-
+  \frametitle{String Problems}
     \begin{exampleblock}{}
       String manipulation is very common in real life applications:
 
@@ -53,22 +52,22 @@
       \end{itemize}
     \end{block}
 
-    This week, we will see some of these algorithms.
-  }
+    % This week, we will see some of these algorithms.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Representative Ad-hoc string problems}
-  {\smaller
+  \frametitle{Ad-hoc (one-of-a-kind) string problems}
+  Many String Problems in programming contests are {\bf "Ad-hoc"} (one-of-a-kind).
+  They are usually a cover for problems of other types.
 
-    ``Pure'' string problems are usually found in these forms:
-    
   \begin{exampleblock}{}
     \begin{itemize}
     \item \structure{Pre-processing/Parse}: Input data is in string, but
-      the main problem is just numbers.
+      the main problem is just numbers.\bigskip
+
     \item \structure{String Matching}: Compare two (or more) strings for
-      similarities/differences. Find substrings.
+      similarities/differences. Find substrings.\bigskip
+
     \item \structure{Encode/Decode}: Transform encoded (encrypted)
       text into normal text (or vice-versa). Usually many solutions are
       possible (search for maximum solution).
@@ -78,7 +77,6 @@
   \bigskip
 
   Use of DP is very common!
-  }
 \end{frame}
 
 \section{String Basics}
@@ -93,21 +91,23 @@
         \column{0.45\textwidth}
 \begin{verbatim}
 // C/C++
-char[100] str; // needs \0 in the end!
+char[100] str;
+// ends with '\0'
 
-#include<string> 
+#include<string>
 str s;
 \end{verbatim}
         \column{0.45\textwidth}
 \begin{verbatim}
 // JAVA
 String str;
+
+// JAVA strings
+// are imutable!
 \end{verbatim}
       \end{columns}
     \end{block}
 
-Important to know that Java strings are immutable!
-    
     \begin{block}{Data Input}
       \begin{columns}[T]
         \column{0.45\textwidth}
@@ -116,14 +116,14 @@ Important to know that Java strings are immutable!
 scanf("%s",&str); cin >> str;
 
 // Line
-gets(str); 
+gets(str);
 fgets(str,1000,strdin);
 getline(cin,str);
 \end{verbatim}
         \column{0.45\textwidth}
 \begin{verbatim}
 // Word
-Scanner sc = new 
+Scanner sc = new
        Scanner(System.in);
 str = sc.next();
 
@@ -145,8 +145,8 @@ str = sc.nextLine();
 // C/C++
 printf("s = %s, l = %d\n",
    str, (int) strlen(str));
-cout << "s = " << str << 
-   ", l= " << str.length() 
+cout << "s = " << str <<
+   ", l= " << str.length()
    << endl;
 \end{verbatim}
         \column{0.45\textwidth}
@@ -155,7 +155,7 @@ cout << "s = " << str <<
 System.out.print("..."); OR
 System.out.println(); OR
 System.out.printf(
-   "s = %s, l= %d\n", str, 
+   "s = %s, l= %d\n", str,
    str.length();)
 \end{verbatim}
       \end{columns}
@@ -169,7 +169,7 @@ result = (str == "test");
 \end{verbatim}
         \column{0.45\textwidth}
 \begin{verbatim}
-result = 
+result =
    str.equals("test");
 
 \end{verbatim}
@@ -195,8 +195,8 @@ str.append(" world");
 \begin{verbatim}
 // JAVA
 str = "hello";
-str += " world"; 
-// Careful! 
+str += " world";
+// Careful!
 // Creates new strings
 \end{verbatim}
       \end{columns}
@@ -223,7 +223,7 @@ for (int i=0;str[i];i++)
 \begin{frame}[fragile]
   \frametitle{String Basic Operations: A primer (4)}
   {\smaller
-    \begin{block}{String Tokenizer -- Breaks a string in ``words''}
+    \begin{block}{String Tokenizer -- Separates a string based on a character}
       \begin{columns}[T]
         \column{0.45\textwidth}
 \begin{verbatim}
@@ -273,7 +273,7 @@ if (pos!=string::npos)
         \column{0.45\textwidth}
 \begin{verbatim}
 // JAVA
-int pos = 
+int pos =
   str.indexOf(substr);
 if (pos != -1)
   System.out.println(pos);
@@ -290,8 +290,8 @@ sort(s.begin(),s.end());
 \end{verbatim}
         \column{0.45\textwidth}
 \begin{verbatim}
-//Immutable, break the 
-//string using 
+//Immutable, break the
+//string using
 //toCharArray()
 \end{verbatim}
       \end{columns}
@@ -317,7 +317,7 @@ sort(s.begin(), s.end())
         \column{0.45\textwidth}
 \begin{verbatim}
 // JAVA
-Vector<String> s = 
+Vector<String> s =
    new Vector<String>();
 Collections.sort(S);
 
@@ -328,99 +328,98 @@ Collections.sort(S);
 \end{frame}
 
 \subsection{Ad-Hoc Problem Discussion}
-\begin{frame}
-  \frametitle{Discussion of Ad-hoc problems -- 1}
-
-  {\smaller
-    \begin{block}{}
-      The first four problems are ``ad-hoc''. What string operations
-      are necessary to solve them?
-    \end{block}
-
-    \begin{exampleblock}{Problem 2 -- Caesar Cypher}
-      This problem requires you to find the correct \emph{rotational
-        cypher}. For example:
-
-      \medskip
-      
-      Dictionary:
-      \begin{itemize}
-      \item CAT
-      \item MOUSE
-      \item TIGER
-      \item GET
-      \end{itemize}
-
-      \medskip
-      ECR RGECP      
-    \end{exampleblock}
-
-    What is the general function needed to test a dictionary?    
-  }
-\end{frame}
 
 \begin{frame}
-  \frametitle{Discussion of Ad-hoc problems -- 2}
-
-  {\smaller
-    \begin{block}{}
-      The first four problems are ``ad-hoc''. What string operations
-      are necessary to solve them?
-    \end{block}
+  \frametitle{Discussion of Ad-hoc problems}
 
     \begin{exampleblock}{Problem 1 -- Immediate decodability}
-      Given a set of binary symbols, you must answer the question:
-      Are all symbols \emph{immediately unique}?
+      Given a set of {\bf 2 to 8 binary words}, of length
+      between {\bf 1 and 10}, decide if the set is {\bf immediately
+      decodable}. \bigskip
 
-      \begin{itemize}
-      \item 001
-      \item 100
-      \item 11011
-      \item 10101
-      \item \alert{10}
-      \end{itemize}
+      A set is immediately decodable if {\bf no word is a prefix of
+      another word}.
     \end{exampleblock}
 
-    \vfill
-    
-    What is the algorithm to test uniqueness?
-    \begin{itemize}
-    \item By Brute force?
-    \item A better algorithm?
-    \end{itemize}
-  }
+    \begin{columns}
+      \column{0.5\textwidth}
+      {\bf Input example 1}
+      \begin{itemize}
+        \item 001
+        \item 110
+        \item 10101
+        \item 01101
+        \item 100
+      \end{itemize}
+      \column{0.5\textwidth}
+      {\bf Input example 2}
+      \begin{itemize}
+        \item 001
+        \item 110
+        \item 10101
+        \item 01101
+        \item 10
+      \end{itemize}
+    \end{columns}\bigskip
+
+    What is the brute force algorithm? What is the complexity? What
+    is a smarter algorithm?
 \end{frame}
 
+
 \begin{frame}
-  \frametitle{Discussion of Ad-hoc problems -- 2}
+  \frametitle{Discussion of Ad-hoc problems}
+    \begin{exampleblock}{Problem 2 -- Caesar Cypher}
+      {\small A {\bf rotational cypher} transforms \emph{plaintext} to
+      \emph{cyphertext} by adding a constant value "k" to every character.\medskip
 
-  {\smaller
-    \begin{block}{}
-      The first four problems are ``ad-hoc''. What string operations
-      are necessary to solve them?
-    \end{block}
+      Example: I LOVE YOU + ($k = 3$) $\rightarrow$ LCORYHCARY\medskip
 
-    \begin{exampleblock}{Problem 3 and 4 -- Parsers}
-      Problems 3 and 4 are both parsers. They require you to parse the
-      input and make a simple operation:
+      Given a dictionary of plaintext, find the best translation of
+      the cyphertext.}
+    \end{exampleblock}
 
-      \medskip
-      
-      {\bf Problem 3: Parsing logical equation:}\\
-      (x\&y)|(x\&z)|(y\&\~ y)
+    \begin{columns}
+      \column{0.5\textwidth}
+      {\small
+      THIS\\
+      DAWN\\
+      THAT\\
+      THE\\
+      ZORRO\\
+      OTHER\\
+      AT\\
+      THING\\
+      \#\\
+      BUUBDLA PSSPABUAEBXO}
+      \column{0.5\textwidth}
+      {\bf Output}:\\ ATTACK ZORRO AT DAWN
+    \end{columns}
+\end{frame}
 
-      \medskip
 
-      {\bf Problem 4: Parsing nested function:}\\
-      (0.5 3 (0.2 (0.5 3 3) (0.4 2 3)))
+\begin{frame}[fragile]
+  \frametitle{Discussion of Ad-hoc problems}
+
+    \begin{exampleblock}{Problem 3 -- Ensuring Truth}
+      Given a boolean formula in the following format, is the formula
+      {\bf satisfiable}?
+
+      \begin{equation*}
+        (x_1\land \hat{x_2}\land \ldots \land {x_n}) \lor (x_i\land \hat{x_j}\land\ldots) \lor \ldots
+      \end{equation*}
+
+      {\bf Examples:}
+\begin{verbatim}
+(a&b&c)|(a&b)|(a)        <--- Satisfiable;
+(x&~x)                   <--- Not satisfiable;
+\end{verbatim}
     \end{exampleblock}
 
     \begin{itemize}
-    \item How do you parse each problem?
-    \item In each case, do you calculate the problem {\bf during} or {\bf after}
-      parsing?
+      \item A big part of the program is to build a function to read a string with size over 5000 in the right format.
+      \item SAT is a very hard problem, but for this particular string format, is there a simple way to calculate satisfiability?
     \end{itemize}
-  }
 \end{frame}
 
 
@@ -432,11 +431,11 @@ Collections.sort(S);
 
   {\smaller
   \begin{block}{}
-    Many String problems include some form or \structure{string matching}
+    Many String problems include some form of \structure{string matching}
 
     \medskip
 
-    Can you find a substring $P$ inside of string $T$?
+    Find a substring $P$ inside of string $T$.
   \end{block}
   \begin{itemize}
   \item $P$ = OBEY
@@ -448,55 +447,56 @@ Collections.sort(S);
   \begin{block}{}
     \begin{itemize}
     \item The easiest solution: Use strstr from the standard library!
-    \item But... what if the search has special conditions? (ex: $0 == O$)
-    \item Better study algorithms for string matching!
+    \item But... what if the search has special conditions?
+    \begin{itemize}
+      \item {\bf example:} O and 0 are the same character
+    \end{itemize}
+    \item Let's study how to make a string matching algorithm!
     \end{itemize}
   \end{block}
 
-  What is the complexity of a Complete search?
-  
+  {\bf First:} What is the complexity of a Complete search?
+
   }
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{String Matching: Naive Algorithm}
 
-  {\smaller 
-    A basic approach for string matching is the complete
-    search: For every position $i \in n$, test if you can find the substring
-    $m$ there.  
+  {\bf Complete search approach:} For every character $n[i]$, test if
+  substring $m$ begins there.\bigskip
 
-    \bigskip
-    
-    \begin{exampleblock}{}
+  \begin{exampleblock}{}
 \begin{verbatim}
 int naiveMatching() {
   for (int i = 0; i < n; i++)
     bool found = true;
     for (int j = 0; j < m && found; j++)
-      if (i+j >= n || M[j] != N[i+j]) found = false;
-    if (found) printf("M is found at index %d in N\n",i);}
+      if (i+j >= n || M[j] != N[i+j])
+        found = false;
+    if (found)
+      printf("Found at index %d\n",i)
 \end{verbatim}
-    \end{exampleblock}
-    
+  \end{exampleblock}
     \bigskip
-
-    For regular natural text, this runs around $O(n)$, but for the worst case
-    the cost becomes $O(mn)$. Example: ``AAAAAAAAAB'' and ``AAAAB''.
-  }
+    \begin{itemize}
+      \item Average case: $O(n)$
+      \item Worst case: $O(mn)$\\M = AAAAB, N = AAAAAAAAAAAAAAAAAB
+      \item Why is this case bad?
+    \end{itemize}
 \end{frame}
 
 \subsection{Knuth-Morris-Pratt}
 \begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
-  
+
   \begin{block}{Basic Idea}
     The KMP algorith will never re-match a character in $M$ that was
-    matched in $N$. 
+    matched in $N$.
 
     \bigskip
 
-    If KMP finds a mismatch, it will skip $n$ to $m+1$, and rewind $m$ to the 
+    If KMP finds a mismatch, it will skip $n$ to $m+1$, and rewind $m$ to the
     appropriate value to continue the match.
   \end{block}
 
@@ -508,30 +508,26 @@ M = CO-COMBO
                    CXXXXXXXX
                             CO-COX
                                CO-COX
-                                  CO-COMBO 
+                                  CO-COMBO
 \end{verbatim}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
-  {\smaller
     \begin{block}{How it works}
 
-      The KMP needs to construct a ``rewind table'' $b$. This
-      table is used to determine where in $M$ the algorithm
-      should \structure{try again} in case of a miss.
-      
+      The KMP needs to construct a ``M rewinded table'' $b$. When a mismatch happens, the substring $M$ is rewinded, but the $N$ index always moves forward.
+
 \begin{verbatim}
-m =  0 1 2 3 4 5 6 7
+M =  0 1 2 3 4 5 6 7      <-- Substring index
      C O - C O M B O
-b = -1 0 0 0 1 2 0 0
+b = -1 0 0 0 1 2 0 0      <-- M "rewind" index
 \end{verbatim}
 
-If a miss happens at $m=5$ (M), the algorithm will try to rematch the
-string at $m=b[5]=2$ (-).
+If a miss happens at $m=5$ (M), the algorithm will return the M counter (j)
+to $j = b[5] = 2$.
     \end{block}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -539,7 +535,7 @@ string at $m=b[5]=2$ (-).
   {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-char N[MAX_N], M[MAX_N]; 
+char N[MAX_N], M[MAX_N];
 int b[MAX_N], n, m;
 
 void kmpPreprocess() {
@@ -566,116 +562,122 @@ void kmpSearch() {
 \subsection{DP}
 \begin{frame}
   \frametitle{String Processing with Dynamic Programming}
-  {\smaller
   \begin{block}{}
-    Many String problems can be reduced to a \structure{search}
-    problem and, as such, can be sped-up by the use of Dynamic
-    Programming.
-    
-    \bigskip
+    Some string problems can be explained as a \structure{search}
+    problem. In this case, we can solve them using Dynamic Programming.\bigskip
 
-    Let's discuss a few of them.
+    \begin{itemize}
+    \item String Alignment/Edit Distance
+    \item Longest Common Subsequence
+    \end{itemize}
   \end{block}
-
-  \begin{itemize}
-  \item String Alignment/Edit Distance
-  \item Longest Common Subsequence
-  \end{itemize}
-
   \bigskip
-
-  \structure{Note}: For strings and DP, usually the indexes of the DP
-  table are the \emph{start/end indexes} of the string/substring, and
-  not the string/substring itself. Easier to work with numbers.}
 \end{frame}
 
 \subsection{Edit Distance}
 \begin{frame}[fragile]
   \frametitle{String DP: Edit Distance}
-  {\smaller
-  \begin{block}{Problem Definition}
-    Align two strings, $A$ and $B$, with the maximum alignment score
-    (or the minimum number of edit operations).
+  \begin{block}{}
+    The {\bf Edit Distance}, {\bf String Alignment} or {\bf Levenhstein
+    Distance}, consists of measuring how many spaces are needed to {\bf
+    minimize the difference between two strings}.\bigskip
+
+\begin{verbatim}
+S1: ACAATCC -> A_CAATCC -> A_CAATCC
+S2: AGCATGC -> AGCATGC_ -> AGCA_TGC
+Diff:       -> +.++--+. -> +.++.+-+
+\end{verbatim}\bigskip
+
+  To maximise score, we want to avoid {\bf letter mismatches}.
+  \end{block}
+
+  {\bf Uses}
+  \begin{itemize}
+    \item Finding similar words.
+    \item Identifying Mispellings.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{String DP: Edit Distance}
+  \begin{block}{Score Maximization Problem}
+    Align two strings, $A$ and $B$, with the maximum alignment score.
+    For each pair of characters, we have three choices:
 
     \begin{itemize}
-    \item A[i] and B[i] is a match (+2 score)
-    \item Need to replace A[i] with B[i] (-1 score)
-    \item Need to add a space to A[i] (-1 score)
-    \item Need to delete a character from A[i] (-1 score)
+    \item A[i] and B[i] are the same character ( '+': +2 score)
+    \item A[i] and B[i] are diff character ('-': -1 score)
+    \item Add a space to A[i] or B[i] ('.': -1 score)
     \end{itemize}
   \end{block}
 
 \begin{verbatim}
-Non-optimal example
-A = 'ACAATCC' = 'A_CAATCC'
-B = 'AGCATGC' = 'AGCATG_C'  SCORE
-                 2-22---2   4*2 + 4*-1 = 4
+S1: ACAATCC -> A_CAATCC         -> A_CAATCC
+S2: AGCATGC -> AGCATGC_         -> AGCA_TGC
+Diff:       -> 2-22--2- = +4    -> 2-22-2-2 = +7
 \end{verbatim}
 
-Trying to solve this by brute force would quickly get TLE ($O(3^n)$).
-
-  }
+Trying all combinations: ($O(3^n)$). Let's try DP.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Edit Distance: Bottom Up DP Approach (1)}
-  {\smaller
-    \begin{block}{State table}
-      Given two strings A[1..n] B[1..m],
-      \smallskip
+  \frametitle{Edit Distance: Bottom Up DP Approach -- Setup}
+  \begin{block}{State table}
+    The state table $V$ has dimensions \emph{size(A)} by \emph{size(B)}
+    \smallskip
 
-      $V(i,j)$ is the best cost for matching the \emph{substrings} A[1..i], B[1..j].
-      \smallskip
-
-      Score($C_1,C_2$) is the score of matching characters $C_1$ and $C_2$.
-    \end{block}
-    \begin{exampleblock}{Initial Conditions}
-      \begin{itemize}
-      \item $V(0,0) = 0$ -- No points for matching empty strings
-      \item $V(i,0) = i*$ Score($A[i]$,\_) -- Delete all A[i]  
-      \item $V(0,j) = j*$ Score(\_,$B[j]$) -- Insert all B[j] in A
-      \end{itemize}
-    \end{exampleblock}
-  }
+    $V[i][j]$ is the maximum score for matching \emph{substrings} A[1..i], B[1..j].
+  \end{block}
+  \begin{exampleblock}{Initial Conditions}
+    \begin{itemize}
+    \item $V(0,0) = 0$ -- Empty Strings
+    \item $V(i,0) = i*-1$ -- Fill "B" with "\_"
+    \item $V(0,j) = j*-1$ -- Fill "A" with "\_"
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Edit Distance: Bottom Up DP Approach (2)}
-  {\smaller
-    \begin{block}{State table}
-      Given two strings A[1..n] B[1..m],
-      \smallskip
+  \frametitle{Edit Distance: Bottom Up DP Approach -- Update}
+  \begin{block}{State table}
+    The state table $V$ has dimensions \emph{size(A)} by \emph{size(B)}
+    \smallskip
 
-      $V(i,j)$ is the best cost for matching the \emph{substrings} A[1..i], B[1..j].
-      \smallskip
-
-      Score($C_1,C_2$) is the score of matching characters $C_1$ and $C_2$.
-    \end{block}
-    \begin{exampleblock}{Transition Rule:}
-      $V(i,j) = $ max(\emph{option1},\emph{option2},\emph{option3})
-      \begin{itemize}
-      \item option1 = V(i-1,j-1) + C(A[i],B[j]) // Match or mismatch
-      \item option2 = V(i-1,j) + Score(A[i],\_) // Delete A[i]
-      \item option3 = V(i,j-1) + Score(\_,B[j]) // Insert B[j]
-      \end{itemize}
-    \end{exampleblock}
+    $V[i][j]$ is the maximum score for matching \emph{substrings} A[1..i], B[1..j].
+  \end{block}
+  \begin{exampleblock}{Transition Rule:}
+    Score($C_1,C_2$) is the score of matching characters $C_1$ and $C_2$.\bigskip
 
 
-  }
+    {\bf Update:}$V(i,j) = $ max(\emph{option1},\emph{option2},\emph{option3})
+    \begin{itemize}
+    \item option1 = V(i-1,j-1) + Score(A[i],B[j]) // Match or mismatch
+    \item option2 = V(i-1,j) + Score(A[i],\_) // Delete A[i]
+    \item option3 = V(i,j-1) + Score(\_,B[j]) // Insert B[j]
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Edit Distance: Bottom Up DP Approach -- Example}
+  Match ACAATCC and AGCATGC with a table.
+
+\end{frame}
+% TODO: Add table here.
 
 
 \subsection{Longest Common Subsequence}
 
 \begin{frame}[fragile]
-  \frametitle{Longest Common Subsequence}
+  \frametitle{Problem 2 -- Longest Common Subsequence}
   {\smaller
     \begin{block}{Problem Definition}
       Given two strings $A$ and $B$, what is the longest common
       subsequence between them?
 
       \medskip
-      
+
       Example:
 \begin{verbatim}
 String A:   'ACAATCC'     - A_CAAT_CC
@@ -732,13 +734,13 @@ LCS: ACATC
     \item Start Conditions:
       {\smaller
       \begin{itemize}
-        \item If $l=r$ then len$(l,r)=1$. 
+        \item If $l=r$ then len$(l,r)=1$.
         \item If $r=l+1 \text{and} S[l]=S[r]$, len$(l,r)=2$, else len$(l,r)=1$.
       \end{itemize}}
     \item Transition:
       {\smaller
       \begin{itemize}
-        \item If $S[l]=S[r]$, then len$(l,r)=2+\text{len}(l+1,r-1)$; 
+        \item If $S[l]=S[r]$, then len$(l,r)=2+\text{len}(l+1,r-1)$;
         \item else $\text{len}(l,r) = \text{max}(\text{len}(l+1,r),\text{len}(l,r-1))$
       \end{itemize}}
     \end{itemize}
@@ -752,7 +754,7 @@ LCS: ACATC
   \frametitle{Longest Palindrome}
 
   Longest Palindrome DP: Diagonal Table Top Down
-  
+
   {\smaller
 \begin{verbatim}
 
@@ -786,13 +788,13 @@ R                 1   R                 1
     \begin{block}{Definition}
       Data structure used to find matching suffixes of multiple strings.
     \end{block}
-    
+
     \vfill
 
     \begin{center}
     \structure{Suffix Trie for \{'CAR','CAT','RAT'\}}
     \end{center}
-    
+
     \vfill
 
     \begin{columns}[T]
@@ -855,7 +857,7 @@ R                 1   R                 1
     \begin{itemize}
     \item 'A': 4 times
     \item 'GA': 2 times
-    \item 'AA': 0 times    
+    \item 'AA': 0 times
     \end{itemize}
     \column{0.65\textwidth}
     \includegraphics[width=.9\textwidth]{../img/suffixtrie_halim2}
@@ -922,7 +924,7 @@ R                 1   R                 1
 
   \begin{center}
     \includegraphics[width=0.9\textwidth]{../img/longestrepeatingsubstring_halim}
-  \end{center}  
+  \end{center}
   }
 \end{frame}
 
@@ -937,7 +939,7 @@ R                 1   R                 1
     \end{itemize}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{../img/longestcommonsubstring_halim}
-  \end{center}  
+  \end{center}
   }
 \end{frame}
 
@@ -1032,7 +1034,7 @@ R                 1   R                 1
 using namespace std;
 char T[MAX_N]; int SA[MAX_N],i,n;
 
-bool cmp(int a, int b) { return strcmp(T+a, T+b) < 0; } 
+bool cmp(int a, int b) { return strcmp(T+a, T+b) < 0; }
 // O(n)
 
 int main() {
@@ -1051,14 +1053,14 @@ int main() {
   {\smaller
     \begin{exampleblock}{O(n log n) implementation using ``ranking pairs/radix sort''}
 \begin{verbatim}
-char T[MAX_N]; int n; int c[MAX_N]; 
+char T[MAX_N]; int n; int c[MAX_N];
 int RA[MAX_N], tempRA[MAX_N], SA[MAX_N], tempSA[MAX_N];
 
 void countingSort(int k) {
   int i, sum, maxi = max(300,n); //255 ASCII chars or n
   memset(c, 0, sizeof(c));
   for (i = 0; i < n; i++) c[i+k<n? RA[i+k] : 0]++
-  for (i = sum = 0; i < maxi; i++) 
+  for (i = sum = 0; i < maxi; i++)
     { int t = c[i]; c[i] = sum; sum += t;} //frequency
   for (i = 0; i < n; i++)
     tempSA[c[SA[i]+k < n ? RA[SA[i]+k] : 0]++] = SA[i];
@@ -1085,8 +1087,8 @@ void constructSA() {
   for (k = 1; k < n; k <<=1) {
     countingSort(k); countingSort(0);
     tempRA[SA[0]] = r = 0;
-    for (i = 1; i < n; i++) tempRA[SA[i]] = 
-           (RA[SA[i]] == RA[SA[i-1]] && 
+    for (i = 1; i < n; i++) tempRA[SA[i]] =
+           (RA[SA[i]] == RA[SA[i-1]] &&
             RA[SA[i]+k] == RA[SA[i-1]+k]) ? r : ++r;
     for (i = 0; i < n; i++)
       RA[i] = tempRA[i];
@@ -1144,14 +1146,13 @@ void constructSA() {
 \subsection{Problem Discussion}
 \input{problemdiscussion.tex}
 
-\begin{frame}
-  \frametitle{Next Week}
-  \begin{itemize}
-  \item Final Class: Problems Remix
-  \item Class Evaluation
-  \item See you!
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Next Week}
+%   \begin{itemize}
+%   \item Final Class: Problems Remix
+%   \item Class Evaluation
+%   \item See you!
+%   \end{itemize}
+% \end{frame}
 
 \end{document}
-

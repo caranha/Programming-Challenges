@@ -21,16 +21,19 @@
 - DP week two needs more figures for the "classical DP problems",
   including explicit tables to show what is happening to the students.
 
-### Week 4: Graph Part I AB
-- Materials need more examples and discussion in the middle section
-  (Common Algorithms) for 2019
+### Week 4: Graph Part I
+- Include more examples and discussions on the
+  "common algorithms" part in the middle section.
 
-### Week 5: Graph Part II AB
-- Lecture is generally good, but need more graph images showing the
-  progress of the algorithm step by step.
+### Week 5: Graph Part II
+- Lecture is generally good, but need more graph
+  images showing the progress of the algorithm step by step.
 
 ### Week 6: Mathematics
 - BAD LECTURE -- NEEDS TO BE REWRITTEN!
+  -- Fold the "ad hoc" (combinatorics) to combinatorics subsection.
+  -- Add some algorithms from the books.
+  -- Add more examples.
 
 ### Week 7: Geometry
 - Overall good lecture -- See TODO for suggested improvements

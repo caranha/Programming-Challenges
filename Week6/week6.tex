@@ -19,7 +19,7 @@
 \subtitle[]{Week 6 - Math Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2017-06-02,05\\{\tiny Last updated \today}}
+\date{2019-05-31,06-03\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -43,7 +43,7 @@
     \item ``Solving'' the problem is usually the hard part;
     \item BigNum, Rounding, Reducing fractions
     \end{itemize}
-    
+
     \bigskip
 
     A sample of math topics in programming challenges:
@@ -63,14 +63,14 @@
   {\small
   \begin{block}{What is ad-hoc?}
     \structure{ad-hoc} means ``single purpose''.
-    
+
     \bigskip
 
     Each problem has a unique algorithm, using basic maths
   \end{block}
 
   \bigskip
-  
+
   Common categories:
   \begin{itemize}
   \item \structure{Simulation}: Follow a (simple) formula and report the result;
@@ -82,7 +82,7 @@
 \begin{frame}
   \frametitle{Ad Hoc Example: Probability problems}
 
-  {\smaller 
+  {\smaller
     \begin{block}{Dice Throwing}
       If you have $n$ dice, what is the chance of rolling a total above $m$?
     \end{block}
@@ -96,7 +96,7 @@
 \begin{frame}
   \frametitle{Ad Hoc Example: Probability problems}
 
-  {\smaller 
+  {\smaller
     \begin{block}{Dice Throwing}
       If you have $n$ dice, what is the chance of rolling a total above $m$?
     \end{block}
@@ -153,11 +153,11 @@
   Solving with DP
 
   \medskip
-  
+
   \begin{itemize}
   \item For $n=0$, we have only one result: $r=0$
   \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
-  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$ 
+  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$
 
     \bigskip
 
@@ -177,7 +177,7 @@ int count(int dice_left, int score_left) {
    if (score_left < 1) return 1;
    if (dice_left == 0) return 0;
    if (result[dice_left][score_left] != -1)
-      return result[dice_left][score_left];       
+      return result[dice_left][score_left];
    int sum = 0;
    for (int i = 0; i < 6; i++)
       sum += count(dice_left-1, score_left-(i+1))
@@ -201,11 +201,11 @@ prob = count(n,m)/6**n;
 %
 %  \begin{block}{}
 %  \end{block}
-%  
+%
 %  \begin{itemize}
 %  \item Calculating $\text{log}_ba$: \#import<cmath>; log(a)/log(b);
 %    \medskip
-%  \item Counting Digits: (int) floor(1+log10((double)a));   
+%  \item Counting Digits: (int) floor(1+log10((double)a));
 %    \medskip
 %  \item $n^{th}$ root of $a$: pow((double) a, 1/(double) n);
 %\end{itemize}
@@ -237,11 +237,11 @@ prob = count(n,m)/6**n;
     \item \structure{Python}: Big integers supported natively
     \item \structure{Java}: java.math.BigInteger
     \end{itemize}
-    
+
     \medskip
 
     I usually recommend C++, but Java is better for BigInt problems!
-  \end{block}  
+  \end{block}
   }
 \end{frame}
 
@@ -249,7 +249,7 @@ prob = count(n,m)/6**n;
   \frametitle{Problem Example: 10925 -- Krakovia}
 
   {\smaller
-    
+
   \structure{Problem Description}: Sum $n$ numbers, and divide by $f$
   friends. Just that... but the numbers are huge!
 
@@ -262,18 +262,18 @@ class Main {
     Scanner sc = new Scanner(System.in);
     int caseNo = 1;
     while (true) {
-      int N = sc.nextInt(), F = sc.nextInt(); 
+      int N = sc.nextInt(), F = sc.nextInt();
       if (N == 0 && F == 0) break;
-      BigInteger sum = BigInteger.ZERO;     // Constant!  
+      BigInteger sum = BigInteger.ZERO;     // Constant!
       for (int i = 0; i < N; i++) {
-        BigInteger V = sc.nextBigInteger(); // I/O!  
-        sum = sum.add(V); }                   
-      System.out.println("Bill #" + (caseNo++) 
-        + " costs " + sum + ": each friend should pay " 
+        BigInteger V = sc.nextBigInteger(); // I/O!
+        sum = sum.add(V); }
+      System.out.println("Bill #" + (caseNo++)
+        + " costs " + sum + ": each friend should pay "
         + sum.divide(BigInteger.valueOf(F)) + "\n" );}
   }
 }
-\end{verbatim}    
+\end{verbatim}
   \end{block}}
 \end{frame}
 
@@ -281,7 +281,7 @@ class Main {
 \begin{frame}[fragile]
   \frametitle{More functions from Java.math.BigInteger}
 {\smaller
-  
+
   \begin{block}{Algebraic functions}
     BigInteger.add(), .subtract(), .multiply(), .divide(),
     .pow(), .mod(), .remainder()
@@ -291,7 +291,7 @@ class Main {
 \begin{verbatim}
 BI = BigInteger(10); System.println(BI.toString(2))
 // Result: 1010
-\end{verbatim}    
+\end{verbatim}
   \end{block}
 
   \begin{block}{Primality -- Probabilistic primality test}
@@ -312,13 +312,13 @@ isPrime = BI.isProbablePrime(int certainty)
 \section{Number Theory}
 \subsection{outline}
 \begin{frame}
-  \frametitle{Number Theory} {\small 
+  \frametitle{Number Theory} {\small
 
     Number Theory studies \structure{the integer numbers} and
     \structure{sets}.
 
     \bigskip
-    
+
     \begin{itemize}
     \item Primality;
     \item Division and Remainders;
@@ -330,13 +330,13 @@ isPrime = BI.isProbablePrime(int certainty)
 
 \subsection{Prime Numbers}
 \begin{frame}
-  \frametitle{Number Theory: Primality Testing} 
+  \frametitle{Number Theory: Primality Testing}
 
   {\smaller
     \structure{Prime Numbers}: Only divisible by 1 and itself:
 
     \medskip
-    
+
     2,3,5,7,11,13...
 
     \bigskip
@@ -344,12 +344,12 @@ isPrime = BI.isProbablePrime(int certainty)
     How do you test if a number $N$ is prime?
 
   \begin{itemize}
-    
+
   \item Full search: For each $f \in 2..N-1$, test if $N\%f == 0$\\
     $O(N)$
 
     \bigskip
-    
+
   \item A little Pruning: For each $f \in 2..\text{floor}(\sqrt{N})$,
     test if $N\%f == 0$\\
     $O(\sqrt(N))$
@@ -375,7 +375,7 @@ isPrime = BI.isProbablePrime(int certainty)
   \hfill
 
   But how do we find all primes between 1 and $\sqrt{N}$ fast?
-  }  
+  }
 \end{frame}
 
 
@@ -413,25 +413,25 @@ def sieve(k):                 ## Find all primes up to k
 
 \begin{frame}
   \frametitle{Sieve of Eratosthenes}
-  
+
   {\smaller
     \begin{block}{Amortized Complexity}
       \begin{itemize}
       \item The complexity of the Sieve is $O(N\log\log N)$
-        
+
         \medskip
-        
+
       \item If we do the Sieve every time we test for primes, we are not saving much.
-        
+
         \medskip
-        
+
       \item But we can do the Sieve one time, and test many primes later!
-        
+
       \end{itemize}
     \end{block}
-    
+
     \hfill
-    
+
     When we do an expensive operation once, we call it {\bf amortized complexity}
   }
 \end{frame}
@@ -441,11 +441,11 @@ def sieve(k):                 ## Find all primes up to k
 % Factorization: Insuu Bunkai
 \begin{frame}
   \frametitle{Finding Prime Factors}
-  
-  {\smaller 
+
+  {\smaller
 
     Any natural number $N$ can be expressed as a \structure{unique}
-    set of prime numbers: 
+    set of prime numbers:
 
     \begin{equation*}
       N=1p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}
@@ -456,7 +456,7 @@ def sieve(k):                 ## Find all primes up to k
     $i$ where $i|N$).
 
     \medskip
-    
+
     Factorization is a key issue in \structure{cryptography}
 
     \begin{block}{Very Naive approach -- Test all numbers!}
@@ -475,7 +475,7 @@ def sieve(k):                 ## Find all primes up to k
 
 \begin{frame}[fragile]
   \frametitle{Prime factorization: Divide and conquer approach}
-  
+
   {\smaller
   \begin{block}{Recursive Idea}
     The prime factorization of $N$ is equal to the union of $p_i$ and
@@ -485,7 +485,7 @@ def sieve(k):                 ## Find all primes up to k
     \bigskip
 
     The set of all factors is composed of all combinations of the set
-    of prime factors (including repetitions).  
+    of prime factors (including repetitions).
   \end{block}
 
   \begin{exampleblock}{}
@@ -513,7 +513,7 @@ def primefactors(n):
       Calculate whether $m$ divides $n!$ ($1 \leq m,n \leq 2^{31}-1$)
     \end{block}
 
-    Factorial of 22 is already bigint! But we can break down these numbers into their 
+    Factorial of 22 is already bigint! But we can break down these numbers into their
     factors, which are all $\leq 2^{30}$.
 
     \begin{itemize}
@@ -529,7 +529,7 @@ def primefactors(n):
     \begin{itemize}
     \item $m = 48$ and $n=6$\\
       $F_m = \{2,2,2,2,3\} F_{n!} = \{2,3,2,2,5,2,3\}$
-  
+
   \medskip
 
     \item $m = 25$ and $n = 6$\\
@@ -541,7 +541,7 @@ def primefactors(n):
 
 \subsection{Modulo Operations}
 \begin{frame}
-  \frametitle{Modulo Operation} 
+  \frametitle{Modulo Operation}
 
   {\smaller
   We can use \structure{modulo arithmetic} to operate on very large
@@ -581,13 +581,13 @@ def primefactors(n):
 \begin{frame}[fragile]
   \frametitle{Euclid Algorithm and Extended Euclid Algorithm}
 
-  {\smaller  
+  {\smaller
     \begin{itemize}
     \item \structure{Euclid Algorithm} gives us the greatest common divisor $D$ of $a,b$;
     \item \structure{Extended Euclid Algorithm} also gives us $x,y$ so that $ax+by = D$;
     \item Both are extremely simple to code:
     \end{itemize}
-    
+
     \vfill
 
     \begin{exampleblock}{}
@@ -595,10 +595,10 @@ def primefactors(n):
 int gcd(int a, int b) {return (a == 0?b:gcd(b%a,a));}
 
 int x, y;
-int egcd(int a, int b) { 
-   if (a==0) 
+int egcd(int a, int b) {
+   if (a==0)
       {x = 0; y = 1; return b;}        // stop condition
-   int d = egcd(b%a, a); 
+   int d = egcd(b%a, a);
    int tx = x;                         // gcd recurrence
    x = y - (b/a)*tx; y = tx; return d; }   // update x,y
 \end{verbatim}
@@ -620,7 +620,7 @@ int egcd(int a, int b) {
       Equation}. It has infinite solutions if GCD(A,B)|C, but none if
     it does not.
 
-    \bigskip   
+    \bigskip
 
     The first solution ($x_0,y_0$) can be derived from the extended
     GCD, and other solutons can be found from:
@@ -640,7 +640,7 @@ int egcd(int a, int b) {
       You have 839 yen. \alert{X}hoco candy costs 25 yen,
       \alert{Y}anilla candy costs 18 yen. How many candies can we buy?
     \end{block}
-   
+
     \begin{itemize}
     \item \structure{EGCD} gives us: $x=-5, y=7, d=1$ or $25(-5)+18(7) = 1$
     \item Multiply both sides by 839: $25(-4195)+18(5873) = 839$
@@ -650,7 +650,7 @@ int egcd(int a, int b) {
     \item $n \geq 4195/18$ and $5873/25 \geq n$
     \item $4195/18 \leq n \leq 5873/25$
     \item $233.05 \leq n \leq 234.92$
-    \end{itemize} 
+    \end{itemize}
   }
 \end{frame}
 
@@ -658,7 +658,7 @@ int egcd(int a, int b) {
 \section{Combinatorics}
 \subsection{Counting and Closed Forms}
 \begin{frame}
-  \frametitle{Combinatorics problems} 
+  \frametitle{Combinatorics problems}
 
   {\smaller
     \begin{block}{Definition}
@@ -669,12 +669,12 @@ int egcd(int a, int b) {
     Combinatory problems involve understanding a sequence, and
     figuring one of:
 
-    \medskip 
+    \medskip
 
     \begin{itemize}
     \item \structure{Recurrence}: A formula that calculates the
       $n^{th}$ member of a sequence, based on the value of previous members;
-      
+
     \item \structure{Closed form}: A formula that calculates the
       $n^{th}$ member of a sequence independently from other members;
     \end{itemize}
@@ -740,7 +740,7 @@ int egcd(int a, int b) {
 
     \medskip
 
-    F() = 0,1,1,2,3,5,8,13,21,34...    
+    F() = 0,1,1,2,3,5,8,13,21,34...
   \end{block}
 
   \begin{block}{The recurrence is well known}
@@ -754,7 +754,7 @@ int egcd(int a, int b) {
   \begin{block}{Closed Form}
     The Fibonacci numbers also have a less well known
     \structure{closed form}:
-    
+
     \begin{equation*}
       F(n) = \frac{1}{\sqrt{5}}\left(\left(\frac{1+\sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)^n\right)
     \end{equation*}
@@ -780,7 +780,7 @@ def zeckenfy(n):
 \end{verbatim}
   \end{block}
 
-  \begin{block}{Pisano's period} 
+  \begin{block}{Pisano's period}
     The last digits of the Fibonacci sequence repeat!
 
     \medskip
@@ -788,7 +788,7 @@ def zeckenfy(n):
     The last one/two/\alert{three/four} digits repeat with a period of
     60/300/\alert{1500/15000}.
 
-    F(6) = 8\\ 
+    F(6) = 8\\
     F(66) = 27777890035288\\
     F(366) = 1380356705549181797202918793682511 3333650564850089197542855968899086435571688
 
@@ -808,13 +808,13 @@ def zeckenfy(n):
 
       \medskip
 
-      Binom(3) = $(a+b)^3$ = $1a^3 + 3ab^2 + 3ab^2 + b^3$ = $\{1,3,3,1\}$ 
+      Binom(3) = $(a+b)^3$ = $1a^3 + 3ab^2 + 3ab^2 + b^3$ = $\{1,3,3,1\}$
 
       \medskip
 
       We are usually interested in the $k^{th}$ coefficient of the
       $n^{th}$ binomial:
-      
+
       \medskip
 
       $C(n,k) = C(3,2) = \{1,$ \alert{3} $,3,1\} = 3$
@@ -913,7 +913,7 @@ def zeckenfy(n):
       C(3):((())),()(()),(())(),()()(),(()())
 
       \medskip
-      
+
     \item Number of ways that you can triangulate a poligon with $n+2$ sides
     \item Number of monotonic paths on an $nxn$ grid that do not pass above
       the diagonal.
@@ -937,7 +937,7 @@ def zeckenfy(n):
     \structure{Recurrence:}
     \begin{itemize}
     \item $f(n,k) = f(n-k,k) + f(n, k+1)$
-    \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$ 
+    \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$
     \end{itemize}
   \end{block}
 \end{frame}
@@ -975,4 +975,3 @@ def zeckenfy(n):
 \end{frame}
 
 \end{document}
-

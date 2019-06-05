@@ -2,18 +2,19 @@
 - Both topics have been covered in more detail in the "Maths for CS" lecture
 
 - Diaphantyne equation:
-  - The algorithm is not explained - explain the logic behind the algorithm, and how this works
+  - The algorithm is not explained - explain the logic behind the algorithm,
+    and how this works
   - Give a more careful example
 
 - Combinatorics
-  - For each example, start with the numbers of the sequence, then solve the recurrence 
-    together/closed form together with students.
+  - For each example, start with the numbers of the sequence, then solve the
+    recurrence together/closed form together with students.
   - First example: Triangle numbers (1,3,6,10,15,16)
   - Explain what is Closed form and Recurrence.
-  - Questions in programming challenges: What is the N-th value? What is the first/last value with Y property?
+  - Questions in programming challenges: What is the N-th value? What is the
+    first/last value with Y property?
   - Second example: Binomial Combination
   - Third example: Catalan numbers
   - Fourth example: Fibonacci
 
   - Example problem: Steps
-
