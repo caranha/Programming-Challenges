@@ -16,7 +16,7 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 6 - Math Problems}
+\subtitle[]{Week 7 - Math Problems}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
 \date{2019-05-31,06-03\\{\tiny Last updated \today}}
@@ -29,230 +29,71 @@
 \maketitle
 \end{frame}
 
-\subsection{Last Week Notes}
-
-\input{previousclass.tex}
+% \subsection{Last Week Notes}
+%
+% \input{previousclass.tex}
 
 \subsection{Outline}
 \begin{frame}
-  \frametitle{Math problems in programming Competitions} {\smaller
-
-    There is a large variety of Math problems
-    \begin{itemize}
-    \item Programming is usually easy;
-    \item ``Solving'' the problem is usually the hard part;
-    \item BigNum, Rounding, Reducing fractions
-    \end{itemize}
-
-    \bigskip
-
-    A sample of math topics in programming challenges:
-    \begin{itemize}
-    \item \structure{Ad-hoc} (Simulation, Probability)
-    \item \structure{Number Theory} (Primality, Divisibility, Modulo)
-    \item \structure{Combinatorics} (Closed forms, recurrences)
-    \end{itemize}
-  }
-\end{frame}
-
-\section{Ad Hoc}
-\subsection{Intro}
-\begin{frame}
-  \frametitle{Ad-hoc Problems}
-
-  {\small
-  \begin{block}{What is ad-hoc?}
-    \structure{ad-hoc} means ``single purpose''.
-
-    \bigskip
-
-    Each problem has a unique algorithm, using basic maths
-  \end{block}
-
-  \bigskip
-
-  Common categories:
-  \begin{itemize}
-  \item \structure{Simulation}: Follow a (simple) formula and report the result;
-  \item \structure{Find the Pattern}: Start from the data and discover the
-    background rule;
-  \end{itemize}}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ad Hoc Example: Probability problems}
-
-  {\smaller
-    \begin{block}{Dice Throwing}
-      If you have $n$ dice, what is the chance of rolling a total above $m$?
-    \end{block}
-
-    \begin{itemize}
-    \item \structure{Example:} For $n=3$, $m=16$, what is the probability?
-    \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ad Hoc Example: Probability problems}
-
-  {\smaller
-    \begin{block}{Dice Throwing}
-      If you have $n$ dice, what is the chance of rolling a total above $m$?
-    \end{block}
-
-    \begin{itemize}
-    \item \structure{Example:} For $n=3$, $m=16$, the chance is $10/216$
-
-      \bigskip
-
-    \item All combinations of 3 dice: $6*6*6 = 216$
-    \item Combinations above 16:
-    \end{itemize}
-
-    \begin{columns}[T]
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 6,6,6
-      \item 6,6,5
-      \item 6,5,6
-      \item 5,6,6
-      \end{itemize}
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 6,5,5
-      \item 5,6,5
-      \item 5,5,6
-      \end{itemize}
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 4,6,6
-      \item 6,4,6
-      \item 6,6,4
-      \end{itemize}
-    \end{columns}
-
-    \medskip
-
-    \begin{itemize}
-    \item What algorithm do you use?
-    \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ad Hoc example: Probabilty Problems}
-
-  {\smaller
-  \begin{block}{The dice problem}
-    If I have $n$ dice, what is the chance of rolling a total above $m$?
-  \end{block}
-
-  \medskip
-
-  Solving with DP
-
-  \medskip
+  \frametitle{Outline: Math Problems}
 
   \begin{itemize}
-  \item For $n=0$, we have only one result: $r=0$
-  \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
-  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$
-
-    \bigskip
-
-  \item With a state table (dice,result), we can count the number of
-    dice combination above a certain value;
-
+    \item Math problems in programming competition normally require:
+    \begin{itemize}
+      \item Simple problem descriptions;
+      \item A lot of time thinking;
+      \item Not so much time programming;
+    \end{itemize}
   \end{itemize}
-  }
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Ad Hoc example: Probability Problems}
-  \begin{exampleblock}{Example Code}
-{\small
-\begin{verbatim}
-int count(int dice_left, int score_left) {
-   if (score_left < 1) return 1;
-   if (dice_left == 0) return 0;
-   if (result[dice_left][score_left] != -1)
-      return result[dice_left][score_left];
-   int sum = 0;
-   for (int i = 0; i < 6; i++)
-      sum += count(dice_left-1, score_left-(i+1))
-   result[dice_left][score_left] = sum;
-   return sum;
-}
+\begin{frame}
+  \frametitle{Outline: Math Problems}
 
-prob = count(n,m)/6**n;
-
-\end{verbatim}
-}
-  \end{exampleblock}
+  Many math problems are {\bf ad hoc}. In this lecture we will study:
+  \begin{itemize}
+    \item Common Implementation Issues in Math problems: Bignum, precision, etc.
+    \item Number Theory Algorithms: Factorization, Primality Testing, GCD;
+    \item Combinatory Tricks: Common Sequences, Probability;
+  \end{itemize}
 \end{frame}
 
-%\begin{frame}
-%  \frametitle{Other ad-hoc problems}
-%
-%  \begin{block}{How to count the number of digits of $n$}
-%    \only<2->{(int) floor(1+log10((double)a));}
-%  \end{block}
-%
-%  \begin{block}{}
-%  \end{block}
-%
-%  \begin{itemize}
-%  \item Calculating $\text{log}_ba$: \#import<cmath>; log(a)/log(b);
-%    \medskip
-%  \item Counting Digits: (int) floor(1+log10((double)a));
-%    \medskip
-%  \item $n^{th}$ root of $a$: pow((double) a, 1/(double) n);
-%\end{itemize}
-%\end{frame}
 
+\section{Implementation Tricks}
 
-\section{BigNum}
+\begin{frame}
+  \frametitle{Implementation Tricks}
+  \begin{itemize}
+    \item BigNums;
+    \item Modulo Operations;
+    % \item Precision;
+  \end{itemize}
+\end{frame}
+
 \subsection{Bignum}
 \begin{frame}
-  \frametitle{Dealing with big numbers}
+  \frametitle{Dealing with Big Numbers}
 
-  {\smaller
-  \begin{block}{}
-    Many math problems require very large numbers, how do we deal with them?
-  \end{block}
+  Some problems (specially math problems) require using very large numbers.
+  For example: $25! = 15511210043330985984000000 > 10^{26}$.\bigskip
 
+  {\bf However}:
   \begin{itemize}
-  \item C++ unsigned int = unsigned long = $2^{32}$ (9-10 digits)
-  \item C++ unsigned long long = $2^{64}$ (19-20 digits)
+    \item \structure{Maximum C++ unsigned int}: $2^{32} < 10^{11}$
+    \item \structure{Maximum C++ unsigned long long}: $2^{64} < 10^{20}$
+  \end{itemize}\bigskip
 
-    \medskip
 
-  \item Factorial of 23: $> 20$ digits!
-  \end{itemize}
-
-  \begin{block}{What do you do?}
-    \begin{itemize}
-    \item \structure{C++}: No bigint in standard library
-    \item \structure{Python}: Big integers supported natively
-    \item \structure{Java}: java.math.BigInteger
-    \end{itemize}
-
-    \medskip
-
-    I usually recommend C++, but Java is better for BigInt problems!
+  \begin{block}{}
+    I usually recommend to use C++; but Java is better for
+    BigNum progchal problems!
   \end{block}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Problem Example: 10925 -- Krakovia}
+  \frametitle{Bignum Example: 10925 -- Krakovia}
 
   {\smaller
-
-  \structure{Problem Description}: Sum $n$ numbers, and divide by $f$
-  friends. Just that... but the numbers are huge!
-
 \begin{block}{}
 \begin{verbatim}
 import java.util.Scanner;
@@ -264,9 +105,9 @@ class Main {
     while (true) {
       int N = sc.nextInt(), F = sc.nextInt();
       if (N == 0 && F == 0) break;
-      BigInteger sum = BigInteger.ZERO;     // Constant!
+      BigInteger sum = BigInteger.ZERO;     // Bignum Constant
       for (int i = 0; i < N; i++) {
-        BigInteger V = sc.nextBigInteger(); // I/O!
+        BigInteger V = sc.nextBigInteger(); // Bignum I/O
         sum = sum.add(V); }
       System.out.println("Bill #" + (caseNo++)
         + " costs " + sum + ": each friend should pay "
@@ -287,14 +128,14 @@ class Main {
     .pow(), .mod(), .remainder()
   \end{block}
 
-  \begin{block}{Output -- Prints number in any base!}
+  \begin{block}{Changing Number Base}
 \begin{verbatim}
 BI = BigInteger(10); System.println(BI.toString(2))
 // Result: 1010
 \end{verbatim}
   \end{block}
 
-  \begin{block}{Primality -- Probabilistic primality test}
+  \begin{block}{Probabilistic Primality Test}
 \begin{verbatim}
 isPrime = BI.isProbablePrime(int certainty)
 // Chance of being correct is 1 - (1/2)^certainty
@@ -308,6 +149,46 @@ isPrime = BI.isProbablePrime(int certainty)
 \end{block}}
 \end{frame}
 
+\subsection{Modulo Operations}
+\begin{frame}
+  \frametitle{Modulo Operation}
+
+  {\smaller
+  We can use \structure{modulo arithmetic} to operate on very large
+  numbers without calculating the entire number.
+
+  \bigskip
+
+  Remember that:
+  \begin{enumerate}
+  \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
+  \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
+  \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
+  \end{enumerate}
+
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Modulo Operation -- UVA 10176, Ocean Deep!}
+  {\smaller
+  \begin{block}{Problem summary}
+    Test if a binary number $n$ (up to 100000 digits) is divisible by 131071
+  \end{block}
+
+  \begin{itemize}
+  \item The problem wants to know if $n\%13107 == 0$
+  \item But $n$ is too big!
+
+  \item Use the recurrence in the previous slide to break down each
+    digit to a reasonable value.
+  \end{itemize}}
+
+\end{frame}
+
+% \subsection{Precision}
+% TODO: printing with precision in C, Java, Python
+% Dealing with very small numbers
 
 \section{Number Theory}
 \subsection{outline}
@@ -539,42 +420,6 @@ def primefactors(n):
   }
 \end{frame}
 
-\subsection{Modulo Operations}
-\begin{frame}
-  \frametitle{Modulo Operation}
-
-  {\smaller
-  We can use \structure{modulo arithmetic} to operate on very large
-  numbers without calculating the entire number.
-
-  \bigskip
-
-  Remember that:
-  \begin{enumerate}
-  \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
-  \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
-  \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
-  \end{enumerate}
-
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Modulo Operation -- UVA 10176, Ocean Deep!}
-  {\smaller
-  \begin{block}{Problem summary}
-    Test if a binary number $n$ (up to 100000 digits) is divisible by 131071
-  \end{block}
-
-  \begin{itemize}
-  \item The problem wants to know if $n\%13107 == 0$
-  \item But $n$ is too big!
-
-  \item Use the recurrence in the previous slide to break down each
-    digit to a reasonable value.
-  \end{itemize}}
-
-\end{frame}
 
 % Saidaikōyakusū
 \subsection{GCD/LCM}
@@ -942,6 +787,120 @@ def zeckenfy(n):
   \end{block}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Ad Hoc Example: Probability problems}
+
+  {\smaller
+    \begin{block}{Dice Throwing}
+      If you have $n$ dice, what is the chance of rolling a total above $m$?
+    \end{block}
+
+    \begin{itemize}
+    \item \structure{Example:} For $n=3$, $m=16$, what is the probability?
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ad Hoc Example: Probability problems}
+
+  {\smaller
+    \begin{block}{Dice Throwing}
+      If you have $n$ dice, what is the chance of rolling a total above $m$?
+    \end{block}
+
+    \begin{itemize}
+    \item \structure{Example:} For $n=3$, $m=16$, the chance is $10/216$
+
+      \bigskip
+
+    \item All combinations of 3 dice: $6*6*6 = 216$
+    \item Combinations above 16:
+    \end{itemize}
+
+    \begin{columns}[T]
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 6,6,6
+      \item 6,6,5
+      \item 6,5,6
+      \item 5,6,6
+      \end{itemize}
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 6,5,5
+      \item 5,6,5
+      \item 5,5,6
+      \end{itemize}
+      \column{0.3\textwidth}
+      \begin{itemize}
+      \item 4,6,6
+      \item 6,4,6
+      \item 6,6,4
+      \end{itemize}
+    \end{columns}
+
+    \medskip
+
+    \begin{itemize}
+    \item What algorithm do you use?
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ad Hoc example: Probabilty Problems}
+
+  {\smaller
+  \begin{block}{The dice problem}
+    If I have $n$ dice, what is the chance of rolling a total above $m$?
+  \end{block}
+
+  \medskip
+
+  Solving with DP
+
+  \medskip
+
+  \begin{itemize}
+  \item For $n=0$, we have only one result: $r=0$
+  \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
+  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$
+
+    \bigskip
+
+  \item With a state table (dice,result), we can count the number of
+    dice combination above a certain value;
+
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ad Hoc example: Probability Problems}
+  \begin{exampleblock}{Example Code}
+{\small
+\begin{verbatim}
+int count(int dice_left, int score_left) {
+   if (score_left < 1) return 1;
+   if (dice_left == 0) return 0;
+   if (result[dice_left][score_left] != -1)
+      return result[dice_left][score_left];
+   int sum = 0;
+   for (int i = 0; i < 6; i++)
+      sum += count(dice_left-1, score_left-(i+1))
+   result[dice_left][score_left] = sum;
+   return sum;
+}
+
+prob = count(n,m)/6**n;
+
+\end{verbatim}
+}
+  \end{exampleblock}
+\end{frame}
+
+% TODO: Hare and tortoise algorith,
 
 % TODO expand this, add more sequences
 % TODO add a section on HOW to derive closed forms (from maths for CS class)
@@ -964,14 +923,14 @@ def zeckenfy(n):
   \end{block}
 \end{frame}
 
-\input{problemdiscussion.tex}
-
-\begin{frame}
-  \frametitle{To Learn More}
-
-  Euler Project: Mathematical questions using computers:
-
-  \url{http://projecteuler.net}
-\end{frame}
+% \input{problemdiscussion.tex}
+%
+% \begin{frame}
+%   \frametitle{To Learn More}
+%
+%   Euler Project: Mathematical questions using computers:
+%
+%   \url{http://projecteuler.net}
+% \end{frame}
 
 \end{document}
