@@ -882,7 +882,7 @@ def zeckenfy(n):
 {\small
 \begin{verbatim}
 int count(int dice_left, int score_left) {
-   if (score_left < 1) return 1;
+   if (score_left < 1) return pow(6,dice);
    if (dice_left == 0) return 0;
    if (result[dice_left][score_left] != -1)
       return result[dice_left][score_left];
