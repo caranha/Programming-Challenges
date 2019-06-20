@@ -11,10 +11,10 @@
 \tikzstyle{weight} = [font=\smaller]
 
 \title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 7 - Computational Geometry}
+\subtitle[]{Week 8 - Computational Geometry}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2018-06-15,18\\{\tiny Last updated \today}}
+\date{2019-06-14,17\\{\tiny Last updated \today}}
 
 
 \begin{document}
@@ -25,9 +25,9 @@
 \maketitle
 \end{frame}
 
-\subsection{Last Class}
-
-\input{previousclass.tex}
+% \subsection{Last Class}
+%
+% \input{previousclass.tex}
 
 \subsection{Outline}
 \begin{frame}
@@ -41,7 +41,7 @@
     questions:
 
     \bigskip
-    
+
     \begin{block}{}
     \only<1>{Given $N$ points $(s_1, s_2, s_3, \ldots, s_N)$, what is
       the area of the poligon that covers all the points?}
@@ -59,7 +59,7 @@
       \includegraphics<2>[width=0.6\textwidth]{img/sampleproblem_2.png}
       \includegraphics<3>[width=0.4\textwidth]{img/sampleproblem_3.png}
     \end{center}
-    
+
   }
 \end{frame}
 
@@ -72,7 +72,7 @@
   \item \structure{Good}: You have to draw pretty pictures
   \item \structure{Good}: Mostly algorithms from high school
   \item \structure{Good}: Code is highly re-usable
-    
+
     \bigskip
 
   \item \alert{Bad}: You have to write a lot of code (in the beginning!)
@@ -110,19 +110,19 @@
   \frametitle{Easy Mistakes in Geometry Problems}
 
   {\smaller
-    
+
     \begin{block}{Dealing Special Cases}
       \begin{itemize}
       \item Make sure to add special cases to your
         library functions;
       \end{itemize}
     \end{block}
-    
+
     \begin{block}{Solving Precision Errors}
       \begin{itemize}
       \item If possible, convert all values to integers
       \item Use an EPSILON constant for comparisons:
-        
+
 \begin{verbatim}
 if (float.1 == float.2) then            // NO
 if (fabs(float.1 - float.2) < EPS) then // YES!
@@ -158,7 +158,7 @@ if (fabs(float.1 - float.2) < EPS) then // YES!
       \item {\bf Input}\\
         A rectangle and a line:\\
         xstart ystart xend yend xleft ytop xright ybottom
-        
+
       \item {\bf Output}\\
         T - if the line intersects the rectangle\\
         F - if the line does not intersect the rectangle\\
@@ -178,7 +178,7 @@ if (fabs(float.1 - float.2) < EPS) then // YES!
     % TODO: Add code side by side with image
   Steps to calculate the solution:
 
-  
+
   \begin{itemize}
   \item Test if $p_1$ or $p_2$ are inside the rectangle;
   \item Test if the segment intersects a side of the rectangle;
@@ -256,7 +256,7 @@ struct point { double x, y; // Using floats
   \framesubtitle{Comparing and Sorting Points}
 
   {\smaller
-    
+
     \begin{exampleblock}{Point Comparison}
 \begin{verbatim}
 struct point { double x, y;
@@ -271,7 +271,7 @@ struct point { double x, y;
 
    // Equality testing -- Note the use of EPS
    bool operator == (point other) const {
-      return (fabs(x - other.x) < EPS &&  
+      return (fabs(x - other.x) < EPS &&
              (fabs(y - other.y) < EPS)); }
    }
 \end{verbatim}
@@ -285,7 +285,7 @@ struct point { double x, y;
 
     Most common distance measure: Euclidean distance. Sometimes
     Manhattan distance (Taxicab distance) is also used.
-    
+
     \begin{exampleblock}{}
 \begin{verbatim}
 #define hypot(dx,dy) sqrt(dx*dx + dy*dy)
@@ -303,12 +303,12 @@ double taxicab(point p1, point p2) {
     \end{center}
   }
 \end{frame}
-  
+
 \begin{frame}[fragile]
   \frametitle{Basic Library -- Points 4}
 
   {\smaller
-              
+
     \begin{exampleblock}{Rotating a point around the origin}
 \begin{verbatim}
 #define PI           3.14159265358979323846 // Pi const
@@ -319,7 +319,7 @@ double PI = 2 * acos(0.0)                   // Better Pi
 point rotate(point p, double theta) {
    double rad = DEG_to_RAD(theta);
    return point(p.x * cos(rad) - p.y * sin(rad),
-                p.x * sin(rad) + p.y * cos(rad));}   
+                p.x * sin(rad) + p.y * cos(rad));}
 \end{verbatim}
     \end{exampleblock}
     \begin{center}
@@ -349,7 +349,7 @@ point rotate(point p, double theta) {
 struct line { double a,b,c; };
 
 void pointsToLine(point p1, point p2, line &l) {
-   if (fabs(p1.x - p2.x) < EPS { 
+   if (fabs(p1.x - p2.x) < EPS {
       l.a = 1.0; l.b = 0.0; l.c = -p1.x; }
    else {
       l.a = -(double) (p1.y - p2.y)/(p1.x - p2.x);
@@ -377,26 +377,26 @@ void pointsToLine(point p1, point p2, line &l) {
   \begin{exampleblock}{Parallel and identical lines}
 \begin{verbatim}
 bool areParallel(line l1, line l2) {
-   return (fabs(l1.a-l2.a) < EPS) && 
+   return (fabs(l1.a-l2.a) < EPS) &&
           (fabs(l1.b-l2.b) < EPS); }
 
 bool areSame(line l1, line l2) {
-   return areParallel(l1,l2) && 
+   return areParallel(l1,l2) &&
           (fabs(l1.c - l2.c) < EPS); }
-\end{verbatim}    
+\end{verbatim}
   \end{exampleblock}
   }
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Basic Library -- Line 3} 
+  \frametitle{Basic Library -- Line 3}
 
   {\smaller
 
     The {\bf intersection} point $x_I, y_I$ is where two lines
     meet. We can find this point by solving the following system of
     linear equations:
-    
+
     \begin{eqnarray*}
       a_1x+b_1y+c_1 = 0\\a_2x+b_2y+c_2 = 0
     \end{eqnarray*}
@@ -408,7 +408,7 @@ bool areSame(line l1, line l2) {
 bool areIntersect(line l1, line l2, point &p) {
    if (areParallel(l1,l2)) return False;
 
-   p.x = (l2.b * l1.c - l1.b * l2.c) / 
+   p.x = (l2.b * l1.c - l1.b * l2.c) /
          (l2.a * l1.b - l1.a * l2.b);
    if (fabs(l1.b) > EPS) // Testing for vertical case
       p.y = -(l1.a * p.x + l1.c);
@@ -437,14 +437,14 @@ bool areIntersect(line l1, line l2, point &p) {
     \end{columns}
     \begin{exampleblock}{}
 \begin{verbatim}
-struct vec { double x, y; 
+struct vec { double x, y;
     vec(double _x, double _y) : x(_x), y(_y) {} };
 
-vec toVec(point a, point b) { 
+vec toVec(point a, point b) {
     return vec(b.x - a.x, b.y - a.y); }
-vec scale(vec v, double s) { 
+vec scale(vec v, double s) {
     return vec(v.x * s, v.y * s); }
-point translate(point p, vec v) { 
+point translate(point p, vec v) {
     return point(p.x + v.x , p.y + v.y); }
 \end{verbatim}
     \end{exampleblock}
@@ -475,12 +475,12 @@ point translate(point p, vec v) {
   {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-double dot(vec a, vec b) { 
+double dot(vec a, vec b) {
    return (a.x * b.x + a.y * b.y); }
-double norm_sq(vec v) { 
+double norm_sq(vec v) {
    return v.x * v.x + v.y * v.y; }
 
-// Calculates distance of p from line, given 
+// Calculates distance of p from line, given
 // a,b different points in the line.
 double distToLine(point p, point a, point b, point &c) {
   // formula: c = a + u * ab
@@ -496,22 +496,22 @@ double distToLine(point p, point a, point b, point &c) {
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Distance between point and segment} 
+  \frametitle{Distance between point and segment}
   % TODO: Add an image explaining the u conditional
   % TODO: This is actually distance between point and segment. FIX.
 
-  {\smaller 
+  {\smaller
     If we have a \structure{segment} $ab$ instead of a line, the
     procedure to calculate the distance is similar, but we need to
     test if the intersection point falls in the segment.
-    
+
     \begin{exampleblock}{}
 \begin{verbatim}
-double distToLineSegment(point p, point a, 
+double distToLineSegment(point p, point a,
                          point b, point &c) {
   vec ap = toVec(a, p), ab = toVec(a, b);
   double u = dot(ap, ab) / norm_sq(ab);
-  
+
   if (u < 0.0) { c = point(a.x, a.y); // closer to a
                  return dist(p, a); }
   if (u > 1.0) { c = point(b.x, b.y); // closer to b
@@ -550,11 +550,11 @@ r$ is a left turn/collinear/right turn.
 
 \begin{exampleblock}{}
 \begin{verbatim}
-double cross(vec a, vec b) { 
-  return a.x * b.y - a.y * b.x; } 
-bool ccw(point p, point q, point r) { 
-  return cross(toVec(p, q), toVec(p, r)) > 0; } 
-collinear(point p, point q, point r) { 
+double cross(vec a, vec b) {
+  return a.x * b.y - a.y * b.x; }
+bool ccw(point p, point q, point r) {
+  return cross(toVec(p, q), toVec(p, r)) > 0; }
+collinear(point p, point q, point r) {
   return fabs(cross(toVec(p, q), toVec(p, r))) < EPS;
 \end{verbatim}
 \end{exampleblock}
@@ -568,7 +568,7 @@ collinear(point p, point q, point r) {
   \frametitle{Problem Example: UVA 10589 Area}
 
   \includegraphics[width=0.4\textwidth]{img/area_uva}
-  
+
   \begin{block}{}
     \begin{itemize}
     \item What is the area of the shaded part of the rectangle?
@@ -576,7 +576,7 @@ collinear(point p, point q, point r) {
       in the corners of the rectangle.
     \end{itemize}
   \end{block}
-  
+
 \end{frame}
 
 \subsection{Circles}
@@ -593,7 +593,7 @@ collinear(point p, point q, point r) {
 int insideCircle(point_i p, point_i c, int r) {
    int dx = p.x-c.x, dy = p.y-c.y;
    int Euc = dx*dx + dy*dy, rSq = r*r;
-   return Euc < rSq ? 0 : Euc == rSq ? 1 : 2; 
+   return Euc < rSq ? 0 : Euc == rSq ? 1 : 2;
    // 0 - inside, 1 - border, 2- outside
 }
 \end{verbatim}
@@ -625,10 +625,10 @@ int insideCircle(point_i p, point_i c, int r) {
     \begin{center}
       % TODO: Make my own image, explain why these circles work.
       % TODO: If I have 2 points on a circle, how do I calculate the angle between them?
-      % 
+      %
       \includegraphics[width=0.75\textwidth]{../img/circle_halim}
     \end{center}
-  
+
   \begin{itemize}
   \item A \structure{chord} of a circle is a segment composed of two points in the circle's border. A circle with radius $r$ and angle $\alpha$ degrees has a chord of length sqrt$(2r^2(1-\cos{\alpha}))$
   \item A \structure{Sector} is the area of the circle that is enclosed by two radius and and arc between them. Area is: $\frac{\alpha}{360}A$
@@ -669,7 +669,7 @@ int insideCircle(point_i p, point_i c, int r) {
 
 
   \bigskip
-  
+
   {\smaller
 
     \structure{Hint:} You don't actually need to calculate any polygons
@@ -744,7 +744,7 @@ def radiusInCircle(p1,p2,p3):
       \item Find the bisection $BP'$ of the $BA$-$BC$ angle;
       \item Fint the intersection of $AP$-$BP'$
       \end{itemize}
-      
+
     \end{exampleblock}
   }
 \end{frame}
@@ -754,17 +754,17 @@ def radiusInCircle(p1,p2,p3):
   {\smaller
     \begin{exampleblock}{Calculating the Center (Code)}
 \begin{verbatim}
-int inCircle(point p1, point p2, point p3, 
+int inCircle(point p1, point p2, point p3,
              point &ctr, double &r) {
   r = rInCircle(p1, p2, p3);
   if (fabs(r) < EPS) return 0; // colinear points;
   line l1, l2; // compute these two angle bisectors
   double ratio = dist(p1, p2) / dist(p1, p3);
-  point p = translate(p2, scale(toVec(p2, p3), 
+  point p = translate(p2, scale(toVec(p2, p3),
                       ratio / (1 + ratio)));
   pointsToLine(p1, p, l1);
   ratio = dist(p2, p1) / dist(p2, p3);
-  p = translate(p1, scale(toVec(p1, p3), 
+  p = translate(p1, scale(toVec(p1, p3),
                 ratio / (1 + ratio)));
   pointsToLine(p2, p, l2);
   areIntersect(l1, l2, ctr);
@@ -784,10 +784,10 @@ int inCircle(point p1, point p2, point p3,
     \column{0.7\textwidth}
     \begin{block}{Radius of the excircle}
       A triangle with sides $a,b,c$ and area $A$ has an excircle with
-      radius: $R = abc/4A$. 
+      radius: $R = abc/4A$.
 
       \medskip
-      
+
       The center of the excircle is the intersection of the
       \emph{perpendicular bisectors}.
     \end{block}
@@ -810,7 +810,7 @@ int inCircle(point p1, point p2, point p3,
 \subsection{Polygons}
 \begin{frame}[fragile]
   \frametitle{Polygons}
-  {\smaller    
+  {\smaller
   \begin{block}{Definition}
     A polygon is a plane figure bounded by a finite sequence of line
     segments.
@@ -845,7 +845,7 @@ P.push_back(P[0]); // important: loop back
 \begin{verbatim}
 double perimeter(const vector<point> &P) {
   double result = 0.0;
-  for (int i = 0; i < (int)P.size()-1; i++) 
+  for (int i = 0; i < (int)P.size()-1; i++)
      // remember: P[0] = P[P.size()-1]
      result += dist(P[i], P[i+1]);
   return result; }
@@ -878,7 +878,7 @@ double area(const vector<point> &P) {
       \medskip
 
       Another definition is that all inside angles ``turn'' the same
-      way.      
+      way.
     \end{block}
 
     \begin{exampleblock}{Testing for a convex polygon}
@@ -904,7 +904,7 @@ bool isConvex(const vector<point> &P) {
       \begin{itemize}
       \item \structure{Winding Algorithm}: Sum the angles of all
         angles $APB$ ($A,B$) are points in the polygon. If the sum is
-        $2\pi$. Point is in polygon. 
+        $2\pi$. Point is in polygon.
       \item \structure{Ray Casting Algorithm}: Draw an segment from
         $P$ to infinity, and count the number of polygon edges
         crossed. Odds: Inside. Even: Outside.
@@ -931,26 +931,26 @@ bool inPolygon(point pt, const vector<point> &P) {
   % TODO: Add an image explaining Polygon cutting
   {\smaller
     \begin{block}{}
-      To cut $P$ along a line $AB$, we separate the points in $P$ to the 
+      To cut $P$ along a line $AB$, we separate the points in $P$ to the
       left and right of the line.
     \end{block}
-    
+
 {\smaller
     \begin{exampleblock}{}
 \begin{verbatim}
 point lineIntersectSeg(point p, point q, point A, point B) {
   double a=B.y-A.y; double b=A.x-B.x; double c=B.x*A.y-A.x*B.y;
   double u=fabs(a*p.x+b*p.y+c); double v=fabs(a*q.x+b*q.y+c);
-  return point((p.x*v + q.x*u)/(u+v), 
+  return point((p.x*v + q.x*u)/(u+v),
                (p.y*v + q.y*u)/(u+v)); }
 
 vector<point> cutPolygon(point a, point b, const vector<point> &Q){
   vector<point> P;
   for (int i = 0; i < (int)Q.size(); i++) {
     double left1 = cross(toVec(a, b), toVec(a, Q[i])), left2 = 0;
-    if (i != (int)Q.size()-1) 
+    if (i != (int)Q.size()-1)
       left2 = cross(toVec(a, b), toVec(a, Q[i+1]));
-    if (left1 > -EPS) 
+    if (left1 > -EPS)
       P.push_back(Q[i]); //Q[i] is on the left of ab
     if (left1*left2 < -EPS) //edge (Q[i], Q[i+1]) crosses line ab
       P.push_back(lineIntersectSeg(Q[i], Q[i+1], a, b)); }
@@ -980,10 +980,10 @@ vector<point> cutPolygon(point a, point b, const vector<point> &Q){
 
     \begin{block}{}
       The main algorithm for calculating the convex hull is
-      \emph{Graham's Scan}. 
+      \emph{Graham's Scan}.
 
       \medskip
-      
+
       It's idea is to test each point angle order, to see if the point
       belongs to the hull.
     \end{block}
@@ -1022,13 +1022,13 @@ vector<point> CH(vector<point> P) {
   int i, j, n = (int)P.size();
   // Special Case: Polygon with 3 points
   if (n <= 3) {
-    if (!(P[0]==P[n-1])) P.push_back(P[0]); 
+    if (!(P[0]==P[n-1])) P.push_back(P[0]);
     return P; }
 
   // Find Initial Point: Low Y or Right X
   int P0 = 0;
   for (i = 1; i < n; i++)
-    if (P[i].y < P[P0].y || 
+    if (P[i].y < P[P0].y ||
         (P[i].y == P[P0].y && P[i].x > P[P0].x))
       P0 = i;
   point temp = P[0]; P[0] = P[P0]; P[P0] = temp;
@@ -1051,10 +1051,10 @@ vector<point> CH(vector<point> P) {
   // S holds the Convex Hull
   // We initialize it with first three points
   vector<point> S;
-  S.push_back(P[n-1]); 
-  S.push_back(P[0]); 
+  S.push_back(P[n-1]);
+  S.push_back(P[0]);
   S.push_back(P[1]);
-  
+
   // We start on the third point
   i = 2;
 \end{verbatim}
@@ -1069,17 +1069,17 @@ vector<point> CH(vector<point> P) {
 
   {\small
     \begin{exampleblock}{}
-\begin{verbatim}  
-  while (i < n) {   
+\begin{verbatim}
+  while (i < n) {
     j = (int)S.size()-1;
- 
+
     // If the next point is left of CH, keep it.
     // Else, pop the last CH point and try again.
 
-    if (ccw(S[j-1], S[j], P[i])) 
-      S.push_back(P[i++]); 
-    else 
-      S.pop_back(); 
+    if (ccw(S[j-1], S[j], P[i]))
+      S.push_back(P[i++]);
+    else
+      S.pop_back();
     }
   return S; }
 \end{verbatim}
@@ -1095,4 +1095,3 @@ vector<point> CH(vector<point> P) {
 
 
 \end{document}
-

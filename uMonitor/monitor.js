@@ -73,12 +73,12 @@ var problemlist = [
     {name:"Week 7: Mathematics",
      deadline:"2019-06-13T14:59:59+09:00",
      mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
-    // {name:"Week 7: Computational Geometry",
-    //  deadline:"2018-06-21T14:59:59+09:00",
-    //  mlist:[861, 774, 2934, 2093, 1518, 3060, 3552, 1593]},
-    // {name:"Week 9: Interesting Problem Remix!",
-    //  deadline:"2018-07-05T14:59:59+09:00",
-    //  mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
+    {name:"Week 8: Computational Geometry",
+     deadline:"2019-06-20T14:59:59+09:00",
+     mlist:[861, 774, 2934, 2093, 1518, 3060, 3552, 1593]},
+    {name:"Week 9: Interesting Problem Remix!",
+     deadline:"2019-06-27T14:59:59+09:00",
+     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
 
 var studentlist = [161945,1046817,1046863,1047396,1047062,1047078,1047327,1047380,1047312,1046818,876277,
@@ -87,7 +87,7 @@ var studentlist = [161945,1046817,1046863,1047396,1047062,1047078,1047327,104738
 1046836,1047232,1047222,1046834,1047046,1046894,1046819,1046844,1046825,1046829,1047359];
 
 var startdate = parseUCT("2019-04-08T00:00:00+09:00");
-var enddate = parseUCT("2019-07-05T14:59:59+09:00");
+var enddate = parseUCT("2019-07-10T14:59:59+09:00");
 
 var StudentWeekSolved = new Array(studentlist.length);
 for (var i = 0; i < studentlist.length; i++) {

@@ -16,7 +16,7 @@
 \subtitle[]{Week 9 - Programming Challenges Remix!}
 \author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
 \institute{College of Information Science}
-\date{2015-06-23,26\\{\tiny Last updated \today}}
+\date{2019-06-21,24\\{\tiny Last updated \today}}
 
 \begin{document}
 
@@ -35,45 +35,40 @@
 \begin{frame}
   \frametitle{Course Summary -- Solving a problem}
 
-  {\smaller
-    \begin{block}{}
-      In this course, we studied and practice many ways
-      to solve problems using computer algorithms. Many
-      problems can be imagined as \emph{searches}.
-    \end{block}
+  \begin{block}{}
+    In this course, we studied and practice many ways
+    to solve problems using computer algorithms. Many
+    problems can be imagined as \emph{searches}.
+  \end{block}
 
-    \vfill
-    
-    General Problem Solving:
-    \begin{itemize}
-    \item Identify the \structure{full search approach}
-    \item Think about edge and special cases
-    \item See if a better algorithm \structure{is needed}
-    \end{itemize}
-    
-  }
-  
+  \vfill
+
+  General Problem Solving:
+  \begin{itemize}
+  \item Identify the \structure{full search approach}
+  \item Think about edge and special cases
+  \item See if a better algorithm \structure{is needed}
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Course Summary -- Topics Approached}
 
-  {\smaller
-    \begin{exampleblock}{}
-      In this course we also saw many examples of \structure{specific}
-      algorithms for problems.
-    \end{exampleblock}
+  \begin{exampleblock}{}
+    In this course we also saw many examples of \structure{specific}
+    algorithms for problems.
+  \end{exampleblock}
 
-    \vfill
+  \vfill
 
-    \begin{itemize}
-    \item Graphs (Minimum spanning tree, Bellman-Ford APSP, $\ldots$)
-    \item Mathematics (Eristhenes Sieve, Prime Factoring)
-    \item Computational Geometry (Convex Hull)
-    \item String (Knuth-Morris-Prat, suffix trie)
-    \end{itemize}
-    
-  }
+  \begin{itemize}
+  \item Graphs (Minimum spanning tree, Bellman-Ford APSP, $\ldots$)
+  \item Mathematics (Eristhenes Sieve, Prime Factoring)
+  \item Computational Geometry (Convex Hull)
+  \item String (Knuth-Morris-Prat, suffix trie)
+  \end{itemize}
+
   % Course lessons and representative algorithms
 \end{frame}
 
@@ -109,7 +104,7 @@
       Black beard speed is 1 square / second. How long does it take
       to get all treasure and return to the ship?
     \end{block}
-    
+
 \begin{verbatim}
 10 10
 ~~~~~~~~~~       ~ -- Water, can't cross
@@ -137,7 +132,7 @@
   \begin{itemize}
   \item Which algorithm do you suggest?
     \bigskip
-    
+
   \item What is the complexity of that algorithm?
 
     \bigskip
@@ -148,7 +143,7 @@
 
   \alert{Quiz} -- What is the complexity of the problem for full
   recursive search? (Map size $50x50$, number of treasures is $10$)
-  
+
 \end{frame}
 
 \subsection{Problem Solution -- Decomposition}
@@ -173,8 +168,8 @@
 ~#....*##~       . -- Just sand
 ~#!..**~~~       @ -- Landing point, return here.
 ~~....~~~~
-~~~....~~~       
-~~..~..@~~       
+~~~....~~~
+~~..~..@~~
 ~#!.~~~~~~
 ~~~~~~~~~~
 0 0
@@ -192,10 +187,10 @@
 ~~!!!###~~  ##345#####  X -- Obstacles (natives, just for clarity)
 ~##...###~  ###..X####  . -- Path
 ~#....*##~  ##..XXX###  0-9 -- Nodes
-~#!..**~~~  ##2.XXX###  
+~#!..**~~~  ##2.XXX###
 ~~....~~~~  ##..XX####
-~~~....~~~  ###....###     
-~~..~..@~~  ##..#..0##     
+~~~....~~~  ###....###
+~~..~..@~~  ##..#..0##
 ~#!.~~~~~~  ##1.######
 ~~~~~~~~~~  ##########
 0 0
@@ -216,17 +211,17 @@
   \frametitle{UVA 10937 -- Blackbeard -- Extracting the graph}
   \begin{columns}
     \column{0.5\textwidth}
-    
+
   {\smaller
 \begin{verbatim}
-##########  
-##345#####  
-###..X####  
+##########
+##345#####
+###..X####
 ##..XXX###     BFS from each vertex
 ##2.XXX###     ------------------->
 ##..XX####     Not all paths shown
-###....###     
-##..#..0##     
+###....###
+##..#..0##
 ##1.######
 ##########
 \end{verbatim}}
@@ -284,13 +279,13 @@
 
   \medskip
 
-  \alert{QUIZ:} What is the cost of solving TSP with complete search?  
+  \alert{QUIZ:} What is the cost of solving TSP with complete search?
   }
-  
+
   \hrulefill
 
   \hfill{\tiny Image from Steven Halim -- ``Competitive Programming''}
-  
+
 \end{frame}
 
 \begin{frame}
@@ -298,7 +293,7 @@
 
   {\smaller
     \begin{block}{}
-      \begin{itemize}        
+      \begin{itemize}
       \item A complete search for TSP costs $O(n!*n)$ -- \alert{Search
         each city permutation}.
       \item TSP is a {\bf NP-hard} problem. This means that there is
@@ -373,7 +368,7 @@
         \bigskip
 
       \item TSP using full search: $O(n!*n)$
-      \item TSP using DP: $O(2^n*n^2)$ -- Still low, but much better!        
+      \item TSP using DP: $O(2^n*n^2)$ -- Still low, but much better!
       \end{itemize}
     \end{exampleblock}
   }
@@ -410,7 +405,7 @@ visit(p,v):
 \subsection{UVA 10003 -- Cutting Sticks}
 \begin{frame}
   \frametitle{UVA 10003 -- Cutting Sticks}
-  
+
   {\smaller
     \begin{block}{Problem Description}
       \begin{itemize}
@@ -421,7 +416,7 @@ visit(p,v):
       \item What order of cuts \structure{minimize the cost}?
       \end{itemize}
   \end{block}
-  
+
   \medskip
 
   \structure{Example:} $l=100, N=3, \text{cuts}=\{25,50,75\}$
@@ -455,14 +450,14 @@ visit(p,v):
       \item What is the complexity of this algorithm? And the maximum time?
       \end{itemize}
     \end{exampleblock}
-    
+
     \begin{exampleblock}{Quiz 2}
       \begin{itemize}
       \item This problems smells of {\bf DP}...
       \item But what are the {\bf states}, and what is the {\bf transition}?
       \end{itemize}
     \end{exampleblock}
-    
+
   }
 \end{frame}
 
@@ -488,7 +483,7 @@ visit(p,v):
       \end{itemize}
       This requires at most a $(N,N)$ DP table for memoization, and O(N) for each iteration.
     \end{block}
-    
+
   }
 \end{frame}
 
@@ -501,28 +496,28 @@ visit(p,v):
     \column{0.4\textwidth}
     \includegraphics[width=1.2\textwidth]{img/acorn}
     \column{0.6\textwidth}
-    
+
     \begin{itemize}
     \item Begin at the top of a tree, and get the maximum number of acorns.
     \item You can go down {\bf 1 height} on the tree.
     \item OR {\bf change tree} for the cost of {\bf f height}\\
       (In this figure, $f = 2$)
-      
+
       \bigskip
-      
+
     \item Number of trees: $ 1 \leq T \leq 2000$
     \item Height of trees: $ 1 \leq H \leq 2000$
-    \item Length of fall : $ 1 \leq f \leq 500$         
+    \item Length of fall : $ 1 \leq f \leq 500$
     \end{itemize}
   \end{columns}
 
   \bigskip
-  
+
   \begin{block}{}
     Let's skip the full search. This smells of DP, but how to solve it?
 
     \medskip
-    
+
     \alert{QUIZ:} Describe the {\bf transition} and the {\bf state table}
   \end{block}
   }
@@ -539,22 +534,22 @@ visit(p,v):
       \begin{itemize}
       \item acorn$[t_i][h]$ -- number of acorns in tree {\bf $t_i$} at height {\bf $h$}
         \bigskip
-        
+
       \item cost$(t_i,0)$ = acorn$[t_i][0]$
         \bigskip
-        
+
       \item cost$(t_i,j)$ = acorn$[t_i][j]$ + \\
         \hspace{1.6cm}max$_{k\neq t_i}($cost$(t_i,j-1)$, cost$(t_k,j-f))$\\
         (Don't forget to check $j-f < 0$)
         \bigskip
-        
+
       \item Final cost: max$_{1\leq i \leq T}($cost$[t_i][H])$
       \end{itemize}
     \end{block}
   \end{columns}
-  
+
   \vfill
-  
+
   \begin{center}
     \alert{QUIZ:} What is the problem with this recurrence?
   \end{center}
@@ -588,13 +583,13 @@ visit(p,v):
       \begin{itemize}
       \item $\text{dp}[0] = \text{max}_{1\leq j\leq T}\text{acorn}[j][0]$
        \medskip
-        
+
       \item $\text{acorn}[j][i] += \text{max}(\text{acorn}[j][i-1], \text{maxac}[i-f])$
         \medskip
-        
+
       \item $\text{dp}[i] = \text{max}_{1\leq j\leq T}(\text{acorn}[j][i])$
       \end{itemize}
-    \end{block}    
+    \end{block}
   }
 \end{frame}
 
@@ -664,7 +659,7 @@ visit(p,v):
     R:
 
     \bigskip
-    
+
     \begin{enumerate}
     \item Start with $R_l = 0, R_h = W$, Test $T(R_l+R_h /2)$;
     \item If fails, $R_h = R_l+R_h/2$, else $R_l = (R_l+R_h)/2$; repeat $T(R_l+R_h/2)$.
@@ -736,10 +731,10 @@ def test(R):
 \begin{frame}[fragile]
   \frametitle{UVA 295 -- Fatman -- Squeezing through}
 
-  
+
   {\smaller
     \alert{QUIZ:} What is the total cost of this approach?
-    
+
     \begin{block}{T(R) sample code -- part 2, testing the graph}
 \begin{verbatim}
 def test(R):
@@ -765,11 +760,11 @@ def test(R):
 \subsection{Copying Books}
 \begin{frame}[fragile]
   \frametitle{UVA 714 -- Copying books}
-  
+
   {\smaller
     \begin{block}{Problem Description}
       \begin{itemize}
-      \item There are $M$ books and $K$ scribes $(1 \leq K \leq M \leq 500)$. 
+      \item There are $M$ books and $K$ scribes $(1 \leq K \leq M \leq 500)$.
       \item The each book has $p_i$ pages $(1 \leq p_i \leq 1000000)$
       \item Assign books to each scribe, and {\bf minimize} maximum job.
       \item Books must be assigned in blocks.
@@ -810,7 +805,7 @@ Output 2: 100 / 100 / 100 / 100 100 (max 200)
 \end{verbatim}
 
 \vfill
-    
+
     \begin{itemize}
     \item Someone has probably suggested DP. It is certainly possible.
     \item We could also use ``Binary Search + Test'' from the last problem:
@@ -838,7 +833,7 @@ Output 1: 100 200 300 400 500 / 600 700 / 800 900 (max 1700)
 \begin{block}{One possible Test: Greedy Algorithm to test Maximum M}
 \begin{verbatim}
 def test(M):
-  scribe = 0; book = 0; 
+  scribe = 0; book = 0;
   while scribe < K:
     sum = 0
     while sum + page[book] < M:
@@ -877,7 +872,7 @@ def test(M):
     \end{block}
 
     \vfill
-    
+
     \begin{alertblock}{Do not forget simple approaches}
       Binary-search-and-test is {\bf very powerful} if:
       \begin{itemize}
@@ -920,6 +915,3 @@ Input:               Solution:
 
 \input{problemdiscussion.tex}
 \end{document}
-
-
-
