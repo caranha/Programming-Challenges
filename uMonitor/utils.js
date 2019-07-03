@@ -22,3 +22,13 @@ function parseUCT(dateString) {
     }
     return resultDate;
 }
+
+function getProbDL(prob) {
+  for (i = 1; i < problemlist.length; i++) {
+    var m = problemlist[i].mlist;
+    for (j = 0; j < m.length; j++) {
+      if (prob == m[j]) return parseUCT(problemlist[i].deadline);
+    }
+  }
+  return -1
+}

@@ -13,16 +13,18 @@
 var student_subs = {};
 var student_maxsub = {};
 var student_uname = {};
+var student_status = {};
 
 var student_calls = 0;
 var submissions_read = 0;
 var submissions_error = 0;
 
+var variables = ["student_maxsub", "student_subs", "student_uname", "student_status"];
+
 function startup() {
 
   // loading from local storage
   if (typeof(Storage) !== "undefined") {
-    var variables = ["student_maxsub", "student_subs", "student_uname"]
     for (var i = 0; i < variables.length; i++)
     if (localStorage.hasOwnProperty(variables[i])) {
       window[variables[i]] = JSON.parse(localStorage[variables[i]]);
@@ -31,7 +33,6 @@ function startup() {
     console.log("No local storage found!")
   }
 }
-
 
 function clickme() {
   student_calls = 0;
@@ -53,12 +54,51 @@ function process_submission_data() {
   console.log("All done! Students Read: "+student_calls+" Subs read: "+submissions_read+" Errors: "+submissions_error);
 
   if (typeof(Storage) !== "undefined") {
-    localStorage.student_subs = JSON.stringify(student_subs);
-    localStorage.student_maxsub = JSON.stringify(student_maxsub);
-    localStorage.student_uname = JSON.stringify(student_uname);
+    for (var i = 0; i < variables.length; i++)
+      localStorage[variables[i]] = JSON.stringify(window[variables[i]]);
   }
 }
 
+/**
+  Receives a submission and returns: Invalid (outside DL), Not Solved, Late, Solved
+  // 0-- sub id, 1-- prob id, 2-- veredict, 3-- runtime,
+  // 4-- submission timestamp, 5-- language, 6-- rank
+ **/
+function parse_submission(sub) {
+  var prob = sub[1]; var time = sub[4]*1000; var result = sub[2];
+
+  if (time < startdate || time > enddate) return 0; // outside valid date
+  var dl = getProbDL(prob);
+  if (dl == -1) return 0; // not a valid problem
+  if (result < 80) return 1; // failed submission
+  if (time > dl) return 2;
+  else return 3;
+}
+
+/**
+
+**/
+function parse_student(student_id) {
+  if (!(student_status.hasOwnProperty(student_id))) {
+    student_status[student_id] = {};
+    student_status[student_id].total_subs = 0;
+  }
+
+  for (var i = 0; i < student_subs[student_id].length; i++) {
+    var sub = student_subs[student_id][i];
+    var ret = parse_submission(sub);
+    if (ret > 0) {
+      student_status[student_id].total_subs += 1;
+      if (!(student_status[student_id].hasOwnProperty(sub[1]))) {
+        student_status[student_id][sub[1]] = {};
+        student_status[student_id][sub[1]].total_subs = 0;
+        student_status[student_id][sub[1]].status = 0;
+      }
+      student_status[student_id][sub[1]].total_subs += 1;
+      student_status[student_id][sub[1]].status = Math.max(ret,student_status[student_id][sub[1]].status);
+    }
+  }
+}
 
 
 /**
