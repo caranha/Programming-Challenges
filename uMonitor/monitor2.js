@@ -19,17 +19,14 @@ var submissions_read = 0;
 var submissions_error = 0;
 
 function startup() {
-  if (typeof(Storage) !== "undefined") {
-    if (localStorage.hasOwnProperty("student_maxsub")) {
-      student_maxsub = JSON.parse(localStorage.student_maxsub);
-    }
-    if (localStorage.hasOwnProperty("student_subs")) {
-      student_subs = JSON.parse(localStorage.student_subs);
-    }
-    if (localStorage.hasOwnProperty("student_uname")) {
-      student_uname = JSON.parse(localStorage.student_uname);
-    }
 
+  // loading from local storage
+  if (typeof(Storage) !== "undefined") {
+    var variables = ["student_maxsub", "student_subs", "student_uname"]
+    for (var i = 0; i < variables.length; i++)
+    if (localStorage.hasOwnProperty(variables[i])) {
+      window[variables[i]] = JSON.parse(localStorage[variables[i]]);
+    }
   } else {
     console.log("No local storage found!")
   }
