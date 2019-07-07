@@ -50,6 +50,107 @@ function clickme() {
   }
 }
 
+function grade_students() {
+  for (var i = 0; i < student_list.length; i++) {
+    parse_student(student_list[i]);
+  }
+  console.log("Finished parsing all students");
+  for (var i = 1; i < student_list.length; i++) {
+
+    addRowGradeSummary(student_list[i]);
+    addRowDetailedSub(student_list[i]);
+  }
+}
+
+function addRowGradeSummary(sid)
+{
+  tabBody=document.getElementById("grade_table");
+  row=document.createElement("tr");
+
+  sname = document.createElement("td");
+  textnode = document.createTextNode(student_uname[sid]);
+  sname.appendChild(textnode);
+  row.appendChild(sname);
+
+  min_week = 8;
+  total_accept = 0;
+  total_lates = 0;
+
+  for (var i = 1; i < 10; i++) {
+    probcell = document.createElement("td");
+    prob = problemlist[i];
+    weekacc = 0;
+    weeklate = 0;
+    totalsubs = 0;
+
+    for (var j = 0; j < prob.mlist.length; j++) {
+      if (student_status[sid][prob.mlist[j]]) {
+        totalsubs += student_status[sid][prob.mlist[j]].total_subs;
+        if (student_status[sid][prob.mlist[j]].status > 1) weekacc += 1;
+        if (student_status[sid][prob.mlist[j]].status == 2) weeklate += 1;
+      }
+    }
+
+    total_accept += weekacc;
+    total_lates += weeklate;
+    min_week = Math.min(min_week,weekacc);
+
+    if (weekacc < 2) probcell.style.backgroundColor = "yellow";
+
+    textnode = document.createTextNode("A:"+weekacc+" L:"+weeklate+" T:"+totalsubs);
+    probcell.appendChild(textnode);
+    row.appendChild(probcell);
+  }
+
+  finalcell = document.createElement("td");
+  textnode = document.createTextNode("B:"+min_week+" T:"+total_accept+" L:"+(total_lates/total_accept).toFixed(3));
+  finalcell.appendChild(textnode);
+  row.appendChild(finalcell);
+  tabBody.appendChild(row);
+}
+
+function addRowDetailedSub(sid)
+{
+   tabBody=document.getElementById("submission_table");
+   row=document.createElement("tr");
+
+   sname = document.createElement("td");
+   textnode = document.createTextNode(student_uname[sid]);
+   sname.appendChild(textnode);
+   row.appendChild(sname);
+
+   stsub = document.createElement("td");
+   textnode = document.createTextNode(student_status[sid].total_subs);
+   stsub.appendChild(textnode);
+   row.appendChild(stsub);
+
+   for (var i = 1; i < 10; i++) {
+     probcell = document.createElement("td");
+     prob = problemlist[i];
+     pstatus = [];
+     psubs = [];
+
+     for (var j = 0; j < prob.mlist.length; j++) {
+       if (student_status[sid][prob.mlist[j]]) {
+         pstatus.push(student_status[sid][prob.mlist[j]].status);
+         psubs.push(student_status[sid][prob.mlist[j]].total_subs);
+       } else {
+         pstatus.push(0);
+         psubs.push(0);
+       }
+     }
+
+     textnode1 = document.createTextNode("("+pstatus.join(" / ")+")");
+     textnode2 = document.createTextNode("("+psubs.join(" / ")+")");
+     probcell.appendChild(textnode1);
+     probcell.appendChild(textnode2);
+     row.appendChild(probcell);
+   }
+
+   tabBody.appendChild(row);
+}
+
+
 function process_submission_data() {
   console.log("All done! Students Read: "+student_calls+" Subs read: "+submissions_read+" Errors: "+submissions_error);
 
