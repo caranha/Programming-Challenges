@@ -1,16 +1,16 @@
 <html>
-
 <head>
 <title>Programming Challenges Exercise Monitor</title>
 <link rel="stylesheet" type="text/css" href="monitor.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="classdata.js"></script>
 <script type="text/javascript" src="monitor.js"></script>
 </head>
 
-<body onload="render()">
+<body onload="startup()">
 
-<h1>(GB21802) Programming Challenges 2019: Problem Monitor
-<h2 id="username">No User Selected</h2>
+<h1>(GB21802) Programming Challenges 2020: Problem Monitor
 </h1>
 
 <div id="problemtable">
@@ -18,8 +18,9 @@
 
 <div class="nameform">
 <!-- keyCode 13 == Enter key -->
-Check submissions for username: <input onkeypress="if(event.keyCode == 13) mysubmissions()" type="text" id="uname">
-<button onclick="mysubmissions()">Go</button>
+Check submissions for username: <input onkeypress="if(event.keyCode == 13) check_student()" type="text" id="uname">
+<button onclick="check_student()">Go</button>
+<div id="user_error"></div>
 </div>
 
 <hr>
@@ -30,10 +31,10 @@ Check submissions for username: <input onkeypress="if(event.keyCode == 13) mysub
 
 <div class="links">
 <ul>
-<li><a href="https://manaba.tsukuba.ac.jp/ct/course_1149028">Course Page on Manaba</a></li>
-<li><a href="http://uva.onlinejudge.org/">UVA Online Judge</a></li>
+<!-- <li><a href="https://manaba.tsukuba.ac.jp/ct/course_1149028">Course Page on Manaba</a></li> -->
+<li><a href="https://onlinejudge.org/">Online Judge</a></li>
 <li><a href="https://www.udebug.com/">uDebug System</a></li>
-<li><a href="https://github.com/caranha/ProgrammingChallengesLectureNotes">Course Repository on Github</a></li>
+<li><a href="https://github.com/caranha/ProgrammingChallengesLectureNotes">Lecture Notes on Github</a></li>
 </ul>
 </div>
 
@@ -43,6 +44,26 @@ Page by <a href="http://conclave.cs.tsukuba.ac.jp">Claus Aranha</a>, using the <
 Thanks to Gabriel Tiburcio and Hinata Yanagi for patches.
 </div>
 
+<!-- <div class="debug">
+  <p>Debug buttons:</p>
+<button onclick="load_submissions()">Reload Submission Data</button>
+<button onclick="grade_students()">Regrade Students</button>
+<button onclick="clear_data()">Clear Locally Stored Data</button>
+</div> -->
+
+<!-- <p>Grade Table:</p>
+<table border='1'>
+<tbody id="grade_table">
+<tr><td>Name</td><td>Week 1</td></tr>
+</tbody>
+</table>
+
+<p>Submission Table:</p>
+<table border='1'>
+<tbody id="submission_table">
+<tr><td>Name</td><td>Total Subs</td><td>Week 1</td></tr>
+</tbody>
+</table> -->
 
 </body>
 </html>
