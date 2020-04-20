@@ -1,9 +1,7 @@
 # Ideas for improving the course
 - Make Lecture Plan for every Week
 
-### Week 0: Ad Hoc Problems (introduction)
-- Add one more problem analysis to 0B and reduce blablabla.
-- Leave only one trivial problem, and add something more interesting (easy 8-queen?)
+
 
 ### Week 1: Data Structures
 - Students found "Army Buddies" example difficult to follow...

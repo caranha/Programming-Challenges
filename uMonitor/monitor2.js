@@ -76,7 +76,7 @@ function addRowGradeSummary(sid)
   total_accept = 0;
   total_lates = 0;
 
-  for (var i = 1; i < 10; i++) {
+  for (var i = 1; i < 11; i++) {
     probcell = document.createElement("td");
     prob = problemlist[i];
     weekacc = 0;
@@ -124,7 +124,7 @@ function addRowDetailedSub(sid)
    stsub.appendChild(textnode);
    row.appendChild(stsub);
 
-   for (var i = 1; i < 10; i++) {
+   for (var i = 1; i < 11; i++) {
      probcell = document.createElement("td");
      prob = problemlist[i];
      pstatus = [];
