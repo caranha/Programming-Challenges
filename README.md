@@ -20,7 +20,7 @@ algorithm knowledge through implementation.
 
 # Links:
 * [Online Judge](http://onlinejudge.org/) -- Use this site to test your submissions
-* [Class Monitor](http://conclave.cs.tsukuba.ac.jp/lecture/monitor.html) -- Use this
+* [Class Monitor](monitor/monitor.html) -- Use this
 website to see links for specific problems and your submission status
 * [Manaba Webpage](https://manaba.tsukuba.ac.jp/ct/course_1322213) -- manaba system
 for accessing class material and submit reports (only for Tsukuba University Students)
