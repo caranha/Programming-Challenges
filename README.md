@@ -1,10 +1,14 @@
 These are the lecture notes for the "Programming Challenges" undergraduate
 class at the University of Tsukuba.
 
+_last change: 2020/04/21 -- Github pages started_
+
 # Course Outline:
 In this course, we study several algorithms by solving programming competition
 style challenges. The mail goal is to improve our programming skill and
 algorithm knowledge through implementation.
+
+[Class Syllabus](syllabus.md)
 
 ## Class curriculum
 - **Week01** -- Introduction/Ad Hoc Problems
