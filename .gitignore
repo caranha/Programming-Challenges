@@ -5,5 +5,8 @@
 *.snm
 *.toc
 *.vrb
+*.fls
+*.fdb_latexmk
+*.gz
 
 *~
