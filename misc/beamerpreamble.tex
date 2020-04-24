@@ -45,7 +45,10 @@
   % Warsaw is the theme selected by default in Beamer's installation sample files.
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%% THEME
-  %\usetheme{AnnArbor}
+  %\usetheme{Madrid}		% No subsection
+  \usetheme{AnnArbor}  % Subsection on top, no color
+
+
   %\usetheme{Antibes}
   %\usetheme{Bergen}
   %\usetheme{Berkeley}		% bem bacana - menu esquerdo
@@ -57,13 +60,12 @@
   %\usetheme{Darmstadt}
   %\usetheme{default}
   %\usetheme{Dresden}
-  \usetheme{Frankfurt}
+  %\usetheme{Frankfurt}
   %\usetheme{Goettingen}
   %\usetheme{Hannover}		% bem bacana - menu esquerdo
   %\usetheme{Ilmenau}
   %\usetheme{JuanLesPins}
   %\usetheme{Luebeck}
-  %\usetheme{Madrid}		%bacana
   %\usetheme{Malmoe}
   %\usetheme{Marburg}		% bem bacana - menu direito
   %\usetheme{Montpellier}
@@ -75,10 +77,11 @@
   %\usetheme{Warsaw}
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%% COLOR THEME
+  %\usecolortheme{default}		% branco, azul clarinho
+  \usecolortheme{crane}		% Very yellow (ok)
+
   %\usecolortheme{albatross}		% azul escuro, massa
   %\usecolortheme{beetle}		% cinza, menu azul
-  %\usecolortheme{crane}		% branco e amarelo, massa
-  \usecolortheme{default}		% branco, azul clarinho
   %\usecolortheme{dolphin}		% azul e branco, legal
   %\usecolortheme{dove}			% cinza e branco, feio
   %\usecolortheme{fly}			% todo cinza, horrível
@@ -129,26 +132,27 @@
 %\addheadboxtemplate{\color{black}}{
 %\hskip0.5cm
 %\color{white}
-%\insertshortauthor \ \ \ \ 
-%\insertframenumber \ \ \ \ \ \ \ 
+%\insertshortauthor \ \ \ \
+%\insertframenumber \ \ \ \ \ \ \
 %\insertsection \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \insertsubsection
 %\hskip0.5cm}
 %\addheadboxtemplate{\color{black}}{
 %\color{white}
-%\ \ \ \ 
+%\ \ \ \
 %\insertsection
 %}
 %\addheadboxtemplate{\color{black}}{
 %\color{white}
-%\ \ \ \ 
+%\ \ \ \
 %\insertsubsection
 %}
 
 % Insert frame number at bottom of the page.
-% \usefoottemplate{\hfil\tiny{\color{black!90}\insertframenumber}} 
+% \usefoottemplate{\hfil\tiny{\color{black!90}\insertframenumber}}
 
 \usepackage[english]{babel}
-\usepackage[latin1]{inputenc}
+%qq\usepackage[latin1]{inputenc}
+\usepackage{CJKutf8}
 \usepackage{subfigure}
 
 \usepackage{times}

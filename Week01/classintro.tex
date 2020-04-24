@@ -12,7 +12,7 @@
 \begin{frame}
   \frametitle{Outline}
   \begin{enumerate}
-    \item Outline and goal of the Class
+    \item Class Summary
     \item What are programming Challenges?
     \item Initial Example
     \item Class Program
@@ -21,196 +21,258 @@
   \end{enumerate}
 \end{frame}
 
-\subsection{Goals of the Class}
-\begin{frame}{Class goal: Improve our programming skills!}
+\subsection{Class Summary}
+\begin{frame}{Part I: Class Summary}
+  \begin{itemize}
+    \item In this class, you will \structure{practice your algorithm skills by writing many programs};
+    \bigskip
+
+    \item \structure{Key Idea:} Solve challenges with programs
+    \begin{itemize}
+      \item Read the problem and choose the right algorithm;
+      \item Choose the implementation and data structure;
+      \item Run the program and check the correct result;
+    \end{itemize}
+    \medskip
+
+    \item In the 1st and 2nd year, we learn the \structure{theory} of many algorithm. In this lecture, we learn the \structure{practice} of these algorithms.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Learning Algorithms and Practicing Algorithms}
+\begin{frame}{Algorithms: Theory x Implementation}
+  \begin{exampleblock}{}
+  It is very different to implement an algorithm in the classroom, and to implement an algorithm to solve a problem:
+  \end{exampleblock}
+  \begin{itemize}
+    \item \structure{Data Structure}: You need to implement the function to read the input and store it in a data structure;
+    \item \structure{Special Cases}: Special cases in the input can cause bugs or make the problem more complex;
+    \item \structure{Large Input}: If the input is very large, the implementation
+    needs to be efficient, or the program will run forever;
+    \item \structure{Debugging}: It can be hard to debug if the input is very hard, you need to learn how to make a \structure{test input};
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Automated Judging}
-\end{frame}
+  \begin{exampleblock}{}
+  In this lecture we use {\bf Automated Judges (AJ)} to check the correctness of your programming assignments.
+  \end{exampleblock}
 
-\begin{frame}{Class Expectations}
-\end{frame}
-
-\begin{frame}
-  \frametitle{What is this course about?}
-
-  You have learned many programming techniques...\\\hfill \structure{...but can you use them?}
-
-  \begin{block}{Course Objective: Learning by Practice}
+  \begin{itemize}
+    \item An AJ is a website that receives code from users, automatically compile it, and check its output against an expected output;
+    \item AtCoder, Aizu Online Judge, Topcoder, UVA Online Judge;
+    \item You can submit your code many times;
     \begin{itemize}
-      {\small
-    \item Every week: Solve 8 programming challenges;
-    \item \structure{Choose} and \structure{implement} the {\bf best algorithm} for each problem;
-    \item Be careful with \alert{max time}, and \alert{max memory};
-    \item We will discuss algorithms, techniques and tricks;
-      }
+      \item But you don't receive debug information: you have to debug by yourself.
     \end{itemize}
-  \end{block}
+    \item Grading is automatic and instantaneous;
+  \end{itemize}
+  \bigskip
 
-  \begin{exampleblock}{Course Goal:}
-    Improve programming abilities, techniques and familiarity.
+  \begin{exampleblock}{}
+  Every lecture, you have 8 programming assignments, and you have to complete a minimum of 2.
   \end{exampleblock}
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{Warnings about this class}
-%   \begin{alertblock}{1- Heavy Workload}
-%     \begin{itemize}
-%     \item Starts easy, but hard in the end;
-%     \item A few hours/week of homework;
-%     \item Lots of debugging;
-%
-%       \bigskip
-%
-%     \item Hint: Do your homework early!
-%     \end{itemize}
-%   \end{alertblock}
-%
-%   \begin{alertblock}{2- Course Language}
-%     \begin{itemize}
-%     \item My Japanese is not very good ;-) Let's talk in C++!
-%     \item All the course materials are in English;
-%     \item You can make your homework in Japanese;
-%
-%       \bigskip
-%
-%     \item Practice some English in this course too! :-)
-%     \end{itemize}
-%   \end{alertblock}
-%
-% \end{frame}
+\begin{frame}{What this class expects of you}
+  \begin{exampleblock}{Estimated classwork:}
+    \begin{itemize}
+      \item You need basic programming knowledge in C++ or Java;
+      \medskip
 
+      \item Complete 2-4 program assignments per week;
+      \begin{itemize}
+        \item (Atcoder difficulty: 300 to 500)
+        \item Average of 4 hours per week
+      \end{itemize}
+      \medskip
 
+      \item First assignments are easy, but later assignments are hard
+      \begin{itemize}
+        \item Spend a lot of time debugging and improving code;
+      \end{itemize}
+      \medskip
 
-\subsection{What are Programming Challenges?}
-\begin{frame}{What are Programming Challenges}
+      \item No final exam: only assignments!
+    \end{itemize}
+  \end{exampleblock}
+  \hfill Hint: Do your homework early!
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{What is a ``Programming Challenge''?}
-%
-%   A \structure{puzzle} that you solve by \structure{programming}.
-%
-%   \bigskip
-%
-%   Parts of a Programming Challenge:
-%   \begin{itemize}
-%   \item Description;
-%   \item Standard input;
-%   \item Standard output;
-%   \item Examples;
-%   \end{itemize}
-%
-%   \bigskip
-%
-%   Task: Write a program that:
-%   \begin{itemize}
-%     \item Reads the input;
-%     \item Prints the \structure{correct} output;
-%     \item And nothing else!
-%   \end{itemize}
-% \end{frame}
+\subsection{What are Programming Challenges?}
+\begin{frame}{Part II: What is a Programming Challenge?}
+  A "Programming Challenge" is a problem where you write a program to find the solution. Think of it as a {\bf programming puzzle}:
 
-% \begin{frame}
-%   \frametitle{What is a Programming Challenge? - 2}
-%
-%   \begin{itemize}
-%     \item Program Challenges are good for \structure{Practicing Algorithms}
-%     \bigskip
-%
-%     \item Program Challenges are good for \structure{Rapid Prototyping}
-%     \bigskip
-%
-%     \item Program Challenges are used for \structure{Work Recruiting}
-%     \bigskip
-%
-%     \item Program Challenges are also \structure{very fun puzzles!}
-%   \end{itemize}
-% \end{frame}
-%
-% \begin{frame}
-%   \frametitle{This course is about Programming Challenges}
-%
-%   The Goal of this course is \structure{solve programming challenges} to \alert{become better at programming}.
-%
-%   \vfill
-%
-%   We will study \structure{algorithms and techniques} that are common in
-%   \structure{programming competitions}
-% \end{frame}
+  \begin{block}{Simple Example}
+    You want to hold dancing classes. You receive a list of possible dates and
+    times from all your friends (ex: Fri: 14-16). Find a set of class times
+    which put most of your friends together. Don't forget to make pairs!
+  \end{block}
+  \bigskip
 
+  \begin{itemize}
+    \item Usually Programming challenges have a "story";
+    \item Usually there is a maximum running time, so you must choose the
+      most efficient algorithm;
+    \item Sometimes there are special input cases;
+    \item In general, you can solve the challenge with a small program (<~200 lines);
+  \end{itemize}
+\end{frame}
 
 
 \begin{frame}{Programming Challenges in the world}
-  % School competitions
-  % IOI
-  % Open Competitions and self-study
-  % Recruitment
+  \begin{itemize}
+    \item {\bf School Competitions}: Programming contests started as a way for schools to compete early in 1980s. ICPC - University
+    \bigskip
+
+    \item {\bf Self Improvement}: After 2000, many people use online Automated Judges to improve their programming skills and compete against each other (TopCoder, HackerRank, AtCoder, etc);
+    \bigskip
+
+    \item {\bf Company Recruitment}: More recently, several companies (including Google, Facebook, etc) have started using programming challenges to test the technical knowledge of their candidates.
+  \end{itemize}
 \end{frame}
 
 \subsection{Example}
-\begin{frame}{Example Challenge}
+\begin{frame}{A challenge example: The 3n+1 problem}
+  \begin{columns}
+    \column{0.6\textwidth}
+      What can we expect from a programming challenge?
+      \begin{itemize}
+        \item Description;
+        \item Input and Output format;
+        \item Input and Output examples;
+      \end{itemize}
+      \bigskip
+
+      Let's show how we would solve this problem (we will see more details
+      later in the class).
+    \column{0.4\textwidth}
+    \includegraphics[width=1\textwidth]{img/3n_problem}
+  \end{columns}
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{What is a Programming Challenge? - 0}
-%
-%   Consider a string with $N$ characters chosen from $G,C,T,A$. Ex:
-%
-%   \begin{center}
-%     \emph{\alert<2>{GACA\alert<4>{CATACAG}AT}TA\alert<3>{CATTAC}AGA ... GATACCAGATA}
-%   \end{center}
-%
-%   When you receive pair of indexes $s$ and $e$, calculate the number of "CA"s between $N_s$ and $N_e$. Ex:
-%
-%   \begin{itemize}
-%     \item \only<2->{s = 0, e = 12\hfill 3 repetitions}
-%     \item \only<3->{s = 15, e = 20\hfill 1 repetition}
-%     \item \only<4>{s = 4, e = 10\hfill 2 repetitions}
-%   \end{itemize}
-% \end{frame}
-%
-% \begin{frame}[t]
-%   \frametitle{What is a Programming Challenge? - 1}
-%
-%   \begin{center}
-%     \emph{GACACATACAGATTACATTACAGA ... GATACCAGATA}
-%     \only<2>{\emph{000112222333333344444555 ... 88888899999}}
-%   \end{center}
-%
-%   \begin{block}{Algorithm Idea 1}
-%     Start a counter $c = 0$, loop from $N_s$ to $N_e$,
-%     and every time you find "CA", add to the counter.
-%     \bigskip
-%
-%     \alert{Problem: If we have many queries, can we do faster?}
-%   \end{block}
-%
-%   \begin{onlyenv}<2>
-%
-%   \begin{block}{Algorithm Idea 2}
-%     Creat an auxiliary array $A$, that keeps the \alert{Cummulative sum} of "CA"s from $N_0$ to $N_i$.
-%
-%     \bigskip
-%
-%     If we want to know the answer, we calculate $A_e - A_s$.
-%   \end{block}
-%   \end{onlyenv}
-% \end{frame}
+\begin{frame}{A challenge example: The 3n+1 problem}{Solving the problem}
+  \begin{columns}
+    \column{0.6\textwidth}
+    This problem requires that we calculate the longest sequence generated
+    from the following algorithm:
+      \begin{enumerate}
+        \item if $n = 1$ then STOP
+        \item if $n$ is odd, then $n = 3n + 1$
+        \item else $n = n/2$
+        \item GOTO 1
+      \end{enumerate}
+    \medskip
 
+    For example, from 1 to 4:
+    \begin{itemize}
+      \item 1: 1 END
+      \item 2: 2 1 END
+      \item 3: 3 10 5 16 8 4 2 1 END
+      \item 4: 4 2 1 END
+    \end{itemize}
+    Maximum {\bf Cycle length} is 8 (for n = 3)
+    \column{0.4\textwidth}
+    \includegraphics[width=1\textwidth]{img/3n_problem}
+  \end{columns}
+\end{frame}
 
+\begin{frame}[fragile]{A challenge example: The 3n+1 problem}{A simple solution}
+{\smaller
+\begin{verbatim}
+int main() {
+  int min = 1;
+  int max = 10;
+  int maxcycle = 0;
+  for (int i = min; i <= max; i++) {
+    int cycle = 1;
+    int n = i;
+    while (n != 1) {
+      if (n % 2 == 0) { n = n / 2; }
+      else { n = n*3 + 1; }
+      cycle++;
+    }
+    if (cycle > maxcycle) maxcycle = cycle;
+  }
+  cout << min << " " << max << " " << maxcycle << "\n";
+  return 0;
+}
+\end{verbatim}}
+\end{frame}
+
+\begin{frame}{A challenge example: The 3n+1 problem}{Simple solutions, simple
+  problems}
+The solution proposed in the last slide has some problems. One problem is that
+it can be very slow! Consider the following situation:
+\bigskip
+
+Let the input be 1 10:
+\begin{itemize}
+  \item 1: 1 END
+  \item 2: 2 1 END
+  ...
+  \item 7: 7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END\\
+  ...
+  \item 9: 9 28 14 \alert{7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END}
+  \item 10: \alert{10 5 16 8 4 2 1 END}
+\end{itemize}
+\bigskip
+
+This simple program will repeat a lot of work. If the input is large, this
+extra work will be very slow! How can we improve this?
+\end{frame}
+
+\begin{frame}{A challenge example: The 3n+1 problem}{Memoization}
+  To solve this "repeated work" issue, we can use a technique called
+  {\bf Memoization}.
+  \medskip
+
+  The basic idea is very simple: Every time you finish a calculation,
+  store the result of this calculation in the memory. If you ever have to
+  do that calculation again, load it from memory.
+  \medskip
+
+  This technique can be very useful to reduce the amount of repeated work.
+  \bigskip
+
+  In this course, we will review many techniques like this to make programs more efficient, and you will implement these techniques in the programming assignments.
+\end{frame}
 
 \subsection{Class Program}
-\begin{frame}{Class Topics}
-  % Subjects that we are going to tackle in this course
+\begin{frame}{Topics in this class}
+  We will study the following topics in this semester:
+
+  \begin{enumerate}
+    \item Ad Hoc Problems
+    \item Data Structures
+    \item Search Problems
+    \item Dynamic Programming
+    \item Graphs Problems (Graph Structure)
+    \item Graph Problems (Graph Search and Flow)
+    \item String Manipulation
+    \item Math Problems
+    \item Geometry Problems
+    \item Final Remix
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}{Class Format}
-  % movies, pdfs, and exercises
-  % more details later
+  \begin{block}{Weekly Lecture Contents}
+    \begin{itemize}
+      \item PDFs with information about algorithms
+      \item Videos with explanation about the classes
+      \item Programming assignments on "onlinejudge.org"
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Evaluation}
+    \begin{itemize}
+      \item No final examination;
+      \item Weekly programming assignments;
+    \end{itemize}
+  \end{exampleblock}
+  \bigskip
+
+  More details about these two points in the next section.
 \end{frame}
 
 \subsection{Lecturer Introduction}
@@ -224,15 +286,15 @@
     \begin{itemize}
       \item \structure{Name:} Claus Aranha;
       \item \structure{Country:} Brazil;
-      \item \structure{Research:}
+      \item \structure{Research Topics:}
       \begin{itemize}
         \item Evolutionary Algorithms;
         \item Artificial Life;
       \end{itemize}
       \item \structure{Hobbies:}
       \begin{itemize}
-        \item Programming Games;
-        \item Watching Stars;
+        \item Game Programming;
+        \item Astronomy;
       \end{itemize}
         \medskip
 
@@ -243,33 +305,41 @@
 \end{frame}
 
 \subsection{ICPC}
-\begin{frame}{Join the Tsukuba ICPC Team!}
-  % What is ICPC?
+\begin{frame}{Extra: Join the Tsukuba ICPC Team!}{What is ICPC?}
+  \hfill \includegraphics[width=0.4\textwidth]{img/icpclogo}\\
+  If you like these contests, and want an extra challenge, please consider
+  joining the Tsukuba ICPC team!
+  \bigskip
+
+  ICPC (International Collegiate Programming Contest) is the largest and
+  most traditional programming competition between universities.
+  \bigskip
+
+  More than 50.000 students from all over the world participate in this
+  competition every year.
+  \bigskip
+
+  Contest Website: \url{https://icpc.baylor.edu/}
 \end{frame}
 
-\begin{frame}{Join the Tsukuba ICPC Team!}
-  % Some ICPC pictures
-\end{frame}
+\begin{frame}{Extra: Join the Tsukuba ICPC Team!}{Program and see the world!}
+  \hfill \includegraphics[width=0.4\textwidth]{img/icpc_image1}
+  \begin{itemize}
+    \item \alert{Requirements}: Team of 3 students, any course;
+    \medskip
 
-\begin{frame}{Join the Tsukuba ICPC Team!}
-  % ICPC Requirements, ICPC circle, ICPC calendar
+    \item \alert{Schedule:}
+    \begin{itemize}
+      \item National Preliminary Competition in July
+      \item Japanese Regional Competition in October
+      \item Asian Semi-final in December
+      \item World Final April next year
+    \end{itemize}
+      (\alert{Dates may change this year because of nCov-19})
+    \medskip
+    \item Contact me if you're interested!
+  \end{itemize}
 \end{frame}
-
-% \begin{frame}
-%   \frametitle{Participate in ICPC!}
-%   \begin{columns}
-%     \column{0.5\textwidth}
-%   \begin{itemize}
-%     \item Fun challenges to choose the world champion!
-%     \item Teams of 3 people!
-%     \item Registration Deadline Early of June!
-%   \end{itemize}
-%
-%   \includegraphics[width=1\textwidth]{icpc/DSC_0171}
-%   \column{0.5\textwidth}
-%   \includegraphics[width=1\textwidth]{icpc/DSC_0677}
-% \end{columns}
-% \end{frame}
 
 
 
