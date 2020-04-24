@@ -27,7 +27,7 @@ algorithm knowledge through implementation.
 * [Class Monitor](uMonitor/monitor.html) -- Use this
 website to see links for specific problems and your submission status
 * [Manaba Webpage](https://manaba.tsukuba.ac.jp/ct/course_1322213) -- manaba system
-for accessing class material and submit reports (only for Tsukuba University Students)
+for accessing class material and submit reports (only for Tsukuba University Students - Self registration code 2020: 6910967)
 
 # References:
 
