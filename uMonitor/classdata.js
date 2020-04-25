@@ -8,7 +8,7 @@ var enddate = parseUCT("2020-07-07T14:59:59+09:00");
 
 var problemlist = [
     {name:"Example Problems (Non-grading)",
-     deadline:"2020-07-20T14:59:59+09:00",
+     deadline:"2020-04-20T14:59:59+09:00",
      mlist:[2113,3710,2949,734]},
     {name:"Week 1: Introduction and Ad-hoc problems",
      deadline:"2020-05-07T14:59:59+09:00",

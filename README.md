@@ -1,7 +1,7 @@
 These are the lecture notes for the "Programming Challenges" undergraduate
 class at the University of Tsukuba.
 
-_last change: 2020/04/21 -- Github pages started_
+_last change: 2020/04/26 -- Materials for Lecture 1 uploaded_
 
 # Course Outline:
 In this course, we study several algorithms by solving programming competition
