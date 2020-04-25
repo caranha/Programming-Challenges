@@ -12,12 +12,26 @@ algorithm knowledge through implementation.
 
 ## Class curriculum
 - **Week01** -- Introduction/Ad Hoc Problems
+  - [Lecture notes](Week01/week1.pdf)
+  - Video lecture
 - **Week02** -- Data Structures
+  - Lecture notes
+  - Video lecture
 - **Week03** -- Search Problems
+  - Lecture notes
+  - Video lecture
 - **Week04** -- Dynamic Programming
+  - Lecture notes
+  - Video lecture
 - **Week05** -- Graphs Problems I
+  - Lecture notes
+  - Video lecture
 - **Week06** -- Graphs Problems II
+  - Lecture notes
+  - Video lecture
 - **Week07** -- String Manipulation
+  - Lecture notes
+  - Video lecture
 - **Week08** -- Math Problems
 - **Week09** -- Geometry Problems
 - **Week10** -- Final Problem Remix
