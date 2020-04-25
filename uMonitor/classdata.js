@@ -4,18 +4,18 @@ var student_id = [];
 var student_list = student_id.concat(claus_id);
 
 var startdate = parseUCT("2020-04-01T00:00:00+09:00");
-var enddate = parseUCT("2020-07-10T14:59:59+09:00");
+var enddate = parseUCT("2020-07-07T14:59:59+09:00");
 
 var problemlist = [
     {name:"Example Problems (Non-grading)",
-     deadline:"2020-08-01T14:59:59+09:00",
+     deadline:"2020-07-20T14:59:59+09:00",
      mlist:[2113,3710,2949,734]},
-    {name:"Week 1: Introduction and Problem Solving",
-     deadline:"2020-05-11T14:59:59+09:00",
+    {name:"Week 1: Introduction and Ad-hoc problems",
+     deadline:"2020-05-07T14:59:59+09:00",
      mlist:[36,2827,2595,2899,834,1146,97,979]},
-    {name:"Week 2: Data Structures",
-     deadline:"2020-05-18T14:59:59+09:00",
-     mlist:[3778,2628,1073,1099,2026,1135,2315,2176]},
+    // {name:"Week 2: Data Structures",
+    //  deadline:"2020-05-18T14:59:59+09:00",
+    //  mlist:[3778,2628,1073,1099,2026,1135,2315,2176]},
     // {name:"Week 3: Search Problems",
     //  deadline:"2019-05-09T14:59:59+09:00",
     //  mlist:[2267,1018,3886,1301,2612,3086,3488,802]},

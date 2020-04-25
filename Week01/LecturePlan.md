@@ -27,8 +27,3 @@ In this course, the students will solve small programming challenges, where they
 - Languages of the course (natural and programming)
 - Lecture calendar and office hours
 - ICPC Invitation
-
-# TODO:
-- Reorder lectures based on the plan above
-- Reduce the blabla in part four, leave only one trivial problem.
-- Add a more interesting problem at the end of this class (8-queen?)
