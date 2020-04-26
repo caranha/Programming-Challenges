@@ -13,7 +13,10 @@ algorithm knowledge through implementation.
 ## Class curriculum
 - **Week01** -- Introduction/Ad Hoc Problems
   - [Lecture notes](Week01/week1.pdf)
-  - Video lecture
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/4Y3hG08sohE)
+    - Video 2: [Course Structure](https://youtu.be/EYP8IiM3uBE)
+    - Video 3: [Ad hoc problems](https://youtu.be/lvQRNj476d8)
 - **Week02** -- Data Structures
   - Lecture notes
   - Video lecture

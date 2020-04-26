@@ -81,7 +81,7 @@ function load_problem_data(pid) {
           problem_info[pid] = pdata;
           // get name and link
           document.getElementById("n"+pdata.pid).innerHTML =
-            "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
+            "<a target=\"_blank\" href=\"https://onlinejudge.org/index.php?"+
             "option=com_onlinejudge&Itemid=8&"+
             "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
           $(".weektable a").click(function (e) { e.stopPropagation(); })
@@ -104,7 +104,7 @@ function load_problem_data(pid) {
     // console.log("Loading from saved Memory")
     var pdata = problem_info[pid];
     document.getElementById("n"+pdata.pid).innerHTML =
-      "<a target=\"_blank\" href=\"https://uva.onlinejudge.org/index.php?"+
+      "<a target=\"_blank\" href=\"https://onlinejudge.org/index.php?"+
       "option=com_onlinejudge&Itemid=8&"+
       "page=show_problem&problem="+pdata.pid+"\">"+pdata.title+"</a>";
     $(".weektable a").click(function (e) { e.stopPropagation(); })
