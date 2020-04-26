@@ -1,5 +1,6 @@
 var claus_id = [161945]; //[161945,1137204];
-var student_id = [];
+var student_id = [1137181, 1137153, 1137119, 1137233, 1137164,
+  1137157, 1137186, 1137161];//, 1137134];
 
 var student_list = student_id.concat(claus_id);
 

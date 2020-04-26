@@ -1,3 +1,5 @@
+// TODO: Deal correctly with the case when uname returns -- ? -- (Should temporarily discard the data)
+// TODO: Deal correctly with saving data and dropping dirty data
 
 // 0-- sub id, 1-- prob id, 2-- veredict, 3-- runtime,
 // 4-- submission timestamp, 5-- language, 6-- rank
@@ -18,14 +20,17 @@ var variables = ["student_maxsub", "student_subs",
 // -- General Functions -- //
 function startup() {
   // loading from local storage
-  if (typeof(Storage) !== "undefined") {
-    for (var i = 0; i < variables.length; i++)
-    if (localStorage.hasOwnProperty(variables[i])) {
-      window[variables[i]] = JSON.parse(localStorage[variables[i]]);
-    }
-  } else {
-    console.log("No local storage found!")
-  }
+  // Stop loading from local storage until things stabilize
+  clear_data();
+
+  // if (typeof(Storage) !== "undefined") {
+  //   for (var i = 0; i < variables.length; i++)
+  //   if (localStorage.hasOwnProperty(variables[i])) {
+  //     window[variables[i]] = JSON.parse(localStorage[variables[i]]);
+  //   }
+  // } else {
+  //   console.log("No local storage found!")
+  // }
 
   load_and_render_problems();
 }
