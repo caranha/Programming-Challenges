@@ -1,10 +1,13 @@
 # General
-- Add kbd course description as a file.
 
 ### Week 1:
-- Course Introduction
-- Course Requirements
-- Ad hoc problems
+- Add to motivation of course
+  - Goal of this course: not to "explain" algorihtms, but to "use" them
+- Change discussion about input code
+  - Three input patterns
+  - Two trivial: number of cases and special condition
+  - One special: EOF - example of code to deal with EOF
+
 
 ### Week 2: Data Structures
 - Students found "Army Buddies" example difficult to follow...
