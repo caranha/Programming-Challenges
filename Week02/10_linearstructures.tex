@@ -1,31 +1,33 @@
-\section{Linear Data Structures}
+\section{The Array Data Structure}
 
 \begin{frame}
   \begin{center}
-    {\large Lecture 02 -- Data Structures\\Part II -- Linear Data Structures}\\
+    {\large Lecture 02 -- Data Structures\\Part II -- The Array Data Structure}\\
   \end{center}
 \end{frame}
 
 \subsection{Basics}
 
 \begin{frame}
-  \frametitle{The simple array!}
-  Arrays are the simplest data structure, but also the most often used.
+  \frametitle{Introducing the simple array!}
+
+  Arrays are the simplest data structure, but also the ones most often used for programming challenges.
 
   \bigskip
 
-  \structure{Merits}
+  {\bf Merits}
   \begin{itemize}
-  \item Easy to implement! No worries about pointers;
-  \item Can simulate pointers using index operations;
-  \item Many library Functions;
+  \item They are easy to implement and manipulate (no pointers);
+  \item Random access is usually very fast;
+  \item Pointers can be \emph{simulated} using index operations;
+  \item Many library functions for array manipulation;
   \end{itemize}
 
   \bigskip
 
-  \alert{Concerns}
+  {\bf Concerns}
   \begin{itemize}
-  \item Reordering many items can be expensive;
+  \item Inserting many items in the middle of an array can be expensive;
   \end{itemize}
 \end{frame}
 
@@ -83,42 +85,33 @@ Method      |  executable size  |  Time Taken (in sec) |
 
 \subsection{Sorting and Searching}
 
-\begin{frame}
-  \frametitle{Operations in Arrays}
+\begin{frame}{Operations in Arrays}{Problem Example}
 
   \begin{block}{Example -- Vito's Family (UVA 10041)}
-    {\bf Input:} A list of integers (street addresses):\\
-
-    \smallskip
-
-    10, 20, 10, 10, 40, 80, 30, 90, 20, 55, 20
-
-    \bigskip
-
-    {\bf Output:} The address (integer) with \structure{minimal} distance to all others.
-    \begin{itemize}
-      \item {\bf 10}: $0+10+0+0+30+70+20+80+10+45+10 = 275$
-      \item {\bf 40}: $30+20+30+30+0+40+10+50+20+15+20 = 265$
-      \item {\bf 20}: $10+0+10+10+20+60+10+70+0+35+0 = 225$
-    \end{itemize}
-
-    \bigskip
-
-    Result: 20!
-
+    Vito wants to move to an address that is closest to his entire family.
   \end{block}
-
   \bigskip
 
-  How do we solve this problem?
+  {\bf Input:} A list of integers (street addresses):\\
+  10, 20, 10, 10, 40, 80, 30, 90, 20, 55, 20
+  \bigskip
 
+  {\bf Output:} The address (integer) with \structure{minimal} distance to all others.
+  \begin{itemize}
+    \item {\bf 10}: $0+10+0+0+30+70+20+80+10+45+10 = 275$
+    \item {\bf 40}: $30+20+30+30+0+40+10+50+20+15+20 = 265$
+    \item {\bf 20}: $10+0+10+10+20+60+10+70+0+35+0 = 225$
+  \end{itemize}
+  \bigskip
+
+  Result: 20!\\
+  How would you solve this problem?
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Operations in Arrays}
+\begin{frame}[fragile]{Operations in Arrays}{Problem Example}
 
   \begin{itemize}
-  \item Solution: Find the \structure{Median} address.
+  \item The solution to this problem is to find de {\bf median} address.
   \item 1- \structure{sort the address array}, 2- select the middle value.
   \end{itemize}
 
@@ -133,34 +126,27 @@ Method      |  executable size  |  Time Taken (in sec) |
       for (int i=0; i<n; i++) { cin >> add[i]; }
 
       sort(add, add+n);
-
       cout << add[n/2] << endl;
   }
 \end{verbatim}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Using Sorting}
-  Sorting can be used for \alert{many, many} things:
+\begin{frame}{Operations in Arrays}{Sorting}
+  In the last problem example, we used sorting to calculate the median. In fact, you can {\bf solve many, many problems using sorting}.\bigskip
 
-  \bigskip
+  Some examples:
+  \begin{itemize}
+  \item Finding the Highest $n$ values, Finding duplicate values;
+    \bigskip
 
-    \begin{itemize}
-    \item Finding the Highest $n$ values, Finding duplicate values;
-      \bigskip
+  \item Binary Search ($O(\log n)$)
+    \bigskip
 
-    \item Binary Search ($O(\log n)$)
-      \bigskip
-
-    \item Pre-processing data for other algorithms.
-    \end{itemize}
-
-  \bigskip
-  Let's do Sorting!
+  \item Pre-processing data for other algorithms.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{algorithm, sorting and binary search}
+\begin{frame}[fragile]{Operations in Arrays}{The "algorithm" header: sorting and binary search}
 {\small
 \begin{block}{}
 \begin{verbatim}
@@ -185,12 +171,9 @@ int main () {
 \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{Sorting with specific sorting function}
+\begin{frame}[fragile]{Operations in Arrays}{Sorting with specific funtions}
 {\small
-  Imagine you need to sort by number of points (bigger is best),
-  penalty (smaller is best), and name (alphabetical order)
-
+  In some cases, you need to do a complex sort on several variables.
   \begin{block}{}
 \begin{verbatim}
 #include <algorithm>
@@ -200,7 +183,7 @@ struct team{ string name; int point; int penal;
              team(string _n, int _po, int _pe) :
                name(_n), point(_p), penal(_g){} };
 
-bool cmp(team a, team b) {
+bool cmp(team a, team b) {      % Sorting Function
   if (a.point != b.point) return a.point > b.point;
   if (a.penal != b.penal) return a.penal < b.penal;
   return strcmp(a.name,b.name); }
