@@ -6,6 +6,7 @@
 \usepackage{relsize}		% For \smaller
 \usepackage{url}			% For \url
 \usepackage{epstopdf}	% Included EPS files automatically converted to PDF to include with pdflatex
+\usepackage{pagenote}[continuous,page]
 
 %For MindMaps
 % \usepackage{tikz}%
@@ -150,6 +151,8 @@
 % Insert frame number at bottom of the page.
 % \usefoottemplate{\hfil\tiny{\color{black!90}\insertframenumber}}
 
+%% makes the ppagenote command for figure references at the end.
+
 \usepackage[english]{babel}
 %qq\usepackage[latin1]{inputenc}
 \usepackage{CJKutf8}
@@ -157,3 +160,11 @@
 
 \usepackage{times}
 \usepackage[T1]{fontenc}
+
+\makepagenote
+\renewcommand{\notenumintext}[1]{}
+\newcommand{\ppagenote}[1]{\pagenote[Page \insertframenumber]{#1}}
+
+\title[Programming Challenges (GB21802)]{Programming Challenges (GB21802)}
+\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
+\institute[U. Tsukuba]{University of Tsukuba, Department of Computer Sciences}

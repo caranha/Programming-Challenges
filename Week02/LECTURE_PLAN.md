@@ -1,33 +1,32 @@
-Week 1 - Data Structures
+Week 2 - Data Structures
 ========================
-
-# THOUGHTS
-- Rewrite the "Linear Data Structures with Libraries"
-- Rewrite the "Tree Data Structures with Libraries"
-- Rewrite the "No-library data structures: Union-Find"
-- Rewrite the "No-library data structures: Segment-Trees"
-- TODO: Add Fenwick Tree
-
-# CHANGES
-- Removed Jolly Jumpers and CD, added: Back to 8 queens, Frequent Values
-- Added Segment Tree
+# TODO
+- [ ] Improve "Army Buddies" intitial example
+- [ ] Improve "library" section (queues/stacks)
+- [ ] Add discussion on Fenwick tree
 
 # Problems
-- Jolly Jumpers -- Simple problem
-- Newspaper -- Map the cost
 - Army Buddies -- Choose right data structure (array)
 - Grid Successors -- Implement 2D array (implementation)
-- Football (aka Soccer) -- Implement Sorting (implementation)
 - File Fragmentation -- Many solutions, map of bit combinations is one
-- CD -- Implement Map for speed (implementation)
 - War -- Implement 2 Union finds
+- Back to the 8 Queens
+- Football (aka Soccer) -- Implement Sorting (implementation)
+- Newspaper -- Map the cost
+- Frequent Values
+
+## Problems not used currently
+- CD -- Implement Map for speed (implementation)
+
 
 # Lecture Outline
+Discussion of several Data sets and how they can be used in programming challenges.
 
 ## Motivations for Data Sets
 ### Motivating Examples: 8 Queen and Towers of Hanoi
 - The 8 queen problem is an example where the right data set and pruning
-  can make a big difference (10 minutes or so). **TODO** Add 8-queen problem code
+  can make a big difference (10 minutes or so).
+- **TODO** Add 8-queen problem code
 - Ask students for data structures for the Towers of Hanoi. Explain how some
   Data structures can be used for visualization.
 

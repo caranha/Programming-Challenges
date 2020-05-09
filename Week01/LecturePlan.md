@@ -1,4 +1,18 @@
-# Introduction and Adhoc problems
+Week 1: Introduction and AdHoc Problems
+=======================================
+
+# TODO:
+- Improve course intro
+  - Motivation: Not to "explain" algorithms, but to "use" them
+  - Gym analogy (Brain Gym)
+- Change discussion about input code
+  - Three input patterns
+  - Two trivial: number of cases and special condition
+  - One special: EOF - example of code to deal with EOF
+
+# Problem discussion
+
+# Lecture Contents
 ## Outline/Goals
 - What are the goals of this course?
 - What is a programming challenge, and why it is important to study it.
