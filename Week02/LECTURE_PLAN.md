@@ -2,7 +2,7 @@ Week 2 - Data Structures
 ========================
 # TODO
 - [ ] Improve "Army Buddies" intitial example
-- [ ] Improve "library" section (queues/stacks)
+- [ ] Improve "library" section (more details queues/stacks)
 - [ ] Add discussion on Fenwick tree
 
 # Problems
