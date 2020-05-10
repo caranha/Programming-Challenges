@@ -5,20 +5,19 @@
   \end{center}
 \end{frame}
 
-\subsection{Visalgo}
 \begin{frame}
-  \frametitle{Long Live the STL!}
+  \frametitle{Learn your data structure libraries}
 
   \begin{itemize}
-    \item The standard library implements many data structures that are
-      useful for programming contests.
+    \item The standard C++ library (STL) implements many useful data structures;
+    \item By using data structures from the STL, you make your program simpler and avoids bugs;
       \bigskip
 
-    \item Let's review a few of them here.
+    \item In this section, we will review some of the data structures used most often.
+    \item We will focus on usage, rather than theory.
       \bigskip
 
-    \item The website \url{https://visualgo.net/} has good reviews of many
-     data structures;
+    \item For more information about how these data structures work, we recomment the the website \url{https://visualgo.net/};
   \end{itemize}
 
 \end{frame}
@@ -28,15 +27,12 @@
 
 %% TODO: Add Motivating Problem For Queue
 \begin{frame}
-  \frametitle{Deque, Queue, Stack}
+  \frametitle{Vector variations: Deque, Queue, Stack}
 
-  Sometimes you want special access to the \structure{start} or \structure{end}
-  of a vector.
-
-  \bigskip
+  While the \emph{vector} is a general and useful data structure, for some applications you will want special access to the {\bf start} and {\bf end} of a vector. \bigskip
 
   \begin{itemize}
-    \item \structure{stack}: \emph{pop} and \emph{push} from the front;
+    \item \structure{stack}: \emph{pop} and \emph{push} from the front of the vector;
     \bigskip
 
     \item \structure{queue}: \emph{pop} from the back, \emph{push} from the front;
@@ -59,7 +55,7 @@
     Queues and Stacks are useful to simplify common cases of vectors
   \end{block}
 
-  Stack Example: Testing if a set of parenthesis is balanced.
+  Stack Example: Test if a set of parenthesis is balanced.
 {\small
 \begin{verbatim}
 #include <stack>
@@ -74,51 +70,57 @@ while(cin >> c) {
   }
 }
 cout << (s.size() == 0 ? "balanced" : "unbalanced");
-
 \end{verbatim}}
 \end{frame}
 
 
-\subsection{Balanced Search Tree (BST) -- Maps and Sets}
+\subsection{Maps and Sets}
 
-\begin{frame}
-  \frametitle{Problem Example: CD -- 11849}
+\begin{frame}{Maps and Sets}{Problem Example: CD -- 11849}
+
+  Jack and Jill are comparing their CD collections. The problem wants to know: How many CDs are in the both collections?\bigskip
 
   \begin{block}{}
     {\bf Input:}
     \begin{itemize}
-    \item Jack CD collection: Up to $10^6$ CDs, with ID up to $10^9$
-    \item Jill CD collection: Up to $10^6$ CDs, with ID up to $10^9$
+    \item Jack CD collection: List of $10^6$ CD IDs
+    \item Jill CD collection: List of $10^6$ CD IDs
+    \item Each CD ID is an integer from 1 to $10^9$
     \end{itemize}
 
     {\bf Output:}
     \begin{itemize}
-    \item How Many CDs are in both Collections?
+    \item Number of CD IDs that appear in both collections.
     \end{itemize}
 
   \end{block}
+  \bigskip
+
+  Easy problem, right?
 \end{frame}
 
-\begin{frame}
-  \frametitle{Problem Example: CD -- 11849}
-
+\begin{frame}{Maps and Sets}{Problem Example: CD -- 11849}
   Naive Solution:
+  \bigskip
 
   \begin{enumerate}
-  \item Store all IDs in collection 1 in a Vector (n)
-  \item Sort the Vector (nlogn)
-  \item For each ID in collection 2, test if it exists in Vector with \structure{Binary Search} (nlogn)
+  \item Store all IDs in collection 1 in a Vector \hfill (n steps)
+  \item Sort the Vector \hfill (nlogn steps)
+  \item For each ID in collection 2, use Binary Search to find it in Vector 1\\
+  \hfill (nlogn steps)
   \end{enumerate}
 
   Total Cost: $n + n\text{log}n + n\text{log}n$
+  \vspace{2cm}
 
-  \bigskip
-
-  Let's use a \structure{MAP} for $O(\log N)$ search using a \structure{balanced search tree}
+  \begin{block}{}
+  Unfortunately, this is not fast enough for the time limit of this problem. Using the right data structure, you can reduce the time cost to $n+\log n$.
+  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Solving CD with a MAP (Approximate Solution)}
+\begin{frame}[fragile]{Solving CD with a map data structure}{Approximate Solution}
+
+  The STL provides {\bf set}, which is a data structure that uses balanced search trees to allow finding items in $\log n$
 
 {\smaller
   \begin{block}{}
@@ -128,18 +130,14 @@ cout << (s.size() == 0 ? "balanced" : "unbalanced");
 using namespace std;
 
 int main() {
-    int N, M, num;
-    cin >> N >> M;
-
-    set<int> first, second;
-    while (N--) { cin >> num; first.insert(num); }
-    while (M--) { cin >> num; second.insert(num); }
-    int count = 0;
-    for (set<int>::iterator iter = first.begin();
-         iter != first.end(); ++iter)
-      if (second.find(*iter) != second.end())
-        ++count;
-      cout << count << '\n';
+  int N, M, num; cin >> N >> M;
+  set<int> first;
+  while (N--) { cin >> num; first.insert(num); }
+  int count = 0;
+  for (int i = 0; i < M; i++) {
+    cin >> num;
+    if (first.find(num) != first.end()) ++count; }
+  cout << count << '\n';
 }
 \end{verbatim}
 \end{block}}
@@ -182,9 +180,8 @@ int main() {
   \end{itemize}
   \bigskip
 
-  However, in a programming context (or even day to day life),
-  implementing these trees from scratch is \alert{Dangerous}.
-
+  However, in for short programs (such as programming challenges)
+  implementing these trees from scratch is a good way to create {\bf bugs}.
   \bigskip
 
   Luckly, most standard libraries include some implementation of BST.
@@ -205,9 +202,10 @@ int main() {
 \begin{frame}[fragile]
   \frametitle{Using Map in C++}
   {\small
+  \begin{block}{}
 \begin{verbatim}
 #include <map>
-map<string, int> ages;   ages.clear();
+map<string, int> ages; ages.clear();
 
 ages["john"] = 40;
 ages["billy"] = 39;
@@ -215,39 +213,39 @@ ages["andy"] = 29;
 ages["steven"] = 42;
 ages["felix"] = 33;
 
-// What is the age of andy?
+  // What is the age of andy?
 map<string, int>::iterator it = ages.find("andy");
 cout << it->second << endl;
-
-// Which names are between "f" and "m" ??
+  // Which names are between "f" and "m" ??
 for (map<string, int>::iterator it =
      age.lower_bound("f");              // finds felix
      it != age.upper_bound("m"); it++)  // finds johm
         cout << " " << ((string)it->first).c_str();
-\end{verbatim}}
+\end{verbatim}
+\end{block}}
 \end{frame}
 
-
-\begin{frame}[fragile]
-  \frametitle{Using Set in C++}
-  {\small
-\begin{verbatim}
-#include <set>
-set<int> CDs;
-CDs.clear();
-
-// Adding some values
-CDs.insert(1000); CDs.insert(999); CDs.insert(1337);
-CDs.insert(1313); CDs.insert(100020);
-
-// Testing if a particular value exists (O(logn))
-set<int>::iterator f = used_values.find(79);
-if (f == used_values.end())
-  cout << "not found!\n";
-else
-  cout << *f;    // Index!
-\end{verbatim}}
-\end{frame}
+%% Already used this code in an earlier slide
+% \begin{frame}[fragile]
+%   \frametitle{Using Set in C++}
+%   {\small
+% \begin{verbatim}
+% #include <set>
+% set<int> CDs;
+% CDs.clear();
+%
+% // Adding some values
+% CDs.insert(1000); CDs.insert(999); CDs.insert(1337);
+% CDs.insert(1313); CDs.insert(100020);
+%
+% // Testing if a particular value exists (O(logn))
+% set<int>::iterator f = used_values.find(79);
+% if (f == used_values.end())
+%   cout << "not found!\n";
+% else
+%   cout << *f;    // Index!
+% \end{verbatim}}
+% \end{frame}
 
 \subsection{Hash Tables}
 \begin{frame}[fragile]

@@ -1,3 +1,5 @@
 \protect \pagenotesubhead  {1}{}
 \noteentry{1}{Page 5}{Chessboard by Lee Daniel Crocker. CC-BY-SA 3.0}{5}
 \noteentry{2}{Page 10}{Tower of Hanoi's graph image by nonenmac}{10}
+\protect \pagenotesubhead  {4}{}
+\noteentry{1}{Page 48}{Segment Tree Code from \protect \url  {https://github.com/stevenhalim/cpbook-code}}{48}

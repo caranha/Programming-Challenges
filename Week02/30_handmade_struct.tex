@@ -9,17 +9,21 @@
 \begin{frame}
   \frametitle{Hand-making Data Structures}
 
+  \begin{block}{}
+    For certain problems, it is necessary to extend existing data structures;
+  \end{block}
+
   \begin{itemize}
-  \item Sometimes, it is necessary to extend the standard data structures
-    (arrays, maps, etc)
+    \item Extensions of Arrays and Vectors for complex data;
     \bigskip
 
-  \item Other times, it is necessary to implement data structures not
-    included in the standard libraries (graphs, UFDS, etc)
+    \item New features for indexing and/or searching;
     \bigskip
 
-  \item Let's see a few examples.
+    \item Express special relationship between data items (ex: graphs)
   \end{itemize}
+
+  We will examine two data structures now: UFDS and Segment Tree
 \end{frame}
 
 \subsection{Union-Find}
@@ -28,20 +32,18 @@
   \framesubtitle{Motivating Problem}
 
   \begin{block}{Network Connections -- UVA793}
-    In a network with $n$ computers, some are connected to others.\\
+    Imagine a network with $n$ computers, some are connected to others.
     \bigskip
 
     {\bf Input:} A series of ``commands''
     \begin{itemize}
-    \item c i j -- Means computer $i$ is connected to computer $j$
-    \item q i j -- Question: is computer $i$ connected to computer $j$?
+    \item c i j -- New Info: Computer $i$ is connected to computer $j$
+    \item q i j -- Query: Is computer $i$ connected to computer $j$?
     \end{itemize}
 
     \bigskip
-
     {\bf Output:} The number of ``q'' with answer yes, and the number
     of ``q'' with answer no.
-
   \end{block}
 \end{frame}
 
@@ -49,18 +51,21 @@
   \frametitle{Union-Find Disjoint Set (UFDS)}
   \framesubtitle{Motivating Problem -- Naive answer}
 
-  \begin{itemize}
-  \item One idea: Use a Neighborhood Matrix $(n\times n)$ initalized with zeros.
-  \item For every ``c i j'', $N_{i,j}, N_{j,i}$ becomes 1.
-  \item We can follow the graph to answer ``q i j''.
-  \end{itemize}
+  \begin{block}{Neighborhood Graph}
+    \begin{itemize}
+    \item Initialize an $n\times n$ matrix with zeros.
+    \item For every ``c i j'' input, $N_{i,j}$ and $N_{j,i}$ becomes 1.
+    \item For every ``q i j'', we perform a breadth first search on the graph.
+    \end{itemize}
+  \end{block}
+
 
   \bigskip
 
   How good is this solution?
   \begin{itemize}
-  \item Cost to insert a new connection: O(1)
-  \item Cost to check if ``q i j'': O(n) (worst case)
+  \item Cost to insert a new connection: $O(1)$
+  \item Cost to check if ``q i j'': $O(V+E)$
   \end{itemize}
 
   \bigskip We can do better!
@@ -77,8 +82,8 @@
   \item The UFDS keeps \structure{sets of items}, each is represented by a \structure{parent};
   \item When you join two sets \structure{You join their parents};
   \item When you test the parent of an item \structure{You flatten the tree};
-  \item Test\_item and Join\_item are both O(1);
-  \item More Information \url{https://visualgo.net/ja/ufds};
+  \item Test\_item and Join\_item are both O(1);\hfill \emph{(amortized)}
+  \item Visualization: \url{https://visualgo.net/ja/ufds};
   \end{itemize}
 \end{frame}
 
@@ -88,24 +93,22 @@
   {\small
 \begin{verbatim}
 int p[MAX], r[MAX];
-int find(int x) {
-    return x == p[x] ? x : p[x]=find(p[x]);
-}
-int join(int x, int y) {
+                             # which groups x belong to?
+int find(int x) { return x == p[x] ? x : p[x]=find(p[x]); }
+
+int join(int x, int y) {     # x and y are the same group
     x = find(x), y = find(y);
     if(x != y) {
-        if(r[x] < r[y])
-            p[x] = y, r[y] += r[x];
-        else
-            p[y] = x, r[x] += r[y];
+        if(r[x] < r[y])     { p[x] = y; r[y] += r[x]; }
+        else                { p[y] = x; r[x] += r[y]; }
         return 1;
     }
     return 0;
 }
-void init() {
-    for(int i = 0; i < MAX; i++)
-        p[i] = i, r[i] = 1; }
 
+void init() { # Initialize each element as separate group
+    for(int i = 0; i < MAX; i++)  { p[i] = i; r[i] = 1; }
+}
 \end{verbatim}
 }
 
@@ -125,10 +128,8 @@ void init() {
 
     {\bf Input:} A series of commands from the set below:
     \begin{itemize}
-    \item SetFriends(i,j)
-    \item SetEnemies(i,j)
-    \item TestFriends(i,j)
-    \item TestEnemies(i,j)
+    \item SetFriends(i,j) \hspace{1.1cm} SetEnemies(i,j)
+    \item TestFriends(i,j) \hspace{1cm} TestEnemies(i,j)
     \end{itemize}
 
     {\bf Output:}
@@ -144,21 +145,16 @@ void init() {
   \frametitle{Union Find Disjoint Set}
   \framesubtitle{Problem II -- War}
 
-  This problem is similar to ``Networking'', but now you need to keep
-  track of {\bf TWO} relations.
+  This problem is similar to ``Networking'', but now you need to keep track of {\bf TWO} relations: Friends and Enemies.\bigskip
 
-  \bigskip
-
-  Some ideas:
+  There are different ways to implement this:
   \begin{itemize}
-  \item Keep UFDS for friends, and UFDS for enemies?
-  \item Keep an ``enemy'' flag for each person?
-  \item Add ``negative people'' to friend-set on UFDS?
+    \item Create one UFDS for friends, and one UFDS for enemies?
+    \item Add a ``friend/enemy'' flag for each person?
   \end{itemize}
-
   \bigskip
 
-  Which idea is easier to implement?
+  What other ideas can you think? Which one is easy/hard to implement?
 \end{frame}
 
 \subsection{Segment Tree}
@@ -184,29 +180,28 @@ the index with the maximum value} between two indexes:
 
 \bigskip
 
-\alert{Naive Method:} loop from $i$ to $j$, find maximum value. ($O(nk)$)\\
+\alert{Naive Method:} loop from $i$ to $j$, find maximum value. $O(nk)$ steps\\
 \medskip
 
-But what is the number of {\bf Values} or {\bf Queries} is too big?
+But what is the number of {\bf Values (n)} or {\bf Queries (k)} is too big?
 \end{frame}
 
 \begin{frame}
   \frametitle{Segment Tree}
 
   \begin{itemize}
-    \item Basic idea: \structure{index the array data in a binary tree}
+    \item {\bf Basic idea}: Binary tree with the max index in of each subtree.
     \bigskip
 
-    \item Creation of the tree: \structure{$O(n)$}
+    \item {\bf Operation Costs:}
+    \begin{itemize}
+      \item Creation of the tree: \structure{$O(n)$}
+      \item Query of a segment: \structure{$O(\log n)$}
+      \item Update of the tree: \structure{$O(\log n)$} \hfill \alert{Important Part}
+    \end{itemize}
     \bigskip
 
-    \item Query of a segment: \structure{$O(\log n)$}
-    \bigskip
-
-    \item Update of the tree: \structure{$O(\log n)$} \hfill \alert{Important Part}
-    \bigskip
-
-    \item Many Implementations\\(this implementation: vector based heap)
+    \item There are many implementations. We will show a vector based heap.
   \end{itemize}
 \end{frame}
 
@@ -218,16 +213,16 @@ But what is the number of {\bf Values} or {\bf Queries} is too big?
 
   \bigskip
 
-  Let's see the segment tree animation at VISUALGO.
+  Segment Tree animation at VISUALGO: \url{https://visualgo.net/en/segmenttree}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Coding the Segment Tree}
-  \framesubtitle{Creating the Tree}
+  \framesubtitle{Tree Creation}
 {\smaller
 \begin{block}{}
 \begin{verbatim}
-typedef vector<int> vi; // We always use this!
+typedef vector<int> vi; // Summarizing types that we use often.
 
 class SegmentTree { // OOP implementation,
 private: vi st, A;  // vi: typedef vector<int> vi;
@@ -246,8 +241,7 @@ private: vi st, A;  // vi: typedef vector<int> vi;
   } }
 \end{verbatim}
 \end{block}}
-
-\hfill\footnotesize{Code from \url{https://github.com/stevenhalim/cpbook-code}}
+\ppagenote{Segment Tree Code from \url{https://github.com/stevenhalim/cpbook-code}}
 
 \end{frame}
 
@@ -274,7 +268,6 @@ int rmq(int p, int L, int R, int i, int j) // O(log n)
 }
 \end{verbatim}
 \end{block}}
-\hfill\footnotesize{Code from \url{https://github.com/stevenhalim/cpbook-code}}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -302,6 +295,4 @@ int update(int p, int L, int R, int idx, int new_value) {
 }
 \end{verbatim}
 \end{block}}
-\hfill\footnotesize{Code from \url{https://github.com/stevenhalim/cpbook-code}}
-
 \end{frame}
