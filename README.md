@@ -18,8 +18,11 @@ algorithm knowledge through implementation.
     - Video 2: [Course Structure](https://youtu.be/EYP8IiM3uBE)
     - Video 3: [Ad hoc problems](https://youtu.be/lvQRNj476d8)
 - **Week02** -- Data Structures
-  - Lecture notes
-  - Video lecture
+  - [Lecture notes](Week02/week02.pdf)
+  - Video lectures
+    - Video 1: [Motivating Problems](https://youtu.be/nYBfUGQohwg)
+    - Video 2: [Library Data Structures](https://youtu.be/iAjR-AHIhT0)
+    - Video 3: [UFDS and Segment Tree](https://youtu.be/UqvHufMqC3c)
 - **Week03** -- Search Problems
   - Lecture notes
   - Video lecture
