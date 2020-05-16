@@ -25,7 +25,10 @@ algorithm knowledge through implementation.
     - Video 3: [UFDS and Segment Tree](https://youtu.be/UqvHufMqC3c)
 - **Week03** -- Search Problems
   - [Lecture notes](Week03/week03.pdf)
-  - Video lecture
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/HvPHk5ulafk)
+    - Video 2: [Search and Binary Search](https://youtu.be/eQ3x-HuAFdg)
+    - Video 3: [Greedy and Problem Analysis](https://youtu.be/FU6KJt5r24g)
 - **Week04** -- Dynamic Programming
   - Lecture notes
   - Video lecture
