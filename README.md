@@ -24,7 +24,7 @@ algorithm knowledge through implementation.
     - Video 2: [Library Data Structures](https://youtu.be/iAjR-AHIhT0)
     - Video 3: [UFDS and Segment Tree](https://youtu.be/UqvHufMqC3c)
 - **Week03** -- Search Problems
-  - Lecture notes
+  - [Lecture notes](Week03/week03.pdf)
   - Video lecture
 - **Week04** -- Dynamic Programming
   - Lecture notes

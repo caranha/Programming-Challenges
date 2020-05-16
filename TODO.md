@@ -9,9 +9,10 @@
 
 
 ### Week 3: Search
-- Add bitmask paired with permutation search
-- Add Lecture Plan
-- Need More examples for D&C and Greedy
+- Add example on permutation search with bitmask (cinema sitting problem)
+- Add Lecture Plan Document
+- Add more examples for D&C and Greedy
+- Add slide of LIS with Greedy
 
 ### Week 4: DP
 - DP week one was OK.
