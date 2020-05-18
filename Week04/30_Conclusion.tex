@@ -1,0 +1,189 @@
+\section{Conclusion}
+\begin{frame}
+   \frametitle{Summary}
+
+   Dynamic Programming is a search technique that uses memoization to {\bf avoid recalculation overlapping partial solutions}.\bigskip
+
+   There are two main types of solutions:
+   \begin{itemize}
+   \item \alert{Top-down DP}: Add memory to a recursive full search;
+   \item \alert{Bottom-up DP}: Fill the DP table using a for loop;
+   \end{itemize}
+   \bigskip
+
+   To create a DP, you need to decide the {\bf DP table} and the {\bf Transition rules}.
+   \bigskip
+
+   \begin{block}{}
+     DP problems are very common in programming competitions. If you are good at DP, you will be able to get a good (but not best) rank in several contests.
+   \end{block}
+\end{frame}
+
+% \begin{frame}
+%    \frametitle{Read more about DP}
+%    \begin{itemize}
+%       \item \url{http://people.csail.mit.edu/bdean/6.046/dp/}
+%       \item \url{http://community.topcoder.com/tc?module=Static&d1=tutorials&d2=dynProg}
+%    \end{itemize}
+% \end{frame}
+
+\subsection{Problem Discussion}
+
+\begin{frame}
+   \frametitle{Problem Discussion -- At a Glance}
+   \begin{itemize}
+   \item Wedding Shopping -- Explained in Class
+   \item Jill Rides Again -- Range Sum (1D)
+   \item Largest Submatrix -- Range Sum (2D)
+   \item Is Bigger Smarter? -- Longest Increasing Subsequence
+   \item Murcia's Skyline -- Longest Increasing Subsequence
+   \item Trouble of 13 Dots -- 0-1 Knapsack
+   \item Exact Change -- Coin Change
+   \item Unidirectional TSP -- Pathfinding
+   \end{itemize}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Problem Hints}
+%
+%   \begin{itemize}
+%   \item Wedding Shopping
+%   \item Jill Rides Again (Range Sum (1D))
+%   \end{itemize}
+%
+%   \vfill
+%   Discussed during class -- just apply the algorithm!
+% \end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+
+  \begin{block}{Largest Submatrix}
+    Find the largest patch of {\bf ones} inside a matrix of 1s and 0s.
+  \end{block}
+  \bigskip
+
+  Hints:
+  \begin{itemize}
+  \item Do a range sum to find the rectangle with biggest
+    sum (biggest number of 1).
+  \item {\bf Key Idea}: How do you avoid adding zeroes?
+  \end{itemize}
+  \bigskip
+
+  This kind of problem sometimes appears as the initial part of a more complex problem, to \alert{calculate valid territory}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+
+  \begin{block}{Is bigger Smarter?}
+    You have the "weight" and "intelligence" value of a set of elephants. Find the largest subset where:
+    \begin{itemize}
+    \item A - Intelligence is decreasing, and;
+    \item B - Weight is increasing
+    \end{itemize}
+  \end{block}
+  \bigskip
+
+  Hints:
+  \begin{itemize}
+  \item Think about "Dragon of Loowater" from last lesson.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Murcia Skyline}
+    Compare the size of the Longest {\bf Increasing} skyline and the longest {\bf Decreasing} skyline.
+  \end{block}
+  \bigskip
+
+  Hints:
+  \begin{itemize}
+  \item "Longest Increasing Subsequence" in this problem is modified by the {\bf building width}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Trouble of 13 dots}
+    Find the subset of items that:
+    \begin{itemize}
+    \item Mazimize flavor;
+    \item Is inside the price budget; You can get a discount;
+    \end{itemize}
+  \end{block}
+
+  \bigskip
+
+  Hints
+  \begin{itemize}
+  \item 1-0 knapsack problem:
+  \item Be careful with special rule: {\bf the knapsack change size if price > 2000!}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints}
+  \begin{block}{Exact Change}
+    Find the smallest amount of overpay that you can do, with the
+    smallest number of coins.
+  \end{block}
+
+  \bigskip
+  Hints:
+  \begin{itemize}
+  \item Variation of the Coin Change problem discussed in Class;
+  \item Calculate all possible changes above the desired value, and find the smallest;
+  \item Order by smallest number of coins necessary;
+  \item Bottom Up algorithm is probably best;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Hints 6}
+  \begin{block}{Unidirectional TSP}
+    Find the minimal path from left to right. Up and down are connected!
+  \end{block}
+
+  \bigskip
+
+  \begin{itemize}
+  \item Very similar to the ``apple robot'' problem;
+  \item Note that when two paths have the same weight, the smaller index is best!
+  \end{itemize}
+\end{frame}
+
+%\subsection{Extra}
+%\begin{frame}
+%  \frametitle{Extra -- ICPC Call to Arms!}
+
+%  {\smaller
+%  If you can solve complete search and DP problems quickly, \alert{you
+%  probably can reach top 50\%} at the ICPC first round. Why not try it this year?
+%
+%  \begin{block}{ICPC team registration -- Deadline 06/10 -- Contest 06/23}
+%    Send message to caranha@cs.tsukuba.ac.jp with the following information:
+%    \begin{itemize}
+%    \item Team Name -- roman letters, numbers and symbols
+%    \item Team Member 1 -- Name (letters), Name (japanese), e-mail, student ID
+%    \item Team Member 2 -- Name (letters), Name (japanese), e-mail, student ID
+%    \item Team Member 3 -- Name (letters), Name (japanese), e-mail, student ID
+%    \end{itemize}
+%  \end{block}}
+
+
+%  {\tiny
+%  \begin{itemize}
+%  \item Japan 1st Round contest 2011 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2011&year_min=2011}
+%  \item Japan 1st Round contest 2012 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2012&year_min=2012}
+%  \item Japan 1st Round contest 2013 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2013&year_min=2013}
+%  \item Japan 1st Round contest 2014 --\\
+%    \url{http://ichyo.jp/aoj-icpc/?source4=0&source2=0&source3=0&source1=1&year_max=2014&year_min=2014}
+%  \end{itemize}}
+%\end{frame}
+%\end{document}

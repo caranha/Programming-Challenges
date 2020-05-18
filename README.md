@@ -30,7 +30,7 @@ algorithm knowledge through implementation.
     - Video 2: [Search and Binary Search](https://youtu.be/eQ3x-HuAFdg)
     - Video 3: [Greedy and Problem Analysis](https://youtu.be/FU6KJt5r24g)
 - **Week04** -- Dynamic Programming
-  - Lecture notes
+  - [Lecture notes](Week04/week04.pdf)
   - Video lecture
 - **Week05** -- Graphs Problems I
   - Lecture notes

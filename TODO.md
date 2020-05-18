@@ -1,24 +1,23 @@
-# General
+## This Year 2020
 
 ## Javascript monitor:
 - [ ] Add the number of times a student submitted each problem
       (total submissions / submissions before accepted)
+- [ ] Add a "Number of students that solved X problems" for each week
+- [ ] Add a "Solutions/Submissions" per language per problem.
 - [ ] Add a view of "top students" (total submissions, and penalty score)
 - [ ] Add a final report mode for teacher
 - [ ] Try to add again the "save to local storage" option
 
+## Week 4: DP
+- [X] Fix new slides for DP
+- [X] Improve explanation of "Classical DP Problems"
+- [X] Add code for full search in motivating problem.
+- [ ] (Future): Add Flight Planner example (maybe add to problems)
+- [ ] (Future): Is RangeSum really DP? maybe should go to maths?
+- [ ] (Future): Include TSP DP back to the lecture.
 
-### Week 3: Search
-- Add example on permutation search with bitmask (cinema sitting problem)
-- Add Lecture Plan Document
-- Add more examples for D&C and Greedy
-- Add slide of LIS with Greedy
-
-### Week 4: DP
-- DP week one was OK.
-- DP week two needs more figures for the "classical DP problems",
-  including explicit tables to show what is happening to the students.
-
+## Future
 ### Week 5: Graph Part I
 - Include more examples and discussions on the
   "common algorithms" part in the middle section.
@@ -38,3 +37,10 @@
 
 ### Week 9: Computational Geometry
 - Overall good lecture -- See local TODO for suggested improvements
+
+
+## 2021
+- [ ] Remake videos using scripts
+## Week 3: Search
+- [ ] Add example on permutation search with bitmask (cinema sitting problem)
+- [ ] Add slide explaining LIS solution with Greedy
