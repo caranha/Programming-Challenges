@@ -31,7 +31,10 @@ algorithm knowledge through implementation.
     - Video 3: [Greedy and Problem Analysis](https://youtu.be/FU6KJt5r24g)
 - **Week04** -- Dynamic Programming
   - [Lecture notes](Week04/week04.pdf)
-  - Video lecture
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/i1nVOezbCII)
+    - Video 2: [Classical DP Problems](https://youtu.be/GRn5JYrhBl4)
+    - Video 3: [Conclusion](https://youtu.be/eTlDctTz8Dw)
 - **Week05** -- Graphs Problems I
   - Lecture notes
   - Video lecture
