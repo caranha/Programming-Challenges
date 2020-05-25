@@ -1,7 +1,7 @@
 These are the lecture notes for the "Programming Challenges" undergraduate
 class at the University of Tsukuba.
 
-_last change: 2020/04/26 -- Materials for Lecture 1 uploaded_
+_last change: 2020/05/25 -- Materials for Lecture 1-5 uploaded_
 
 # Course Outline:
 In this course, we study several algorithms by solving programming competition
@@ -36,8 +36,10 @@ algorithm knowledge through implementation.
     - Video 2: [Classical DP Problems](https://youtu.be/GRn5JYrhBl4)
     - Video 3: [Conclusion](https://youtu.be/eTlDctTz8Dw)
 - **Week05** -- Graphs Problems I
-  - Lecture notes
-  - Video lecture
+  - [Lecture notes](Week05/week05.pdf)
+  - Video lectures
+    - Video 1:
+    - Video 2:
 - **Week06** -- Graphs Problems II
   - Lecture notes
   - Video lecture

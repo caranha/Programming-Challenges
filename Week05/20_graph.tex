@@ -1,21 +1,88 @@
 
 
 \section{Graph Basics}
-\subsection{Motivation Problem}
 
-\begin{frame}[fragile]
-  \frametitle{Initial Problem: UVA 11902 -- Dominator}
+\subsection{Definition}
+\begin{frame}
+  \frametitle{What is a graph?}
+
   \begin{block}{}
-    You are given a directed graph. Node {\bf A} dominates
-    node {\bf B} if you \alert{must} pass {\bf B} to reach {\bf A}.
-    \bigskip
-
-    List the nodes that dominate each other.
+    A graph $G = \{V,E\}$ is composed of a set of {\bf vertices} $V$, which are connected to a set of {\bf edges} $E$. Each edge connects exactly two vertices.
   \end{block}
-  \begin{center}
-    \begin{columns}[T]
-      \column{0.4\textwidth}
+
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    Edge and vertices characteristics:
+    \begin{itemize}
+    \item An edge can be {\bf directed} or {\bf undirected};
+    \item An edge or a vertice can have {\bf weights} or {\bf labels};
+    \item {\bf Self-edges} and {\bf multi-edges};
+    \item A graph can be {\bf connected} or {\bf disconnected};
+    \end{itemize}
+    \column{0.4\textwidth}
+
+
+    \begin{tikzpicture}[scale=.8,auto,swap]
+      \tikzset{edge/.style = {->,>=latex'}}
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (2,3) {};
+      \node[vertex] (c) at (4,2) {};
+      \node[vertex] (d) at (4,0) {};
+      \draw[edge] (a) to (b);
+      \draw[edge] (a) to[bend left] (c);
+      \draw[edge] (c) to[bend left] (a);
+      \draw[edge] (d) to (c);
+      \draw[edge] (d) to[loop left] (d);
+      \draw[edge] (d) to[loop right] (d);
+    \end{tikzpicture}
+
+    \vspace{.5cm}
+
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (a) at (0,2) {a};
+      \node[vertex] (b) at (0,0) {b};
+      \node[vertex] (c) at (2,1) {c};
+      \node[vertex] (d) at (4,0) {d};
+      \node[vertex] (e) at (4,1) {e};
+      \draw[edge] (a) -- node[weight] {$7$} (b);
+      \draw[edge] (b) -- node[weight] {$-2$} (c);
+      \draw[edge] (c) -- node[weight] {$3$} (a);
+      \draw[edge] (c) -- node[weight] {$5$} (d);
+    \end{tikzpicture}
+
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Common questions about graphs}
+  Some tasks are common across graph problems:
+  \begin{itemize}
+    \item Test if a path exist between vertice $V_i$ and $V_j$ (test if they are {\bf connected})
+    \item Test the shortest path between vertice $V_i$ and $V_j$
+    \begin{itemize}
+      \item With or without weights
+      \item Test if there is more than one path
+    \end{itemize}
+    \item Add or remove vertices or edges from a graph;
+    \item Test characteristics of a graph;
+    \item etc.;
+  \end{itemize}
+\end{frame}
+
+\subsection{Example Problem}
+
+\begin{frame}[fragile]{UVA 11902 -- Dominator}
+  \begin{block}{}
+    A vertice $V_i$ {\bf dominates} $V_j$ if all paths $V_0 \to V_j$ must include $V_i$.
+    \begin{itemize}
+      \item {\bf input}: A directed graph $\{V,E\}$;
+      \item {\bf output}: A table with which vertices dominate each other;
+    \end{itemize}
+  \end{block}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+    \begin{center}
       \input{graphs/dominator.tex}
+    \end{center}
       \column{0.3\textwidth}
       {\bf Input}
 \begin{verbatim}
@@ -29,7 +96,7 @@
 \end{verbatim}
 \column{0.3\textwidth}
 {\bf Output}
-{\small
+{\smaller
 \begin{verbatim}
 Case 1:
 +---------+
@@ -44,101 +111,59 @@ Case 1:
 |N|N|N|N|Y|
 +---------+
 \end{verbatim}}
-    \end{columns}
-  \end{center}
-  %% Simple graph problems (quick modification of DFS/BFS)
-  % Dominator: UVA 11902 - Page 148
+  \end{columns}
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Initial Problem: UVA 11902 -- Dominator}
-  \begin{block}{}
-    What do we need to do to solve this problem?
+\begin{frame}[fragile]{UVA 11902 -- Dominator}
+  \begin{block}{{\bf Quiz: How do we solve this problem?}}
+    \begin{itemize}
+      \item How do we store the graph from the input?
+      \item How do we determine "dominator" status?
+    \end{itemize}
   \end{block}
-
-  \begin{center}
-    \begin{columns}[T]
-      \column{0.5\textwidth}
-      \input{graphs/dominator.tex}
-      \column{0.5\textwidth}
-      \begin{itemize}
-        \item Represent the graph as a data structure;\bigskip
-        \item Find the relationship between the nodes;\bigskip
-        \item Determine which nodes "dominate" each other;\bigskip
-      \end{itemize}
-    \end{columns}
-  \end{center}
-  %% Simple graph problems (quick modification of DFS/BFS)
-  % Dominator: UVA 11902 - Page 148
-\end{frame}
-
-\subsection{Structure and Representation}
-
-\begin{frame}
-  \frametitle{Base definition}
-
-  \begin{block}{}
-    A \structure{graph} $G = {V,E}$ is defined as a set of
-    \structure{vertices} $V$, and \structure{edges} $E$. Each edge
-    connects exactly two vertices.
-  \end{block}
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+      \begin{center}
+        \input{graphs/dominator.tex}
+      \end{center}
+        \column{0.3\textwidth}
+        {\bf Input}
+  \begin{verbatim}
+  1
+  5
+  0 1 1 0 0
+  0 0 0 1 0
+  0 0 0 1 0
+  0 0 0 0 1
+  0 0 0 0 0
+  \end{verbatim}
+  \column{0.3\textwidth}
+  {\bf Output}
   {\smaller
-
-    \begin{columns}[T]
-      \column{0.6\textwidth}
-      \begin{itemize}
-      \item Edges can be \structure{directed} or \structure{undirected};
-      \item Edges and can be \structure{weighted} (and sometimes vertices too!);
-      \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}
-      \end{itemize}
-
-      \bigskip
-
-      Graph Problems:
-      \begin{itemize}
-      \item Find a vertex or edge with a certain characteristic;
-      \item Find a relationship between vertices or edges;
-      \end{itemize}
-
-      \column{0.4\textwidth}
-
-
-      \begin{tikzpicture}[scale=.8,auto,swap]
-        \tikzset{edge/.style = {->,>=latex'}}
-        \node[vertex] (a) at (0,0) {};
-        \node[vertex] (b) at (2,3) {};
-        \node[vertex] (c) at (4,2) {};
-        \node[vertex] (d) at (4,0) {};
-        \draw[edge] (a) to (b);
-        \draw[edge] (a) to[bend left] (c);
-        \draw[edge] (c) to[bend left] (a);
-        \draw[edge] (d) to (c);
-        \draw[edge] (d) to[loop left] (d);
-        \draw[edge] (d) to[loop right] (d);
-      \end{tikzpicture}
-
-      \vspace{.5cm}
-
-      \begin{tikzpicture}[scale=1,auto,swap]
-        \node[vertex] (a) at (0,2) {a};
-        \node[vertex] (b) at (0,0) {b};
-        \node[vertex] (c) at (2,1) {c};
-        \node[vertex] (d) at (4,0) {d};
-        \node[vertex] (e) at (4,1) {e};
-        \draw[edge] (a) -- node[weight] {$7$} (b);
-        \draw[edge] (b) -- node[weight] {$-2$} (c);
-        \draw[edge] (c) -- node[weight] {$3$} (a);
-        \draw[edge] (c) -- node[weight] {$5$} (d);
-      \end{tikzpicture}
-
+  \begin{verbatim}
+  Case 1:
+  +---------+
+  |Y|Y|Y|Y|Y|
+  +---------+
+  |N|Y|N|N|N|
+  +---------+
+  |N|N|Y|N|N|
+  +---------+
+  |N|N|N|Y|Y|
+  +---------+
+  |N|N|N|N|Y|
+  +---------+
+  \end{verbatim}}
     \end{columns}
-  }
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{How do we implement a graph?}
-  \begin{block}{Adjacency Matrix - Connection between Vertices}
+\subsection{Graph Data Structure}
+
+
+\begin{frame}[fragile]{Storing the Dominator Graph}
+
+\begin{block}{Adjacency Matrix: stores the connection between certices}
 \begin{verbatim}
 int adj[100][100];
 
@@ -147,72 +172,73 @@ for (int i = 0; i < n; i++)
     cin >> adj[i][j]; // 0 if no edge, 1 if edge
 \end{verbatim}
 
+  \begin{itemize}
+    \item \structure{Pros}:
     \begin{itemize}
-    \item \structure{Pro}: Very simple to program;
-    \item \alert{Con}:
+      \item Easy to program;
+      \item Quickly access any edge;
+    \end{itemize}
+    \item \alert{Cons}:
       \begin{itemize}
       \item Cannot store multigraph;
-      \item Waste space for sparse graphs;
+      \item Wastes memory with sparse graphs;
       \item Time $O(V)$ to calculate number of neighbors;
       \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{How do we implement a graph?}
+\begin{frame}[fragile]{Storing the Dominator Graph}
 
-  {\smaller
-  \begin{block}{Vector-Edge List -- Stores Edges list for each Vertex}
+
+  \begin{block}{Adjacency List: stores edge list for each Vertex}
+      {\smaller
 \begin{verbatim}
-
-typedef pair<int,int> edge; // <destination, weight> pair
-typedef vector<edge> neighb;// all the neighbors of one V
-vector<neighb> AdjList;     // all vertices
+typedef pair<int,int> edge; // pair: <neighbor, weight>
+typedef vector<edge> neighb;// all neighbors of V_i
+vector<neighb> AdjList;     // all V_i
 
 int e;
 for (int i = 0; i < n; i++)
   for (int j = 0; j < n; j++)
     cin >> e;
-    if (e == 1)
-      AdjList[i].push_back(pair(j,1));
+    if (e == 1) { AdjList[i].push_back(pair(j,1)); }
+\end{verbatim}}
 
-\end{verbatim}
-
+\begin{itemize}
+  \item {\bf Pro}:
     \begin{itemize}
-    \item \structure{Pro}: $O(V+E)$ space, efficient if
-      graph is sparse; Can store multigraph;
-    \item \alert{Con}: Code is more complex
-      than adjacency list; $O(\text{log}V)$
-      to test if two vertices are adjacent.
+      \item Memory efficient if the graph is sparse;
+      \item Can store multigraph;
     \end{itemize}
+  \item {\bf Cons}:
+  \begin{itemize}
+    \item $O(\log(V))$ to test if two vertices are adjacent;
+    \item Code can be more complex;
+  \end{itemize}
+\end{itemize}
   \end{block}
-  }
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{How do we implement a graph?}
+\begin{frame}[fragile]{Storing the Dominator Graph}
   \begin{block}{Edge List}
-\begin{verbatim}
+    \begin{verbatim}
+    pair <int,int> edge; // Edge between i and j
+    vector<pair <int,edge>> Elist; // All edges;
 
-pair <int,int> edge; // Edge between i and j
-vector<pair <int,ii>> Elist; // Store edges;
-
-int e;
-for (int i = 0; i < n; i++)
-  for (int j = 0; j < n; j++)
-    cin >> e;
-    if (e == 1)
-      Elist.push_back(pair(1, pair(i,j)));
-\end{verbatim}
-\end{block}
-    \vfill
-
+    int e;
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
+        cin >> e;
+        if (e == 1)
+          Elist.push_back(pair(1, pair(i,j)));
+    \end{verbatim}
     \begin{itemize}
-    \item Used by \structure{Kruskal's Algorithm}, among others.
-    \item Some algorithms require specialized data structures.
-    \item Use arrays to save data about vertices.
+      \item Not very common;
+      \item Has to sort edges to find the neighbors of a Vertice;
+      \item Used for specialized algorithms, such as Minimum Spanning Tree;
     \end{itemize}
+  \end{block}
 \end{frame}
 
 
@@ -220,22 +246,23 @@ for (int i = 0; i < n; i++)
 \begin{frame}
   \frametitle{Graph Search: BFS and DFS}
     \begin{itemize}
-    \item Almost every Graph algorithm uses BFS or DFS;
-    \item Learn to do this with your eyes closed;
+    \item Basic algorithms to visit every vertice in a graph.
+    \item Many graph algorithms require BFS or DFS;
+    \item So learn to do these with your eyes closed;
     \end{itemize}
 
   \begin{block}{Depth First Search -- DFS}
     \begin{itemize}
-    \item Easy to implement using Recursion;
-    \item Visit first edge of each vertice until you find a loop;
+      \item Visit the first edge in the next vertice;
+      \item No guarantee of order, tends to go away from start;
+      \item Easy to implement with recursion;
     \end{itemize}
   \end{block}
 
   \begin{block}{Breadth First Search -- BFS}
     \begin{itemize}
-    \item Easy to implement using loops, requires keeping track of
-      visited vertices on a queue;
-    \item Put edge/vertice on a FIFO queue, then visit next;
+      \item First visit the vertices closer to starting point;
+      \item Place new edges on a FIFO, and search with a loop;
     \end{itemize}
   \end{block}
 \end{frame}
@@ -314,115 +341,104 @@ for (int i = 0; i < n; i++)
 
 \begin{frame}[fragile]
   \frametitle{DFS Implementation}
-  \begin{exampleblock}{DFS with adjacency list}
+  \begin{exampleblock}{DFS (Using Adjacency List)}
 \begin{verbatim}
-#define UNVISITED 0
-#define VISITED 1
-vector<int> dfs_vis; // list visited nodes
+vector<int> dfs_vis; // visited nodes, init to 0
 
 void dfs(int v) {
-   dfs_vis[v] = VISITED;
-   for (int i; i < (int) Adj_list[v].size(); i++)
+   dfs_vis[v] = 1;
+   for (int i; i < AdjList[v].size(); i++)
    {
-      pair <int,int> u = Adj_list[v][i];
-      if (dfs_vis[u.first] == UNVISITED)
-         dfs(v.first); // else -- Found Loop!
+      edge u = AdjList[v][i]; // u = neighb, weight
+      // do something...
+      if (dfs_vis[u.first] == 0)
+         dfs(v.first);
    }
 }
-dfs(1);
+dfs(start_vertice);
 \end{verbatim}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{BFS Implementation}
-  \begin{exampleblock}{BFS with adjacency matrix ($O(N^2)$!)}
+  \begin{exampleblock}{BFS (Using adjacency List)}
 \begin{verbatim}
-#define INF 1000000 // Not visited
-int s = 1; // Search started
+vector<int> bfs_vis;   // visited nodes; init to 0
+queue<int> q;          // list of vertices to visit;
+q.push(start_vertice); // Start BFS
 
-vector<int> d(N,INF); d[s] = 0;  // Distances
-queue<int> q; q.push(s);
 while(!q.empty()) {
   int u = q.front(); q.pop();
-  for (int i=0; i < N; i++) {
-    if (adj[u][i] && d[i] == INF) {
-      d[i] = d[u] + 1;     // Update Distance
-      q.push(i);
-    }
+  bfs_vis[u] = 1;
+  // Do something...
+  for (int i = 0; i < AdjList[v].size(); i++) {
+    edge e = AdjList[v][i];
+    if (bfs_vis[e.first] == 0)
+      q.push(e.first);
   }
 }
 \end{verbatim}
   \end{exampleblock}
 \end{frame}
 
-\subsection{Back to the Dominator}
+\begin{frame}{BFS and DFS}{Computational Cost}
 
-\begin{frame}[fragile]
-  \frametitle{Back to the Dominator Problem}
+  In the full BFS and DFS, you need to check every vertice and every edge in the graph:\bigskip
 
-  {\smaller
-  \begin{exampleblock}{Thinking about the problem again}
-    X is \structure{Dominated} by Y if \structure{all paths} from
-    the root to Y go through X.
+  \begin{itemize}
+    \item A BFS/DFS implemented with {\bf Adjacency List}, costs $O(V+E)$.\bigskip
 
-    \bigskip
-  \end{exampleblock}}
-
-  \begin{center}
-    \begin{tikzpicture}[scale=0.9,auto,swap]
-      \tikzset{edge/.style = {->,>=latex'}}
-      \node[vertex] (a) at (0,0) {0};
-      \node[vertex] (b) at (1,1) {1};
-      \node[vertex] (c) at (1,-1) {2};
-      \node[vertex] (d) at (2,0) {3};
-      \node[vertex] (e) at (3,0) {4};
-      \draw[edge] (a) to (b);
-      \draw[edge] (a) to (c);
-      \draw[edge] (b) to (d);
-      \draw[edge] (c) to (d);
-      \draw[edge] (d) to (e);
-    \end{tikzpicture}
-  \end{center}
+    \item A BFS/DFS implemented with {\bf Adjacency Matrix}, costs $O(V^2)$.
+    \begin{itemize}
+      \item That's because to visit every edge of a vertice in an Adjacency Matrix, it costs $O(V)$.
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Back to the Dominator Problem}
+\subsection{Solving the Dominator Problem}
 
-  {\smaller
-  \begin{exampleblock}{$N^2$ solution: DFS $N$ times}
+\begin{frame}[fragile]{Solving the Dominator Problem with DFS}
+  \begin{exampleblock}{}
+    \begin{itemize}
+      \item $V_j$ is dominated by $V_j$, if all paths from $S$ to $V_j$ pass through $V_i$;
+      \item In other words, you cannot access $V_j$ from $S$, if $V_i$ is not available;
+      \item {\bf Algorithm:} Remove $V_i$, and test if you can access $V_j$;
+    \end{itemize}
+  \end{exampleblock}\bigskip
+
+  \input{graphs/dominator.tex}
+\end{frame}
+
+\begin{frame}[fragile]{Solving the Dominator Problem with DFS}
+  \begin{columns}
+    \column{0.4\textwidth}
+    \input{graphs/dominator.tex}
+    \column{0.6\textwidth}
+
+    \begin{exampleblock}{Solution: DFS $N$ Times (BFS OK too)}
+{\smaller
 \begin{verbatim}
-def DFS2(S,P): ...  // Modified DFS: never visits P;
+// Modified DFS: never visits V_i;
+boolean DFS2(S,i);
 
-DFS2(0,-1)
-Mark every VISITED vertex as DOMINATED by 0
+// init: Processing Root node
+DFS2(0,-1);
+for (int j = 0; j < N; j++)
+  if (VISITED[j])
+    DOMINATED[0][j] == 1;
 
-for i in (1:N):
-   reset VISITED array
-   DFS2(0,i)
-   For every NOT-VISITED vertex j:
-      if j is DOMINATED by 0:
-         j is DOMINATED by i
-\end{verbatim}
-  \end{exampleblock}}
-
-  \begin{center}
-    \begin{tikzpicture}[scale=0.7,auto,swap]
-      \tikzset{edge/.style = {->,>=latex'}}
-      \node[vertex] (a) at (0,0) {0};
-      \node[vertex] (b) at (1,1) {1};
-      \node[vertex] (c) at (1,-1) {2};
-      \node[vertex] (d) at (2,0) {3};
-      \node[vertex] (e) at (3,0) {4};
-      \draw[edge] (a) to (b);
-      \draw[edge] (a) to (c);
-      \draw[edge] (b) to (d);
-      \draw[edge] (c) to (d);
-      \draw[edge] (d) to (e);
-    \end{tikzpicture}
-  \end{center}
+for (int i = 1; i < N; i++) {
+  memset(VISITED,0,sizeof(VISITED));
+  DFS2(0,i);
+  for (int j = 0; j < N; j++)
+    if (!VISITED[j] && DOMINATED[0][j])
+      DOMINATED[i][j] == 1;
+}
+\end{verbatim}}
+    \end{exampleblock}
+  \end{columns}
 \end{frame}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -594,39 +610,31 @@ for i in (1:N):
 %% \end{frame}
 
 
-\section{Common Algorithms}
-\subsection{Connected Components}
-\begin{frame}[fragile]
-  \frametitle{Common Algorithms Using DFS/BFS}
-  {\smaller
-    \begin{exampleblock}{}
-      With small modifications to BFS/DFS, we can solve many simple problems
-    \end{exampleblock}
+\section{Common Graph Problems}
 
-    \vfill
+\begin{frame}{Common Graph Problems}
+  In this section, we will review several common problems involving graphs in Programming Challenges.\bigskip
 
-    \begin{block}{Problem Example: Extra cables}
-      You own a network of $N$ computers;
+  Most of these can be solved with small modifications to DFS or BFS.\bigskip
 
-      \bigskip
-
-      You have a list of every pair of computers connected by cable ($i,j$)
-
-      \bigskip
-
-      You need to buy $M$ extra cables to connect ALL computers. How
-      many cables do you need?
-    \end{block}
-  }
+  \begin{itemize}
+    \item Connected Components;
+    \item Flood Fill;
+    \item Topological Sort;
+    \item Bipartite Checking;
+    \item Articulation Vertices;
+    \item Strongly Connected Components;
+  \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Common Algorithms Using DFS/BFS}
-  \framesubtitle{Connected Components}
 
-  This problem is defined in graph theory as finding
-  \structure{Connected Components}.
+\subsection{Connected Components}
+\begin{frame}{Connected Components}
+  \begin{block}{Definition}
+    A {\bf connected component} of a (undirected) graph is a subset of vertices $C^k$ where every $V_i \in C^k$ is reachable.\bigskip
+  \end{block}
 
+  \vfill
   \begin{center}
     \begin{tikzpicture}[scale=1,auto,swap]
       \node[vertex] (a) at (0,2) {a};
@@ -645,28 +653,34 @@ for i in (1:N):
   \end{center}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Common Algorithms Using DFS/BFS}
-  \framesubtitle{Connected Components}
+\begin{frame}{Connected Components}{Example Problem}
+  \begin{block}{Problem Example: Extra cables}
+    There is a network of $N$ computers. Some of the computers are connected by cables. Computers connected by cables, even if indirectly, are said to be on the {\bf same network}.
+    \bigskip
 
-  {\smaller
-    One way to find all connected components, is to repeat
-    a BFS (or DFS) until all nodes are visited.
+    What is the minimum number of cables that you need to make sure that all $N$ computers are part of the same network?
+  \end{block}\bigskip
 
-    \begin{exampleblock}{}
+  {\bf Solution:} Count the number of Connected Components ($C$), the answer is $C-1$.\bigskip
+
+  {\bf Quiz:} How do you implement this?
+\end{frame}
+
+\begin{frame}[fragile]{Connected Components}{Algorithm}
+  We can find all connected components by looping through all vertices, and running BFS/DFS on each unvisited vertice;
+
+  \begin{exampleblock}{}
 \begin{verbatim}
 int cables = 0;
-// dfs(x) from slide 11
-
 for (int = 0; i < N; i++)
-   if (dfs_vis[i] == UNVISITED) // New unvisited!
+   if (dfs_vis[i] == 0) // New component!
    {
-      dfs(i);                   // Visit some vertices
+      dfs(i);           // Visit vertices
       cables += 1;
    }
-cout << cables - 1 << "\n";
+cout << "Need "<< cables - 1 <<".\n";
 \end{verbatim}
-    \end{exampleblock}}
+  \end{exampleblock}
 
 \begin{center}
   \begin{tikzpicture}[scale=1,auto,swap]
@@ -684,30 +698,22 @@ cout << cables - 1 << "\n";
 \end{center}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Common Algorithms Using DFS/BFS}
-  \framesubtitle{Connected Components}
+\begin{frame}[fragile]{Connected Components}{UFDS Variant}
 
-  We can also find the connected components using \alert{UFDS}.
+  You could also count Connected Components using the {\bf UFDS} data structure from lecture 2.\bigskip
 
-  \bigskip
+  It costs $O(E)$ to build the UFDS, and $O(V)$ to count the number of components.\bigskip
 
-  How would you implement it?
+  If your problem is dynamic and includes several additions to the graph edges, this might be a good choice, because it is cheaper to recalculate the CCs.
 \end{frame}
 
 \subsection{Flood Fill}
 
-\begin{frame}[fragile]
-  \frametitle{More Common Algorithms Using DFS/BFS}
-  \framesubtitle{Is this a graph problem?}
-
+\begin{frame}[fragile]{Flood Fill}
   \begin{block}{Problem: The Biggest Island}
-    You want to build a new castle in the game of CraftMine. For this,
-    you need to find the biggest island in the world map.
+    You want to build a large in Minecraft. For this, you need to find the biggest island in the map.\bigskip
 
-    \bigskip
-
-    \structure{Input:} The following 2D map of the map:
+    {\bf Input:} A 2D representation of the map:
 \begin{verbatim}
 ....................................
 .###.......###.....#.....###.####...
@@ -719,30 +725,24 @@ cout << cables - 1 << "\n";
 ....................................
 \end{verbatim}
   \end{block}
-
-  \bigskip
-
-  Is this even a graph???
+  \hfill Is this a graph problem?
 \end{frame}
 
-\begin{frame}
-  \frametitle{More Common Algorithms Using DFS/BFS}
-  \framesubtitle{Implicit Graphs and Floodfill}
-
-
+\begin{frame}{Implicit Graphs}
   \begin{columns}
     \column{0.7\textwidth}
-    {\smaller
     \begin{itemize}
-    \item \structure{Implict Graphs} suggest graph organization;
-    \item But it is not necessary to store the vertices and edges;
-    \item \structure{Example:} Game boards; Distances; Grids;
+      \item {\bf Implict Graphs} are data that suggest graph organization. Examples:
+      \begin{itemize}
+        \item grids (NSWE connections)
+        \item maps (distance = weights)
+      \end{itemize}\bigskip
 
-      \bigskip
+      \item In some problems, it is not necessary to store the entire graph from the beginning;\bigskip
 
-    \item No graph Structure, but same graph algorithms;
+      \item {\bf Grid Floodfill}: Painting images, Walkable tiles in videogames, etc;
+      \item Algorithm is just BFS/DFS with vertex labels;
     \end{itemize}
-    }
     \column{0.3\textwidth}
     \begin{tikzpicture}[scale=1,auto,swap]
       \node[vertex] (00) at (0,0) {};
@@ -783,27 +783,28 @@ cout << cables - 1 << "\n";
 \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{Flood Fill}
-  {\smaller
-      We can solve the ``Biggest Island'' problem with
-      \structure{Flood Fill}, which is just a variation of
-      BFS/DFS for grids.
+\begin{frame}[fragile]{Flood Fill}{Implementation}
+  "Biggest Island" can be solved with BFS/DFS modifying labels;
 
+  {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-int dr[] = {1,1,0,-1,-1,-1,0,1}; // trick to explore an
-int dc[] = {0,1,1,1,0,-1,-1,-1}; // implicit NESW graph
+int dr[] = {1,1,0,-1,-1,-1,0,1}; // neighbors for a grid
+int dc[] = {0,1,1,1,0,-1,-1,-1}; // with diagonals;
 
-int floodfill(int y, int x) {
+int floodfill(int y, int x) {  // size of one position
   if (y < 0 || y >= R || x < 0 || x >= C) return 0;
   if (grid[y][x] != '#') return 0;
-  int ans = 1;
-  grid[y][x] = '.';              // CHANGE the map
+  int size = 1;
+  grid[y][x] = '.';    // CHANGE THE MAP (**key**)
   for (int d = 0; d < 8; d++)
-     ans += floodfill(y+dr[d], x+dc[d]);
+     size += floodfill(y+dr[d], x+dc[d]);
   return ans;
 }
+biggest = 0;
+for (int i = 0; i < C; i++)
+  for (int j = 0; j < R; j++)
+    biggest = max(biggest, floodfill(i,j));
 \end{verbatim}
   \end{exampleblock}
   }
@@ -811,122 +812,141 @@ int floodfill(int y, int x) {
 
 \subsection{Topological Sort}
 
-\begin{frame}[fragile]
-  \frametitle{Another Classical Problem}
-  \framesubtitle{Preparing a Course Curriculum}
-  {\smaller
-  \begin{block}{Problem Outline}
-    You are a teacher and you have to prepare a course curriculum.
-    You have a list of topics, but some topics are pre-requisite to others.
-
+\begin{frame}[fragile]{Topological Sort}
+  \begin{block}{Problem: Preparing a Curriculum}
+    You have a list of courses and requisites. Choose an {\bf ordering} of topics that respect all requisites.
     \bigskip
 
-    \structure{Input}: M, N, The list of M topics, followed by N ordered pairs of topics.
-
-    \structure{Output}: A sorted list with all topics.
-
+    {\bf Input}: list M topics, and N pairs of topics;\\
+    {\bf Output}: Sorted list of all topics;
   \end{block}
+
+{\smaller
 \begin{verbatim}
+** Example Input:
 5 4 Graphs DP Search Flow Programming
 Programming Search
 Search DP
 Graph Flow
 Search Graph
 
-
-=====================
-Result: Programming Search DP Graph Flow
+** Example Output:
+Course: Programming Search DP Graph Flow
 \end{verbatim}
 
   }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Another Classical Problem}
-  \framesubtitle{Topological sort}
+\begin{frame}{Topological Sort Definition}
+  In a {\bf directed graph}, a topological sort is an ordering of vertices where $V_i \prec V_j$ {\bf iff} there is no path $V_j \to V_i$.\bigskip
+  \begin{center}
+    \input{graphs/toposortgraph.tex}
+  \end{center}
+  For this graph, a topological sort would be $a \prec b \prec c \prec d \prec e$.\bigskip
 
   \begin{itemize}
-  \item A \structure{directed} graph has a \structure{topological
-    sort} if it has \alert{no cycles};
-  \item We can use the \structure{in-degrees} and
-    \structure{out-degrees} to calculate the topological sort;
+    \item Toposorts are {\bf not unique}:
+    \begin{itemize}
+      \item $a \prec c \prec b \prec d \prec e$ is also a toposort.
+    \end{itemize}
+    \item A graph only has a toposort if it has {\bf no cycles}.
+    \item To find the toposort, we use {\bf in-degrees and out-degrees}:
+    \begin{itemize}
+      \item $a$ -- In-deg: 0; Out-deg: 2;
+      \item $d$ -- In-deg: 2; Out-deg: 1;
+      \item $e$ -- In-deg: 1; Out-deg: 0;
+    \end{itemize}
   \end{itemize}
-
-  \begin{center}
-    \begin{tikzpicture}[scale=.8,auto,swap]
-      \node[vertex] (a) at (0,0) {out: 2};
-      \node[vertex] (b) at (2,1) {};
-      \node[vertex] (c) at (2,-1) {};
-      \node[vertex] (d) at (4,0) {in: 2 out:1};
-      \node[vertex] (e) at (6,0) {};
-      \tikzset{edge/.style = {->,>=latex'}}
-      \draw[edge] (a) to (b);
-      \draw[edge] (a) to (c);
-      \draw[edge] (c) to (d);
-      \draw[edge] (b) to (d);
-      \draw[edge] (d) to (e);
-    \end{tikzpicture}
-  \end{center}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Topological Sort (Directed Acyclic Graphs)}
+\begin{frame}[fragile]{Topological Sort Algorithm}
 
+  {\bf Khan's algorithm} can be used to find the toposort of a graph. It is composed of a {\bf BFS} where we keep track of the in-degrees of a vertex before adding it to the visit queue.
+
+\begin{exampleblock}{}
   {\smaller
-
-    \begin{exampleblock}{Khan's algorithm for Topological sort (modified edge-BFS)}
 \begin{verbatim}
-Q = queue(); toposort = list();
-for j in edge:
-   in_degree[j.destination] += 1
-for i in node:                      // Start nodes to queue
-   if in_degree[i] == 0: Q.add(i);
-while (Q.size() > 0):
-   u = Q.dequeue(); toposort.add(u);
-   for i in u.out_edges():          // reduce in-degree
-       v = i.destination
-       in_degree[v] =- 1
-       if in_degree[v] == 0:        // new start node
-          Q.add(v);
-\end{verbatim}
-    \end{exampleblock}
-  }
+queue<int> q; vector<int> toposort;
+vector<int> in-deg; // initialize to 0 for all N;
+
+for (int i = 0; i < EdgeList.size(); i++)
+  in-deg[EdgeList[i].second]++;
+for (int i = 0; i < N; i++)
+  if (in-deg[i] == 0) q.push(i); // queue in-deg = 0;
+
+while (!q.empty()) {
+  u = q.front(); q.pop(); toposort.push_back(u); // Do something
+  for (int i = 0; i < EdgeList[u].size(); i++) {
+    d = EdgeList[u][i].first; in-deg[d]--;
+    if (in-deg[d] == 0) q.push(d); // queue in-deg = 0;
+} }
+\end{verbatim}}
+  \end{exampleblock}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Topological Sort and Bottom-Up Dynamic Programming}
-
-  %TODO
-  What is the relationship between Topological Sort and Bottom-up DP?
-
-  \bigskip
-
-  Bottom-up DP are Topological sorts on Tables!
+\begin{frame}{Khan's Algorithm}{Simulation}
+  \begin{center}
+    \input{graphs/toposortgraph.tex}
+  \end{center}
+  {\bf In-deg list:}
+  \begin{itemize}
+    \item a:
+    \item b:
+    \item c:
+    \item d:
+    \item e:
+  \end{itemize}
+  {\bf Toposort:}
 \end{frame}
+
+% \begin{frame}
+%   \frametitle{Topological Sort and Bottom-Up Dynamic Programming}
+%
+%   %TODO
+%   What is the relationship between Topological Sort and Bottom-up DP?
+%
+%   \bigskip
+%
+%   Bottom-up DP are Topological sorts on Tables!
+% \end{frame}
 
 \subsection{Bipartite Checking}
+\begin{frame}{Bipartite Graphs}{Definition}
+  \begin{columns}
+    \column{.7\textwidth}
+      Intuitively, a {\bf Bipartite Graph} is one that we can separate between a "left" side and a "right" side.\bigskip
+
+      More generally, a graph $(V,E)$ is bipartite if you can completely partition its vertices in two subsets: $V_1$ and $V_2$, so that {\bf there are no edges} connecting two vertices in the same subset.\bigskip
+
+      Bipartite graphs appear in a large number of algorithms. In particular, {\bf flow graphs} (next week) are bipartite graphs.\bigskip
+
+      Most neural networks are bipartite graphs too!\\
+      {\bf Quiz:} How do you test if a graph is bipartite?
+    \column{.3\textwidth}
+    \input{graphs/bipartite_static.tex}
+  \end{columns}
+\end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Bipartite Check}
-  {\smaller
-  To check whether a graph is bipartite, we perform a BFS or DFS on the graph,
-  and set the color of every node to black or white, alternatively. Pay
-  attention to collision conditions.
+  \frametitle{Bipartite Check Algorithm}
+  We can check if a graph is bipartite using a BFS/DFS. Every time we visit a vertice, we mark it "0" or "1". If two adjacent vertices are of the same colors, the graph is not bipartite.
 
+  {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
 queue<int> q; q.push(s);
-vector<int> color(V,INF); color[s] = 0;
-bool isBipartite = true;
+vector<int> color(V, -1); color[s] = 0; // Starting vertex
+bool isBipartite = True;
+
 while (!q.empty() && isBipartite) {
    int u = q.front(); q.pop();
    for (int j=0; j < adj_list[u].size(); j++) {
-      pair<int,int> v = adj_list[u][j];
-      if (color[v] == INF) {
-         color[v.first] = 1 - color[i];
+      v = adj_list[u][j].first;
+      if (color[v] == -1) {
+         color[v] = 1 - color[i];        // Coloring new vertex
          q.push(v.first);}
       else if (color[v.first] == color[u]) {
-         isBipartite = False;
+         isBipartite = False;            // Bipartite collision
 }}}
 \end{verbatim}
   \end{exampleblock}
@@ -974,24 +994,7 @@ while (!q.empty() && isBipartite) {
     \begin{exampleblock}{Rearranging the nodes}
       \vspace{0.1cm}
       \begin{center}
-        \begin{tikzpicture}[scale=1.3,auto,swap]
-          \node[red vertex] (a) at (0,0) {};
-          \node[blue vertex] (b) at (2,0) {};
-          \node[blue vertex] (c) at (2,-1) {};
-          \node[red vertex] (d) at (0,-1) {};
-          \node[red vertex] (e) at (0,-2) {};
-          \node[red vertex] (f) at (0,-3) {};
-          \node[blue vertex] (g) at (2,-2) {};
-          \node[blue vertex] (h) at (2,-3) {};
-          \draw[edge] (a) to (b);
-          \draw[edge] (a) to (c);
-          \draw[edge] (b) to (f);
-          \draw[edge] (c) to (d);
-          \draw[edge] (c) to (e);
-          \draw[edge] (f) to (h);
-          \draw[edge] (e) to (h);
-          \draw[edge] (f) to (g);
-        \end{tikzpicture}
+        \input{graphs/bipartite_static.tex}
       \end{center}
       \vspace{0.1cm}
     \end{exampleblock}}
@@ -1002,12 +1005,10 @@ while (!q.empty() && isBipartite) {
 
 \begin{frame}
   \frametitle{Articulation Points and Bridges}
-  {\smaller
-    \begin{block}{Problem Description}
-      In an undirected graph G:
+    \begin{block}{Definition: In a graph $G$}
       \begin{itemize}
-      \item A verted V is an \structure{Articulation Point} if removing V would make G disconnected.
-      \item An edge E is a \structure{Bridge} if removing E would make G disconnected.
+      \item Vertex $v_i$ is an {\bf Articulation Point} if removing $v_i$ makes $G$ disconnected.
+      \item Edge $e_{i,j}$ is a \structure{Bridge} if removing $e_{i,j}$ makes $G$ disconnected.
       \end{itemize}
     \end{block}
     \begin{center}
@@ -1031,92 +1032,138 @@ while (!q.empty() && isBipartite) {
           \draw[red edge] (c) to (h);
         \end{tikzpicture}
       \end{center}
-  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Articulation Points and Bridges: Algorithm}
-  {\smaller
-    \begin{block}{Complete Search algorithm for Articulation Points}
-      \begin{enumerate}
-      \item Run DFS/BFS, and count the number of CC in the graph;
-      \item For each vertex $v$, remove $v$ and run DFS/BFS again;
-      \item If the number of CC increases, $v$ is a connection point;
-      \end{enumerate}
-      Since DFS/BFS is $O(V+E)$, this algorithm runs in $O(V^2+EV)$.
-    \end{block}
-
-    \bigskip
-
-    \hfill ... but we can do better!
-  }
-\end{frame}
-
-% TODO: Make my own image for the DFS articulation detection algorithm
-\begin{frame}
-  \frametitle{Tarjan's DFS variant for Articulation point (O(V+E))}
-  {\smaller
-    \begin{exampleblock}{Tarjan Variant: $O(V+E)$}
-      Main idea: Add extra data to the DFS to detect articulations.
-    \end{exampleblock}
-      \begin{center}
-        \includegraphics[width=0.9\textwidth]{../img/graph_articulation}
-      \end{center}
+  \frametitle{Problems and Naive Algorithm}
+  \begin{exampleblock}{Example Problems}
     \begin{itemize}
-    \item \structure{dfs\_num[]}: Recieves the number of the iteration
-      when this node was reached for the first time;
-    \item \structure{dfs\_low[]}: Recieves the lowest dfs\_num[] which
-      can be reached if we start the DFS from here;
-    \item For any neighbors $u,v$, if dfs\_low[$v$] >= dfs\_num[$u$],
-      then $u$ is an articulation node.
+      \item Find nodes that can be/can not removed from a graph;
+      \item Add extra nodes to "reinforce" a graph;
+      \item Measure the reliability of a network;
+      \item etc;
     \end{itemize}
-  }
+  \end{exampleblock}\medskip
+
+  \begin{block}{Complete Search algorithm for Articulation Points $O(V^2+VE)$}
+  \begin{enumerate}
+    \item Run DFS/BFS, and count the number of CC in the graph;
+    \item For each vertex $v_i$, remove $v_i$ and run DFS/BFS again;
+    \item If the number of CC increases, $v$ is an articulation point;
+  \end{enumerate}
+  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Tarjan's DFS variant for Articulation point (2)}
+\begin{frame}{Tarjan's DFS variant for Articulation point (O(V+E))}
+  \begin{exampleblock}{Find Articulation Points/Bridges in a single DFS pass: $O(V+E)$}
+    Main idea: Track loops to detect articulations:
+    \begin{itemize}
+    \item {\bf dfs\_num[i]}: iteration number (DFS order)
+    \item {\bf dfs\_low[i]}: lowest dfs\_num reachable from $i$;
+      \begin{itemize}
+        \item (not counting direct parent);
+      \end{itemize}
+    \end{itemize}
+    For any $u,v$, if low[$v$] >= num[$u$], $u$ is an articulation node (except root)
+    For any $u,v$, if low[$v$] > num[$u$], $e_{u,v}$ is a bridge;
+  \end{exampleblock}
   \begin{center}
-    \includegraphics[width=0.6\textwidth]{../img/graph_articulation}
+    \includegraphics[width=0.9\textwidth]{../img/graph_articulation}
   \end{center}
+\end{frame}
 
+\begin{frame}[fragile]{Tarjan's Algorithm for Articulation Point}{Simulation}
+
+  \begin{columns}
+    \column{.55\textwidth}
+    \begin{tikzpicture}[scale=1.3,auto,swap]
+      \node[vertex] (a) at (0,0) {0};
+      \node[vertex] (b) at (2,0) {1};
+      \node[vertex] (c) at (0,2) {3};
+      \node[vertex] (d) at (2,2) {2};
+      \node[vertex] (e) at (3,1) {5};
+      \node[vertex] (f) at (4,0) {6};
+      \node[vertex] (g) at (4,2) {7};
+      \node[vertex] (h) at (3,3) {4};
+      \draw[edge] (a) to (b);
+      \draw[edge] (a) to (c);
+      \draw[edge] (c) to (d);
+      \draw[edge] (d) to (b);
+      \draw[edge] (d) to (e);
+      \draw[edge] (e) to (f);
+      \draw[edge] (f) to (g);
+      \draw[edge] (g) to (e);
+      \draw[edge] (c) to (h);
+    \end{tikzpicture}
+    \column{.45\textwidth}
+{\smaller
+\begin{verbatim}
+    DFS_NUM   DFS_LOW
+
+ 0
+
+ 1
+
+ 2
+
+ 3
+
+ 4
+
+ 5
+
+ 6
+
+ 7
+\end{verbatim}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Tarjan's Algorithm for Articulation Point}{Implementation}
 {\tiny
   \begin{exampleblock}{}
 \begin{verbatim}
-void dfs_a(u){
-   dfs_num[u] = dfs_low[u] = IterationCounter++;   // dfs_num[u] is a simple counter
+void articulation(u){
+   dfs_num[u] = dfs_low[u] = IterationCounter++;  // update num[u], init low[u]
    for (int i = 0; i < AdjList[u].size(); i++){
       v = AdjList[u][i];
-      if (dfs_num[v] == UNVISITED) {
-         dfs_parent[v] = u;                        // store parent
-         if (u == 0) rootChildren++:               // special case for root node
+      if (dfs_num[v.first] == UNVISITED) {        // DFS tree edge
+         dfs_parent[v.first] = u;                 // store parent
+         if (u == 0) rootTreeEdge++;              // special case for root node
 
-         dfs_a(v);
-         if (dfs_low[a] >= dfs_num[u])
-            articulation_vertex[u] = true;
-         dfs_low[u] = min(dfs_low[u],dfs_low[v])
+         articulation(v.first);                   // visit next
 
-      else if (v != dfs_parent[u])                 // found a cycle edge
-         dfs_low[u] = min(dfs_low[u],dfs_num[v])
-}}
+         // This code happens AFTER we finish the DFS from u;
+         if (dfs_low[v.first] >= dfs_num[u])
+            articulation_vertex[u] = true;        // do something
+         if (dfs_low[v.first > dfs_num[u]])
+            bridge[u][v.first] = true;            // do something
+         dfs_low[u] = min(dfs_low[u],dfs_low[v.first])
+      }
+      else if (v.first != dfs_parent[u])          // found a cycle edge
+         dfs_low[u] = min(dfs_low[u],dfs_num[v.first]);
+  } // for j;
+} // articulation(u);
+
+// Starting the algorithm from the main program:
+articulation(0);
+if (rootTreeEdge > 1)
+  articulation_vertex[0] = true;                  // special case for root
 \end{verbatim}
   \end{exampleblock}}
 \end{frame}
 
 \subsection{Strongly Connected Components}
 
-\begin{frame}
-  \frametitle{Strongly Connected Components (Directed Graph)}
-  {\smaller
-    \begin{block}{Problem Description}
-      On a directed graph $G$, a Strongly Connected Component (SCC) is
-      a subset $G'$ where for every pair of nodes $a,b \in G'$, there is both
-      a path $a \rightarrow b$ and a path $b \rightarrow a$.
+\begin{frame}{Strongly Connected Components}
+    \begin{block}{Definition}
+      Given a {\bf directed} graph $G(V,E)$, a {\bf Strongly Connected Component (SCC)} is a subset of vertices $V_1$ where for every pair of vertices $v_i, v_i \in V_1$, there is both a path $v_i \to v_j$ and a path $v_j \to v_i$.
     \end{block}
 
 
 \begin{columns}[t]
     \column{0.5\textwidth}
-    \begin{exampleblock}{One CC}
+    \begin{exampleblock}{One Connected Component (undirected)}
       \vspace{0.1cm}
       \begin{center}
         \begin{tikzpicture}[scale=1.1,auto,swap]
@@ -1142,7 +1189,7 @@ void dfs_a(u){
       \vspace{0.1cm}
     \end{exampleblock}
     \column{0.5\textwidth}
-    \begin{exampleblock}{Three SCC}
+    \begin{exampleblock}{Three Strongly Connected Components (directed)}
       \vspace{0.1cm}
       \begin{center}
         \begin{tikzpicture}[scale=1.1,auto,swap]
@@ -1169,33 +1216,68 @@ void dfs_a(u){
       \vspace{0.1cm}
     \end{exampleblock}
   \end{columns}
-  }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Strongly Connected Components -- Algorithm}
+\begin{frame}{Algorithm for Finding SCCs}
 
-  We can use a simple modification of the algorithm for bridges and
-  articulation points:
+  We can modify Tarjan's algorithm (for articulation points and bridges) to find Strongly Connected Components:\bigskip
 
+  \begin{block}{}
   \begin{itemize}
-    \item Every time we visit a new node, put that node in a stack $S$;
-    \item When we finish visiting a node $i$, test if dfs\_num[$i$] == dfs\_min[$i$].
-    \item If the above condition is true, $i$ is the root of the
-      SCC. Pop all vertices in the stack as part of the SCC.
+    \item Every time we visit a new vertex $u$, we put $u$ in a stack $S$;
+    \item Only update dfs\_low for vertices with the "visited" flag = 1;
+    \item After visiting all edges of $u$, check if "dfs\_num[$u$] == dfs\_min[$u$]";
+    \item If the condition is true, $u$ is the root of a new SCC.
+    \item Pop all vertices in $S$ until (and including) $u$;
+    \item Add all popped vertices to the SCC.
   \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Algorithm for Finding SCCs}{Simulation}
+  \begin{center}
+    \begin{tikzpicture}[scale=1.1,auto,swap]
+      \tikzset{edge/.style = {->,>=latex'}}
+      \node[vertex] (a) at (0,0) {0};
+      \node[vertex] (b) at (1,0) {1};
+      \node[vertex] (c) at (2,0) {2};
+      \node[vertex] (d) at (1,1) {3};
+      \node[vertex] (e) at (3,0) {4};
+      \node[vertex] (f) at (4,0) {5};
+      \node[vertex] (g) at (4,1) {6};
+      \node[vertex] (h) at (3,1) {7};
+      \draw[edge] (a) to (b);
+      \draw[edge] (b) to (c);
+      \draw[edge] (c) to (d);
+      \draw[edge] (d) to (b);
+      \draw[edge] (c) to (e);
+      \draw[edge] (e) to (f);
+      \draw[edge] (f) to (g);
+      \draw[edge] (g) to (h);
+      \draw[edge] (h) to (e);
+    \end{tikzpicture}
+  \end{center}
+  \bigskip
+  {\bf SCC Stack:}\bigskip
+
+\begin{verbatim}
+          0   1   2   3   4   5   6   7
+
+dfs_low
+
+dfs_sum
+\end{verbatim}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Spanning Tree}
-\subsection{Introduction}
+\subsection{Spanning Tree}
 \begin{frame}
-  \frametitle{Minimum Spanning Trees (MST)}
+  \frametitle{Minimum Spanning Trees (MST) -- Definition}
 
-  {\smaller
-  \begin{block}{Definition}
-    A \structure{Spanning Tree} is a subset $E'$ from graph $G$ so
+  \begin{block}{}
+    A {\bf Spanning Tree} is a subset $E'$ from graph $G$ so
     that all vertices are connected without cycles.
 
     \medskip
@@ -1203,7 +1285,6 @@ void dfs_a(u){
     A \structure{Minimum Spanning Tree} is a spanning tree where the
     sum of edge's weights is minimal.
   \end{block}
-  }
 
   \begin{columns}[T]
     \column{0.3\textwidth}
@@ -1254,37 +1335,28 @@ void dfs_a(u){
   \end{columns}
 \end{frame}
 
-\begin{frame}
-  \frametitle{MST -- Use cases and Algorithms}
-  {\small
-  \begin{block}{Problems using MST}
-    Problems using MST usually involve calculating the minimum costs
-    of infrastructure such as roads or networks.
+\begin{frame}{Usage Cases for Minimum Spanning Trees}
+  \begin{block}{}
+    \begin{itemize}
+      \item Problems with MST often ask for a minimal cost to connect all elements in a graph (e.g. minimal infrastructure cost).\medskip
 
-    \medskip
-
-    Some variations may require you to find the \alert{maximum}
-    spanning tree, or define some edges that \alert{must} be taken in advance.
+      \item {\bf Variations:} Maximum Spanning Tree, Spanning Forest, Force some edges in advance;
+    \end{itemize}
   \end{block}
 
-  \begin{exampleblock}{Algorithms for MST}
-    The two main algorithms for calculating the MST are the
-    \structure{Kruskal}'s algorithms and the \structure{Prim}'s
-    algorithms.
-
-    \medskip
-
-    Both are greedy algorithms that add edges to the MST in weight order.
+  \begin{exampleblock}{Main algorithms for MST}
+    Two greedy algorithms that add edges to MST:
+    \begin{itemize}
+      \item {\bf Kruskal Algorithm}: based on edge list;
+      \item {\bf Prim's Algorithm}: based on vertex list;
+    \end{itemize}
   \end{exampleblock}
-    }
 \end{frame}
 
 \begin{frame}
   \frametitle{Kruskal's Algorithm}
   \begin{block}{Outline}
-    Kruskal's algorithms sorts all edges by their weight, and try to
-    add each edge to the MST, checking whether adding that edge would
-    create a cycle.
+    Kruskal's algorithms sorts all edges by their weight, and try to add each edge to the MST, checking whether adding that edge would create a cycle.
   \end{block}
 
   \begin{columns}[T]
@@ -1441,21 +1513,18 @@ while (!pq.empty()) {
 }
 \end{frame}
 
-\subsection{Other MST Problems}
-
 \begin{frame}
   \frametitle{MST variant 1 -- Maximum Spanning tree}
 
-  {\smaller
     \begin{block}{}
-      The \structure{Maximum Spanning Tree} variant requires the spanning
-      tree to have maximum possible weight.
+      The \structure{Maximum Spanning Tree} variant requires the spanning tree to have maximum possible weight.\bigskip
 
-      \bigskip
 
-      It is very easy to implement the Maximum MST by reversing the sort
-      order of the edges (Kruskal), or the weighting of the priority Queue
-      (Prim).
+      It is very easy to implement the Maximum MST:
+      \begin{itemize}
+        \item {\bf Kruskal}: Reverse the sort of the edge list;
+        \item {\bf Prim}: Invert the weight of the priority queue;
+      \end{itemize}
     \end{block}
 
   \medskip
@@ -1473,24 +1542,22 @@ while (!pq.empty()) {
       \draw[red edge] (c) -- node[label] {$8$} (d);
       \draw[red edge] (a) -- node[label] {$6$} (e);
       \draw[red edge] (d) -- node[label] {$9$} (e);
-  \end{tikzpicture}}
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}
   \frametitle{MST variant 2 -- Minimum Spanning Subgraph, Forest}
-  {\smaller
     \begin{block}{}
-      In one importante variant of the MST, a subset of edges or
-      vertices are pre-selected.
+      In this variant, a subset of edges or vertices are pre-selected.
 
       \begin{itemize}
       \item In the case of pre-selected vertices, add them to the
         ``taken'' list in Kruskal's algorithm before starting;
       \item In the case of edges, add the end vertices to the
         ``taken'' list;
-      \item What if you are given a \alert{number of Connected Components}?
       \end{itemize}
-    \end{block}
+    \end{block}\bigskip
+
     \begin{center}
       \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
         \node[blue vertex] (a) at (0,0) {};
@@ -1514,37 +1581,68 @@ while (!pq.empty()) {
         \draw[red edge] (g) -- node[label] {$3$} (i);
       \end{tikzpicture}
     \end{center}
-  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{MST Variant 3 -- $n$th Best MST}
-  {\smaller
+  \frametitle{MST Variant 3 -- Second Best MST}
   \begin{block}{Problem Definition}
-    Consider that you can order MST by their costs: $G_1, G_2, \ldots,
-    G_n$.  This variant asks you to calculate the $n^{th}$ best
-    spanning tree.
+    Suppose that you are required to calculate an alternative solution to an MST problem. In this case, you need to find the second cheapest spanning tree.
   \end{block}
-
   \bigskip
 
-  Basic Idea:
+  Simple Algorithm:
   \begin{itemize}
     \item Calculate the MST (using Kruskal or Prim);
-    \item For every edge in the MST, remove that edge from the graph
-      and calculate a new MST;
-    \item The new MST with minimum weight is the $2^{nd}$ best MST;
+    \item For every edge $e_i$ in the MST:
+    \begin{itemize}
+      \item Remove $e_i$ from $E$;
+      \item Calculate a new MST;
+    \end{itemize}
+    \item Choose the best among the new MSTs as the second-best MST.
   \end{itemize}
-}
+  \bigskip
+
+  {\bf QUIZ}: How to generalize this algorithm for the n-th best spanning tree?
 \end{frame}
 
 \begin{frame}
-  \frametitle{MST Variant 4 -- Min-max (or Max-min)}
-
-  {\smaller
+  \frametitle{MST Variant 4 -- Minmax path cost}
 
   \begin{center}
-      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=0.8]
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=1.2]
+        \node[red vertex] (a) at (0,0) {0};
+        \node[vertex] (b) at (1,1) {1};
+        \node[vertex] (c) at (1,-1) {2};
+        \node[vertex] (d) at (2,0) {3};
+        \node[vertex] (e) at (3,1) {4};
+        \node[vertex] (f) at (3,-1) {5};
+        \node[red vertex] (g) at (4,0) {6};
+        \draw[black edge] (a) -- node[label] {$50$} (b);
+        \draw[red edge] (a) -- node[label] {$60$} (c);
+        \draw[edge] (b) -- node[label] {$120$} (d);
+        \draw[black edge] (b) -- node[label] {$90$} (e);
+        \draw[red edge] (c) -- node[label] {$50$} (f);
+        \draw[red edge] (d) -- node[label] {$80$} (f);
+        \draw[red edge] (d) -- node[label] {$70$} (g);
+        \draw[black edge] (e) -- node[label] {$40$} (g);
+        \draw[edge] (f) -- node[label] {$140$} (g);
+      \end{tikzpicture}
+    \end{center}
+
+  \begin{block}{Problem Definition}
+    {\bf Regular Cost} for a path is the sum of weights of all edges in the path.\bigskip
+
+    {\bf Minmax Cost} for a path is the maximum weight among all its edges.\bigskip
+
+    Find the path $v_i \to v_j$ with the smallest {\bf minmax cost}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Finding the Minmax path with MST}
+
+  \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=1.2]
         \node[red vertex] (a) at (0,0) {0};
         \node[vertex] (b) at (1,1) {1};
         \node[vertex] (c) at (1,-1) {2};
@@ -1564,24 +1662,12 @@ while (!pq.empty()) {
       \end{tikzpicture}
     \end{center}
 
-  \begin{block}{Problem Definition}
-    Given two vertices $i,j$, find a path $i \rightarrow j$ so that
-    the cost of the most expensive edge is minimized;
+  \begin{exampleblock}{Algorithm}
+    \begin{itemize}
+      \item Generate the MST for the graph $G$.
+      \item Find the path $v_i \to v_j$ inside the MST.
+    \end{itemize}\bigskip
 
-    \medskip
-
-    Another way to write this problem is: Find the cheapest path where
-    the cost of the path is the cost of the most expensive edge.
-  \end{block}
-
-  \begin{exampleblock}{How to solve}
-    The MST finds the path that connects all nodes while keeping the
-    cost of individual edges minimal.
-
-    \medskip
-
-    To solve the minimax problem, we calculate the MST for $G$, and
-    then find the path from $i$ to $j$ in the MST.
+    That's it!
   \end{exampleblock}
-  }
 \end{frame}

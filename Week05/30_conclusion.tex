@@ -1,61 +1,55 @@
 
 \section{Conclusion}
 \subsection{Summary}
-\begin{frame}
-  \frametitle{Class Summary}
-  \framesubtitle{What did we learn?}
+\begin{frame}{Class Summary}{Graph Basics}
   \begin{itemize}
-  \item Graphs come in a wide variety of types;
-  \item Graph problems also have many different types;
-  \item Most problems involve small modifications of DFS and BFS;
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Class Summary}
-  \frametitle{Hints on solving Problems}
-
-
-  {\smaller
-    \begin{block}{Keep a code Library}
-      Graph problems/algorithms use a lot of common code. Store a
-      template, and copy/paste as necessary!
-      \bigskip
-      \begin{itemize}
-      \item Structures for keeping visited flags and vertex distances;
-      \item Structures for keeping parent and children lists;
-      \item Adjacency lists;
-      \end{itemize}
-
-  \end{block}
-  \begin{block}{Common tricky cases -- Be careful!}
+    \item Graph Problems come in a large variety of types;
+    \item But Many Algorithms are variations on BFS and DFS;
     \begin{itemize}
-    \item Graphs with 0 or 1 Vertices;
+      \item Connected Components and Flood Fill;
+      \item Topological Sort;
+      \item Articulation Points and Bridges;
+      \item Minimum Spanning Trees;
+    \end{itemize}
+    \item There are several special cases for graph problems:
+  \end{itemize}
+
+  \begin{block}{Some common special cases}
+    \begin{itemize}
+    \item Graphs with 0 or 1 Vertices; Graphs with 0 nodes;
     \item Unconnected Graphs;
     \item Self loops;
     \item Double edges;
     \end{itemize}
   \end{block}
-  }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Next Week}
-  \framesubtitle{More Graphs! Specially path finding}
+\begin{frame}{Class Summary}{Theme for Next Week}
+
+  Graph Path Search and Weighted Graphs:
   \begin{itemize}
-  \item Shortest Paths (Single Source and All Pairs);
-  \item Network Flow (and related problems);
-  \item Graph Matching (bipartite matching, etc) (and related problems);
-  \end{itemize}
-\end{frame}
+    \item Shortest Paths (Single Source and All Pairs);
+    \item Network Flow;
+    \item Graph Matching;
+  \end{itemize}\bigskip
 
+  \begin{block}{Graph Code Library}
+    Graph problems share a lot of common code. I recommend that you prepare a code library as you learn new algorithms.
+    \bigskip
+    \begin{itemize}
+    \item Visited node flags and adjacency lists;
+    \item Parent and children lists;
+    \item Different algorithms;
+    \item etc;
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 \subsection{Homework Discussion}
 
-\begin{frame}
-  \frametitle{This Week's Problems}
+\begin{frame}{This Week's Problems}
   \begin{itemize}
-  \item Dominator
+  \item Dominator -- Discussed in class;
   \item Forwarding Emails
   \item Ordering
   \item Place the Guards
@@ -66,119 +60,86 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Problem Hints (1)}
-  {\smaller
-    \begin{block}{Dominator}
-      \begin{itemize}
-        \item If All paths from 0 to node B pass through node A, then node A {\bf dominates} node B;
-        \item For all pair of nodes $i,j$, output ``Y'' if $i$ {\bf dominates} $j$, or ``N'' if not;
-      \end{itemize}
-    \end{block}
 
-    \bigskip
-
-    The idea of this problem is one of ``reachability'' -- can I reach
-    node $j$ if I remove node $i$ from the graph?
-
-    \bigskip
-
-    Note: if $j$ is not connected to ``0'', then \emph{no one dominates j}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints (2)}
-  {\smaller
-    \begin{block}{Forwarding Emails}
-      Every person $i$ sends e-mail only to person $j$.
-
-      \bigskip
-
-      What is the longest email chain?
-
-      \bigskip
-
-      Where does it start?
-    \end{block}
-
+\begin{frame}{Problem Hints}{Forwarding E-mails}
+  \begin{block}{Problem Summary}
     \begin{itemize}
-    \item How do you deal with loops?
-    \item Time limit is not very large, Try to find an O(n) solution!
+      \item In a list of $N$ people, every person $i$ forwards e-mails to a single person $j$.
+      \item If you want to form the longest e-mail chain, where do you start?
+      \item {\bf Output:} The person $k$ that starts the longest chain;
     \end{itemize}
-  }
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item The time limit is not very large, you should find an $O(n)$ solution;
+    \medskip
+
+    \item How do you deal with loops?
+  \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Problem Hints (3)}
-  {\smaller
-    \begin{block}{Ordering}
-      Print all possible Orderings of a Direct Acyclic Graph
+\begin{frame}{Problem Hints}{Ordering and Palace Guards}
+  \begin{block}{Ordering}
+    \begin{itemize}
+      \item {\bf Outline:} List all possible orderings of a given Direct Acyclic Graph;
+      \item {\bf Hint:} In the lecture, we saw an algorithm for a single ordering -- for this problem, you need to generalize it for all orderings;
+    \end{itemize}
+  \end{block}
 
-      \bigskip
+  \begin{block}{Palace Guards}
+    You need to find a guard assignment for the city that obey the rules:
+    \begin{itemize}
+      \item All roads need {\bf one guard}.
+      \item No road can have {\bf two guards}.
+    \end{itemize}\bigskip
 
-      Generalize the DAG ordering algorithm which we discussed in class.
-    \end{block}
-
-    \begin{block}{Palace Guards}
-      \begin{itemize}
-        \item How do you represent the roads and junctions as a Graph?
-        \item Find a ``guard-no guard'' assignment to vertices of the
-          graph.
-        \item First test if a solution is possible!
-      \end{itemize}
-    \end{block}
-  }
+    Note that for some inputs a solution is impossible.
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Problem Hints (4)}
-  {\smaller
+\begin{frame}{Problem Hints}{Doves and Bombs / Come and Go}
     \begin{block}{Doves and Bombs}
-      This problem is about finding ``critical vertices'' in a
-      graph. But how do you calculate the ``pigeon value'' of a
-      vertex?
+      \begin{itemize}
+        \item {\bf Outline:} You must choose one station (vertex) to remove, so that the number of unconnected subgraphs is maximum;
+        \item {\bf Hint:} Do you need to calculate the CCs every time you test a vertex, or is there a better way?
+      \end{itemize}
     \end{block}
 
     \begin{block}{Come and Go}
-      Straight implementation of ``Strong Connected Components''. Be
-      careful with tricky graphs!
+      \begin{itemize}
+        \item {\bf Outline:} For a city road map, you must check if that city is strongly connected (you can go from every node i to every node j) or not;
+        \item {\bf Hint:} Can you use the algorithm of strongly connected components for this?
+      \end{itemize}
     \end{block}
-  }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Problem Hints (5)}
-  {\smaller
-    \begin{block}{ACM Contest and Blackout}
-      Goal: Find the {\bf First} minimum spanning Tree and the {\bf
-        Second} minimum spanning Tree
-    \end{block}
+\begin{frame}{Problem Hints}{ACM Contest and Blackout}
+    \begin{block}{Outline}
+      Given a graph of a powerplant and several schools, you have to find the {\bf two} cheapest graphs that connect all the nodes.\bigskip
 
-    \bigskip
+      {\bf Output}: Cost of cheapest graph, and cost of 2nd cheapest graph.
+    \end{block}\bigskip
 
+    {\bf Hint:} The cheapest graph could be found using the MST algorithm. But how do we find the {\bf second} cheapest graph?
+\end{frame}
+
+\begin{frame}{Problem Hints}{Ancient Message}
+  \begin{block}{Outline}
     \begin{itemize}
-    \item In this class we discussed how to find the Minimum Spanning Tree
-    \item How would we find the {\bf second minimum?}
-    \item Idea: Maybe if we remove some edges from the graph?
+      \item {\bf Input:} A pixel image containing one or more "egyptian letters";
+      \item {\bf Output:} Identify which letters appear in the image;
     \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints (6)}
-  \begin{block}{Ancient Message -- Challenge problem!}
-    Count the symbols inside an image -- order does not matter!
-
-    \bigskip
-
-    What is the {\bf Main} difference between the symbols?
   \end{block}
 
+  {\bf Hints:}
   \begin{itemize}
-  \item The shape and size of the symbols is actually not important!
-  \item Before you begin programming, discover what is the real
-    difference between the symbols.
-  \item Hint: The numbers ``1'', ``0'', ``8'' have the same difference.
+    \item Note that the input is in hexadecimal format;
+    \item First: Think about how to count the number of characters in an image. This will help you think a way to identify the characters.
+    \item Pay attention to the "Rules" in the problem description.
   \end{itemize}
+
+  \begin{center}
+  \includegraphics[height=.25\textheight]{img/ancient_messages_letters.png}\hspace{1cm}
+  \includegraphics[height=.25\textheight]{img/ancient_messages_example.png}
+  \end{center}
 \end{frame}
