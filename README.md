@@ -38,8 +38,9 @@ algorithm knowledge through implementation.
 - **Week05** -- Graphs Problems I
   - [Lecture notes](Week05/week05.pdf)
   - Video lectures
-    - Video 1:
-    - Video 2:
+    - Video 1: [Introduction](https://youtu.be/fVl5UpMw-dk)
+    - Video 2: [Graph Problems](https://youtu.be/x4yWTT3u9so)
+    - Video 3: [Articulation Points and MST](https://youtu.be/_8JgqArbEg0)
 - **Week06** -- Graphs Problems II
   - Lecture notes
   - Video lecture
