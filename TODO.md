@@ -1,12 +1,5 @@
 # This Year 2020
 
-## Week 5: Graph Part I
-- Include more examples and discussions on the
-  "common algorithms" part in the middle section.
-
-## Week 6: Graph Part II
-- Lecture is generally good, but need more graph
-  images showing the progress of the algorithm step by step.
 
 ## Week 7: String Manipulation
 - Add Z algorithm for substring matching
