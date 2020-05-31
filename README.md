@@ -42,7 +42,7 @@ algorithm knowledge through implementation.
     - Video 2: [Graph Problems](https://youtu.be/x4yWTT3u9so)
     - Video 3: [Articulation Points and MST](https://youtu.be/_8JgqArbEg0)
 - **Week06** -- Graphs Problems II
-  - Lecture notes
+  - [Lecture notes](Week06/week06.pdf)
   - Video lecture
 - **Week07** -- String Manipulation
   - Lecture notes

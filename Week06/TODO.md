@@ -1,12 +1,5 @@
 # TODO
 
-## Material
-- [ ] Break down Djikstra images from Steven Halin into separate images.
-- [ ] Before "Full Tank" -- Talk about Graph transformation
-- [ ] Rewrite explanation of Edmund Karp Algorithm
-- [ ] Needs more images showing the progress of the algorithm step by stpe
-
-
 ## Publishing
 - [ ] Record video
 - [ ] Post everything to Manaba
@@ -15,3 +8,7 @@
 
 
 ## FUTURE
+- [ ] Replace Dijkstra simulation image with separate images and queue values;
+- [ ] Add graph animation for Ford-Fulkerson
+- [ ] Add more detailed code for Edmond-carp;
+- [ ] Add code for Graph problem examples section;

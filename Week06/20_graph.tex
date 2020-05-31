@@ -1,68 +1,42 @@
-\section{Graphs}
+\section{Single Source Shortest Path}
 
-\begin{frame}
-  \frametitle{Graphs II -- Outline}
-  \begin{block}{Algorithms}
-    \begin{itemize}
-    \item Single Sourse Shortest Path;
-    \item All Pairs Shortest Path;
-    \item Network Flow;
-    \end{itemize}
-  \end{block}
-
-  \bigskip
-
-  Also, we will see a few variations on these algorithms.
-\end{frame}
-
-\section{SSSP}
-
-\subsection{Single Source Shortest Path}
+\subsection{Definitions}
 \begin{frame}
   \frametitle{SSSP: Single Source Shortest Path}
   \begin{block}{Problem Definition}
-    I want to go from vertex $s$ (source) to $t$ (target). What is
-    the path with the {\bf minimum sum of edge weights}?
-  \end{block}
+    In a graph $G(V,E)$, find the path from vertec $v_s$ (source) to vertex $v_t$ (target), where {\bf the sum of edge weights is minimal}.
+  \end{block}\bigskip
 
-  \bigskip
+  \begin{itemize}
+  \item For an {\bf unweighted graph}, we consider the weight of every edge $e_i \in E$ to be equal to one;\medskip
 
-  {\smaller
-    Common solutions:
+  \item In this case, Breadth First Search (BFS) is actually good enough;\medskip
 
-    \begin{itemize}
-    \item On \alert{unweighted} graphs, BFS is good enough, but it
-      won't work correctly in weighted graphs;
-    \item Dijstra Algorithm $O((V+E)\text{log}V)$
-    \item Bellman Ford's Algorithm $O(VE)$
-    \end{itemize}
-  }
+  \item Start BFS on node $v_s$;\medskip
+
+  \item BFS will visit all nodes in the graph in order of distance, eventually reaching $v_t$ (if it is reachable);
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Reminder: SSSP on unweighted graph (BFS)}
+  \frametitle{BFS Implementation for SSSP}
 
 {\smaller
-    \begin{itemize}
-    \item Start in $s$, visit all nodes
-    \item Save cost and parent node in each visited node;
-    \end{itemize}
-
 \begin{exampleblock}{}
 \begin{verbatim}
-vector <int> p;                       // parent list
-
-vector <int> dist(V,INF); dist[s] = 0;// initialize
+vector <int> p;                          // parent list
+vector <int> dist(V,100*V); dist[s] = 0; // dist matrix
 queue  <int> q;           q.push(s);
+
 while (!q.empty()) {
    int u = q.front(); q.pop();
    for (int j = 0; j < AdjList[u].size(); j++) {
       int v = AdjList[u][j];
-      if (dist[v] == INF) {           // not visited
+      if (dist[v] > V) {                 // not visited
          dist[v] = dist[u] + 1;
          p[v] = u; q.push(v); }}}
 
-void printPath(u) {                   // path from (u)
+void printPath(u) {                      // path from (u)
    if (u == s) { cout << s; return; }
    printPath(p[u]); cout << " " << u; }
 \end{verbatim}
@@ -74,8 +48,7 @@ void printPath(u) {                   // path from (u)
   \frametitle{BFS: Problem with weighted graphs}
 
   \begin{block}{}
-    Just BFS is fast, but if the graph has weights, you may get a
-    WRONG ANSWER.
+    The BFS is a simple and fast algorithm. However, if the graph has edge weights, it may give you a Wrong Answer to find the SSSP
   \end{block}
 
   \medskip
@@ -100,162 +73,184 @@ void printPath(u) {                   // path from (u)
   \bigskip
 
   \begin{itemize}
-  \item BFS shortest path: $s \rightarrow e$ (cost 9)
-  \item Real shortest path: $s \rightarrow t \rightarrow e$ (cost 8)
+  \item BFS shortest path: $s \rightarrow e$ (1 edge, cost 9)
+  \item Real shortest path: $s \rightarrow t \rightarrow e$ (2 edges, cost 8)
   \end{itemize}
 \end{frame}
 
-\subsection{SSSP with Weighted Graph}
+\subsection{Dijkstra Algorithm}
 \begin{frame}
-  \frametitle{Dijkstra's Algorithm for weighted SSSP}
-  \begin{block}{Basic Idea: Greedy Algorithm}
-    Always add the edge with the shortest weight to the next node.
-  \end{block}
+  \frametitle{SSSP on weighted graphs: Dijkstra's Algorithm}
+  \begin{block}{Basic Idea:}
+    Greedy graph search: Always follow the edge with the {\bf minimal total distance} from the source node.
+  \end{block}\bigskip
 
-  {\small
   \begin{itemize}
-  \item Many different implementations (original paper has no implementation);
+  \item There are many different implementations;
+  \begin{itemize}
+    \item (The original paper did not include an implementation!)
+  \end{itemize}\bigskip
 
-    \bigskip
+  \item Simple implementation: replace the BFS {\bf queue} with a {\bf Priority Queue}:
+  \begin{itemize}
+    \item The priority queue sorts the edges with minimum total distance;
+  \end{itemize}\bigskip
 
-  \item A simple way is to use C++ stl's \emph{Priority Queue};
-  \item When visiting a node, store new edges in the priority queue;
-  \item However! Deleting nodes in a priority queue is expensive!
-    \begin{itemize}
-    \item We gain a bit of time by ``skipping'' longer paths (trick!)
-    \end{itemize}
-  \end{itemize}}
+  \item Minor optimization:
+  \begin{itemize}
+    \item C++ STL priority queue has large cost to deleting/updating edges;
+    \item To avoid this cost, we use "lazy deletion" to skip longer paths;
+  \end{itemize}
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Dijkstra's Algorithm: One Implementation Example}
+  \frametitle{Dijkstra's Algorithm Implementation Example}
+
+  This implementation uses {\bf Lazy Skipping} to reduce the number of deletions from the priority queue;
+
   {\smaller
     \begin{exampleblock}{}
 \begin{verbatim}
-typedef pair<int,int> ii;               // <node, weight>
+typedef pair<int,int> ii;           // <distance, to_vertex>
 priority_queue<ii, vector<ii>, greater<ii>> pq;
-
-Vector<int> dist(V,INF); dist[s] = 0;   // initial dist
-pq.push(ii,(0,s));
+pq.push({0,s});
 
 while (!pq.empty()) {
-   ii front = pq.top(); pq.pop();       // first unvisited
-   int d = front.first; u = front.second;
-   if (d > dist[u]) continue;           // *lazy deletion*
-   for (int j = 0; j < AdjList[u].size(); j++) {
-      ii v = AdjList[u][j];             // <node, weight>
-      if (dist[u] + v.second < dist[v.first]) {
-                                        // update node
-         dist[v.first] = dist[u] + v.second;
-         pq.push(ii(dist[v.first],v.first));
-}}}
+  auto [d, u] = pq.top(); pq.pop(); // shortest unvisited u
+  if (d > dist[u]) continue;        // **Lazy skipping**
+  for (auto &[v, w] : AdjList[u]) { // all edges from u
+    if (dist[u] + w >= dist[v]) continue;
+       // new edge does not improve solution, skip
+    dist[v] = dist[u] + w           // update distance
+    pq.push({dist[v], v})           // enqueue better pair
+  }
 \end{verbatim}
     \end{exampleblock}}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Dijkstra's implementation trick: Lazy deletion}
-  {\smaller
-    \begin{itemize}
-    \item Dijkstra Requires us to store the edge to vertex $v$ with
-      cheapest weight in the queue;
-    \item Removing an edge from the queue is expensive;
-    \item Instead, we keep all edges, and test each visited edge;
-    \end{itemize}
-
-
-  % TODO: Redraw Dijkstra graph by hand
-  \begin{center}
-    \includegraphics[width=0.6\textwidth]{../img/djikstra_halim}
-  \end{center}
-
-  Vertex queue: [\only<1>{(2,1),}\only<2>{(5,3),}
-    \only<1-3>{(6,0),}\only<1-4>{(7,3),}
-    \only<4->{(7,4),}\only<2->{(8,4),} \only<3->{(10,4)}];}
-
-  \vfill
-
-  \hfill {\tiny Images from \emph{Competitive Programming}, Steven Halim}
+\begin{frame}[fragile]{Dijkstra with Lazy deletion: Simulation}
+  Dijkstra visits vertices: 2, 1, 3, 0, 4; in order
+  \begin{columns}[T]
+    \column{0.7\textwidth}
+    \begin{center}
+      \includegraphics[width=\textwidth]{../img/dijkstra_halim}
+      \ppagenote{Dijkstra Image from "Competitive Programming 3", Steven Halim}
+    \end{center}
+    \column{.3\textwidth}
+\begin{verbatim}
+ PQ(0):   PQ(1):
+\end{verbatim}
+  \end{columns}
 \end{frame}
 
-\subsection{Example: Full Tank?}
+\subsection{Problem Example}
+
+\begin{frame}{SSSP in Programming Challenges}
+  \begin{itemize}
+    \item Of course, just giving a graph as input, and asking you to find the SSSP is not a very exciting programming challenge. \bigskip
+
+    \item Because of this, programming challenges will usually require you to {\bf change or build the graph structure} from the input data.\bigskip
+
+    \item Let's see one example;
+  \end{itemize}
+\end{frame}
+
 \begin{frame}
-  \frametitle{Problem Example: UVA 11367 -- Full Tank}
-
-  {\smaller
+  \frametitle{UVA 11367 -- Full Tank}
   \begin{block}{Problem Summary}
-    In a graph $G$ of roads ($1 \leq V \leq 1000, 0 \leq E \leq
-    10000$) with the following information:
-    \begin{itemize}
-    \item It takes $F_{ij}$ units of fuel to go from $i$ to $j$;
-    \item You can buy one unit of fuel at $i$ for the price $p_{i}$;
-    \item The car has maximum capacity $c$;
-    \end{itemize}
+    Find the {\bf cheapest} path from city $S$ to city $T$. Consider the following:
 
-    What is the {\bf minimum} price to go from $s$ to $e$?
+    \begin{itemize}
+      \item To go from $v_i$ to $v_j$ requires $E_{i,j}$ {\bf liters of fuel};
+      \item The price of fuel in city $v_i$ is $p_i$;
+      \item Your car has maximum capacity $c$;
+    \end{itemize}
   \end{block}
 
   \begin{center}
     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
       \node[red vertex] (s) at (0,0) {s:4};
       \node[vertex] (0) at (2,1) {a:6};
-      \node[vertex] (1) at (3,1) {b:1};
-      \node[vertex] (e) at (4,0) {e:0};
-      \draw[edge] (s) -- node[label] {$10$} (e);
-      \draw[edge] (s) -- node[label] {$2$} (0);
-      \draw[edge] (0) -- node[label] {$2$} (1);
-      \draw[edge] (1) -- node[label] {$10$} (e);
+      \node[vertex] (1) at (4,1) {b:1};
+      \node[vertex] (e) at (6,0) {t:0};
+      \draw[edge] (s) -- node[label] {$5$} (e);
+      \draw[edge] (s) -- node[label] {$1$} (0);
+      \draw[edge] (0) -- node[label] {$1$} (1);
+      \draw[edge] (1) -- node[label] {$5$} (e);
     \end{tikzpicture}
   \end{center}
 
-  If you go straight from $s$ to $e$, you only use 10 fuel, but the fuel is expensive!\\
-  If you go $s\rightarrow a\rightarrow b\rightarrow e$ you pay less for the fuel.}
+  \begin{itemize}
+    \item Path: $s\to t$: Buy 10 liters at $s$, cost: 20
+    \item Path: $s\to a\to b\to t$:
+    \begin{itemize}
+      \item Buy 4 liters at $s$, 10 liters at $b$, cost: 9
+    \end{itemize}
+    \item {\bf QUIZ}: How to implement SSSP for this one?
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{UVA 11367 -- Full Tank -- Problem modeling}
-
-  {\smaller
-    Ok, but how do we implement this solution?
+  \frametitle{UVA 11367 -- Full Tank: Graph Modification}
 
     \begin{center}
       \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
         \node[red vertex] (s) at (0,0) {s:4};
         \node[vertex] (0) at (2,1) {a:6};
-        \node[vertex] (1) at (3,1) {b:1};
-        \node[vertex] (e) at (4,0) {e:0};
-        \draw[edge] (s) -- node[label] {$10$} (e);
-        \draw[edge] (s) -- node[label] {$2$} (0);
-        \draw[edge] (0) -- node[label] {$2$} (1);
-      \draw[edge] (1) -- node[label] {$10$} (e);
+        \node[vertex] (1) at (4,1) {b:1};
+        \node[vertex] (e) at (6,0) {t:0};
+        \draw[edge] (s) -- node[label] {$5$} (e);
+        \draw[edge] (s) -- node[label] {$1$} (0);
+        \draw[edge] (0) -- node[label] {$1$} (1);
+      \draw[edge] (1) -- node[label] {$5$} (e);
       \end{tikzpicture}
     \end{center}
 
-    \begin{block}{}
-      Using Dijkstra directly is hard -- how do we model buying gas
-      for multiple vertices? One idea is to {\bf modify the graph}
-    \end{block}
-
-    \bigskip
     \begin{itemize}
-    \item Transform nodes $(i)$ into nodes $(i,f)$ (how much fuel left
-      we have at $i$);
-    \item An edge $(i,f)\rightarrow(j,f-F_{ij})$ exists if $f-F_{ij}
-      \geq 0$. This edge has cost 0;
-    \item An edge $(i,f)\rightarrow(i,f+1)$ has cost $p_i$ (buy one unit of fuel at node $i$)
+      \item Transform vertex $v_i$ into a set of vertices $v_{i,f}$: $v_{i,0}, v_{i,1}, \ldots, v_{i,c}$;
+      \begin{itemize}
+        \item This represents the car at $v_i$ with $f$ fuel left;
+      \end{itemize}
+      \item An edge exists between $v_{i,k}$ and $v_{i,k+1}$ with cost $p_i$;
+      \begin{itemize}
+        \item This represents adding fuel to the car.
+      \end{itemize}
+      \item An edge exists between $v_{i,k}$ and $v_{j,k-w_{i,j}}$ if exits an edge $v_i \to v_k$ with cost $w_{i,j}$ and $k-w_{i,j} \geq 0$;
+      \begin{itemize}
+        \item This represents the car has enough fuel to go to j
+      \end{itemize}
+      \item Now we can do Dijkstra in the modified graph;
+      \item Note the new graph has $V\times C$ vertices and $E\times C$ edges;
     \end{itemize}
-    We can use djikstra on this new graph, but it has many more nodes!
-  }
 \end{frame}
 
-\subsection{SSSP with Negative Cycle}
+\begin{frame}
+  \frametitle{UVA 11367 -- Full Tank: Simulation}
+
+    \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+        \node[red vertex] (s) at (0,0) {s:4};
+        \node[vertex] (0) at (2,1) {a:6};
+        \node[vertex] (1) at (4,1) {b:1};
+        \node[vertex] (e) at (6,0) {t:0};
+        \draw[edge] (s) -- node[label] {$5$} (e);
+        \draw[edge] (s) -- node[label] {$1$} (0);
+        \draw[edge] (0) -- node[label] {$1$} (1);
+      \draw[edge] (1) -- node[label] {$5$} (e);
+      \end{tikzpicture}
+    \end{center}
+    \vspace{10cm}
+
+\end{frame}
+
+\subsection{Negative Loops}
 \begin{frame}
   \frametitle{A Problem with Dijkstra}
 
-  {\smaller
-    \begin{block}{What happens if our graph has negative weights?}
-      The djikstra implementation we discussed works with {\bf negative weights},
-      but not with {\bf negative loops}!
+    \begin{block}{}
+      The dijkstra implementation that we discussed will fall into an {\bf infinite loop} if the graph includes a {\bf negative loop}!
     \end{block}
 
     \begin{center}
@@ -272,101 +267,93 @@ while (!pq.empty()) {
     \end{center}
 
     \begin{itemize}
-    \item Our initial Djikstra implementation will find repeated smaller costs
-      from $s$ to $a$: -2, -4, -6, -8...
-    \item It needs a check to avoid {\bf using the same edge two times}
-    \item One simple way to solve this problem is using the
-      \structure{Bellman Ford's algorithm}
+    \item Our Dijkstra implementation will add smaller and smaller costs to the priority queue:
+    \begin{itemize}
+      \item $s \to a$: -2, -4, -6, -8...
     \end{itemize}
-  }
+
+    \item We could try to check for used edges; but that will not {\bf detect} negative loops;
+
+    \item {\bf Bellman Ford's algorithm} is a simple SSSP algorithm that can {\bf detect negative loops};
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Bellman Ford's Algorithm $O(VE)$}
-
+  \frametitle{Bellman Ford's Algorithm -- ($O(VE)$)}
   {\smaller
-  \structure{Main Idea}: update all $i \leftarrow j$ weights $V-1$ times;
+  \begin{itemize}
+    \item The main idea is to propagate the weight of every edge $i\to j$, $V-1$ times.
 
-  \begin{exampleblock}{Version using Edge List}
+    \item The vector of distances from $s$, \emph{dist}, starts with dist[s]=0, and dist[!s]=INF;
+
+    \item Each iteration, non-inf values of dist propagate;
+
+    \item Because the algorithm has a finite number of loops, it always terminates;
+    \item Algorithm stabilizes at iteration $V-1$. If dist changes after that, we have detected an infinite loop.
+  \end{itemize}
+
+  \begin{exampleblock}{Pseudocode (uses EdgeList data structure)}
 \begin{verbatim}
 vector<int> dist(V, INF); dist[s] = 0;// Start Condition
 int edges[E][3];                   // Edge list (i,j,w)
 for (int i = 0; i < V - 1; i++)    // repeat V-1 times
  for (int u = 0; u < E; u++) {     // for all edges
-  dist[edges[u][1]] = min(dist[edges[u][1],
-                          dist[edges[u][0]+edges[u][2]);
+  dist[edges[u][1]] = min(dist[edges[u][1]],
+                          dist[edges[u][0]]+edges[u][2]);
  }
 \end{verbatim}
-  \end{exampleblock}
-
-  \medskip
-
-  \structure{How does it work?}:
-  \begin{itemize}
-  \item At the start, \emph{dist[s]} has the correct minimal distance;
-  \item When we update all edges, one new node now has correct distance;
-  \item After $V-1$ updates, all nodes have correct minimal distance;
-  \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Bellman Ford's Algorithm $O(VE)$}
-
-  {\smaller
-  \structure{Main Idea}: Relax all $E$ edges in the graph $V-1$ times;
-
-  \begin{exampleblock}{Version using Adjacency Matrix -- Cost $O(V^3)$}
-\begin{verbatim}
-vector<int> dist(V, INF); dist[s] = 0;
-for (int i = 0; i < V - 1; i++) // repeat V-1 times
- for (int u = 0; u < V; u++) // for all vertices
-  for (int j = 0; j < (int)AdjList[u].size(); j++) {
-    ii v = AdjList[u][j]; // record path here if needed;
-    dist[v.first] = min(dist[v.first], dist[u]+v.second);
-    } //relax edge
-\end{verbatim}
-  \end{exampleblock}
-
-  \medskip
-
-  \begin{itemize}
-  \item This version is one order of magnitude more expensive!
-  \item But depending on the input, maybe it is difficult to get an edge list;
-  \item Think about the input size before choosing!
-  \end{itemize}
-  }
+\end{exampleblock}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{A bit more on Bellman Ford's}
-  {\smaller
-  \begin{block}{Detecting Negative Loops}
-    Bellman Ford's algorithm can be used to detect if a negative loop
-    exists in the graph.
-
-    \medskip
-
-    \begin{itemize}
-      \item Execute the algorithm once.
-      \item Do one last round of ``relax all nodes''.
-      \item If any distance in the \emph{dist[]} vector changes, the graph has a negative loop.
-    \end{itemize}
-  \end{block}}
+  \frametitle{Bellman Ford Simulation: Regular Graph}
+  \begin{center}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[red vertex] (s) at (0,0) {s};
+      \node[vertex] (0) at (2,1) {a};
+      \node[vertex] (1) at (4,1) {b};
+      \node[vertex] (e) at (6,0) {t};
+      \tikzset{edge/.style = {->, >=latex'}}
+      \draw[edge] (s) to node[label] {$5$} (e);
+      \draw[edge] (s) to node[label] {$1$} (0);
+      \draw[edge] (0) to node[label] {$2$} (1);
+      \draw[edge] (1) to node[label] {$1$} (e);
+    \end{tikzpicture}
+  \end{center}
+  \vspace{10cm}
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Summary of SSSP}
-  \begin{itemize}
-  \item \structure{BFS}: $O(V+E)$, only for unweighted graphs
-  \item \structure{Djikstra}: $O(E+V\text{log}V)$, problem with negative loops
-  \item \structure{Bellman Ford}: $O(EV)$ or $O(V^3)$, can find negative loops
-  \end{itemize}
+  \frametitle{Bellman Ford Simulation: Negative Loop}
+  \begin{center}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[red vertex] (s) at (0,0) {s};
+      \node[vertex] (0) at (1,1) {a};
+      \node[vertex] (1) at (2,0) {b};
+      \node[vertex] (e) at (4,0) {e};
+      \tikzset{edge/.style = {->, >=latex'}}
+      \draw[edge] (s) to node[label] {-2} (0);
+      \draw[edge] (1) to node[label] {2} (s);
+      \draw[edge] (0) to node[label] {-2} (1);
+    \draw[edge] (1) to node[label] {2} (e);
+    \end{tikzpicture}
+  \end{center}
+  \vspace{10cm}
+\end{frame}
 
+\subsection{}
+\begin{frame}
+  \frametitle{SSSP Summary}
+  \begin{itemize}
+  \item \structure{BFS}: $O(V+E)$, only for unweighted graphs;\bigskip
+
+  \item \structure{Dijkstra}: $O(E+V\text{log}V)$, not guaranteed to stop if there is a negative loop;\bigskip
+
+  \item \structure{Bellman Ford}: $O(EV)$ guaranteed to stop;
+  \end{itemize}
   \bigskip
 
-  Study/Implement all of them, but always use the simplest possible!
+  Be familiar with all of them, and use the most appropriate one (or simplest one) for each problem!
 \end{frame}
 
 
@@ -375,69 +362,71 @@ for (int i = 0; i < V - 1; i++) // repeat V-1 times
 \begin{frame}
   \frametitle{APSP: All Pairs Shortest Path}
 
-  {\smaller
-  \begin{block}{Problem Definition -- UVA 11463 -- Commandos}
-    Given a graph $G(V,E)$, and two vertices $s$ and
-    $e$, calculate the smallest possible value of the path $s
-    \rightarrow i \rightarrow e$ for every node $i \in V$.
+  Consider the following problem:
+
+  \begin{block}{UVA 11463 -- Commandos}
+    Consider a graph $G(V,E)$, with a starting vertex $v_s$ and an end vertex $v_t$. You must send a group of commands to visit every vertex in the graph.\bigskip
+
+    Calculate the minimum time to complete all visits, if you can send the commandos in parallel.
   \end{block}
 
+  {\bf Quiz:} How do you solve this problem?
+\end{frame}
+
+\begin{frame}{APSP: Commandos Problem}
   \begin{itemize}
-  \item One way to do it would be for every node $i$, calculate
-    Djikstra(s,i) + Djikstra(i,e);
-  \item This would cost $O(V(E+V\text{log}(V)))$;
-  \item There is a simpler algorithm that costs $O(V^3)$. You can use
-    it if the graph is \emph{small}
+  \item To solve this problem, you need to calculate, for every vertex, the shortest path from $v_s$ to $v_t$ that includes that vertex; The solution is the largest of these paths.\bigskip
+
+  \item One simple way to program this is to loop through all vertices $v_i$, and calculate Dijkstra$(v_s,v_i)$ + Dijkstra$(v_i,v_t$);
+  \begin{itemize}
+    \item The cost would be about $O(V(E+V))$;
+  \end{itemize}\bigskip
+
+  \item Let's introduce a {\bf simpler} (but not cheaper!) way to write this program.
   \end{itemize}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{The Floyd-Warshall Algorithm -- $O(V^3)$}
 
-{\smaller
+Only four lines of code!
 
   \begin{exampleblock}{}
 \begin{verbatim}
-int AdjMat[V][V];
-//contains weight of edge(i,j) or INF if no such edge
+int AdjMat[V][V]; // Adjacency Matrix
+// Initialization: AdjMat[i][j] contains cost
+// of i->j edge, or INF if no edge.
 
-for (int k=0; k < V; k++) // loop order is k -> i -> j
-   for (int i=0; i < V; i++)
-      for (int j=0; j < V; j++)
-         AdjMat[i][j] = min(AdjMat[i][j],
-                            AdjMat[i][k]+AdjMat[k][j]);
-// AdjMat[i][j] now contains the minimal cost[i][j]
+for (int k=0; k < V; k++) // loop order
+  for (int i=0; i < V; i++)
+    for (int j=0; j < V; j++)
+      AdjMat[i][j] = min(AdjMat[i][j],
+                         AdjMat[i][k]+AdjMat[k][j]);
+
+// AdjMat[i][j]: cost of minimum path i -> j
 \end{verbatim}
   \end{exampleblock}
 
   \begin{itemize}
-  \item Computational cost is more expensive than $V$ times
-    Djikstra;
-  \item \alert{Programmer Cost} is clearly cheaper than Djikstra
-    or Bellman-Ford;
+  \item Algorithm is slower! So only use it on small graphs;
+  \item Very easy to program: Fewer bugs!
   \end{itemize}
-}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why does Floyd Warshall work?}
+  \frametitle{How does Floyd Warshall work?}
 
-  {\smaller
-  \begin{block}{Basic Idea: Bottom-up Dynamic Programming}
-    FW uses this recursive idea: ``The shortest path S between $i$ and
-    $j$ is the minimum of $S(i,j)$ or $(S(i,v) + S(v,j))$ for all nodes $v$
-    between $0$ and $k$.''
-
-    \medskip
-
+  \begin{block}{}
     \begin{itemize}
-    \item $k=-1$ is the base case, $S$ is the edge ($i,j$);
-    \item For $k=n$, the shortest path uses $S(i,v,n-1)$ and
-      $S(v,j,n-1)$;
+      \item The basic idea of FW, is Bottom-up dynamic programming;
+      \item For every vertex $v_k$, the shortest path between $v_i$ and $v_j$ is either:
+      \begin{itemize}
+        \item The current shortest path $v_i \to v_j$ or;
+        \item The new shortest path $v_i \to v_k \to v_j$;
+      \end{itemize}
+      \item Every iteration $k$, FW adds $v_k$ to all other existing paths.
     \end{itemize}
   \end{block}
-  }
 
   \begin{center}
     \includegraphics<1>[width=0.7\textwidth]{../img/fw_halim1}
@@ -445,453 +434,470 @@ for (int k=0; k < V; k++) // loop order is k -> i -> j
     \includegraphics<3>[width=0.7\textwidth]{../img/fw_halim3}
     \includegraphics<4>[width=0.7\textwidth]{../img/fw_halim4}
   \end{center}
-
-  \medskip
-
-  \hfill {\tiny Images from \emph{Competitive Programming}, Steven Halim}
+  \ppagenote{Floyd-Warshall Image from "Competitive Programming", Steven Halim}
 \end{frame}
 
-\subsection{Tricks with ASPS}
-\begin{frame}
-  \frametitle{Tricks with ASPS}
+\begin{frame}[fragile]{Getting more from Floyd Warshall -- 1}
+  \begin{block}{I want to print the shortest path from Floyd Warshall}
+To print the shortest path in FW, we add a 2D matrix $p$, where $p[i][j]$ is the last node on the shortest path from i to j
+{\smaller
+\begin{verbatim}
+// Initialize parent matrix
+for (int i = 0; i < V; i++)
+  for (int j = 0; j < V; j++)
+    p[i][j] = i;
 
-  % TODO: Write down each trick with details, write code;
+// Floyd Warshall
+for (int k = 0; k < V; k++)
+  for (int i = 0; i < V; i++)
+    for (int j = 0; j < v; j++)
+      if (AdjMat[i][k] + AdjMat[k][j] < AdjMat[i][j]) {
+        AdjMat[i][j] = AdjMat[i][k] + AdjMat[k][j];
+        p[i][j] = p[k][j];      // Update parent Matrix
+      }
+\end{verbatim}}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Getting more from Floyd Warshall -- 2}
+
   \begin{itemize}
-  \item Include parents: Add a 2D parent matrix, which is updated in
-    the inner loop; Follow the parent matrix backwards when the
-    execution is over;
-  \item Connectivity: If all we want to know if is $i$ is connected to
-    $j$, do FW with bitwise operations (FW[i][j] = FW[i][k] \&\&
-    FW[k][j]) -- much faster!
-  \item Finding SCC: If FW[i][j] and FW[j][i] are both $> 0$, then $i$
-    and $j$ belong to the same SCC;
-  \item Minimum Cycle/Negative Cycle: Check the diagonal of FW:
-    $FW[i][i] < 0$;
-  \item ``Diameter'' of a Graph: $i,j$ where $FW[i][j]$ is maximum;
+  \item If we only want to know if $v_i$ is connected to $v_j$, we can use FW with bitwise operations -- much faster:
+  \begin{verbatim}
+  AdjMat[i][j] |= AdjMat[i][k] && AdjMat[k][j];
+  \end{verbatim}
+
+  \item We can use FW instead of MST to find the minmax path:
+  {\smaller\begin{verbatim}
+AdjMat[i][j]=min(AdjMat[i][j],max(AdjMat[i][k],AdjMat[k][j]);
+\end{verbatim}}\medskip
+
+  \item We can use FW to find SCCs:
+  \begin{itemize}
+    \item If AdjMat[i][j] $> 0$ AND AdjMat[j][i] $> 0$, $v_i$ and $v_j$ are in same SCC;
+  \end{itemize}\medskip
+
+  \item Use FW to detect negative cycles (or minimum cycles):
+  \begin{itemize}
+    \item for $i = 0\to V$, check AdjMat[i][i];
+    \item If negative: negative loop;
+    \item Else: minimum loop.
+  \end{itemize}
   \end{itemize}
 \end{frame}
 
 \section{Network Flow}
-\subsection{Network Flow}
+
 \begin{frame}
-  \frametitle{Network Flow}
+  \begin{center}
+    {\bf Network Max Flow}
+  \end{center}
+\end{frame}
 
-  {\small
-  \begin{block}{Problem Definition}
-    Imagine a \structure{connected, weighted and directed} network of pipes.
+\begin{frame}
+  \frametitle{Network Max Flow -- Problem Definition}
 
-    From the \alert{source} node, an infinite amount of water is
-    entering. How much water is leaving at the \alert{destination}
-    node?
+  \begin{block}{}
+    Consider a {\bf weighted} network of pipes. The weight is the size of each pipe. Water enters the network at $v_s$ and leave at $v_t$. How much water is leaving through $v_t$?
   \end{block}
 
   \begin{center}
     \includegraphics[width=.55\textwidth]{../img/maxflow_wiki}
+    \ppagenote{Network Flow Image CC-BY-SA 3.0 by Maksim}
   \end{center}
 
-  %% TODO: Make my own image here.
-
-  \begin{block}{}
-    This image describes the \structure{MAX FLOW} problem. It is part
-    of a family of graph problems called \structure{``flow
-      problems''}.
-  \end{block}}
-
-  \hfill{\tiny Image CC-BY-SA 3.0 by Maksim}
+  \begin{itemize}
+    \item 2 units come through $s\to o \to q \to t$,
+    \item 2 units come through $s\to p\to r\to t$,
+    \item 1 unit comes through $s\to o\to q\to r\to t$.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Network Flow}
+  \frametitle{Network Max Flow -- Problem Definition}
   \begin{center}
     \includegraphics[width=.55\textwidth]{../img/maxflow_wiki}
   \end{center}
+  \bigskip
 
-  {\smaller
-    In the image above, \structure{5 ``flow''} go from $s$ to $t$.
-    \begin{itemize}
-    \item 2 flow go through: $s\rightarrow o\rightarrow q\rightarrow t$;
-    \item 1 flow go through: $s\rightarrow o\rightarrow q\rightarrow r\rightarrow t$;
-    \item 2 flow go through: $s\rightarrow p\rightarrow r\rightarrow t$;
-    \end{itemize}
-  }
-
-  \hfill{\tiny Image CC-BY-SA 3.0 by Maksim}
+  The goal of the Max Flow problem is to find the maximum total flow that can go between $v_s$ and $v_t$ in a given graph.
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Ford Fulkerson Method}
+  \frametitle{Ford Fulkerson Method for Max Flow}
 
-  {\smaller
   \begin{block}{}
-    One way to solve the Max Flow problem is using the \structure{Ford-Fulkerson Method}.
-
-    \hfill {\tiny Note: Same Ford as in Bellman-Ford}
+    The Ford-Fulkerson method\footnote{Same Ford as in Bellman-Ford} finds the maximum flow using a {\bf Residual Flow Graph} to keep track of remaining capacity.
   \end{block}
 
   \medskip
 
-  \begin{enumerate}
-  \item Create \structure{residual graph} with flow capacity between nodes;
-  \item Initial residual graph = directed weight graph. Non existing
-    edges have capacity 0;
-  \item Find a path between $s$ and $t$;
-  \item \alert{Remove value} of lowest weight from all edges in residual graph;
-  \item \alert{Add value} of lowest weight to all reverse edges in residual graph;
-  \item Do 3 again until you cannot find a path anymore;
-  \end{enumerate}}
+  \begin{itemize}
+  \item {\bf Initialize Residual Graph F}: equal to the original graph G, but directed (add edges as necessary)\medskip
+  \item {\bf Main Loop:} If there is a path $p$ between $v_s$ and $v_t$ in F:
+  \begin{itemize}
+    \item Find smallest weight $w$ in p;
+    \item For every edge $E_{u,v} \in p$, {\bf subtract} w from each edge;
+    \item For every back-edge $E_{v,u} | E_{u,v}\in p$, {\bf add} w to each edge;
+    \item Find another path $v_s \to v_t \in F$
+  \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Ford Fulkerson -- Pseudocode}
-{\smaller
+% {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
+// Initialize Residual Graph
 int residual[V][V];
 memset(residual,0,sizeof(residual))
-for (int i; i < AdjList.size();i++)
-   for (int j; j < AdjList[i].size();j++)
-      residual[i][AdjList[i][j].target] =
-         AdjList[i][j].weight;
-
-mf = 0;
-while (P = FindPath(s,t)) > 0) {
-   m = P.weight; // minimum edge in P
-   for (v in P) {
-      residual[v.first][v.second] -= m;
-      residual[v.second][v.first] += m;}
+for (int i; i < V;i++)
+  for (int j; j < V;j++)
+    if residual[i][j] = AdjMat[i][j];
+mf = 0;  // Max flow counter
+while (P = FindPath(s,t)) { // Find new path;
+   m = P.min_weight; // minimum edge in P
+   for (edge (v,u) in P) {
+      residual[v][u] -= m;
+      residual[u][v] += m;
+   }
    mf += m;
 }
 \end{verbatim}
   \end{exampleblock}
-}
+  % }
 \end{frame}
 
+\begin{frame}{Ford-Fulkerson Simulation}
+  \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+    \node[vertex] (0) at (0,0) {s};
+    \node[vertex] (1) at (1.5,1.5) {1};
+    \node[vertex] (2) at (1.5,-1.5) {2};
+    \node[vertex] (3) at (3,1.5) {3};
+    \node[vertex] (4) at (3,-1.5) {4};
+    \node[vertex] (5) at (4.5,0) {t};
+    \draw[edge] (0) to node[label] {3} (1);
+    \draw[edge] (0) to node[label] {2} (2);
+    \draw[edge] (1) to node[label] {2} (2);
+    \draw[edge] (1) to node[label] {3} (3);
+    \draw[edge] (2) to node[label] {2} (4);
+    \draw[edge] (3) to node[label] {4} (4);
+    \draw[edge] (3) to node[label] {2} (5);
+    \draw[edge] (4) to node[label] {3} (5);
+  \end{tikzpicture}
+  \vspace{10cm}
+\end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Ford Fulkerson Implementation: Finding Paths}
+\begin{frame}{Finding Paths in Ford Fulkerson -- Problems}
 
-  {\smaller
-    \begin{block}{}
-\begin{verbatim}
-while (P = FindPath(s,t) > 0) {...}
-\end{verbatim}
+The Ford Fulkerson method does not specify an algorithm for finding a path in the residual graph. You could use anything!\bigskip
 
-You can use any path algorithm here (BFS, DFS, Djikstra, etc). Depends
-on your graph!
-    \end{block}
-
-\begin{exampleblock}{Idea 1: Find augmenting paths using DFS;}
-  This is simple to implement, but the worst case scenario has cost:
-  $O(|f*|E)$, where $f*$ is the true Max Flow value.
+\begin{exampleblock}{Problem case with bad path finding}
+  The worst case of path selection could be $O(|f^*|E)$, where $f^*$ is the true Max Flow value.\medskip
 
   \includegraphics[width=1\textwidth]{../img/ff_worst_halim}
-
+  \ppagenote{Image from "Competitive Programming 3", Steven Halim}
 \end{exampleblock}
-}
-\hfill{\tiny Image from Competitive Programming, 3rd edition}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Edmond Karp's Algorithm}
+  \frametitle{FF efficient implementation: Edmond Karp's Algorithm}
 
-  {\smaller
-  \begin{block}{O(|f*|E) is too expensive!}
-    The algorithm presented in the last page is too expensive for
-    arbitrary values of |f*|. The \structure{Edmond Karp} algorithm is
-    a $O(VE^2)$ variation using BFS.
+  \begin{block}{}
+    To avoid these "worst cases" of bad path selection, {\bf Edmond Karp}'s algorithm uses BFS on the residual graph to select a new $s\to t$ path.
   \end{block}
 
+{\smaller
+\begin{block}{Pseudocode}
 \begin{verbatim}
-//// PART 1: Augment based on BFS
+boolean BFS(s, t, p) { }
+// Finds shortest (by edge #) path from s to t and store in p
 
-// This is a simpler O(V^3E) implementation
-int res[MAX_V][MAX_V], mf, s, t;
-vi p; // BFS spanning tree from s
-
-void augment(int v, int minEdge) { // traverse BFS s->t
-   inf (v == s) { f = minEdge; return; }
-   else if (p[v] != -1) {
-      augment(p[v], min(minEdge,res[p[v]][v]));
-      res[p[v]][v] -= f; res[v][p[v]] += f;}}
-\end{verbatim}
-}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Edmond Karp's Algorithm (2)}
-  {\smaller
-  \begin{block}{O(|f*|E) is too expensive!}
-    The algorithm presented in the last page is too expensive for
-    arbitrary values of |f*|. The \structure{Edmond Karp} algorithm is
-    a $O(VE^2)$ variation using BFS.
-  \end{block}
-
-\begin{verbatim}
-//// PART 2: create the BFS
-mf = 0;
-while (1) { f = 0; vi dist(MAX_V,INF): dist[s] = 0;
-            queue<int> q; q.push(s); p.assign(MAX_V,-1);
-   while (!q.empty()) { int u = q.front; q.pop();
-      if (u==t) break; for int (v = 0; v < MAX_V; v++)
-         if (res[u][v] > 0 && dist[v] == INF)
-            dist[v] = dist[u]+1, q.push(v), p[v] = u; }
-   // BFS (parent indexes) is now in "p";
-   augment(t,INF); // modify residuals based on P
-   if (f == 0) break; // if no more flow, end.
-   mf += f;
-   }
-\end{verbatim}
+mf = 0
+while BFS(s,t,p) do {
+  for (i in p) {
+    minw = min(minw, p[i].w) // find min in p;
   }
+  mf += minw;
+  for (i in p) {
+    res[p[i].u][p[i].v] -= minw;
+    res[p[i].v][p[i].u] += minw;
+  }
+}
+\end{verbatim}
+\end{block}
+}
 \end{frame}
 
-\subsection{Problem Sample 1}
-\begin{frame}
-  \frametitle{NF Example: UVA 259 -- Software Allocation}
 
-  {\smaller
-    \begin{block}{Problem Description}
-      \begin{itemize}
-      \item (up to) 26 programs and 10 computers;
-      \item Each computer can run only one program at a time;
-      \item Each computer has a list of programs it can run;
-      \item Each program wants to run in ``p'' computers;
-      \end{itemize}
-      Can you find an allocation to run all programs?
+\subsection{Maxflow Problem Example}
+\begin{frame}
+  \frametitle{UVA 259 -- Software Allocation}
+    \begin{block}{Outline}
+      In a laboratory there are 26 applications and 10 computers. Each computer can run a subset of these applications. Each computer can run only one program per day.\bigskip
+
+      Every day, laboratory users submit {\bf application requests}. These requests can be repeated. For example, two users can request application A, and one user requests application B.
+
+      You must determine if it is possible to satisfy all applications. If so, you must print the computer allocation.
     \end{block}
 
     \bigskip
-
-    \structure{Allocation Problems} (Often called ``matching''
-    problems) can be solved using the Max Flow algorithm.
-
-    \smallskip
-
-    Create a \structure{source} node connected to all the requesters;
-    and an \structure{end} node connected to all the providers. The
-    max flow between the source and the end shows how much of the
-    allocation is possible.
-    }
+    {\bf QUIZ:} How do you solve this program?
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{NF Example: UVA 259 -- Software Allocation}
+\begin{frame}{UVA -- Software Allocation}
 
-  {\smaller
-\begin{verbatim}
-A4 01345;
-Q1 6
-P4 35789;
-\end{verbatim}
+    {\bf Allocation Problems} (also called ``matching''
+    problems) can usually be solved using Max Flow.
+    \bigskip
+
+    The main part of the problem is: {\bf What is the graph that best represents this problem?}
+
+    \begin{itemize}
+      \item Create a {\bf source vertex s} connected to all applications.
+      \begin{itemize}
+        \item The weight of these edges is the number of users requesting that application.
+      \end{itemize}\medskip
+      \item Create an edge connecting each application to the computers that can run that application.\medskip
+      \item Create an edge connecting each computer to a {\bf sink vertex t}.
+      \begin{itemize}
+        \item The weight of these edges is 1 (number of programs that can run on the computer).
+      \end{itemize}
+    \end{itemize}\bigskip
+
+    Solve the maxflow problem for this graph. If the flow size is equal to the number of users, then the allocation is satisfied.
+\end{frame}
+
+\begin{frame}{UVA 259 -- Software Allocation}{Input Example One}
+A4 01234;\\
+Q1 5;\\
+P4 56789;\\
 
 
    \begin{center}
      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
        \tikzset{edge/.style = {->,>=latex'}}
        \node[red vertex] (s) at (0,0) {s};
-       \node[vertex] (A) at (2,-1) {A};
+       \node[vertex] (A) at (-2,-1) {A};
        \node[vertex] (Q) at (0,-1) {Q};
-       \node[vertex] (P) at (-1,-1) {P};
-       \node[vertex] (0) at (5,-3) {0};
-       \node[vertex] (1) at (4,-3) {1};
-       \node[vertex] (2) at (3,-3) {2};
-       \node[vertex] (3) at (2,-3) {3};
-       \node[vertex] (4) at (1,-3) {4};
-       \node[vertex] (5) at (0,-3) {5};
-       \node[vertex] (6) at (-1,-3) {6};
-       \node[vertex] (7) at (-2,-3) {7};
-       \node[vertex] (8) at (-3,-3) {8};
-       \node[vertex] (9) at (-4,-3) {9};
-       \node[red vertex] (e) at (0,-4) {e};
+       \node[vertex] (P) at (2,-1) {P};
+       \node[vertex] (0) at (-4,-3) {0};
+       \node[vertex] (1) at (-3,-3) {1};
+       \node[vertex] (2) at (-2,-3) {2};
+       \node[vertex] (3) at (-1,-3) {3};
+       \node[vertex] (4) at (0,-3) {4};
+       \node[vertex] (5) at (1,-3) {5};
+       \node[vertex] (6) at (2,-3) {6};
+       \node[vertex] (7) at (3,-3) {7};
+       \node[vertex] (8) at (4,-3) {8};
+       \node[vertex] (9) at (5,-3) {9};
+       \node[red vertex] (t) at (0,-4) {t};
        \draw[edge] (s) -- node[label] {4} (A);
        \draw[edge] (s) -- node[label] {1} (Q);
        \draw[edge] (s) -- node[label] {4} (P);
        \draw[edge] (A) -- (0);
        \draw[edge] (A) -- (1);
-       \draw[edge] (A) -- (5);
+       \draw[edge] (A) -- (2);
        \draw[edge] (A) -- (3);
        \draw[edge] (A) -- (4);
-       \draw[edge] (Q) -- (6);
+       \draw[edge] (Q) -- (5);
        \draw[edge] (P) -- (5);
-       \draw[edge] (P) -- (3);
+       \draw[edge] (P) -- (6);
        \draw[edge] (P) -- (7);
        \draw[edge] (P) -- (8);
        \draw[edge] (P) -- (9);
-       \draw[edge] (0) -- (e);
-       \draw[edge] (1) -- (e);
-       \draw[edge] (2) -- (e);
-       \draw[edge] (3) -- (e);
-       \draw[edge] (4) -- (e);
-       \draw[edge] (5) -- (e);
-       \draw[edge] (6) -- (e);
-       \draw[edge] (7) -- (e);
-       \draw[edge] (8) -- (e);
-       \draw[edge] (9) -- (e);
+       \draw[edge] (0) -- (t);
+       \draw[edge] (1) -- (t);
+       \draw[edge] (2) -- (t);
+       \draw[edge] (3) -- (t);
+       \draw[edge] (4) -- (t);
+       \draw[edge] (5) -- (t);
+       \draw[edge] (6) -- (t);
+       \draw[edge] (7) -- (t);
+       \draw[edge] (8) -- (t);
+       \draw[edge] (9) -- (t);
      \end{tikzpicture}
    \end{center}
-  }
 \end{frame}
 
-\subsection{Problem Variants}
-\begin{frame}
-  \frametitle{Network Flow Problem Variants (1)}
-  {\smaller
-  \begin{block}{Minimum Cut -- UVA 10480 (Sabotage)}
-    Find a minimum set of edges C so that if all edges from the set
-    are removed, then the flow from $s$ to $e$ becomes 0. (i.e., $s$
-    and $e$ are disconnected).
-  \end{block}
+\begin{frame}{UVA 259 -- Software Allocation}{Input Example Two}
 
-  Ideas:
+A3 0123;\\
+B3 1234;\\
+ \begin{center}
+   \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+     \tikzset{edge/.style = {->,>=latex'}}
+     \node[red vertex] (s) at (0,0) {s};
+     \node[vertex] (A) at (-1,-1) {A};
+     \node[vertex] (B) at (1,-1) {B};
+     \node[vertex] (0) at (-4,-3) {0};
+     \node[vertex] (1) at (-2,-3) {1};
+     \node[vertex] (2) at (0,-3) {2};
+     \node[vertex] (3) at (2,-3) {3};
+     \node[vertex] (4) at (4,-3) {4};
+     \node[red vertex] (t) at (0,-4) {t};
+     \draw[edge] (s) -- node[label] {3} (A);
+     \draw[edge] (s) -- node[label] {3} (B);
+     \draw[edge] (A) -- (0);
+     \draw[edge] (A) -- (1);
+     \draw[edge] (A) -- (2);
+     \draw[edge] (A) -- (3);
+     \draw[edge] (B) -- (1);
+     \draw[edge] (B) -- (2);
+     \draw[edge] (B) -- (3);
+     \draw[edge] (B) -- (4);
+     \draw[edge] (0) -- (t);
+     \draw[edge] (1) -- (t);
+     \draw[edge] (2) -- (t);
+     \draw[edge] (3) -- (t);
+     \draw[edge] (4) -- (t);
+   \end{tikzpicture}
+ \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{UVA 10480 -- Sabotage}
+  \begin{block}{Problem Description}
+    Given a communication network $V$, what is the {\bf minimum number of edges} that you must remove from $V$ so that the vertices $v_s$ and $v_t$ are not connected?
+  \end{block}\bigskip
+
+  This is a traditional graph problem called {\bf minimum cut}. One way to solve this problem is to use the MaxFlow algorithm and analyse the {\bf residual graph}.\bigskip
+
   \begin{itemize}
-  \item Perform the Max Flow, and analyse the residual matrix;
-  \item All nodes reachable from $s$ using edges with positive
-    residual are connected to $s$;
-  \item All nodes not reachable from $s$ as above are connected to $e$;
-  \item All edges with residual $0$ connect the two sets, and belong
-    to the Minimum Cut;
+    \item After MaxFlow, all edges in the residual graph that have weight $0$ belong to the {\bf minimum cut set}.
+    \item A BFS on the residual graph starting from $v_s$ will indicate the vertices that remain connected to $v_s$ after the cut.
+    \item The vertices not reachable in the BFS will be connected to $v_e$.
   \end{itemize}
-  }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Network Flow Problem Variants (2)}
-  {\smaller
-    \begin{block}{Multiple Sources, Multiple Sinks}
-    \end{block}
-
-    Ideas:
-    \begin{itemize}
-    \item Create a ``super source'' node ss. ss connects to all sources with infinite weight;
-    \item Create a ``super sink'' node se. All sinks connect to se with infinite weight;
-    \end{itemize}
-
-    \begin{block}{Weights on nodes, not edges}
-    \end{block}
-    Ideas:
-    \begin{itemize}
-    \item Split the vertices. Vertice weight is now an edge connecting both halves.
-    \item Be careful. Doing this doubles V and increases E.
-    \item (note how many times the solution is to modify the graph to our needs)
-    \end{itemize}
-
-    %% TODO: Add example problems for these cases
-  }
-\end{frame}
-
-\section{Special Graphs}
-\subsection{Special Graphs}
-% TODO: Replaced ``bipartite Match'' with special graphs, deal with many examples from 4.7.*
-
-\begin{frame}
-  \frametitle{Graph Problems: Thinking with many boxes}
-
-  {\smaller
-  The interesting part about graph problems is that they came in great
-  variety. Once you know the basic algorithms, the main problem is figuring
-  out what kind of graph you are dealing with.
-
-  This knowlege only comes with practice, but here are some examples.
-  }
-\end{frame}
-
-\subsection{Fishmonger}
-
-\begin{frame}
-  \frametitle{DAG example: Fishmonger (SPOJ 0101)}
-  {\smaller
-  \begin{block}{Problem Description}
-    You are given a number of cities $3\leq n \leq 50$, remaining time
-    $1 \leq t \leq 1000$, a toll matrix and a travel time matrix,
-    choose a route:
-    \begin{itemize}
-    \item starting at city $0$ and ending at city $n-1$;
-    \item travel time must be less than $t$;
-    \item toll must be minimum;
-    \end{itemize}
+%% TODO: Add example problems for these cases
+\begin{frame}{Designing Network Flow Problem Graphs}
+  \begin{block}{Graph with multiple sources and multiple sinks}
+  \begin{itemize}
+  \item Create a ``super source'' vertex $v_{ss}$. $v_{ss}$ connects to all sources with infinite weight;
+  \item Create a ``super sink'' vertex $v_{se}$. All sinks connect to $v_{se}$ with infinite weight;
+  \end{itemize}
   \end{block}
 
-  \bigskip
 
-  There are two goals: \emph{time} and \emph{cost} that can contradict
-  each other. How do you calculate the SSSP in this condition?
-  }
+  \begin{block}{Graph with weights on vertices, not edges}
+    \begin{itemize}
+    \item Similar to "full tank", we split the graph's vertices;
+    \item Vertex $v_i$ is split into $v_{i1}$ and $v_{i2}$.
+    \item Add an edge$(v_{i1}, v_{i2})$ with weight $v_i$.
+    \item Don't forget that this solution doubles $|V|$ and increases $|E|$.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Graph Problem Examples}
+
+\begin{frame}{A few more Graph problem example}
+
+  One interesting thing about graph problems is that they come in great variety.\bigskip
+
+  \begin{itemize}
+    \item Many different graph algorithms;
+    \item Many different ways to represent a problem as a graph;
+    \item Many different problem types;
+  \end{itemize}\bigskip
+
+  Let's see some extra problems to discuss these variations.
+\end{frame}
+
+\begin{frame}{Fishmonger -- Shortest path on a DAG}
+  \begin{block}{Problem Description}
+    A fish seller must go from city $v_0$ to city $v_{n-1}$, before the time $t$. The seller must also pay the minimum ammount of toll.\bigskip
+
+    \begin{itemize}
+      \item Every edge has a {\bf toll cost} and a {\bf time cost};
+      \item The number of cities is $\leq 50$, and the time $t$ is $\leq 1000$.
+    \end{itemize}
+  \end{block}\bigskip
+
+  This is a $SSSP$ problem, but with two costs: \emph{time} and \emph{toll}.\medskip
+
+  {\bf Quiz}: How do you find the minimal path for both costs?
 \end{frame}
 
 \begin{frame}
-  \frametitle{DAG example: Fishmonger (SPOJ 0101)}
+  \frametitle{Fishmonger -- Shortest path on a DAG}
 
-  To handle the time constraint, we add a parameter (state) to each
-  vertex indicating how much time is left.
+  \begin{block}{Graph Transformation}
+    Similar to "full tank", we each vertex $v_i$ into $t$ new vertices, where $v_{i,t}$ indicates that you reached vertice $v_{i}$ with $t$ time left.\bigskip
 
-  \bigskip
+    Each edge is modified: The edges no longer have a time cost, but they instead directionally connect $v_{i,t} \to v_{j,t'}$.
+  \end{block}
 
-  The number of nodes will be multiplied: $(1) \leftarrow (1,t),
-  (1,t-1),(1,t-2),\ldots,(1,0)$,\\ but now the graph is an DAG (time can
-  only move in one direction).
-
-  \bigskip
-
-  But because it is a DAG, the problem becomes solvable using DP
-  search (\emph{find(city,timeleft)}).
+  \begin{itemize}
+    \item This transformation multiplies the number of nodes to ($V\times T$);
+    \item However, the new graph is now a DAG;
+    \item Because the graph is a DAG, it is possible to solve the search using {\bf Top-Down Dynamic Programming}:
+    \begin{itemize}
+      \item Recursive function: \emph{find(v,t)}, finds minimum cost $c$
+      \item Table size: $V\times T$
+    \end{itemize}
+    \item In fact, it is not even necessary to \emph{explicitely} transform the graph. An implicit transformation inside the recursive function is enough!
+  \end{itemize}
 \end{frame}
+% TODO: Pseudocode for Fishmonger
 
-
-\subsection{Titanic}
 \begin{frame}[fragile]
-  \frametitle{Network Flow Example 2: Titanic (UVA 11380)}
+  \frametitle{Titanic (UVA 11380) -- Network Flow}
 
-  {\smaller
-  \begin{block}{Problem Description}
-    You are given a map of an accident:
+  \begin{block}{Problem Outline}
+    Given the map of an accident, calculate how many people escape.
+  \end{block}
 
 \begin{verbatim}
-# -- large wood: safe place, houses P people;
-@ -- large iceberg: unsafe, houses 1 person;
-. -- ice: unsafe, 1 person, breaks after using once;
-~ -- freezing water: unsafe, no one can use;
-* -- initial position of each person;
+Map explanation:
+# -- large wood: safe, P people can escape;
+@ -- large iceberg: anyone can pass;
+. -- ice: breaks after 1 person pass;
+* -- initial position: 1 person. Breaks like ice;
+~ -- freezing water: no one can pass;
 \end{verbatim}
-    How many people can find paths to the safe place?
-  \end{block}
+
   \begin{center}
     \includegraphics[width=0.7\textwidth]{../img/uva11380_halim}
   \end{center}
-  \hfill{\tiny Image from \emph{Competitive Programming, 3rd edition}}
-  }
+  \ppagenote{Image from \emph{Competitive Programming, 3rd edition}}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Network Flow Example 2: Titanic (UVA11380)}
-  {\smaller
+  \frametitle{Titanic (UVA11380) -- Network Flow}
   \begin{block}{Graph Modeling}
-    Since we have many people trying to go to the safe places, we can
-    model this problem as a Max Flow problem. How do we set up the graph?
+    Number of escaped people = Max Flow of the graph. But how do we create the flow graph?
   \end{block}
-  \uncover<2>{
+  One example:
   \begin{itemize}
-  \item Connect all non ``water'' cells with INF capacity to represent the paths;
-  \item Set vertex capacity: ice and initial position is 1, iceberg
-    and large wood is INF, to represent breaking;
-  \item Super source node connect to all survivors with capacity 1;
-  \item Super sink node connect to all large woods with capacity P;
-  \end{itemize}}
-  }
+    \item Every non-water cell has two vertices: "In" and "Out";
+    \item Connect "In" and "Out" vertices with cell capacity:
+    \begin{itemize}
+      \item Iceberg and wood: Infinite
+      \item ice and initial position: 1
+    \end{itemize}
+    \item Connect every "Out" vertex with other nearby "In" vertices with infinite capacity;
+    \item Connect "Super Source" with all "initial positions" with capacity 1;
+    \item Connect all "Wood" with "Super Sink", with capacity P.
+  \end{itemize}
 \end{frame}
 
-\subsection{Prime Pairing}
 \begin{frame}
-  \frametitle{Bipartite Example - Prime pairing}
+  \frametitle{Prime Pairing -- Bipartite Graph Flow}
   \begin{block}{Problem Description}
-    Two numbers $a,b$ can be \structure{prime paired} if their sum
-    $a+b$ is prime. Given a set of numbers $N$, print the pairings of
-    $N[0]$ that allow a \structure{complete pairing} of $N$ to be
-    made.
-  \end{block}
+    Two numbers $a,b$ are be {\bf prime paired} if $a+b$ is prime.\bigskip
 
-  Examples:
+    Given a set of numbers $N$, is it possible to create a {\bf complete pairing} with all elements of $N$?
+  \end{block}\bigskip
+
+  Example:
   \begin{itemize}
-  \item $N = \{1,4,7,10,11,12\}$ -- answer: $\{4,10\}$
+  \item $N = \{1,4,7,10,11,12\}$
+  \item Pairing: $\{1,4\}, \{7,10\}, \{11,12\}$
   \end{itemize}
 
   \vfill
@@ -900,41 +906,27 @@ P4 35789;
 \end{frame}
 
 \begin{frame}
-  \frametitle{Bipartite Example - Prime pairing}
-  \begin{block}{}
-    The trick is to note that this is an ``allocation'' problem, just
-    like ``software allocation''. Each number will be allocated to
-    another number to form primes.
+  \frametitle{Prime Pairing -- Bipartite Graph Flow}
+  \begin{block}{Trick}
+    It is possible to think of this problem as an {\bf allocation} problem.\bigskip
+
+    Remember that {\bf even + even = even} and {\bf odd + odd = even}. So a prime pair must be one even \# and one odd \#.\bigskip
+
+    In this way, we must allocate even numbers to odd numbers (or vice-versa)
   \end{block}
 
   How to create the graph:
   \begin{itemize}
-  \item Split set between odds and evens (because odd + odd is not prime);
-  \item Create edges between odds and evens that sum primes;
-  \item super source connects to odds, super sink connects to edges;
-  \item see if the max flow is equal to the number of nodes/2;
-  \end{itemize}
+  \item Split set between odds and evens;
+  \item If \#odd is not equal to \#even, there is no solution;
+  \item Create edges between odds and evens if they are a prime pair;
+  \item Add a super source and super sink;
+  \end{itemize}\bigskip
+
+  If max flow = \# vertices / 2, then there is a solution.
 \end{frame}
 
 %\begin{frame}
 %  \frametitle{Flow and Special Graph problems}
 % %% TODO: Add more special problems from the book for discussion
 %\end{frame}
-
-\section{Conclusion}
-\subsection{Conclusion}
-\begin{frame}
-  \frametitle{Summary}
-  \begin{itemize}
-  \item BFS for unweighted path search; Djikstra for weighted path search;
-  \item Bellman-ford for weighted path search with negative loops;
-  \item Floyd-Warshall for all-to-all path search;
-  \item Ford-Fergusson for Network flow
-
-    \bigskip
-
-  \item However, the most important skill in graph problems is knowing
-    how to transform the problem into a graph that can be solved by a
-    known algorithm;
-  \end{itemize}
-\end{frame}
