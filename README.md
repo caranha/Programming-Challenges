@@ -43,7 +43,10 @@ algorithm knowledge through implementation.
     - Video 3: [Articulation Points and MST](https://youtu.be/_8JgqArbEg0)
 - **Week06** -- Graphs Problems II
   - [Lecture notes](Week06/week06.pdf)
-  - Video lecture
+  - Video lectures
+    - Video 1: [Single Source Shortest Path](https://youtu.be/Y7IwtVSuaDY)
+    - Video 2: [All Pairs Shortest Path](https://youtu.be/D3NDe14Wb5k)
+    - Video 3: [Maximum Flow](https://youtu.be/sl6rpJa5VD4)
 - **Week07** -- String Manipulation
   - Lecture notes
   - Video lecture

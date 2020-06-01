@@ -1,8 +1,6 @@
 # TODO
 
 ## Publishing
-- [ ] Record video
-- [ ] Post everything to Manaba
 - [ ] Select problems for next week
 - [ ] Move materials around for next week (String problems)
 
