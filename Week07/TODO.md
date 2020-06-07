@@ -1,9 +1,6 @@
 # TODO
 
 # 2020
-- [ ] Change problems: Remove Ensuring Truth and Smeech and replace with
-  1 common substring problem, 1 string editing problem
-
 - [ ] KMP algorithm: Add state machine image and some examples of strings
   after preprocessing
 

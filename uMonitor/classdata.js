@@ -30,10 +30,9 @@ var problemlist = [
     {name:"Week 6: Graphs Part II",
      deadline:"2020-06-11T14:59:59+09:00",
      mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
-    // // Formerly Week 8
-    // {name:"Week 7: String Manipulation",
-    //  deadline:"2019-06-06T14:59:59+09:00",
-    //  mlist:[585, 495, 2342, 2266, 2225, 1576, 1239, 2048]},
+    {name:"Week 7: String Manipulation",
+     deadline:"2020-06-18T14:59:59+09:00",
+     mlist:[585, 495, 1239, 951, 2470, 2225, 1576, 2048]},
     // {name:"Week 8: Mathematics",
     //  deadline:"2019-06-13T14:59:59+09:00",
     //  mlist:[1244, 1700, 990, 2396, 1109, 1425, 1031, 2117]},
