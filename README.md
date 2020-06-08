@@ -48,7 +48,7 @@ algorithm knowledge through implementation.
     - Video 2: [All Pairs Shortest Path](https://youtu.be/D3NDe14Wb5k)
     - Video 3: [Maximum Flow](https://youtu.be/sl6rpJa5VD4)
 - **Week07** -- String Manipulation
-  - Lecture notes
+  - [Lecture notes](Week07/week07.pdf)
   - Video lecture
 - **Week08** -- Math Problems
 - **Week09** -- Geometry Problems

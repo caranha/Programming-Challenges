@@ -1,0 +1,325 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+	<meta name="Author" content="John Yundt-Pacheco">
+	<meta name="Keywords" content="Animation, Pattern Matching, Algorithms">
+	<meta name="Description" content="Dr. Bereg, CS 6333 Algorithms for Computational Biology">
+	<title>Z Algorithm (JavaScript Demo)</title>
+	<!--link rel="stylesheet" type="text/css" href="/styles.css"-->
+
+	<style>
+		body { margin:0; }
+		body, td { font-family:verdana; font-size:13px; }
+		table.fullsize { margin:0; padding:0; width:100%; height:100%; }
+		h1 { margin-top:0px; font-family:verdana; font-size:16px; font-style:italic; }
+		h2 { margin-top:0px; font-family:verdana; font-size:14px; font-weight:bold; }
+		div.divMenuItem a:hover, div#menuBar a:hover { color:moccasin; }
+		div.divMenuItem { position:absolute; display:none; padding:5px 8px 5px 8px; background-color:#6699CC; }
+		#menuTd, #menuTd a { text-decoration:none; color:white; font-size:10px; font-weight:bold; }
+		div.fh-tabs { display:none; }
+		TD.content { border-width:0px; font-family:verdana; font-size:12px; }
+		TH.content { border-width:0px; font-family:verdana; font-size:90%; }
+		TR.header2 { height:30px; background-color:lightskyblue; }
+		TR.header3 { background-color:#D9E9F9; }
+		TR.closing { height:20px; background-color:#E5E5E5; border-width:0px; }
+		TR.list { background-color:#EEEEEE; border-width:0px; }
+		TT.link { color:blue; text-decoration:underline; clear:none; }
+		TT.blue { color:blue; font-weight:bold; font-size:12px; font-family:verdana; }
+		TT.gold { color:gold; font-weight:bold; font-size:12px; font-family:verdana; }
+		TT.hand { text-decoration:none; font-size:12px; font-family:verdana; }
+	</style>
+</head>
+
+<body>
+
+<table class="fullsize" cellspacing="0" cellpadding="5" border="0">
+
+<tbody><tr height="*">
+	<td colspan="3" style="padding:10px" valign="top" height="100%">
+<!-- this is the main section -->
+
+<script>
+function ce(elName,parent,elId){
+	var el = document.createElement(elName);
+	if (elId) el.id = elId;
+	if (parent) parent.appendChild(el);
+	return el;
+}
+
+function ctn(text,parent){
+	var tn = document.createTextNode(text);
+	if (parent) parent.appendChild(tn);
+	return tn;
+}
+
+function ge(id){
+	return document.getElementById(id);
+}
+
+function removeAllChildren(el){
+	while (el.firstChild)
+		el.removeChild(el.firstChild);
+}
+
+function sprn(text,d){
+    ctn(text,ce('p',d));  
+}
+
+function buildTable(t, el){
+	var tbody = ce('tbody', table = ce('table', el));
+	table.border = 1;
+	table.style.border = 0;
+	table.cellSpacing = 1;
+    var i,j,td,o;
+	for (i=0; i<t.length; i++){
+	    tr = ce('tr', tbody);
+		for (j=0; j<t[i].length; j++){
+		    td = ce('td', tr);
+			o = t[i][j];
+
+			if (o.text != undefined){
+				if (o.color) td.style.color = o.color;
+				if (o.colSpan) td.colSpan = o.colSpan;
+				if (o.align) td.align= o.align;
+				if (o.width) td.style.width = o.width;
+				if (o.bgColor) td.style.backgroundColor = o.bgColor;
+				td.innerHTML = o.text;
+			} else {
+				ctn(o, td);
+			}
+		}
+	}
+}
+
+
+var onkeypressListeners = new Array();
+document.onkeypress = function(e){ for (var i=0; i<onkeypressListeners.length; i++) onkeypressListeners[i](e); }
+
+function pw(s,w){ var ret = ''+s; while (ret.length<w) ret = ' '+ret; return ret; }
+function div3(x){ return Math.floor(x/3); }
+function leq1(a1,a2, b1,b2){ return a1 < b1 || (a1 == b1 && a2 <= b2); }
+function leq2(a1,a2,a3, b1,b2,b3){ return a1 < b1 || (a1 == b1 && leq1(a2,a3, b2,b3)); }
+
+function bld_table(text,n,colors,table){
+    var i;
+    for(i=0;i<n;i++){
+        if(i< text.length)
+            table.push({align:'center',width:25, text:text.charAt(i), bgColor:colors[i] });
+       else
+            table.push({align:'center',width:25, text:'', bgColor:'' });
+
+    }
+}
+function animate(text){
+	var div = ce('div');
+	div.style.backgroundColor = '#DDDDCC';
+	div.style.padding = 14;
+
+    var match = false;
+    var matches = 0;
+	var nt = text.length;
+    var table = new Array(); table[0] = new Array(); table[1] = new Array(); table[2] = new Array();
+	table[3] = new Array(); 
+    var tcolors = new Array(); pcolors = new Array(); zcolors = new Array();
+    table[0].push({text:'Index:', align:'right'});
+	table[1].push({text:'Text:', align:'right'});
+    table[2].push({text:'Text:', align:'right'});
+	table[3].push('Z values:');
+    table[3].push('');
+    var z = new Array(nt);
+    var i,j,k,l;
+    for(i=0;i<nt;i++){
+        tcolors[i]='';
+        pcolors[i]='';
+		zcolors[i]='';
+    }
+    for(i=0;i<nt;i++){
+		table[0].push({text:i, align:'center'});    
+    }
+    bld_table(text,nt,tcolors,table[1]);
+    bld_table(text,nt,tcolors,table[2]);
+	buildTable(table, div);
+    sprn('To illustrate the comparisons taking place, the text has been duplicated. Green boxes indicate matches, red a mismatch.',div);
+	sprn('In the Z algorithm, k is the index being considered, l is the left side of the Z-box, and r is the right side of the Z-box,',div);
+	sprn('The current Z box (bounded by l and r) is indicated on the Index row using pale green.',div);
+    sprn('The Z algorithm starts with k=1, r=0, l=0.',div);
+    sprn('Press x to generate Z values for the text using the Z Algorithm.',div);
+
+	snapshots.push(div.cloneNode(true));
+    var r = 0, zk=0, si=0, kOld, zOld, b, zc ;
+    var cmp = 0;
+    for(k=1;k<nt;k++){
+        for(i=0;i<nt;i++){
+           tcolors[i]='';
+           pcolors[i]='';
+		   zcolors[i]='';
+        }
+		for(i=l;i<=r;i++){
+			zcolors[i] = 'palegreen';
+		}
+
+        sprn('_______________________________________________________________________________________',div);
+        sprn('Evaluating k='+k+'.',div);
+        if(k>r){
+            sprn('Current index (k='+k+') is past end of last Z-box (r='+r+'), so Z('+k+') must be computed explicitly.',div);
+            zk = 0;
+            for(si=0;si<nt;si++){
+                cmp++;           
+                if((si+k<nt)&&(text.charAt(si) == text.charAt(si+k))){
+                    pcolors[si+k] = tcolors[si] = 'green';
+                    continue;
+                }else{
+                    if(si+k<nt){
+                      pcolors[si+k]=tcolors[si] = 'red';
+                    }
+                    break;
+                }
+            }
+            if(si>0){
+              zk = si
+              r = zk + k - 1
+              l = k          
+            }
+        }else{
+
+             sprn('Current index (k='+k+') is in a previously discovered substring (r='+r+').',div);
+             kOld = k - l
+             zOld = z[kOld]
+             b = r - k + 1
+             if (zOld < b){
+                zk = zOld
+                sprn('The previously discovered substring starts at k-l ('+k+'-'+l+'), with Z('+(k-l)+')='+zk+' which is < the remaining substring S['+k+'..'+r+'], so Z('+k+')=Z('+(k-l)+')='+zk+'.',div);
+                sprn('No additional comparisons needed.',div);
+                for(var zc=-0;zc<zk;zc++){
+                   pcolors[zc+k] = tcolors[zc] = 'green';
+                }
+                
+             }else{
+             sprn('The previously discovered substring starts at k-l ('+k+'-'+l+'), with Z('+(k-l)+')='+zk+' which is not < the remaining substring S['+k+'..'+r+'], so additional comparisons are needed.',div);
+                zk = b
+                for(zc=0;zc<zk;zc++){
+                   pcolors[zc+k] = tcolors[zc] = 'green';
+                }
+
+                for(si=b;si<nt;si++){
+                    cmp++;
+                    if((k + si < nt) &&(text.charAt(si) == text.charAt(k+si))){
+                        pcolors[si+k] = tcolors[si] = 'green';
+                        continue;
+                    }else{
+                       if(si+k<nt){
+                          pcolors[si+k]=tcolors[si] = 'red';
+                       }   
+                       break;                  
+                    }   
+                }
+                zk = si;
+                r = zk + k - 1;
+                l = k;
+             }
+        }
+        z[k] = zk;
+        for(i=0;i<nt;i++){
+           table[0][i+1]= {align:'center',width:25, text:i,bgColor:zcolors[i] }		
+           table[1][i+1]= {align:'center',width:25, text:text.charAt(i), bgColor:tcolors[i] }
+           table[2][i+1]= {align:'center',width:25, text:text.charAt(i), bgColor:pcolors[i] }
+        }
+        for(i=0;i<k;i++){
+           table[3][i+2]= {align:'center',width:25, text:z[i+1], bgColor:''}
+        }
+  	    buildTable(table, div);
+        sprn('Z('+k+') = '+z[k]+', l='+l+', r='+r+', '+cmp+' comparisons so far.',div);
+ 	    snapshots.push(div.cloneNode(true));     
+    }
+    sprn('_______________________________________________________________________________________',div);
+    sprn('The Z algorithm has completed with '+cmp+' comparisons on a text of size '+nt+'.',div);
+    table = new Array(); table[0] = new Array(); table[1] = new Array(); table[2] = new Array();
+    table[0].push({text:'Index:', align:'right'});
+	table[1].push({text:'Text:', align:'right'});
+	table[2].push('Z values:');
+    table[2].push('');
+    for(i=0;i<nt;i++){
+		table[0].push({text:i, align:'center'});    
+        table[1][i+1]= {align:'center',width:25, text:text.charAt(i), bgColor:''}
+    }
+    for(i=0;i<nt-1;i++){
+        table[2][i+2]= {align:'center',width:25, text:z[i+1], bgColor:''}
+    }
+    buildTable(table, div);
+    snapshots.push(div.cloneNode(true));     
+}
+
+function setViewer(i){
+	var viewer = ge('viewer');
+	removeAllChildren(viewer);
+
+	ctn('Step #' + i + ", next press 'x', previous press 'z'", ce('h2', viewer));
+	viewer.appendChild(snapshots[i]);
+}
+
+function generate(text){
+	ge('inputText').value = text;
+    snapshots = new Array();
+    animate(text);
+	setViewer(sindex=0);
+}
+
+var sindex = 0;
+var snapshots = new Array();
+var ord = new Array(), chr = new Array();
+for (var i=0; i<256; i++){
+	ord[String.fromCharCode(i)] = i;
+	chr[i] = String.fromCharCode(i);
+}
+
+function prevSnap(){
+	if (sindex>0) setViewer(--sindex);
+}
+
+function nextSnap(){
+	if (sindex+1<snapshots.length) setViewer(++sindex);
+}
+
+onkeypressListeners.push(function(e){
+	var keycode = e? e.which : event.keyCode;
+	switch (keycode){
+		case ord['x'] : nextSnap(); break;
+		case ord['z'] : prevSnap(); break;
+	}
+});
+
+</script>
+<h1>Z Algorithm</h1>
+
+<p>Input your own the text and click Generate Z values to animate the Z Algorithm from Dan Gusfield's <i>Algorithms on Strings, Trees and Sequences</i> book.</p>
+<p>See the <a href="https://personal.utdallas.edu/~besp/demo/John2010/z-match.htm">Z Algorithm Exact Pattern Match animation</a> for details on using Z values for pattern matching.</p>
+<table>
+ <tbody><tr><td>Text:</td>
+    <td><input type="text" id="inputText" size="50" value="aabcaabxaaaz"></td></tr>
+</tbody></table>
+<input type="button" onclick="generate(ge('inputText').value)" value="Generate Z values">
+
+<div id="viewer"><h2>Step #11, next press 'x', previous press 'z'</h2><div style="background-color: rgb(221, 221, 204); padding: 14px;"><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td align="center">0</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td></tr></tbody></table><p>To illustrate the comparisons taking place, the text has been duplicated. Green boxes indicate matches, red a mismatch.</p><p>In the Z algorithm, k is the index being considered, l is the left side of the Z-box, and r is the right side of the Z-box,</p><p>The current Z box (bounded by l and r) is indicated on the Index row using pale green.</p><p>The Z algorithm starts with k=1, r=0, l=0.</p><p>Press x to generate Z values for the text using the Z Algorithm.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=1.</p><p>Current index (k=1) is past end of last Z-box (r=0), so Z(1) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td></tr></tbody></table><p>Z(1) = 1, l=1, r=1, 2 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=2.</p><p>Current index (k=2) is past end of last Z-box (r=1), so Z(2) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px; background-color: palegreen;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td></tr></tbody></table><p>Z(2) = 0, l=1, r=1, 3 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=3.</p><p>Current index (k=3) is past end of last Z-box (r=1), so Z(3) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px; background-color: palegreen;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px; background-color: red;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td></tr></tbody></table><p>Z(3) = 0, l=1, r=1, 4 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=4.</p><p>Current index (k=4) is past end of last Z-box (r=1), so Z(4) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px; background-color: palegreen;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">b</td><td style="width: 25px; background-color: red;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">b</td><td style="width: 25px; background-color: red;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td></tr></tbody></table><p>Z(4) = 3, l=4, r=6, 8 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=5.</p><p>Current index (k=5) is in a previously discovered substring (r=6).</p><p>The
+ previously discovered substring starts at k-l (5-4), with Z(1)=1 which 
+is &lt; the remaining substring S[5..6], so Z(5)=Z(1)=1.</p><p>No additional comparisons needed.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px; background-color: palegreen;" align="center">4</td><td style="width: 25px; background-color: palegreen;" align="center">5</td><td style="width: 25px; background-color: palegreen;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td></tr></tbody></table><p>Z(5) = 1, l=4, r=6, 8 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=6.</p><p>Current index (k=6) is in a previously discovered substring (r=6).</p><p>The
+ previously discovered substring starts at k-l (6-4), with Z(2)=0 which 
+is &lt; the remaining substring S[6..6], so Z(6)=Z(2)=0.</p><p>No additional comparisons needed.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px; background-color: palegreen;" align="center">4</td><td style="width: 25px; background-color: palegreen;" align="center">5</td><td style="width: 25px; background-color: palegreen;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td></tr></tbody></table><p>Z(6) = 0, l=4, r=6, 8 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=7.</p><p>Current index (k=7) is past end of last Z-box (r=6), so Z(7) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px; background-color: palegreen;" align="center">4</td><td style="width: 25px; background-color: palegreen;" align="center">5</td><td style="width: 25px; background-color: palegreen;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px; background-color: red;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td></tr></tbody></table><p>Z(7) = 0, l=4, r=6, 9 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=8.</p><p>Current index (k=8) is past end of last Z-box (r=6), so Z(8) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px; background-color: palegreen;" align="center">4</td><td style="width: 25px; background-color: palegreen;" align="center">5</td><td style="width: 25px; background-color: palegreen;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">2</td></tr></tbody></table><p>Z(8) = 2, l=8, r=9, 12 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=9.</p><p>Current index (k=9) is in a previously discovered substring (r=9).</p><p>The
+ previously discovered substring starts at k-l (9-8), with Z(1)=2 which 
+is not &lt; the remaining substring S[9..9], so additional comparisons 
+are needed.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px; background-color: palegreen;" align="center">8</td><td style="width: 25px; background-color: palegreen;" align="center">9</td><td style="width: 25px;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">2</td></tr></tbody></table><p>Z(9) = 2, l=9, r=10, 14 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=10.</p><p>Current index (k=10) is in a previously discovered substring (r=10).</p><p>The
+ previously discovered substring starts at k-l (10-9), with Z(1)=2 which
+ is not &lt; the remaining substring S[10..10], so additional 
+comparisons are needed.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px; background-color: palegreen;" align="center">9</td><td style="width: 25px; background-color: palegreen;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: green;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">1</td></tr></tbody></table><p>Z(10) = 1, l=10, r=10, 15 comparisons so far.</p><p>_______________________________________________________________________________________</p><p>Evaluating k=11.</p><p>Current index (k=11) is past end of last Z-box (r=10), so Z(11) must be computed explicitly.</p><table style="border: 0px none;" cellspacing="1" border="1"><tbody><tr><td align="right">Index:</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">4</td><td style="width: 25px;" align="center">5</td><td style="width: 25px;" align="center">6</td><td style="width: 25px;" align="center">7</td><td style="width: 25px;" align="center">8</td><td style="width: 25px;" align="center">9</td><td style="width: 25px; background-color: palegreen;" align="center">10</td><td style="width: 25px;" align="center">11</td></tr><tr><td align="right">Text:</td><td style="width: 25px; background-color: red;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">z</td></tr><tr><td align="right">Text:</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">c</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">b</td><td style="width: 25px;" align="center">x</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px;" align="center">a</td><td style="width: 25px; background-color: red;" align="center">z</td></tr><tr><td>Z values:</td><td></td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">3</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">0</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">2</td><td style="width: 25px;" align="center">1</td><td style="width: 25px;" align="center">0</td></tr></tbody></table><p>Z(11) = 0, l=10, r=10, 16 comparisons so far.</p></div></div>
+
+<p>This animation was prepared for Dr. Bereg's CS 6333 Algorithms for 
+Computational Biology class by John Yundt-Pacheco (jcy031000 _at_ 
+utdallas.edu).<br> More information can be found at Dr. Bereg's CS 6333 site : <a href="http://www.utdallas.edu/~besp/6333">http://www.utdallas.edu/~besp/6333</a>.</p>
+
+<p>The framework from Felix Halim's Suffix Array Demonstration was used to construct this animation: <a href="http://felix-halim.net/pg/suffix-array">http://felix-halim.net/pg/suffix-array</a>.</p>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</td>
+</tr>
+</tbody></table>
+<hr>
+
+
+</body></html>

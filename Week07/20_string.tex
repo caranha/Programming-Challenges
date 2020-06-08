@@ -399,147 +399,230 @@ THING THE
 
 
 \section{String Matching} % (6.4)
-\subsection{Definition}
+\subsection{Basics}
 
-\begin{frame}
-  \frametitle{String Matching}
+\begin{frame}[fragile]{String Matching}
+  \begin{block}{Definition}
+    Given a string $T$ (also called {\bf text}), we want to test if the substring $P$ (also called {\bf pattern}) exists in $T$.
+    \bigskip
 
-  {\smaller
-  \begin{block}{}
-    Many String problems include some form of \structure{string matching}
+    If $P$ exists in $T$, we want to know the {\bf index} of the start of $P$ in $T$.
+  \end{block}\bigskip
 
-    \medskip
-
-    Find a substring $P$ inside of string $T$.
-  \end{block}
-  \begin{itemize}
-  \item $P$ = OBEY
-  \item $T$ = ASPBOBEBLEOLB\alert{OBEY}EYBEOLBEAY
-  \end{itemize}
-
-  \bigskip
-
-  \begin{block}{}
-    \begin{itemize}
-    \item The easiest solution: Use strstr from the standard library!
-    \item But... what if the search has special conditions?
-    \begin{itemize}
-      \item {\bf example:} O and 0 are the same character
-    \end{itemize}
-    \item Let's study how to make a string matching algorithm!
-    \end{itemize}
-  \end{block}
-
-  {\bf First:} What is the complexity of a Complete search?
-
-  }
+  Example:
+\begin{verbatim}
+T: STEVEN EVENT
+P: EVE            indexes: 2 and 7
+P: EVENT          indexes: 7
+P: EVENING        indexes: -1 or NULL
+\end{verbatim}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{String Matching: Naive Algorithm}
+\begin{frame}{String Matching and Libraries}
 
-  {\bf Complete search approach:} For every character $n[i]$, test if
-  substring $m$ begins there.\bigskip
-
-  \begin{exampleblock}{}
-\begin{verbatim}
-int naiveMatching() {
-  for (int i = 0; i < n; i++)
-    bool found = true;
-    for (int j = 0; j < m && found; j++)
-      if (i+j >= n || M[j] != N[i+j])
-        found = false;
-    if (found)
-      printf("Found at index %d\n",i)
-\end{verbatim}
-  \end{exampleblock}
-    \bigskip
+  \begin{block}{How do we solve string matching problems?}
+    {\bf Use your language's string library!}
     \begin{itemize}
-      \item Average case: $O(n)$
-      \item Worst case: $O(mn)$\\M = AAAAB, N = AAAAAAAAAAAAAAAAAB
-      \item Why is this case bad?
+      \item In C/C++: strstr(T,P) or T.find(P)
+      \item In Java: T.indexOf(P)
+    \end{itemize}\bigskip
+
+    No bugs! Usually very efficient!
+  \end{block}\bigskip
+
+  But...
+  \begin{itemize}
+    \item Maybe you have a specific matching function (1 equals I)
+    \item Maybe your string changes over time;
+    \item Maybe you have to match multiple strings at the same time;
+    \item Maybe you have to string match in a graph;
+    \item etc...
+  \end{itemize}\bigskip
+
+  So it is useful to know how to implement string matching
+\end{frame}
+
+\begin{frame}[fragile]{String Matching: Complete Search}
+
+  For every character $T_i$, test if $P$ begins at that position.\bigskip
+
+\begin{verbatim}
+for (int i = 0; i < |T|; i++)
+  bool match = true;
+  for (int j = 0; j < |P| && match; j++)
+    if (i+j >= |T| || P[j] != T[i+j])
+      match = false;
+  if (match)
+    printf("Match P at index %d\n", i);
+\end{verbatim}
+
+{\bf Number of Steps}:
+  \begin{itemize}
+    \item Average case: $O(n)$ -- For natural T and small P;
+    \item Worst case: $O(mn)$ -- For programming challenges;
+    \begin{itemize}
+      \item T = AAAAAAAAAAAAB
+      \item P = AAAAAAAB
     \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \subsection{Knuth-Morris-Pratt}
 \begin{frame}[fragile]
   \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
 
+  \begin{itemize}
+    \item The naive algorithm can be very expensive if the prefix of $P$ happens many times in $T$.
+    \item In 1977, Knuth, Morris and Pratt developed an algorithm that {\bf uses these prefixes} to realize fast string matching.
+  \end{itemize}
+
   \begin{block}{Basic Idea}
-    The KMP algorith will never re-match a character in $M$ that was
-    matched in $N$.
-
-    \bigskip
-
-    If KMP finds a mismatch, it will skip $n$ to $m+1$, and rewind $m$ to the
-    appropriate value to continue the match.
+    \begin{itemize}
+    \item The KMP algorithm works by identifying "borders" in the partial match between $P$ and $T$.
+    \item These borders are characterized by identical prefixes and sufixes in the T-P match.
+    \item The algorithm uses these matches to advance the indexes of $T$ and $P$, greatly reducing the number of comparisons.
+  \end{itemize}
   \end{block}
+  The KMP algorithm is O(P+T).
+\end{frame}
 
+\begin{frame}[fragile]{KMP Algorithm -- Simulation}
+
+{\smaller
 \begin{verbatim}
-N = COLIN COMBWELL CALLED A CO-CO-CO-COMBO BREAKER
-M = CO-COMBO
-    COXXXX
-          COXXXXXXX
-                   CXXXXXXXX
-                            CO-COX
-                               CO-COX
-                                  CO-COMBO
-\end{verbatim}
+              1         2         3         4         5
+    012345678901234567890123456789012345678901234567890
+T = I DO NOT LIKE SEVENTY SEV BUT SEVENTY SEVENTY SEVEN
+P = SEVENTY SEVEN
+// for i from 0 to 13, KMP works like full search
+
+                  SEVENTY SEVEN
+// Here, the collision is at i=25, j = 11, But because "SEV" is
+// a "border", i stays the same and j is rewinded to 3
+
+                                  SEVENTY SEVEN
+// Here we find a match with i=43, j=13; SEVEN is a border, so j
+// is rewinded to 5, and i is kept the same. The algorithm
+// continues matching at i=44, j=5 ("T")
+
+                                          SEVENTY SEVEN
+// KMP finds a second match
+\end{verbatim}}
+
 \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
-    \begin{block}{How it works}
+\begin{frame}[fragile]{KMP Algorithm -- Rewind Array}
 
-      The KMP needs to construct a ``M rewinded table'' $b$. When a mismatch happens, the substring $M$ is rewinded, but the $N$ index always moves forward.
+\begin{block}{}
+To avoid repeated matches, the KMP algorithm builds a {\bf rewind table} $b$ (back).
 
 \begin{verbatim}
-M =  0 1 2 3 4 5 6 7      <-- Substring index
-     C O - C O M B O
-b = -1 0 0 0 1 2 0 0      <-- M "rewind" index
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3
+P =  S E V E N T Y   S E V E N \0
+b = -1 0 0 0 0 0 0 0 0 1 2 3 4 5
 \end{verbatim}
 
-If a miss happens at $m=5$ (M), the algorithm will return the M counter (j)
-to $j = b[5] = 2$.
+Following the table $b$, we know that if we find a mismatch at $j = 11$, then we need to rewing $j$ to $b[11] = 3$ to continue matching.\bigskip
+
+The text index $i$, on the other hand, will stay the same, and go forward by 1 if $b[j] = -1$.
     \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm -- Code}
+\begin{frame}[fragile]{KMP Algorithm -- PseudoCode}
+
   {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-char N[MAX_N], M[MAX_N];
+char T[MAX_N], P[MAX_N];
 int b[MAX_N], n, m;
 
-void kmpPreprocess() {
+void kmpPreprocess() {     // Create the Back Array
   int i = 0, j = -1; b[0] = -1;
   while (i < m) {
-     while (j >= 0 && M[i] != M[j]) j = b[j];
+     while (j >= 0 && P[i] != P[j]) j = b[j];
      i++; j++;
      b[i] = j; }}
 
-void kmpSearch() {
+void kmpSearch() {         // Search the substring
   int i = 0, j = 0;
   while (i < n) {
-     while (j >= 0 && N[i] != M[j]) j = b[j];
+     while (j >= 0 && T[i] != P[j]) j = b[j];
      i++; j++;
      if (j == m) {
-        printf("M is found at index %d in N\n", i-j);
+        printf("P is found at index %d in T\n", i - j);
         j = b[j]; }}}
 \end{verbatim}
   \end{exampleblock}
   }
 \end{frame}
 
-\section{String with DP} % (6.5)
-\subsection{DP}
-\begin{frame}
-  \frametitle{String Processing with Dynamic Programming}
+\subsection{Z algorithm}
+
+\begin{frame}[fragile]{String Matching with the Z-Algorithm}
+  Another linear algorithm that can perform string matching is the {\bf Z algorithm}.\bigskip
+
+  The Z algorithm constructs a {\bf Z array}. For every index $i\in S$, $Z[i]$ is the size of the prefix of $S$ that begins in $i$.\bigskip
+
+\begin{verbatim}
+T = AASABAABAAT, P = AAB, S = P$T
+
+... Build Z Array ...
+S   = AAB$AASABAABAAT
+Z[S]= X10021010310210
+               ^
+               String matched here. Z[i] = Len(P)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Z-Algorithm -- Pseudocode}
   \begin{block}{}
-    Some string problems can be explained as a \structure{search}
-    problem. In this case, we can solve them using Dynamic Programming.\bigskip
+{\smaller
+\begin{verbatim}
+void Zarray(string S, int Z[]) {
+    int n = S.length(); int L, R, k;
+    L = R = 0;             // Prefix counters
+    for (int i = 1; i < n; i++) {
+        if (i > R) {       // Full search of prefix
+            L = R = i;
+            while (R < n && S[R] == S[R-L]) R++;
+            Z[i] = R-L; R--;
+        } else {           // Inside prefix candidate
+            k = i-L;
+            if (Z[k] < R-i+1) Z[i] = Z[k]; // no extension
+            else {                         // prefix extension
+                L = i;
+                while (R < n && S[R] == S[R-L]) R++;
+                Z[i] = R-L; R--;
+}   }   }   }
+\end{verbatim}}
+  \end{block}
+
+{\smaller {\bf Simulation:}
+\url{https://personal.utdallas.edu/~besp/demo/John2010/z-algorithm.htm}}
+
+\end{frame}
+
+\begin{frame}{Z algorithm or KMP algorithm?}
+  Should you use the Z algorithm or the KMP algorithm?\bigskip
+
+  \begin{itemize}
+    \item Both algorithms have the same time complexity: $O(T+P)$\bigskip
+
+    \item Which algorithm is easier to understand?
+    \begin{itemize}
+      \item KMP calculates a recursive suffix state machine for P;
+      \item Z-algorithm calculates a substring size array for T;
+    \end{itemize}\bigskip
+  \end{itemize}
+\end{frame}
+
+
+
+\section{String Algorithms with DP} % (6.5)
+\begin{frame}{String Algorithms with Dynamic Programming}
+  \begin{block}{}
+    Some string problems can be described as a {\bf search problem}. In this section, we will introduce two common problems in programming challenges that can be solved with DP algorithms:\bigskip
 
     \begin{itemize}
     \item String Alignment/Edit Distance
@@ -547,153 +630,130 @@ void kmpSearch() {
     \end{itemize}
   \end{block}
   \bigskip
+
+  It is interesting to note that substring matching is also a search problem, and that KMP / Z-algorithms can be seen as a kind of memoization.
 \end{frame}
 
-\subsection{Edit Distance}
-\begin{frame}[fragile]
-  \frametitle{String DP: Edit Distance}
-  \begin{block}{}
-    The {\bf Edit Distance}, {\bf String Alignment} or {\bf Levenhstein
-    Distance}, consists of measuring how many spaces are needed to {\bf
-    minimize the difference between two strings}.\bigskip
+\subsection{String Alignment}
+\begin{frame}[fragile]{String DP: String Alignment}
+
+The {\bf String Alignment}\footnote{Also called Edit Distance or Levenhstein Distance, used by spellchecking algorithms!} problem is defined as follows. Align two strings, A and B, with the maximum "alignment score":\bigskip
+
+\begin{itemize}
+  \item Character A[i] and B[i] match: do nothing, score +2
+  \item Character A[i] and B[i] mismatch: replace A[i], score -1
+  \item Insert a space in A[i]: score -1
+  \item Delete A[i] (equals to insert in B[i]): score -1
+\end{itemize}
 
 \begin{verbatim}
-S1: ACAATCC -> A_CAATCC -> A_CAATCC
-S2: AGCATGC -> AGCATGC_ -> AGCA_TGC
-Diff:       -> +.++--+. -> +.++.+-+
+               non-optimal    optimal
+A: ACAATCC   | A_CAATCC     | A_CAATCC
+B: AGCATGC   | AGCATGC_     | AGCA_TGC
+score:       | 2-22--2- = 4 | 2-22-2-2 = 7
 \end{verbatim}\bigskip
 
-  To maximise score, we want to avoid {\bf letter mismatches}.
-  \end{block}
+\end{frame}
 
-  {\bf Uses}
+
+\begin{frame}[fragile]{String Alignment: Bottom Up DP}
+  \begin{verbatim}
+                 non-optimal    optimal
+  A: ACAATCC   | A_CAATCC     | A_CAATCC
+  B: AGCATGC   | AGCATGC_     | AGCA_TGC
+  score:       | 2-22--2- = 4 | 2-22-2-2 = 7
+  \end{verbatim}
+  The {\bf Full search} approach requires recursively testing each of three options for each A[i] ($O(3^n)$). We can solve this in $O(n^2)$ using DP:
+
   \begin{itemize}
-    \item Finding similar words.
-    \item Identifying Mispellings.
+    \item $V(i,j)$: optimal score for prefix $A[1..i],B[1..j]$
+    \item Start condition:
+    \begin{itemize}
+      \item $V(0,0) = 0$ \hspace{1cm} (Do nothing)
+      \item $V(i,0) = -1\times i$, $V(0,j) = -1\times j$ \hspace{1cm} (delete A or B)
+    \end{itemize}
+    \item Recurrence: $V(i,j) = \text{max}(C_1, C_2, C_3)$, where
+    \begin{itemize}
+      \item $C_1 = V(i-1, j-1) + \text{score}(A[i],B[j])$ // Score of match/mismatch;
+      \item $C_2 = V(i-1,j) + \text{score}(A[i],\_)$ \hspace{1cm}// Delete $A[i]$;
+      \item $C_3 = V(i,j-1) + \text{score}(\_,B[j])$ \hspace{1cm}// Delete $B[j]$;
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{String DP: Edit Distance}
-  \begin{block}{Score Maximization Problem}
-    Align two strings, $A$ and $B$, with the maximum alignment score.
-    For each pair of characters, we have three choices:
+\begin{frame}[fragile]{String Alignment: Bottom Up DP}{Simulation Matching AGCATGC and ACAATCC}
 
-    \begin{itemize}
-    \item A[i] and B[i] are the same character ( '+': +2 score)
-    \item A[i] and B[i] are diff character ('-': -1 score)
-    \item Add a space to A[i] or B[i] ('.': -1 score)
-    \end{itemize}
-  \end{block}
+\begin{itemize}
+  \item Recurrence: $V(i,j) = \text{max}(C_1, C_2, C_3)$, where
+  \begin{itemize}
+    \item $C_1 = V(i-1, j-1) + \text{score}(A[i],B[j])$ // Score of match/mismatch;
+    \item $C_2 = V(i-1,j) + \text{score}(A[i],\_)$ \hspace{1cm}// Delete $A[i]$;
+    \item $C_3 = V(i,j-1) + \text{score}(\_,B[j])$ \hspace{1cm}// Delete $B[j]$;
+  \end{itemize}
+\end{itemize}
 
 \begin{verbatim}
-S1: ACAATCC -> A_CAATCC         -> A_CAATCC
-S2: AGCATGC -> AGCATGC_         -> AGCA_TGC
-Diff:       -> 2-22--2- = +4    -> 2-22-2-2 = +7
+   |  _ |  A |  G |  C |  A |  T |  G |  C |
+ _ |  0 | -1 | -2 | -3 | -4 | -5 | -6 | -7 |
+ A | -1 |
+ C | -2 |
+ A | -3 |
+ A | -4 |
+ T | -5 |
+ C | -6 |
+ C | -7 |
 \end{verbatim}
 
-Trying all combinations: ($O(3^n)$). Let's try DP.
 \end{frame}
 
-\begin{frame}
-  \frametitle{Edit Distance: Bottom Up DP Approach -- Setup}
-  \begin{block}{State table}
-    The state table $V$ has dimensions \emph{size(A)} by \emph{size(B)}
-    \smallskip
 
-    $V[i][j]$ is the maximum score for matching \emph{substrings} A[1..i], B[1..j].
-  \end{block}
-  \begin{exampleblock}{Initial Conditions}
-    \begin{itemize}
-    \item $V(0,0) = 0$ -- Empty Strings
-    \item $V(i,0) = i*-1$ -- Fill "B" with "\_"
-    \item $V(0,j) = j*-1$ -- Fill "A" with "\_"
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Edit Distance: Bottom Up DP Approach -- Update}
-  \begin{block}{State table}
-    The state table $V$ has dimensions \emph{size(A)} by \emph{size(B)}
-    \smallskip
-
-    $V[i][j]$ is the maximum score for matching \emph{substrings} A[1..i], B[1..j].
-  \end{block}
-  \begin{exampleblock}{Transition Rule:}
-    Score($C_1,C_2$) is the score of matching characters $C_1$ and $C_2$.\bigskip
-
-
-    {\bf Update:}$V(i,j) = $ max(\emph{option1},\emph{option2},\emph{option3})
-    \begin{itemize}
-    \item option1 = V(i-1,j-1) + Score(A[i],B[j]) // Match or mismatch
-    \item option2 = V(i-1,j) + Score(A[i],\_) // Delete A[i]
-    \item option3 = V(i,j-1) + Score(\_,B[j]) // Insert B[j]
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Edit Distance: Bottom Up DP Approach -- Example}
-  Match ACAATCC and AGCATGC with a table.
-
-\end{frame}
-% TODO: Add table here.
-
-
-\subsection{Longest Common Subsequence}
+\subsection{Longest Common Subsequence in String}
 
 \begin{frame}[fragile]
-  \frametitle{Problem 2 -- Longest Common Subsequence}
-  {\smaller
+  \frametitle{Longest Common Subsequence in Strings}
     \begin{block}{Problem Definition}
-      Given two strings $A$ and $B$, what is the longest common
-      subsequence between them?
+      Given strings $A$ and $B$, what is their longest common subsequence?\medskip
 
-      \medskip
-
-      Example:
 \begin{verbatim}
-String A:   'ACAATCC'     - A_CAAT_CC
-String B:   'AGCATGC'     - AGCA_TGC_
-Longest Common Subsequence: A_CA_T_C_
-
-LCS: ACATC
+A  :   'ACAATCC'     - A_CAAT_CC
+B  :   'AGCATGC'     - AGCA_TGC_
+LCS:    AC AT C      - A_CA_T_C_ : ACATC
 \end{verbatim}
-    \end{block}
+    \end{block}\bigskip
 
+  \begin{itemize}
+    \item We can solve LCS using a modification of String Aligment;
+    \item Use String Alignment DP, but change costs:
     \begin{itemize}
-    \item The LCS problem is similar to the String Alignment problem;
-    \item The same DP algorithm presented before can be used;
-    \item Set cost of Mismatch to $-\inf$, the cost of insert/deletion
-      to 0, and the cost of matching to 1;
+      \item Cost of Mismatch: $-\infty$
+      \item Cost of insert/deletion: $0$
+      \item Cost of Matching: $1$
     \end{itemize}
-  }
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Longest Palindrome}
-  {\smaller
     \begin{block}{Problem Description}
-      Given a string $S$ of size up to $N = 1000$ characters, what is the
-      longest palindrome that you can make by deleting characters from $S$?
+      A {\bf palindrome} is a string $S$ where $S = \text{rev}(S)$. For example: MADAM.\bigskip
+
+      Given a string $T$, what is the {\bf longest palindrome} that you can create by deleting characters from $T$?
     \end{block}
 
-    Examples
+    Examples:
     \begin{itemize}
     \item ADA\alert{M} -- ADA
     \item MADAM -- MADAM
     \item NEVERODDOREVEN\alert{ING} -- NEVERODDOREVEN
     \item RACE\alert{F1}CAR\alert{FAST} -- RACECAR
-    \end{itemize}
+    \end{itemize}\bigskip
 
-  }
-\end{frame}
+    {\bf QUIZ:} Can you solve with Full Search? String Alignment DP? Others?
+  \end{frame}
 
 \begin{frame}
   \frametitle{Longest Palindrome}
-  {\smaller
     \begin{block}{Problem Description}
       Given a string $S$ of size up to $N = 1000$ characters, what is the
       longest palindrome that you can make by deleting characters from $S$?
@@ -710,7 +770,7 @@ LCS: ACATC
       {\smaller
       \begin{itemize}
         \item If $l=r$ then len$(l,r)=1$.
-        \item If $r=l+1 \text{and} S[l]=S[r]$, len$(l,r)=2$, else len$(l,r)=1$.
+        \item If $r=l+1 \text{ and } S[l]=S[r]$, len$(l,r)=2$, else len$(l,r)=1$.
       \end{itemize}}
     \item Transition:
       {\smaller
@@ -721,8 +781,6 @@ LCS: ACATC
     \end{itemize}
 
     This DP has complexity $O(n^2)$
-
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -871,6 +929,7 @@ R                 1   R                 1
 
     \column{0.65\textwidth}
     \includegraphics[width=.9\textwidth]{../img/suffixtree_halim}
+    \ppagenote{Suffix Tree/Array images from Steven Halim, "Competitive Programming 3", chapter 6.6}
   \end{columns}
   }
 \end{frame}
