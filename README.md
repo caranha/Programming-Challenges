@@ -49,7 +49,10 @@ algorithm knowledge through implementation.
     - Video 3: [Maximum Flow](https://youtu.be/sl6rpJa5VD4)
 - **Week07** -- String Manipulation
   - [Lecture notes](Week07/week07.pdf)
-  - Video lecture
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/F3X5jjfGeGg)
+    - Video 2: [String Matching](https://youtu.be/8Nb9T3eZrBQ)
+    - Video 3: [DP and Trie](https://youtu.be/pgSmhAbPkv4)
 - **Week08** -- Math Problems
 - **Week09** -- Geometry Problems
 - **Week10** -- Final Problem Remix
