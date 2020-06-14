@@ -1,0 +1,150 @@
+\section{Conclusion}
+
+\subsection{Summary}
+\begin{frame}{Class Summary}
+
+In this lecture, we discussed challenges in math-focused problems:
+
+\begin{itemize}
+  \item Large Integers and Log Operations;
+  \item Number Theory:
+  \begin{itemize}
+    \item Primality Testing and Prime Number Sieve;
+    \item Factorization;
+    \item Diaphantyne Equation and Linear Combinations;
+  \end{itemize}
+  \item Common Combinatorics Sequences in Programming Challenges;
+\end{itemize}
+\bigskip
+
+Next Week we will discuss geometry problems!
+\end{frame}
+
+\subsection{Problem Discussion}
+\begin{frame}{Problems for this Week}
+  \begin{itemize}
+    \item Ocean Deep! - Make it Shallow!!
+    \item Sum of Consecutive Prime Numbers
+    \item Divisibility of Factors
+    \item Summation of Four Primes
+    \item How Many Trees?
+    \item Triangle Counting
+    \item Self-Describing sequence
+    \item Marbles
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{10176 -- Ocean Deep! -- Make it Shallow!!}{Discussed in the Lecture}
+
+  \begin{block}{Outline}
+    You receive many binary numbers (up to 100 digits), and you must determine if each number is divisible by 131071. Example:
+    \bigskip
+
+    \begin{itemize}
+      \item 0 -- YES (0)
+      \item 1010101 -- NO (85)
+    \end{itemize}
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item You can use some bignum library;
+    \item Or you can use mod division too;
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sum of Consecutive Primes}
+  \begin{block}{Outline}
+    For a number $N \leq 10000$, determine how many different ways you can write $N$ as a sum of consecutive primes ($p_i + p_{i+1} + \ldots + p_{i+k}$).
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item You have to solve for many numbers, but the primes are always the same, so you should pre-calculate the primes.
+    \item Remember that the primes are consecutive, so you should be able to search without backtracking.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Divisibility of Factors}
+  \begin{block}{Outline}
+    Given $N$ and $d$, count how many factors of $N!$ are divisible by $d$.
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Hint 1: You don't need to calculate $N!$, just the factorization of $N!$
+    \item Hint 2: Think about the relationship between {\bf Prime Factorization} and {\bf Divisibility}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Summation of Four Primes}
+  \begin{block}{Outline}
+    For a given number $N$, find four primes that add up to $N$.
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Unlike the previous problem, the four primes do not need to be consecutive;
+    \item However, you only need to find one solution;
+    \item This is a search problem, but you can use mathematical properties to prune your search!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{How Many Trees?}
+  \begin{block}{Outline}
+    Given a number of nodes with increasing labels, how many {\bf Binary Search Trees} can you make?
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Easy combinatoric problem. Which sequence describes this situation?
+    \item Note that the output might be a large integer.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Triangle Counting}
+  \begin{block}{Outline}
+    Given an integer $N$, how many triangles can you make by choosing three {\bf different} sizes $\leq N$?\bigskip
+
+    {\bf Example:} $N = 5$, triangles: 2,3,4; 2,4,5; 3,4,5;
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Note that testing all pairs can be too slow for large $N$
+    \item You should try to find the recurrence on paper first;
+    \begin{itemize}
+      \item When you add a new $n$ in the end, how many new triangles can you make with $n$?
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Self Describing Sequence}
+  \begin{block}{Outline}
+    In the {\bf self describing sequence}, the value $f(n)$ indicates how many times $n$ appears in the sequence. For example, the first few numbers are:
+
+    \begin{verbatim}
+ n  :  1  2  3  4  5  6  7  8  9  10  11  12
+f(n):  1  2  2  3  3  4  4  4  5   5   5   6
+    \end{verbatim}
+
+    Given a value of $n \leq 2\times10^9$, calculate $f(n)$.
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item To calculate $f(n)$, is it necessary to calculate every value between $f(1)$ and $f(n-1)$?
+    \item Can we skip some values?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Marbles}
+  \begin{block}{Outline}
+    You have $n$ marbles to put in boxes. Box 1 fits $n_1$ marbles and costs $c_1$. Box 2 fits $n_2$ marbles and costs $c_2$. What is the minimum cost to put all $n$ marbles in boxes?
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item This is equivalent to the "candies" problem, but you also have to think about cost.
+    \item Remember, that there are multiple linear combinations that satisfy $n = b_1n_1 + b_2n_2$.
+    \item After you calculate one pair $b_1,b_2$, how do you find other pairs with possibly smaller cost?
+  \end{itemize}
+\end{frame}
+
+
+% - Self Describing Sequence (combinatorics, hard)
+%
+% Diaphantyne Equation:
+% - Marbles - Diaphantyne equation: search through linear combinations

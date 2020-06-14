@@ -1,63 +1,3 @@
-\documentclass{beamer}
-\input{../tools/beamerpreamble.tex}
-\usepackage{tikz}
-\usetikzlibrary{arrows,shapes}
-% Latex Graph Example:
-% https://www.overleaf.com/5297501zrjzfm#/16716638/
-
-% TODO: Silly Makefile
-
-\tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
-\tikzstyle{blue vertex}=[circle,fill=blue!100,minimum size=10pt,inner sep=0pt]
-\tikzstyle{red vertex}=[circle,fill=red!100,minimum size=10pt,inner sep=0pt]
-\tikzstyle{edge} = [draw,thick,-]
-\tikzstyle{red edge} = [draw, line width=5pt,-,red!50]
-\tikzstyle{black edge} = [draw, line width=5pt,-,black!20]
-\tikzstyle{weight} = [font=\smaller]
-
-\title[GB21802]{GB21802 - Programming Challenges}
-\subtitle[]{Week 7 - Math Problems}
-\author[Claus Aranha]{Claus Aranha\\{\footnotesize caranha@cs.tsukuba.ac.jp}}
-\institute{College of Information Science}
-\date{2019-05-31,06-03\\{\tiny Last updated \today}}
-
-\begin{document}
-
-\section{Introduction}
-\subsection{Title}
-\begin{frame}
-\maketitle
-\end{frame}
-
-% \subsection{Last Week Notes}
-%
-% \input{previousclass.tex}
-
-\subsection{Outline}
-\begin{frame}
-  \frametitle{Outline: Math Problems}
-
-  \begin{itemize}
-    \item Math problems in programming competition normally require:
-    \begin{itemize}
-      \item Simple problem descriptions;
-      \item A lot of time thinking;
-      \item Not so much time programming;
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Outline: Math Problems}
-
-  Many math problems are {\bf ad hoc}. In this lecture we will study:
-  \begin{itemize}
-    \item Common Implementation Issues in Math problems: Bignum, precision, etc.
-    \item Number Theory Algorithms: Factorization, Primality Testing, GCD;
-    \item Combinatory Tricks: Common Sequences, Probability;
-  \end{itemize}
-\end{frame}
-
 
 \section{Implementation Tricks}
 
@@ -787,150 +727,124 @@ def zeckenfy(n):
   \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Ad Hoc Example: Probability problems}
-
-  {\smaller
-    \begin{block}{Dice Throwing}
-      If you have $n$ dice, what is the chance of rolling a total above $m$?
-    \end{block}
-
-    \begin{itemize}
-    \item \structure{Example:} For $n=3$, $m=16$, what is the probability?
-    \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ad Hoc Example: Probability problems}
-
-  {\smaller
-    \begin{block}{Dice Throwing}
-      If you have $n$ dice, what is the chance of rolling a total above $m$?
-    \end{block}
-
-    \begin{itemize}
-    \item \structure{Example:} For $n=3$, $m=16$, the chance is $10/216$
-
-      \bigskip
-
-    \item All combinations of 3 dice: $6*6*6 = 216$
-    \item Combinations above 16:
-    \end{itemize}
-
-    \begin{columns}[T]
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 6,6,6
-      \item 6,6,5
-      \item 6,5,6
-      \item 5,6,6
-      \end{itemize}
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 6,5,5
-      \item 5,6,5
-      \item 5,5,6
-      \end{itemize}
-      \column{0.3\textwidth}
-      \begin{itemize}
-      \item 4,6,6
-      \item 6,4,6
-      \item 6,6,4
-      \end{itemize}
-    \end{columns}
-
-    \medskip
-
-    \begin{itemize}
-    \item What algorithm do you use?
-    \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ad Hoc example: Probabilty Problems}
-
-  {\smaller
-  \begin{block}{The dice problem}
-    If I have $n$ dice, what is the chance of rolling a total above $m$?
-  \end{block}
-
-  \medskip
-
-  Solving with DP
-
-  \medskip
-
-  \begin{itemize}
-  \item For $n=0$, we have only one result: $r=0$
-  \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
-  \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$
-
-    \bigskip
-
-  \item With a state table (dice,result), we can count the number of
-    dice combination above a certain value;
-
-  \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Ad Hoc example: Probability Problems}
-  \begin{exampleblock}{Example Code}
-{\small
-\begin{verbatim}
-int count(int dice_left, int score_left) {
-   if (score_left < 1) return pow(6,dice);
-   if (dice_left == 0) return 0;
-   if (result[dice_left][score_left] != -1)
-      return result[dice_left][score_left];
-   int sum = 0;
-   for (int i = 0; i < 6; i++)
-      sum += count(dice_left-1, score_left-(i+1))
-   result[dice_left][score_left] = sum;
-   return sum;
-}
-
-prob = count(n,m)/6**n;
-
-\end{verbatim}
-}
-  \end{exampleblock}
-\end{frame}
-
-% TODO: Hare and tortoise algorith,
-
-% TODO expand this, add more sequences
-% TODO add a section on HOW to derive closed forms (from maths for CS class)
 
 
-\subsection{Conclusion}
-\begin{frame}
-  \frametitle{Class Summary}
-  \begin{itemize}
-  \item Math Problems
-  \item Java's Big Integer class
-  \item Primality
-  \item Modulo arithmetic
-  \item GCD and Diophantine Equations
-  \item Combinatorics
-  \end{itemize}
+%%% FIXME: Probability Section
+%%% Probably remove for good, there are very few
+%%% Probability problems in programming challenges.
 
-  \begin{block}{}
-    Next week: Geometry problems!
-  \end{block}
-\end{frame}
-
-% \input{problemdiscussion.tex}
+% \begin{frame}
+%   \frametitle{Ad Hoc Example: Probability problems}
+%
+%   {\smaller
+%     \begin{block}{Dice Throwing}
+%       If you have $n$ dice, what is the chance of rolling a total above $m$?
+%     \end{block}
+%
+%     \begin{itemize}
+%     \item \structure{Example:} For $n=3$, $m=16$, what is the probability?
+%     \end{itemize}
+%   }
+% \end{frame}
 %
 % \begin{frame}
-%   \frametitle{To Learn More}
+%   \frametitle{Ad Hoc Example: Probability problems}
 %
-%   Euler Project: Mathematical questions using computers:
+%   {\smaller
+%     \begin{block}{Dice Throwing}
+%       If you have $n$ dice, what is the chance of rolling a total above $m$?
+%     \end{block}
 %
-%   \url{http://projecteuler.net}
+%     \begin{itemize}
+%     \item \structure{Example:} For $n=3$, $m=16$, the chance is $10/216$
+%
+%       \bigskip
+%
+%     \item All combinations of 3 dice: $6*6*6 = 216$
+%     \item Combinations above 16:
+%     \end{itemize}
+%
+%     \begin{columns}[T]
+%       \column{0.3\textwidth}
+%       \begin{itemize}
+%       \item 6,6,6
+%       \item 6,6,5
+%       \item 6,5,6
+%       \item 5,6,6
+%       \end{itemize}
+%       \column{0.3\textwidth}
+%       \begin{itemize}
+%       \item 6,5,5
+%       \item 5,6,5
+%       \item 5,5,6
+%       \end{itemize}
+%       \column{0.3\textwidth}
+%       \begin{itemize}
+%       \item 4,6,6
+%       \item 6,4,6
+%       \item 6,6,4
+%       \end{itemize}
+%     \end{columns}
+%
+%     \medskip
+%
+%     \begin{itemize}
+%     \item What algorithm do you use?
+%     \end{itemize}
+%   }
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Ad Hoc example: Probabilty Problems}
+%
+%   {\smaller
+%   \begin{block}{The dice problem}
+%     If I have $n$ dice, what is the chance of rolling a total above $m$?
+%   \end{block}
+%
+%   \medskip
+%
+%   Solving with DP
+%
+%   \medskip
+%
+%   \begin{itemize}
+%   \item For $n=0$, we have only one result: $r=0$
+%   \item For $n=1$, we have 6 results: $r = \{1,2,3,4,5,6\}$
+%   \item The result for $n=i$ and $r_{n-1}=k$ is $r_n = k + \{1,2,3,4,5,6\}$
+%
+%     \bigskip
+%
+%   \item With a state table (dice,result), we can count the number of
+%     dice combination above a certain value;
+%
+%   \end{itemize}
+%   }
+% \end{frame}
+%
+% \begin{frame}[fragile]
+%   \frametitle{Ad Hoc example: Probability Problems}
+%   \begin{exampleblock}{Example Code}
+% {\small
+% \begin{verbatim}
+% int count(int dice_left, int score_left) {
+%    if (score_left < 1) return pow(6,dice);
+%    if (dice_left == 0) return 0;
+%    if (result[dice_left][score_left] != -1)
+%       return result[dice_left][score_left];
+%    int sum = 0;
+%    for (int i = 0; i < 6; i++)
+%       sum += count(dice_left-1, score_left-(i+1))
+%    result[dice_left][score_left] = sum;
+%    return sum;
+% }
+%
+% prob = count(n,m)/6**n;
+%
+% \end{verbatim}
+% }
+%   \end{exampleblock}
 % \end{frame}
 
-\end{document}
+%% TODO: Cycle Finding (Hare and Tortoise, Halim's Book)
+%% TODO: Game Theory (NIM, Halim's Book)

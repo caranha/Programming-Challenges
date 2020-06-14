@@ -1,15 +1,6 @@
 # This Year 2020
 
 
-## Week 7: String Manipulation
-- Add Z algorithm for substring matching
-
-## Week 8: Mathematics
-- Needs improvement
-  -- Fold the "ad hoc" (combinatorics) to combinatorics subsection.
-  -- Add some algorithms from the books.
-  -- Add more examples.
-
 ## Week 9: Computational Geometry
 - Overall good lecture -- See local TODO for suggested improvements
 

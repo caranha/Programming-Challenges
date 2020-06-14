@@ -18,6 +18,8 @@ Week 7 - Maths Problems
  divisors is: (i+1)x(j+1)x(k+1)...)
 
 # Sequences 1 (hard)
+10049 - Self Describing Sequence (990 -- No standard sequence, precomputation)
+10303 - How Many Trees (1244 -- Generate Catalan Numbers + bigint)
 11401 - Triangle Counting (L3 - 2396 -- Finding the pattern)
 11161 - Help My Brother (II) (L4 - 2102 -- Fibonacci + Mean))
 
@@ -28,4 +30,5 @@ Week 7 - Maths Problems
 10176 - Ocean Deep! (L3 - 1117 -- mod division in large binary)
 
 # Statistics
+10759 - Dice Throwing (1700) -- Calculate Cumulative prop of xD6 to n
 11176 - Winning Streak (L5 - 2117 -- case count DP)
