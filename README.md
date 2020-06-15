@@ -54,6 +54,8 @@ algorithm knowledge through implementation.
     - Video 2: [String Matching](https://youtu.be/8Nb9T3eZrBQ)
     - Video 3: [DP and Trie](https://youtu.be/pgSmhAbPkv4)
 - **Week08** -- Math Problems
+  - [Lecture notes](Week08/week08.pdf)
+  - Video lectures
 - **Week09** -- Geometry Problems
 - **Week10** -- Final Problem Remix
 

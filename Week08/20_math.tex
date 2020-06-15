@@ -1,37 +1,39 @@
 
-\section{Implementation Tricks}
+\section{Large Numbers}
 
-\begin{frame}
-  \frametitle{Implementation Tricks}
+\begin{frame}{Math Problems Part I: Large Numbers}
+
+  Some programming challenges, in particular challenges involving combinatoric analysis, require operations on very large numbers.\bigskip
+
+  In this section, we will review some ways to deal with these numbers:
   \begin{itemize}
-    \item BigNums;
+    \item "BigNum" libraries;
     \item Modulo Operations;
-    % \item Precision;
   \end{itemize}
 \end{frame}
 
 \subsection{Bignum}
 \begin{frame}
-  \frametitle{Dealing with Big Numbers}
+  \frametitle{Dealing with Large Numbers}
 
-  Some problems (specially math problems) require using very large numbers.
-  For example: $25! = 15511210043330985984000000 > 10^{26}$.\bigskip
+  In this lecture, we call "Large Numbers" (also sometimes {\bf Bignum}) integers that do not fit in the standard variable types in programming languages (ex: long, long long, unsigned long, etc).\bigskip
 
-  {\bf However}:
-  \begin{itemize}
-    \item \structure{Maximum C++ unsigned int}: $2^{32} < 10^{11}$
-    \item \structure{Maximum C++ unsigned long long}: $2^{64} < 10^{20}$
-  \end{itemize}\bigskip
+  This is very common in problems and algorithms involving factorials. For example: $25! = 15511210043330985984000000 > 10^{26}$.\bigskip
 
-
-  \begin{block}{}
-    I usually recommend to use C++; but Java is better for
-    BigNum progchal problems!
+  \begin{block}{BigNum in Different Languages}
+    \begin{itemize}
+      \item {\bf C++ STL} does not have native support to bignum. You have to program yourself;
+      \begin{itemize}
+        \item unsigned long long: $2^{64} < 10^20$
+      \end{itemize}
+      \item {\bf Java} has the "BigInteger" class, which contains several useful operations on large numbers;
+      \item {\bf Python} handles BigNums natively, so a special class is not necessary;
+    \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Bignum Example: 10925 -- Krakovia}
+\begin{frame}[fragile]{Example of Java's "Big Integer" class}
+  {10925 -- Krakovia: Calculate sum and division using large integers}
 
   {\smaller
 \begin{block}{}
@@ -60,9 +62,10 @@ class Main {
 
 
 \begin{frame}[fragile]
-  \frametitle{More functions from Java.math.BigInteger}
-{\smaller
+  \frametitle{Useful functions in Java.math.BigInteger}
+  Besides dealing with arbitrarily large numbers, the BigInteger class also has some other useful mathematical functions:
 
+{\smaller
   \begin{block}{Algebraic functions}
     BigInteger.add(), .subtract(), .multiply(), .divide(),
     .pow(), .mod(), .remainder()
@@ -83,47 +86,44 @@ isPrime = BI.isProbablePrime(int certainty)
   \end{block}
 
 
-\begin{block}{Other cool functions}
+\begin{block}{Other functions}
   BigInteger.gcd(BI)
   BigInteger.modPow(BI exponent, BI m)
 \end{block}}
 \end{frame}
 
-\subsection{Modulo Operations}
+\subsection{Modulo Arithmetic}
 \begin{frame}
-  \frametitle{Modulo Operation}
+  \frametitle{Modulo Arithmetic}
 
-  {\smaller
-  We can use \structure{modulo arithmetic} to operate on very large
-  numbers without calculating the entire number.
+  Another way to operate in very large numbers is to use {\bf Modulo Arithmetic}.\bigskip
 
-  \bigskip
+  For some problems, the final result is small (modulo $n$) but the intermediate results are too large. In these cases, we can use modulo arithmetic to avoid storing these large intermediate results.\bigskip
 
-  Remember that:
-  \begin{enumerate}
-  \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
-  \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
-  \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
-  \end{enumerate}
-
-  }
+  \begin{block}{Modulo Arithmetic Reminder}
+    \begin{enumerate}
+    \item $(a+b)\%s = ((a\%s)+(b\%s)+s)\%s$
+    \item $(a*b)\%s = ((a\%s)*(b\%s))\%s$
+    \item $(a^n)\%s = ((a^{n/2}\%s)*(a^{n/2}\%s)*(a^{n\%2}\%s))\%s$
+    \end{enumerate}
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Modulo Operation -- UVA 10176, Ocean Deep!}
-  {\smaller
+\subsection{Example Problem}
+\begin{frame}{Example Problem: 10176, Ocean Deep! Make it Small}
   \begin{block}{Problem summary}
-    Test if a binary number $n$ (up to 100000 digits) is divisible by 131071
-  \end{block}
+    Your receive as input a {\bf large binary number} (up to 100 digits). You need to calculate if the number is divisible by 131071 (a prime number).
+  \end{block}\bigskip
 
   \begin{itemize}
-  \item The problem wants to know if $n\%13107 == 0$
-  \item But $n$ is too big!
+  \item Problem: Input and store a large $n$, and calculate $n\%131071$.
+  \item Alternatives. Which is easier?
+  \begin{itemize}
+    \item Use some BigNum data structure to store $n$?
+    \item Use modulo arithmetic to calculate the result without bignum?
+  \end{itemize}
 
-  \item Use the recurrence in the previous slide to break down each
-    digit to a reasonable value.
-  \end{itemize}}
-
+  \end{itemize}
 \end{frame}
 
 % \subsection{Precision}
@@ -131,601 +131,514 @@ isPrime = BI.isProbablePrime(int certainty)
 % Dealing with very small numbers
 
 \section{Number Theory}
-\subsection{outline}
-\begin{frame}
-  \frametitle{Number Theory} {\small
+\begin{frame}{Part II: Number Theory}
 
-    Number Theory studies \structure{the integer numbers} and
-    \structure{sets}.
+  Number Theory is the part of mathematics that studies the relationships between {\bf integer numbers}.\bigskip
 
-    \bigskip
-
-    \begin{itemize}
-    \item Primality;
-    \item Division and Remainders;
-    \item Sequences of numbers;
-    \end{itemize}
-
-    }
-\end{frame}
-
-\subsection{Prime Numbers}
-\begin{frame}
-  \frametitle{Number Theory: Primality Testing}
-
-  {\smaller
-    \structure{Prime Numbers}: Only divisible by 1 and itself:
-
-    \medskip
-
-    2,3,5,7,11,13...
-
-    \bigskip
-
-    How do you test if a number $N$ is prime?
+  It is a large and fascinating field of study, but for the purposes of programming contests, in this lecture we will focus on three topics:\bigskip
 
   \begin{itemize}
-
-  \item Full search: For each $f \in 2..N-1$, test if $N\%f == 0$\\
-    $O(N)$
-
-    \bigskip
-
-  \item A little Pruning: For each $f \in 2..\text{floor}(\sqrt{N})$,
-    test if $N\%f == 0$\\
-    $O(\sqrt(N))$
-
-  \item Can you do it in $O(\sqrt{n} / \log(n))$?
-  \end{itemize}}
+  \item Primality: How to decide if a number is prime;
+  \item Division and Remainders: The division relationship between integers;
+  \item Sequences: Recurrence relations between sets of numbers;
+  \end{itemize}
 \end{frame}
 
+\section{Primality}
+\subsection{Primality Testing}
 \begin{frame}
-  \frametitle{Number Theory: Primality Testing}
+  \frametitle{Primality Testing}
+
+    {\bf Prime Numbers} are natural numbers ($\geq 0$) that are only divisible by 1 and by themselves: $2,3,5,7,11,13,\ldots$\bigskip
+
+    {\bf Question:} How do you write a (simple) program to test if $N$ is prime?
+    \begin{itemize}
+
+      \item Complete Search: For each $d \in 2..N-1$, test if $N\%d == 0$. This requires $O(N)$ divisions.\medskip
+
+      \item Pruning the search:
+      \begin{itemize}
+        \item Search only numbers between 2 and $\sqrt{N}$: $O(\sqrt{N})$
+        \item Search only {\bf odd} numbers between 2,3 and $\sqrt{N}$: $O(\frac{\sqrt{N}}{2})$
+        \item Search only {\bf PRIME} numbers between 2 and $\sqrt{N}$:
+        $O(\frac{\sqrt{N}}{\ln(\sqrt{N})})$
+      \end{itemize}\medskip
+
+      \item Can we calculate these primes easily?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Primality Testing: Finding {\bf Sets} of primes}
 
   \begin{block}{The Prime Number Theorem (simplified)}
-    The probability of $i < N$ is prime is $1 / \log(N)$
-  \end{block}
+    There are approximately $\frac{N}{\log{N}-1}$ prime numbers between 1 and $N$
+  \end{block}\bigskip
 
-  \hfill
+  \begin{itemize}
+    \item Number of prime numbers between 1 and $\sqrt{10^6}$ = 168
+    \item Number of prime numbers between 1 and $\sqrt{10^{10}} \approx 9500$
+  \end{itemize}\bigskip
 
-  {\small
+  So if we can find these primes, we can calculate the primality of "programming contest"-sized numbers quickly!\bigskip
 
-  {\bf collorary\footnote{``Collorary'' means ``consequence''} 1}: There are $N/\log(N)$ primes $<N$\\
-  {\bf collorary 2}: We just need to test the {\bf primes} between 1 and $\sqrt{N}$
-
-  \hfill
-
-  But how do we find all primes between 1 and $\sqrt{N}$ fast?
-  }
+  A simple algorithm for finding sets of primes quickly is the {\bf Sieve of Eratosthenes}.
 \end{frame}
 
 
 
-\begin{frame}[fragile]
-  \frametitle{Sieve of Eratosthenes}
+\begin{frame}[fragile]{Sieve of Eratosthenes}
 
-  {\smaller
     \begin{block}{Idea}
       \begin{itemize}
-      \item Start with a set from 2 to $\sqrt{N}$.
-      \item Test if each $i$ in the set is prime.
-      \item If $i$ is prime, remove all multiples $mi$.
+      \item Initialize "Sieve" vector of size $\sqrt{N}$, all TRUE;
+      \item Loop on Sieve. If Sieve[i] is TRUE, add $i$ to prime list
+      \item Remove {\bf ALL $i\times m$} multiples of $i$ from Sieve;
       \end{itemize}
     \end{block}
 
+    {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
 def sieve(k):                 ## Find all primes up to k
-   primes = []
-   sieve = [1]*(k+1)    ## all numbers start in the list
-   sieve[0] = sieve[1] = 0             ## except 0 and 1
-   for i in range(k+1):                          ## O(N)
-      if (sieve[i] == 1):
-         primes.append(i)             ## new prime found
-         j = i*i   ## why can i start from i*i, not i*2?
-         while (j < k+1):                  ## O(loglogN)
-            sieve[j] = 0
-            j += i                      ## next multiple
-   return primes
+   primes = []                ## List of primes found
+   sieve = [1]*(k+1)          ## all numbers start in the list
+   sieve[0] = sieve[1] = 0    ## 0,1 trivially not primes
+   for i in range(k+1):       ## Linear search
+      if (sieve[i] == 1):     ## Found a new prime
+         primes.append(i)     ## Add to prime list
+         j = i*i              ## Optimization. Why not i*2?
+         while (j < k+1):     ## Costs O(loglogN)
+            sieve[j] = 0      ## Remove multiples from sieve
+            j += i
+   return primes              ## list of primes
 \end{verbatim}
   \end{exampleblock}
   }
 \end{frame}
 
 \begin{frame}
-  \frametitle{Sieve of Eratosthenes}
+  \frametitle{Sieve of Eratosthenes: Computation Cost}
 
-  {\smaller
+    \begin{itemize}
+      \item The cost of calculating the Sieve for $k$ is $O(k\log\log k)$
+      \item The cost of full search for $N$ is $O(\sqrt{N}/2)$
+      \item Why use sieve and not the full search?
+    \end{itemize}
+
     \begin{block}{Amortized Complexity}
+      Do a complex calculation once, use result many times:
       \begin{itemize}
-      \item The complexity of the Sieve is $O(N\log\log N)$
-
-        \medskip
-
-      \item If we do the Sieve every time we test for primes, we are not saving much.
-
-        \medskip
-
-      \item But we can do the Sieve one time, and test many primes later!
-
+      \item If we are only testing {\bf ONE PRIME}, the full search is better.
+      \item But, if the problem requires many primes to be tested, the sieve is better.
+        \begin{itemize}
+        \item If $N$ < $k$, checking the sieve table costs $O(1)$.
+        \item We can pre-calculate the sieve table when initalizing the program;
+        \end{itemize}
       \end{itemize}
-    \end{block}
+    \end{block}\bigskip
 
-    \hfill
-
-    When we do an expensive operation once, we call it {\bf amortized complexity}
-  }
+    When do we need to calculate multiple primes? Prime factorization!
 \end{frame}
 
-% Prime number: Sosuu
-% Prime factors: Soinsuu
-% Factorization: Insuu Bunkai
+\subsection{Prime Factorization}
 \begin{frame}
-  \frametitle{Finding Prime Factors}
+  \frametitle{Prime Factorization}
 
-  {\smaller
+  {\bf Fundamental Theorem of Arithmetic:} Every natural number $N$ can be written as a {\bf unique multiplication of primes}. Example:
 
-    Any natural number $N$ can be expressed as a \structure{unique}
-    set of prime numbers:
+  \begin{equation*}
+    1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2
+  \end{equation*}
 
+  In other words, for $N$, the prime number factorization of $N$ is:
     \begin{equation*}
-      N=1p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}
+      N=p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}, p_i \text{ is prime}
     \end{equation*}
 
-    These are the \structure{Prime Factors} of $N$. From this set, we
-    can also obtain the set of \structure{Factors} of $N$ (all numbers
-    $i$ where $i|N$).
+  (Prime) Factorization is a key issue in Cryptography, so fast factorization is an important research problem. In this course, we focus on simpler algorithms:\bigskip
 
-    \medskip
-
-    Factorization is a key issue in \structure{cryptography}
-
-    \begin{block}{Very Naive approach -- Test all numbers!}
-      For every $i \in 1..N/2$, test $i|N$ and isPrime(i).\\
-      \smallskip
-      \hfill Very Expensive!
-    \end{block}
-
-    \begin{block}{Naive approach -- Test all primes}
-      Calculate a list of primes $i$ up to N/2, test if $i|N$.\\
-      \smallskip
-      \hfill Wrong Answer, why?
-    \end{block}
-}
+  \begin{itemize}
+    \item {\bf Full search}: create a list of primes (with sieve) and test if each of them divides $N$.
+    \item {\bf Divide and Conquer:} Find the smallest prime $p_i$ from sieve that divides $N$. Replace $N$ with $N|p_i$. Repeat until $p_i > \sqrt{N}$.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Prime factorization: Divide and conquer approach}
 
+  This algorithm is reasonably fast if $N$ is composed of several small prime factors.
+
   {\smaller
-  \begin{block}{Recursive Idea}
-    The prime factorization of $N$ is equal to the union of $p_i$ and
-    the prime factorization of $N/p_i$, where $p_i$ is the smallest
-    prime factor of $N$.
-
-    \bigskip
-
-    The set of all factors is composed of all combinations of the set
-    of prime factors (including repetitions).
-  \end{block}
-
   \begin{exampleblock}{}
 \begin{verbatim}
-def primefactors(n):
-   primes = sieve(int(np.sqrt(n))+1)
-   c = 0, i = n, factors = []
-   while i > 1:
-      if (i%primes[c] == 0):
-          i = i/primes[c]
-          factors.append(primes[c])
-      else:
-          c = c+1
-   return factors
+vi primeFactors(ll N) {   // remember: vi is vector<int>
+  vi factors;             //           ll is long long
+  ll PF_idx = 0, PF = sieve[PF_idx];     // sieve is prime list
+  while (PF * PF <= N) {           // remember, N gets smaller;
+    while (N % PF == 0) {          // Remove PF^x from N
+      N /= PF; factors.push_back(PF);
+    }
+    PF = primes[PF_idx++];             // only consider primes!
+  }
+  if (N != 1) factors.push_back(N); // special case: N is prime
+  return factors;
+}
 \end{verbatim}
   \end{exampleblock}}
 \end{frame}
 
+\begin{frame}{Full Factorization}
+  In some cases, we want to know {\bf all} numbers that divide a certain number $N$.\bigskip
+
+  We can calculate the full factorization of $N$ from its prime factorization. In fact, the full factorization of $N$ is the set of all unique combinations of prime factors.\bigskip
+
+  Example:
+  \begin{itemize}
+    \item $1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2$
+    \item Number of factors of 1200: $5\times2\times3 = 30$
+    \item Examples:
+    \begin{itemize}
+      \item $2^3 \times 3^0 \times 5^1 = 40$,
+      \item $2^2 \times 3^1 \times 5^2 = 300$,
+      \item $2^1 \times 3^1 \times 5^1 = 30$,
+      \item $2^4 \times 3^1 \times 5^0 = 48$,
+      \item $\ldots$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Working with Prime Factors: 10139 -- Factovisors}
+  \frametitle{Factorization Problem Example: 10139 -- Factovisors}
 
-  {\smaller
-    \begin{block}{Problem description}
-      Calculate whether $m$ divides $n!$ ($1 \leq m,n \leq 2^{31}-1$)
+    \begin{block}{Problem summary}
+      Check if $m$ divides $n!$ ($1 \leq m,n \leq 2^{31}-1$)
     \end{block}
 
-    Factorial of 22 is already bigint! But we can break down these numbers into their
-    factors, which are all $\leq 2^{30}$.
+    The factorial of $n \leq 2^{31}-1$ is a HUGE number. Fortunately, it is not necessary to calculate this number at all. Consider that:
 
     \begin{itemize}
     \item $F_m$: primefactors(m)
-    \item $F_{n!}$: $\cup$(primefactors(1), primefactors(2)...,primefactors(n))
+    \item $F_{n!}$: $\cup$(primefactors(1), primefactors(2) $\ldots$, primefactors(n))
     \end{itemize}
 
-    Having the factor sets, $m$ divides $n!$ if $F_m \subset F_{n!}$.
-
-    \bigskip
+    We can say that $m$ divides $n!$ iff $F_m \subset F_{n!}$.\bigskip
 
     Examples:
     \begin{itemize}
-    \item $m = 48$ and $n=6$\\
-      $F_m = \{2,2,2,2,3\} F_{n!} = \{2,3,2,2,5,2,3\}$
+    \item $m = 48, n=6, n! = 2\times3\times4\times5\times6$\\
+      $F_m = \{2,2,2,2,3\}, F_{n!} = \{2,3,2,2,5,2,3\}$
 
   \medskip
 
-    \item $m = 25$ and $n = 6$\\
-      $F_m = \{5,5\} F_{n!} = \{2,3,2,2,5,2,3\}$
+    \item $m = 25, n=6, n! = 2\times3\times4\times5\times6$\\
+      $F_m = \{5,5\}, F_{n!} = \{2,3,2,2,5,2,3\}$
 
     \end{itemize}
-  }
 \end{frame}
 
 
-% Saidaikōyakusū
-\subsection{GCD/LCM}
+\subsection{Greatest Common Divisor}
 \begin{frame}[fragile]
-  \frametitle{Euclid Algorithm and Extended Euclid Algorithm}
+  \frametitle{Extended Euclid Algorithm}
 
-  {\smaller
-    \begin{itemize}
-    \item \structure{Euclid Algorithm} gives us the greatest common divisor $D$ of $a,b$;
-    \item \structure{Extended Euclid Algorithm} also gives us $x,y$ so that $ax+by = D$;
-    \item Both are extremely simple to code:
-    \end{itemize}
+  For integers $a$ and $b$, the {\bf greatest common divisor} GCD(a,b) is the largest integer $d$ so that $d|a$ and $d|b$. Euclid's algorithm can quickly calculate $d$ for a,b ($O(\log_{10}a)$).\bigskip
 
-    \vfill
+  The {\bf Extended Euclid's Algorithm}\footnote{Also called "The Pulverizer"}, calculate's $x_0$ and $y_0$ so that $a\times x_0 + b\times y_0 = d$.
 
+{\smaller
     \begin{exampleblock}{}
 \begin{verbatim}
-int gcd(int a, int b) {return (a == 0?b:gcd(b%a,a));}
+int gcdExtended(int a, int b, int *x, int *y)  {
+  if (a == 0) { *x = 0; *y = 1; return b; }
 
-int x, y;
-int egcd(int a, int b) {
-   if (a==0)
-      {x = 0; y = 1; return b;}        // stop condition
-   int d = egcd(b%a, a);
-   int tx = x;                         // gcd recurrence
-   x = y - (b/a)*tx; y = tx; return d; }   // update x,y
+  int x1, y1; // To store results of recursive call
+  int gcd = gcdExtended(b%a, a, &x1, &y1);
+
+  *x = y1 - (b/a) * x1; *y = x1;      // Update x,y
+
+  return gcd;
+}
 \end{verbatim}
     \end{exampleblock}
 }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Using EGCD: The Diophantine Equation}
-  {\smaller
-    \begin{block}{Problem Example (variations of this problem are common)}
-      You have 839 yen. \alert{X}hoco candy costs 25 yen,
-      \alert{Y}anilla candy costs 18 yen. How many candies can we buy?
-    \end{block}
+\begin{frame}{Extended GCD and the Diophantine Equation}
 
-    \bigskip
+  One very useful property of $d =$ GCD$(a,b)$ is that {\bf $d$ divides every integer combination of $a$ and $b$}. In other words: For every $ax+by = c$, if x and y are integers, then $d|c$.\footnote{The proof for this is very cool}.\bigskip
 
-    The equation $xA+yB=C$ is called the \structure{Linear Diophantine
-      Equation}. It has infinite solutions if GCD(A,B)|C, but none if
-    it does not.
-
-    \bigskip
-
-    The first solution ($x_0,y_0$) can be derived from the extended
-    GCD, and other solutons can be found from:
-    expressed as:
-    \begin{itemize}
-    \item $x = x_0 + (b/d)n$
-    \item $y = y_0 - (a/d)n$
-    \end{itemize}
-    Where $d$ is GCD(A,B) and $n$ is an integer.
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Using EGCD: The Diophantine Equation}
-  {\smaller
-    \begin{block}{Problem Example (variations of this problem are common)}
-      You have 839 yen. \alert{X}hoco candy costs 25 yen,
-      \alert{Y}anilla candy costs 18 yen. How many candies can we buy?
-    \end{block}
-
-    \begin{itemize}
-    \item \structure{EGCD} gives us: $x=-5, y=7, d=1$ or $25(-5)+18(7) = 1$
-    \item Multiply both sides by 839: $25(-4195)+18(5873) = 839$
-    \item So: $x_n = -4195 + 18n$ and $y_n = 5873 - 25n$
-    \item We have to find $n$ so that both $x_n,y_n$ are $> 0$.
-    \item $-4195 + 18n \geq 0$ and $5873 - 25n \geq 0$
-    \item $n \geq 4195/18$ and $5873/25 \geq n$
-    \item $4195/18 \leq n \leq 5873/25$
-    \item $233.05 \leq n \leq 234.92$
-    \end{itemize}
-  }
-\end{frame}
-
-
-\section{Combinatorics}
-\subsection{Counting and Closed Forms}
-\begin{frame}
-  \frametitle{Combinatorics problems}
-
-  {\smaller
-    \begin{block}{Definition}
-      Combinatorics is the branch of mathematics concerning the study of
-      \structure{countable discrete structures}.
-    \end{block}
-
-    Combinatory problems involve understanding a sequence, and
-    figuring one of:
-
-    \medskip
-
-    \begin{itemize}
-    \item \structure{Recurrence}: A formula that calculates the
-      $n^{th}$ member of a sequence, based on the value of previous members;
-
-    \item \structure{Closed form}: A formula that calculates the
-      $n^{th}$ member of a sequence independently from other members;
-    \end{itemize}
-
-  \bigskip
-
-  It is not uncommon to use \structure{Dynamic Programming} or
-  \structure{Bignum} to solve combinatoric related problems.
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Example: Triangular Numbers}
-  {\smaller
-  \begin{block}{Definition}
-    The triangular numbers is the sequence where the $n^{th}$ value is
-    composed of the sum of all integers from $1$ to $n$
-  \end{block}
+  We can use this property to calculate the integer solutions of the {\bf Diophantine Equation}: $xa+yb = c$\bigskip
 
   \begin{itemize}
-  \item S(1) = 1
-  \item S(2) = 1+2 = 3
-  \item S(3) = 1+2+3 = 6
-  \item $\ldots$
-  \item S(7) = 1+2+3+4+5+6+7 = 28
+    \item If $d|c$ is not true, there are no integer solutions.
+    \item If $d|c$ is true, there are infinite integer solutions:
+    \begin{itemize}
+      \item The first solution $(x_0, y_0)$ is calculated from the extended GCD.
+      \item Other solutions $(x_n,y_n)$ can be derived as: $x_n = x_0 + (b/d)n, y_n = y_0 - (a/d)n$, where $n$ is an integer.
+    \end{itemize}
   \end{itemize}
-  }
 
-  What are the recurrence and the closed form for this sequence?
+
 \end{frame}
 
+\begin{frame}{Diophantine Equation Problem Example}
+    \begin{block}{Problem Example}
+      With 839 yens, you want to buy Chocolate Candy and Vanilla Candy.
+      \begin{itemize}
+        \item Chocolate Candy costs $x=25$ yens.
+        \item Vanilla Candy costs $y=18$ yens.
+      \end{itemize}
+      How many candies can you buy?
+    \end{block}
+
+    \begin{enumerate}
+      \item Calculate $d, x_0, y_0$ from extended GCD:
+      \begin{itemize}
+        \item $d = 1, x_0 = -5, y_0 = 7$ or $25\times(-5) + 18\times(7) = 1$
+      \end{itemize}
+      \item Is $d|c$? {\bf Yes}. Continue.
+      \item Multiply both sides of the equation by $\frac{c}{d}$:
+      \begin{itemize}
+        \item $25 \times (-4195) + 18\times(5873) = 839$
+      \end{itemize}
+      \item It is impossible to buy negative candies, so we iterate on $n$ to find
+      \begin{itemize}
+        \item $x_n = x_0 + (b/d)n$ and $y_n = y_0 - (a/d)n$
+      \end{itemize}
+      \item At $n = 234$ we find: $25 \times 17 + 18 \times 23 = 839$
+    \end{enumerate}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Combinatorics}
 \begin{frame}
-  \frametitle{Example: Triangular Numbers}
-  {\smaller
+  \frametitle{Combinatoric Problems}
+    Combinatorics is the area of mathematics that studies {\bf countable discrete structures} (integers, sets, etc).\bigskip
+
+    For our focus on competitive programming, combinatoric problems involves calculating the values of {\bf numeric sequences}. This requires programming the {\bf Recurrent Form} or the {\bf Closed Form} of the sequence.\bigskip
+
+
     \begin{itemize}
-    \item S(1) = 1, S(2) = 3, S(3) = 6
+    \item {\bf Recurrent Form}: The recurrent form of a sequence $F$ calculates $F_n$ based on its antecessor values: $F_{n-1}, F_{n-2},\ldots$.
+    \begin{itemize}
+      \item Recurrent forms are usually implemented using {\bf Dynamic Programming} and {\bf Memoization};
     \end{itemize}
 
-    \begin{block}{Recurrence}
-      The recursive form of a sequence:
-      \begin{equation*}
-        S(n) = S(n-1)+n; S(1) = 1
-      \end{equation*}
-    \end{block}
-    \begin{block}{Closed Form}
-      The non-recursive form of a sequence:
-      \begin{equation*}
-        S(n) = \frac{n(n+1)}{2}
-      \end{equation*}
-    \end{block}
-    \alert{Problem:} Calculate the first triangle number with more
-    than 500 factors!  }
+    \item {\bf Closed Form}: The closed form of a sequence $F$ calculates $F_n$ {\bf without} using the antecessor values of the sequence.
+    \end{itemize}
 \end{frame}
 
-\subsection{Fibonacci}
+\subsection{Sequence Examples}
+\begin{frame}
+  \frametitle{Sequence Example: Triangular Numbers}
+  \begin{block}{Definition}
+    {\bf Triangular Numbers} is the sequence where $T_n$ is the sum of all inegers from $1$ to $n$. Example:\medskip
+
+    $T_1=1, T_2=1+2=3, \ldots, T_7=1+2+3+4+5+6+7=28$\\
+    Trivial, right?
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item {\bf Recurrent Form:} $T(n) = T(n-1) + n$
+    \begin{itemize}
+      \item The recurrent form can be calculated with a loop or recursion;
+    \end{itemize}\bigskip
+    \item {\bf Closed Form:} $T(n) = \frac{n(n+1)}{2}$
+    \begin{itemize}
+      \item The closed form can be calculated at once;
+      \item It can be used to estimate how fast a sequence grows. In this case, $T_n$ is $O(N^2)$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{A more famous sequence: Fibonacci Numbers}
 
-  {\smaller
-  \begin{block}{Definition -- very famous sequence}
-    Each number is the sum of the two numbers before it.
+  \begin{block}{Definition}
+    The Fibonacci number $F_n$ is the sum of the two numbers before it.\medskip
 
-    \medskip
+    $0, 1, 1, 2, 3, 5, 8, 13, 21, 34, \ldots$
+  \end{block}\bigskip
 
-    F() = 0,1,1,2,3,5,8,13,21,34...
-  \end{block}
+  \begin{itemize}
+    \item Recurrent Form:
+    \begin{itemize}
+      \item Starting Values: $F_0 = 0$, $F_1 = 1$
+      \item Recurrence: $F_n = F_{n-1} + F_{n-2}$
+    \end{itemize}\bigskip
 
-  \begin{block}{The recurrence is well known}
-  \begin{equation*}
-  F(0) = 0, F(1) = 1, F(n) = F(n-1)+F(n-2)
-  \end{equation*}
-  When implementing the recurrence, don't forget the memoization
-  table!
-  \end{block}
+    \item Be careful when implementing recurrences with multiple terms;
+    \begin{itemize}
+      \item If using recursive functions, {\bf memoization/DP} is necessary to avoid wasted calculation;
+      \item In general, each term in a recurrence requires a starting value;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
-  \begin{block}{Closed Form}
-    The Fibonacci numbers also have a less well known
-    \structure{closed form}:
-
+\begin{frame}[fragile]
+  \frametitle{Bonus: Fibonacci Facts}
+  \begin{block}{Closed Form for the Fibonacci Numbers:}
     \begin{equation*}
       F(n) = \frac{1}{\sqrt{5}}\left(\left(\frac{1+\sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)^n\right)
     \end{equation*}
-  \end{block}
-    Square roots introduce floating point errors. What is the maximum
-    $n$ this can calculate with less than 0.1 error?
-  }
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Fibonacci Facts}
-  {\smaller
-  \begin{block}{Zeckendorf's theorem}
-    Every positive integer can be written in a \structure{unique way} as a sum of
-    one or more distinct fibonacci numbers, which are not consecutive.
-
-\begin{verbatim}
-def zeckenfy(n):
-    fibs = []
-    f = greatest fib =< n; fibs.append(f)
-    fibs.append(zeckenfy(n-f))
-    return fibs
-\end{verbatim}
+    The second term of the closed form tends to 0 when $n$ is large!
   \end{block}
 
   \begin{block}{Pisano's period}
-    The last digits of the Fibonacci sequence repeat!
-
-    \medskip
-
-    The last one/two/\alert{three/four} digits repeat with a period of
-    60/300/\alert{1500/15000}.
-
-    F(6) = 8\\
-    F(66) = 27777890035288\\
-    F(366) = 1380356705549181797202918793682511 3333650564850089197542855968899086435571688
-
-  \end{block}
-  }
-\end{frame}
-
-\subsection{Binom}
-
-\begin{frame}[fragile]
-  \frametitle{Binomial Coefficients}
-  {\smaller
-
-    \begin{block}{Definition}
-      Binomial Coefficients are the number series that correspond to
-      the coefficients of the expansion of a binomial:
-
-      \medskip
-
-      Binom(3) = $(a+b)^3$ = $1a^3 + 3ab^2 + 3ab^2 + b^3$ = $\{1,3,3,1\}$
-
-      \medskip
-
-      We are usually interested in the $k^{th}$ coefficient of the
-      $n^{th}$ binomial:
-
-      \medskip
-
-      $C(n,k) = C(3,2) = \{1,$ \alert{3} $,3,1\} = 3$
-
-    \end{block}
-
-    Pascal's Triangle gives us a good representation of C(n,n):
+    The last digits of the Fibonacci sequence repeat with a fixed period!\bigskip
+{\smaller
 \begin{verbatim}
-0  1  0  0  0  0  0  0  0  0
-0  1  1  0  0  0  0  0  0  0
-0  1  2  1  0  0  0  0  0  0
-0  1  3  3  1  0  0  0  0  0
-0  1  4  6  4  1  0  0  0  0
-0  1  5  10 10 5  1  0  0  0
-0  1  6  15 20 15 6  1  0  0
-0  1  7  21 35 35 21 7  1  0
-0  1  8  28 56 70 56 28 8  1
-\end{verbatim}
-  }
+ Digits        | Period      || Digits        | Period
+ last digit    | 60 numbers  || last 3 digits | 1500 numbers
+ last 2 digits | 300 numbers || last 4 digits | 15000 numbers
+
+F(6)   =                             8
+F(66)  =                27777890035288
+F(366) =  1380356 ... 8899086435571688
+\end{verbatim}}
+  \end{block}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Uses for the Binomial Coefficient}
+% What are binomial numbers (equations)
+% How do we calculate them (closed form and DP)
+% Where do we use them? (Number of Choices)
 
-  The value of $C(n,k)$ tells us how many ways we can choose $n$
-  items, $k$ at a time.
+\begin{frame}{Binomial Coefficient}
+  \begin{block}{Definition}
+    {\bf Binomial Coefficients} are the set of numbers that correspond to the expansion of a binomial:\bigskip
 
-  \bigskip
+    \begin{itemize}
+      \item $B_3 = (a+b)^3 = 1a^3 + 3a^2b + 3ab^2 + b^3 = \{1,3,3,1\}$
+      \item $B_5 = (a+b)^5 = 1a^5 + 5a^4b + 10a^3b^2 + 10a^2b^3 + 5ab^4 + 1b^5 = \{1,5,10,10,5,1\}$
+    \end{itemize}\bigskip
 
-  Some use cases:
+    Many times, we are interested in the k-th number of the n-binomial, written as $C(n,k)$ or $^nC_k$. Example: $C(5,2) = 10$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Binomial Coefficient}{Interpretation and Recurrent Form}
+  The common interpretation of $C(n,k)$ is "I have to select A or B $n$ times, how many different ways can I choose A $k$ times?"
   \begin{itemize}
-  \item \structure{Probabilities:} What is the probability of winning
-    a loto when you choose 5 numbers out of 60? $1/C(60,5)$
-  \item \structure{Grids:} How many ways are there to go from the
-    bottom left end of a $mn$ grid to the top right, if you can only
-    go up and right? $C(m+n,n)$
+    \item How many binary strings with $n$ digits have $k$ ones?
+    \item How many paths exist
+  \end{itemize}\bigskip
+
+  Using this definition, we can define the recurrent form of the Binomial:
+  \begin{itemize}
+    \item I have to choose A $k$ times out of $n$
+    \begin{itemize}
+      \item If I choose A $k-1$ times out of $n-1$, I choose A again.
+      \item If I choose A $k$ times out of $n-1$, I choose B.
+    \end{itemize}
+    \item $C(n,k) = C(n-1,k-1) + C(n-1,k)$
+    \item Don't forget to use DP to implement this!
+  \end{itemize}\bigskip
+\end{frame}
+
+\begin{frame}[fragile]{Pascal's Triangle}
+  The recurrent form of the binomials:
+  \begin{equation*}
+    C(n,k) = C(n-1,k-1) + C(n-1,k)
+  \end{equation*}
+
+  Can also be observed by laying out the numbers:
+
+\begin{verbatim}
+1
+
+1 1
+
+1 2 1
+
+1 3 3 1
+
+1 4 6 4 1
+
+1 5 10 10 5 1
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Closed Form for the Binomial}
+  The closed form for $C(n,k)$ is:\bigskip
+
+    \begin{equation*}
+      C(n,k) = \frac{n!}{(n-k)!k!}
+    \end{equation*}\bigskip
+
+  Be careful! As you remember, the value of $n!$ can become very big,
+  very fast. It might be better to calculate the binomial using the recurrent
+  form, to avoid overflow.
+\end{frame}
+
+\begin{frame}{The Catalan Numbers}
+  \begin{block}{Motivating Problem}
+    Given $n$ pairs of parenthesis, how many different balanced expressions can you create?\bigskip
+
+    \begin{itemize}
+      \item n = 0: . = 1
+      \item n = 1: () = 1
+      \item n = 2: ()(), (()) = 2
+      \item n = 3: ((())), ()(()), (())(), (()()), ()()() = 5
+      \item n = 4: 14
+      \item n = 5: 42
+    \end{itemize}
+  \end{block}\bigskip
+
+  This sequence is known as the {\bf Catalan Numbers}, and it appears in
+  several recursive combinatory problems.
+\end{frame}
+
+\begin{frame}{The Catalan Numbers}{Recurrent Form}
+  The {\bf Recurrent form} of the catalan number can be derived from the parenthesis definition:\bigskip
+
+  \begin{itemize}
+    \item If we define $c_k$ as an expression with k parenthesis, we can break it down into: $c_k = (c_a)c_b$, where $k = a + b + 1$. \medskip
+
+    \item Varying the values of $a$ and $b$, and counting all possible variations gives us the recurrent form:\medskip
+
+    \item $c_{n+1} = \sum_{i=0}^n c_ic_{n-i}$
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Calculating the Binomial Coefficient}
-  {\smaller
+\begin{frame}{Closed Form and Usage}
+  The closed form of the Catalan Numbers is:
+  \begin{equation*}
+    c_n = \frac{1}{n+1}C(2n,n)
+  \end{equation*}
+  Be careful of calculating factorials in $C(2n,n)$\bigskip
 
-    \begin{block}{Closed form of C(n,k)}
-      \begin{equation*}
-        C(n,k) = \frac{n!}{(n-k)!k!}
-      \end{equation*}
-
-      \alert{Problem}: Multiplying factorials tends to generate huge numbers
-      even for small $n$ and $k$.
-    \end{block}
-
-    \begin{block}{Recurrence for C(n,k)}
-      \begin{itemize}
-      \item C(n,0) = C(n,n) = 1;
-      \item C(n,k) = C(n-1,k-1) + C(n-1,k)
-      \end{itemize}
-
-      Using a memoization table will cut the calculation time by
-      half. In this case, top-down DP will usually be faster than
-      bottom-up.
-    \end{block}
-  }
-\end{frame}
-
-\subsection{Catalan}
-
-\begin{frame}
-  \frametitle{Another useful sequence: Catalan Numbers}
-  {\smaller
-  \begin{block}{The Catalan sequence}
-    \begin{equation*}
-      C(n) = 1, 1, 2, 5, 14, 42, 132, 429, 1430
-    \end{equation*}
-  \end{block}
-
-  \begin{exampleblock}{The Recurrence}
-    \begin{equation*}
-    C(n) = \sum^{n-1}_{k=0}C(k)C(n-1-k)
-    \end{equation*}
-  \end{exampleblock}
-
-  \begin{exampleblock}{Closed Form}
-    \begin{equation*}
-      C(n) = \frac{1}{n+1}\binom{2n}{n}
-    \end{equation*}
-  \end{exampleblock}
-  }
-\end{frame}
-
-\begin{frame}
-  \frametitle{Catalan Numbers -- Uses}
-  \begin{itemize}
-    \item Number of ways that you can match $n$ parenthesis.\\
-      C(3):((())),()(()),(())(),()()(),(()())
-
-      \medskip
-
-    \item Number of ways that you can triangulate a poligon with $n+2$ sides
+  \begin{block}{Other uses of Catalan Numbers}
+    \begin{itemize}
+    \item Number of ways you can triangulate a poligon with $n+2$ sides;
     \item Number of monotonic paths on an $nxn$ grid that do not pass above
       the diagonal.
     \item Number of distinct binary trees with $n$ vertices
     \item Etc...
-  \end{itemize}
-\end{frame}
-
-\subsection{Integer Partition}
-\begin{frame}
-  \frametitle{Integer Partition}
-  \begin{block}{}
-    f(5,5) = (5),(4,1),(3,2),(3,1,1),(2,2,1),(2,1,1,1),(1,1,1,1,1)
-  \end{block}
-  \begin{block}{Definition and calculation}
-    $f(n,k)$ -- number of ways that we can sum $n$, using integers
-    equal or less than $k$.
-
-    \bigskip
-
-    \structure{Recurrence:}
-    \begin{itemize}
-    \item $f(n,k) = f(n-k,k) + f(n, k+1)$
-    \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$
     \end{itemize}
   \end{block}
 \end{frame}
+
+% TODO: Check if this makes sense
+% \begin{frame}
+%   \frametitle{Integer Partition}
+%   \begin{block}{}
+%     f(5,5) = (5),(4,1),(3,2),(3,1,1),(2,2,1),(2,1,1,1),(1,1,1,1,1)
+%   \end{block}
+%   \begin{block}{Definition and calculation}
+%     $f(n,k)$ -- number of ways that we can sum $n$, using integers
+%     equal or less than $k$.
+%
+%     \bigskip
+%
+%     \structure{Recurrence:}
+%     \begin{itemize}
+%     \item $f(n,k) = f(n-k,k) + f(n, k+1)$
+%     \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$
+%     \end{itemize}
+%   \end{block}
+% \end{frame}
 
 
 

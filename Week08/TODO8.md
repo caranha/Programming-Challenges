@@ -1,10 +1,9 @@
 # TODO:
-- [ ] Rewrite Summary
-- [ ] Improve Diaphantyne equation
-- [ ] Improve combinatorics part
-- [ ] Add comment on problems
 - [ ] Before Recording, check japanese vocabulary
-  - Primes, Factor, Prime Factor
+  - Primes, Factor, Prime Factor, Amortized Complexity
+  - Prime number: Sosuu, Prime factors: Soinsuu, Factorization: Insuu Bunkai
+  - Greatest Common Divisor Saidaikōyakusū 最大公約数
+
 
 # Week 08: Mathematics
 General Topics:
@@ -39,3 +38,4 @@ Add algorithms from the books
 
 # Future
 - [ ] Future topics (from Halim's book) Cycle finding, Game Theory
+- [ ] Check TODO inside the file.
