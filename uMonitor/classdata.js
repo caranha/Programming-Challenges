@@ -6,7 +6,7 @@ var student_id = [962913, 1046827, 1047312, 1112458, 1137119, 1137134, 1137153, 
 var student_list = student_id.concat(claus_id);
 
 var startdate = parseUCT("2020-04-01T00:00:00+09:00");
-var enddate = parseUCT("2020-07-21T14:59:59+09:00");
+var enddate = parseUCT("2020-07-25T14:59:59+09:00");
 
 var problemlist = [
     {name:"Example Problems (Non-grading)",
@@ -31,15 +31,15 @@ var problemlist = [
      deadline:"2020-06-11T14:59:59+09:00",
      mlist:[499, 1112, 2352, 3497, 1295, 195, 1421, 1021]},
     {name:"Week 7: String Manipulation",
-     deadline:"2020-06-18T14:59:59+09:00",
+     deadline:"2020-06-21T14:59:59+09:00",
      mlist:[585, 495, 1239, 951, 2470, 2225, 1576, 2048]},
     {name:"Week 8: Mathematics",
-     deadline:"2020-06-25T14:59:59+09:00",
+     deadline:"2020-06-28T14:59:59+09:00",
      mlist:[1117, 3651, 1425, 1109, 1244, 2396, 990, 1031]},
     // {name:"Week 9: Computational Geometry",
-    //  deadline:"2020-07-02T14:59:59+09:00",
+    //  deadline:"2020-07-05T14:59:59+09:00",
     //  mlist:[861, 774, 2934, 2093, 1518, 3060, 3552, 1593]},
     // {name:"Week 10: Final Problems. Remix!",
-    //  deadline:"2019-07-09T14:59:59+09:00",
+    //  deadline:"2019-07-12T14:59:59+09:00",
     //  mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
