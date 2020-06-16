@@ -1,11 +1,10 @@
 # TODO:
-- [ ] Before Recording, check japanese vocabulary
-  - Primes, Factor, Prime Factor, Amortized Complexity
-  - Prime number: Sosuu, Prime factors: Soinsuu, Factorization: Insuu Bunkai
-  - Greatest Common Divisor Saidaikōyakusū 最大公約数
+# Future
+- [ ] In combinatorics, add example problem: Steps
+- [ ] Future topics (from Halim's book) Cycle finding, Game Theory
+- [ ] Check TODO inside the file.
 
-
-# Week 08: Mathematics
+# Lecture Outline: Week 08: Mathematics
 General Topics:
 - Number Theory
 - Diaphantyne equation, primes, factorization
@@ -35,7 +34,3 @@ Add algorithms from the books
     Binomial Sequence, Catalan Sequence, Fibonacci
 - Example Problem:
     Steps
-
-# Future
-- [ ] Future topics (from Halim's book) Cycle finding, Game Theory
-- [ ] Check TODO inside the file.

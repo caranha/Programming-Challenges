@@ -56,6 +56,9 @@ algorithm knowledge through implementation.
 - **Week08** -- Math Problems
   - [Lecture notes](Week08/week08.pdf)
   - Video lectures
+    - Video 1: [Introduction](https://youtu.be/iw7KdaYcWiw)
+    - Video 2: [Prime Factors](https://youtu.be/qNACw0XJ6qM)
+    - Video 3: [Catalan Numbers](https://youtu.be/4a4ZStdZ6vc)
 - **Week09** -- Geometry Problems
 - **Week10** -- Final Problem Remix
 
