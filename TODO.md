@@ -1,9 +1,4 @@
-# This Year 2020
-
-
-## Week 9: Computational Geometry
-- Overall good lecture -- See local TODO for suggested improvements
-
+# This year:
 ## Javascript monitor:
 - [ ] Add the number of times a student submitted each problem
       (total submissions / submissions before accepted)
