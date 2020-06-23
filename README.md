@@ -61,6 +61,10 @@ algorithm knowledge through implementation.
     - Video 3: [Catalan Numbers](https://youtu.be/4a4ZStdZ6vc)
 - **Week09** -- Geometry Problems
   - [Lecture notes](Week09/week09.pdf)
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/cZlk37u6YYM)
+    - Video 2: [Circles](https://youtu.be/nWueSZ3kfWk)
+    - Video 3: [Convex Hull](https://youtu.be/Y3W2IdQSfD0)
 - **Week10** -- Final Problem Remix
 
 # Links:
