@@ -1,116 +1,128 @@
 
 \section{Introduction}
 
-\begin{frame}
-  \frametitle{Computational Geometry}
-  \framesubtitle{What is it?}
+\subsection{Motivation}
+\begin{frame}[t]{What is Computational Geometry?}
+  In programming challenges, Computational Geometry problems involve answering questions about {\bf lines, points and angles}. Some examples of pure Comp. Geometry problems:
 
-  {\small
+  \begin{block}{Example 1}
+    Given a set of $N$ points $(s_1, s_2, s_3, \ldots, s_N)$, what is
+    the area of the smallest polygon that covers all points in the set?
+  \end{block}
 
-    \structure{Computational Geometry} problems involve answering
-    questions about \structure{lines, points and angles}. Some example
-    questions:
-
-    \bigskip
-
-    \begin{block}{}
-    \only<1>{Given $N$ points $(s_1, s_2, s_3, \ldots, s_N)$, what is
-      the area of the poligon that covers all the points?}
-
-    \only<2>{Given $N$ rectangles, $x_1,y_1,w_1,h_1; \ldots; x_N, y_N,
-      w_N, h_N$, what is the length of lines needed to connect them?}
-
-    \only<3>{Given a polygon, and $N$ points, what is the line
-      that divides the polygon in equal areas, so that the same
-      number of points are in each area?}
-    \end{block}
-
-    \begin{center}
-      \includegraphics<1>[width=0.8\textwidth]{img/sampleproblem_1.png}
-      \includegraphics<2>[width=0.6\textwidth]{img/sampleproblem_2.png}
-      \includegraphics<3>[width=0.4\textwidth]{img/sampleproblem_3.png}
-    \end{center}
-
-  }
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/sampleproblem_1.png}
 \end{frame}
+
+\begin{frame}[t]{What is Computational Geometry?}
+  In programming challenges, Computational Geometry problems involve answering questions about {\bf lines, points and angles}. Some examples of pure Comp. Geometry problems:
+
+  \begin{block}{Example 2}
+    Given $N$ rectangles, $\{x_1,y_1,w_1,h_1\}; \ldots; \{x_N, y_N, w_N, h_N\}$, what is the smallest length of line segments needed to connect them?
+  \end{block}
+
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/sampleproblem_2.png}
+\end{frame}
+
+\begin{frame}[t]{What is Computational Geometry?}
+  In programming challenges, Computational Geometry problems involve answering questions about {\bf lines, points and angles}. Some examples of pure Comp. Geometry problems:
+
+  \begin{block}{Example 3}
+    Given a polygon and a set of $N$ points, find a line that divides the polygon in equal areas, with the same number of points in each area?
+  \end{block}
+
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{img/sampleproblem_3.png}
+  \end{center}
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Computational Geometry}
   \framesubtitle{The good and the bad}
 
-  \begin{itemize}
-  \item \structure{Good}: Geometry problems are fun
-  \item \structure{Good}: You have to draw pretty pictures
-  \item \structure{Good}: Mostly algorithms from high school
-  \item \structure{Good}: Code is highly re-usable
+  Computational Geometry problems have some merits and demerits when compared to other problems that we studied until now.
 
-    \bigskip
+  \begin{block}{Positive Points}
+    \begin{itemize}
+      \item Geometry problems are fun, and you draw pretty pictures when thinking about them (ok, maybe this one is a bit personal);
+      \item A large part of geometry problems can be solved with algorithms and techniques that you learned in high school;
+      \item The code for techniques is highly re-usable;
+    \end{itemize}
+  \end{block}
 
-  \item \alert{Bad}: You have to write a lot of code (in the beginning!)
-  \item \alert{Bad}: Very easy to get WE...
-  \end{itemize}
+  \begin{alertblock}{Negative Points}
+    \begin{itemize}
+      \item You have to write a lot of code (in the beginning, at least);
+      \item Easy to get WE for small mistakes;
+      \item Many special cases in the input data;
+    \end{itemize}
+  \end{alertblock}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Easy Mistakes in Geometry Problems}
+  \frametitle{Common Mistakes in Geometry Problems}
 
-  {\small
-    \begin{block}{Problem 1 -- Special Cases}
+    \begin{block}{Errors because of special cases in input data}
       \begin{itemize}
-      \item Multiple points in the same place;
-      \item Collinear points;
-      \item Vertical lines;
-      \item Parallel Lines;
-      \item Intersection at end of segment;
-      \item etc;
+        \item Multiple points in the same position;
+        \item Collinear points (three points in the same line);
+        \item Vertical lines (bad tangent value, division by 0);
+        \item Parallel Lines (bad intersection value);
+        \item Intersection at end of a segment;
+        \item etc;
       \end{itemize}
     \end{block}
 
-    \begin{block}{Problem 2 -- Precision Errors}
+    \begin{block}{Floating Number Precision Errors}
       \begin{itemize}
-      \item Functions require many multiplications and divisions;
-      \item Easy to propagate floating point errors;
+        \item Wrong Answer because of poor rounding of final result;
+        \item Error Propagation inside functions (multiplication, division);
       \end{itemize}
     \end{block}
-  }
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Easy Mistakes in Geometry Problems}
+  \frametitle{Common Mistakes in Geometry Problems}
 
-  {\smaller
+  How to avoid these mistakes in Geometry Problems?\bigskip
 
-    \begin{block}{Dealing Special Cases}
-      \begin{itemize}
-      \item Make sure to add special cases to your
-        library functions;
-      \end{itemize}
-    \end{block}
+  \begin{itemize}
+    \item {\bf Special Cases}:
+    \begin{itemize}
+      \item Make sure to think which special cases affect your tecnique, and add checks for these cases;
+      \item When testing your problem, include input with the special case;
+    \end{itemize}\bigskip
 
-    \begin{block}{Solving Precision Errors}
-      \begin{itemize}
-      \item If possible, convert all values to integers
-      \item Use an EPSILON constant for comparisons:
-
+    \item {\bf Precision Errors}:
+    \begin{itemize}
+      \item If possible, convert values to integers before calculation;
+      \item When testing equality of two values, use an {\bf Epsilon Constant}:
 \begin{verbatim}
 if (float.1 == float.2) then            // NO
 if (fabs(float.1 - float.2) < EPS) then // YES!
 \end{verbatim}
-
-      \end{itemize}
-    \end{block}
-  }
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
+\subsection{Class Outline}
 \begin{frame}
   \frametitle{Class Outline}
+  In this lecture, we will focus on:
   \begin{itemize}
-  \item Example Problems;
-  \item Basic Geometric Functions;
-  \item Circles;
-  \item Triangles;
-  \item Polygons;
-  \end{itemize}
+    \item Discussion of implementation of geometric operations;
+    \item Discussion of problem examples;
+  \end{itemize}\bigskip
+
+  Specific topics will be:
+  \begin{itemize}
+    \item Intersection and Rotation of points and lines;\medskip
+    \item Circle representation and components;\medskip
+    \item Triangles (area, angles, triangles and circles);\medskip
+    \item Polygon representation and Convex Hull;
+  \end{itemize}\medskip
 \end{frame}

@@ -60,6 +60,7 @@ algorithm knowledge through implementation.
     - Video 2: [Prime Factors](https://youtu.be/qNACw0XJ6qM)
     - Video 3: [Catalan Numbers](https://youtu.be/4a4ZStdZ6vc)
 - **Week09** -- Geometry Problems
+  - [Lecture notes](Week09/week09.pdf)
 - **Week10** -- Final Problem Remix
 
 # Links:
