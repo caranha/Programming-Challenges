@@ -1,12 +1,12 @@
 # This year:
 ## Javascript monitor:
+- [ ] Change problem links to replace "com_onlinejudge" to "onlinejudge"
 - [ ] Add the number of times a student submitted each problem
       (total submissions / submissions before accepted)
 - [ ] Add a "Number of students that solved X problems" for each week
 - [ ] Add a "Solutions/Submissions" per language per problem.
 - [ ] Add a view of "top students" (total submissions, and penalty score)
 - [ ] Add a final report mode for teacher
-
 
 # Future
 ## General

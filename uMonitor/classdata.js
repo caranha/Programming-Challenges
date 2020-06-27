@@ -39,7 +39,7 @@ var problemlist = [
     {name:"Week 9: Computational Geometry",
      deadline:"2020-07-05T14:59:59+09:00",
      mlist:[861, 774, 2934, 2093, 1518, 3060, 3552, 1593]},
-    // {name:"Week 10: Final Problems. Remix!",
-    //  deadline:"2019-07-12T14:59:59+09:00",
-    //  mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
+    {name:"Week 10: Final Problems. Remix!",
+     deadline:"2020-07-12T14:59:59+09:00",
+     mlist:[1878, 944, 3679, 3672, 655, 953, 231, 3520]}
 ];
