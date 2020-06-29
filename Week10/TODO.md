@@ -5,7 +5,6 @@ DP 2 -- Remix Class
 - Add discussion/problem about Meet In The Middle (MITM)
 
 # lecture Preparation
-## Grades Summary, Final Deadline
 ## DP on Graph -- Implicit graph and TSP
 ## Special DPs -- Cutting Sticks and Free Parenthesis
 
@@ -17,8 +16,8 @@ DP 2 -- Remix Class
 - 1231  -- ACORN (3672) -- DP with tricky states (Current tree is not needed as state), page 315
 - 714   -- Copying Books (655) -- Binary search with greedy algorithm (or DP), page 328  
 - 10012 -- How big is it? (953) -- Complete search with geometry
-- 295   -- Fatman (231) -- Binary search + Graph + Geometry: Decide the size of the man, then 
+- 295   -- Fatman (231) -- Binary search + Graph + Geometry: Decide the size of the man, then
            connect all points under that distance + walls. If walls are connected, cannot pass.
-- 1079  -- A careful approach (3520) -- Full search of airplane orders, followed by 
+- 1079  -- A careful approach (3520) -- Full search of airplane orders, followed by
            binary search of largest gap, powered by greedy allocation of gaps
 	   (possibly pruning, but not necessary?)

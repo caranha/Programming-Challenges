@@ -25,11 +25,11 @@
 ~~!!!###~~       # -- Trees, can't cross
 ~##...###~       ! -- Treasure, get these!
 ~#....*##~       . -- Just sand
-~#!..**~~~       @ -- Landing point, return here.
-~~....~~~~
-~~~....~~~       The solution for this case is: 32
-~~..~..@~~       How would YOU solve this problem?
-~#!.~~~~~~
+~#!..**~~~       * -- Natives, don't get close here.
+~~....~~~~       @ -- Landing point, start and return here.
+~~~....~~~
+~~..~..@~~       The solution for this case is: 32
+~#!.~~~~~~       How would YOU solve this problem?
 ~~~~~~~~~~
 0 0
 \end{verbatim}
@@ -39,24 +39,19 @@
 \begin{frame}
   \frametitle{UVA 10937 -- Blackbeard the Pirate}
 
-  How would you solve this problem?
-
-  \vfill
+  How would you solve this problem?\bigskip
 
   \begin{itemize}
-  \item Which algorithm do you suggest?
-    \bigskip
+    \item What is the data structure required for this problem?\bigskip
 
-  \item What is the complexity of that algorithm?
+    \item What is the complexity of full search?\bigskip
+    \begin{itemize}
+      \item What are the solutions that you are searching?
+      \item Max map size: $50\times50$, Max treasures: $10$
+    \end{itemize}
 
-    \bigskip
-  \item Where do you need to be careful?
+    \item What is a more effective algorithm?
   \end{itemize}
-
-  \bigskip
-
-  \alert{Quiz} -- What is the complexity of the problem for full
-  recursive search? (Map size $50x50$, number of treasures is $10$)
 
 \end{frame}
 
@@ -428,11 +423,10 @@ visit(p,v):
   \bigskip
 
   \begin{block}{}
-    Let's skip the full search. This smells of DP, but how to solve it?
-
-    \medskip
-
-    \alert{QUIZ:} Describe the {\bf transition} and the {\bf state table}
+    \begin{itemize}
+      \item First, it is worth to think about the full search size;
+      \item But this problem smells of DP -- can you think of a {\bf transition} and a {\bf state table}?
+    \end{itemize}
   \end{block}
   }
 \end{frame}
@@ -498,7 +492,7 @@ visit(p,v):
       \item $\text{dp}[0] = \text{max}_{1\leq j\leq T}\text{acorn}[j][0]$
        \medskip
 
-      \item $\text{acorn}[j][i] += \text{max}(\text{acorn}[j][i-1], \text{maxac}[i-f])$
+      \item $\text{acorn}[j][i] += \text{max}(\text{acorn}[j][i-1], \text{max}[i-f])$
         \medskip
 
       \item $\text{dp}[i] = \text{max}_{1\leq j\leq T}(\text{acorn}[j][i])$
@@ -548,12 +542,12 @@ visit(p,v):
   We can break this problem into two sub-problems:
   \begin{block}{}
   \begin{enumerate}
-  \item Is it possible for a circle of size $0 \leq R \leq W$ to pass?
+  \item Is it possible for a circle of radius $R, 0 \leq R \leq W$ to pass?
   \item What is the maximum $R$ that can pass?
   \end{enumerate}
   \end{block}
 
-  \alert{QUIZ}: Assume that (2) is ``fast enough'', how do we solve (1)?
+  \alert{QUIZ}: Assume that (1) is ``fast enough'', how do we solve (2)?
   }
 \end{frame}
 
@@ -568,9 +562,7 @@ visit(p,v):
       \end{itemize}
     \end{block}
 
-    Assuming that we have a ``fast'' algorithm to test if $R$ can
-    pass ($T(R)$), we could use \structure{Binary Search} to find the maximum
-    R:
+    If we have a "fast" function $T(R)$ that tests if $R$ can pass or not, we can use {\bf Binary Search} to find the maximum $R$ that pass:
 
     \bigskip
 

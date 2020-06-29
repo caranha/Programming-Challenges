@@ -66,6 +66,7 @@ algorithm knowledge through implementation.
     - Video 2: [Circles](https://youtu.be/nWueSZ3kfWk)
     - Video 3: [Convex Hull](https://youtu.be/Y3W2IdQSfD0)
 - **Week10** -- Final Problem Remix
+  - [Lecture notes](Week10/week10.pdf)
 
 # Links:
 * [Online Judge](http://onlinejudge.org/) -- Use this site to test your submissions
