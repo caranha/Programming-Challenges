@@ -67,6 +67,9 @@ algorithm knowledge through implementation.
     - Video 3: [Convex Hull](https://youtu.be/Y3W2IdQSfD0)
 - **Week10** -- Final Problem Remix
   - [Lecture notes](Week10/week10.pdf)
+  - Video lectures
+    - Video 1: [Introduction](https://youtu.be/f7JvOsGIH-A)
+    - Video 2: [Binary Search + Alpha](https://youtu.be/0NHsByIBt7A)
 
 # Links:
 * [Online Judge](http://onlinejudge.org/) -- Use this site to test your submissions
