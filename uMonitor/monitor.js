@@ -19,20 +19,9 @@ var variables = ["student_maxsub", "student_subs",
 
 // -- General Functions -- //
 function startup() {
-  // loading from local storage
-  // Stop loading from local storage until things stabilize
-  clear_data();
-
-  // if (typeof(Storage) !== "undefined") {
-  //   for (var i = 0; i < variables.length; i++)
-  //   if (localStorage.hasOwnProperty(variables[i])) {
-  //     window[variables[i]] = JSON.parse(localStorage[variables[i]]);
-  //   }
-  // } else {
-  //   console.log("No local storage found!")
-  // }
 
   load_and_render_problems();
+  loadData();
 }
 
 function clear_data() {
@@ -184,12 +173,6 @@ function grade_students() {
   aggregate_data();
 
 
-  // TODO: re-think this code for end-of-semester
-  // for (var i = 0; i < student_list.length; i++) {
-  //
-  //   addRowGradeSummary(student_list[i]);
-  //   addRowDetailedSub(student_list[i]);
-  // }
 }
 
 function aggregate_data() {
@@ -343,41 +326,70 @@ function parse_student(student_id) {
 }
 
 function check_student() {
-  //Remove table elements in case a previous user info has been searched for.
-  var status_column = document.getElementsByClassName("status");
-  for(var i = 0; i < status_column.length; i++) {
-      status_column[i].innerHTML = "";
+  //clear previous status
+  for (let _col of document.getElementsByClassName("status")) {
+    _col.innerHTML = "";
+  }
+  let detdiv = document.getElementById("user_details");
+  while (detdiv.firstChild) {
+      detdiv.removeChild(detdiv.firstChild);
   }
 
-  var query = document.getElementById('uname').value;
+  // start query
+  let query = document.getElementById('uname').value;
+  let key;
 
-  for (let key of Object.keys(student_uname)) {
-    if (query == key || query == student_uname[key]) {
-      query = key;
-      for (let i of Object.keys(problem_info)) {
-        var status = 0;
-        if (typeof(student_status[query][i]) !== "undefined") {
-          status = student_status[query][i]["status"];
-        }
-        var v;
-        switch (status) {
-        case 0: v = "<div class=\"ns\">Not submitted</div>"; break;
-        case 1: v = "<div class=\"na\">Not accepted</div>"; break;
-                               //case 2: v = "<div class=\"al\">Accepted ("+s2d(tt-end)+" late)</div>"; break;
-                               // Uncomment the version above to show exactly how late an exercise is
-        case 2: v = "<div class=\"al\">Accepted (late)</div>"; break;
-        case 3: v = "<div class=\"ac\">Accepted</div>"; break;
-        }
-        if (document.getElementById("st"+i) !== null) {
-          document.getElementById("st"+i).innerHTML = v;
-        }
-      }
-      return;
+  // FIXME: student_uname should not be... whatever it is.
+  for (let k of Object.keys(student_uname)) {
+    if (query == k || query == student_uname[k]) {
+      key = k;
+      break;
     }
   }
 
-  // could not find the username
-  document.getElementById("user_error").innerHTML = "Can't find username";
+  console.log(key);
+
+  if (typeof(key) != "undefined") {
+    for (let i of Object.keys(problem_info)) {
+      var status = 0;
+      if (typeof(student_status[key][i]) !== "undefined") {
+        status = student_status[key][i]["status"];
+      }
+      var v;
+      switch (status) {
+      case 0: v = "<div class=\"ns\">Not submitted</div>"; break;
+      case 1: v = "<div class=\"na\">Not accepted</div>"; break;
+      case 2: v = "<div class=\"al\">Accepted (late)</div>"; break;
+      case 3: v = "<div class=\"ac\">Accepted</div>"; break;
+      }
+      if (document.getElementById("st"+i) !== null) {
+        document.getElementById("st"+i).innerHTML = v;
+      }
+    }
+
+
+    let grades = gradeStudent(key);
+
+    function addtext(text) {
+      let _p = document.createElement("p");
+      _p.appendChild(document.createTextNode(text));
+      detdiv.appendChild(_p);
+    }
+
+    addtext("Solutions per week: ");
+    addtext(grades.week.join(", "));
+    addtext("Base Grade: "+grades.grade);
+    addtext("Total: "+grades.solved.length+" Late: "+grades.late.length);
+    addtext("Late Penalty: "+(grades.penalty ? "Yes" : "No"));
+
+  } else {
+    let errdiv = document.createElement("div");
+    errdiv.appendChild(document.createTextNode(
+      "Can't find username"
+    ));
+    detdiv.appendChild(errdiv);
+  }
+
 }
 
 

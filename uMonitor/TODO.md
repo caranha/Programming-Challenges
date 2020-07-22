@@ -1,13 +1,5 @@
-2020 Preparation TODO
-=============================================
-- [X] Button to erase local data
-- [X] Load and display lecture basic data
-- [X] Load and display personal result data
-- [X] Load and display aggregate problem data
-- [X] Hide debug buttons
-- [ ] Publish on github
 
-_Future_
+# Future
 - [ ] Fix "display all grades"
 
 Design:

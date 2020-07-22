@@ -5,6 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="classdata.js"></script>
+<script type="text/javascript" src="grading.js"></script>
 <script type="text/javascript" src="monitor.js"></script>
 </head>
 
@@ -20,7 +21,7 @@
 <!-- keyCode 13 == Enter key -->
 Check submissions for username: <input onkeypress="if(event.keyCode == 13) check_student()" type="text" id="uname">
 <button onclick="check_student()">Go</button>
-<div id="user_error"></div>
+<div id="user_details"></div>
 </div>
 
 <hr>
@@ -43,27 +44,6 @@ Page by <a href="http://conclave.cs.tsukuba.ac.jp">Claus Aranha</a>, using the <
 
 Thanks to Gabriel Tiburcio and Hinata Yanagi for patches.
 </div>
-
-<!-- <div class="debug">
-  <p>Debug buttons:</p>
-<button onclick="load_submissions()">Reload Submission Data</button>
-<button onclick="grade_students()">Regrade Students</button>
-<button onclick="clear_data()">Clear Locally Stored Data</button>
-</div> -->
-
-<!-- <p>Grade Table:</p>
-<table border='1'>
-<tbody id="grade_table">
-<tr><td>Name</td><td>Week 1</td></tr>
-</tbody>
-</table>
-
-<p>Submission Table:</p>
-<table border='1'>
-<tbody id="submission_table">
-<tr><td>Name</td><td>Total Subs</td><td>Week 1</td></tr>
-</tbody>
-</table> -->
 
 </body>
 </html>
