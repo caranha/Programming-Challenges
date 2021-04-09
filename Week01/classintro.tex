@@ -54,107 +54,105 @@
 
 \begin{frame}{Automated Judging}
   \begin{exampleblock}{}
-  In this lecture we use {\bf Automated Judges (AJ)} to check the correctness of your programming assignments.
+  In this lecture we use {\bf Automated Judges (AJ)} to check if your homework is correct.
   \end{exampleblock}
 
   \begin{itemize}
-    \item An AJ is a website that receives code from users, automatically compile it, and check its output against an expected output;
-    \item AtCoder, Aizu Online Judge, Topcoder, UVA Online Judge;
-    \item You can submit your code many times;
+    \item An AJ is a website that proposes programming puzzles, and receive solutions;
     \begin{itemize}
-      \item But you don't receive debug information: you have to debug by yourself.
-    \end{itemize}
-    \item Grading is automatic and instantaneous;
-  \end{itemize}
-  \bigskip
+      \item Ex: AtCoder, Aizu Online Judge, Topcoder, Codeforces, etc.
+    \end{itemize}\bigskip
 
-  \begin{exampleblock}{}
-  Every lecture, you have 8 programming assignments, and you have to complete a minimum of 2.
-  \end{exampleblock}
+    \item The AJ receives your program; compile it; and grade it;\bigskip
+
+    \item The AJ test your program with a set of \structure{Hidden Inputs}\bigskip
+
+    \item The AJ gives you the result: \structure{Correct} or \alert{Incorrect}
+    \begin{itemize}
+      \item If the result is incorrect, it will not tell you why;
+      \item You have to create debug cases by yourself;
+      \item But, you can submit a new version as many times as you want;
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{What this class expects of you}
   \begin{exampleblock}{Estimated classwork:}
     \begin{itemize}
-      \item You need basic programming knowledge in C++ or Java;
+      \item You need basic programming knowledge in C++;
       \medskip
 
       \item Complete 2-4 program assignments per week;
       \begin{itemize}
+        \item Average of 4 hours of study per week;
+        \item A lot of time with debug and creating test cases;
         \item (Atcoder difficulty: 300 to 500)
-        \item Average of 4 hours per week
       \end{itemize}
       \medskip
 
-      \item First assignments are easy, but later assignments are hard
-      \begin{itemize}
-        \item Spend a lot of time debugging and improving code;
-      \end{itemize}
+      \item Homework starts easy, but becomes harder later in the course;
       \medskip
 
       \item No final exam: only assignments!
     \end{itemize}
   \end{exampleblock}
-  \hfill Hint: Do your homework early!
+  \hfill {\bf Hint: Do your homework early!}
 \end{frame}
 
 \subsection{What are Programming Challenges?}
-\begin{frame}{Part II: What is a Programming Challenge?}
-  A "Programming Challenge" is a problem where you write a program to find the solution. Think of it as a {\bf programming puzzle}:
+\begin{frame}{What kind of problem is a "Programming Challenge?"}
+  A "Programming Challenge" gives you a problem, and you have to write a program to find the solution. Think of it as a {\bf programming puzzle}:
 
   \begin{block}{Simple Example}
-    You want to hold dancing classes. You receive a list of possible dates and
-    times from all your friends (ex: Fri: 14-16). Find a set of class times
-    which put most of your friends together. Don't forget to make pairs!
+    You want to schedule a pair dance club. Your friends give you their possible dates and times (Fri 14:00-15:00). What time do you choose to make the maximum number of pairs?
   \end{block}
   \bigskip
 
   \begin{itemize}
     \item Usually Programming challenges have a "story";
-    \item Usually there is a maximum running time, so you must choose the
-      most efficient algorithm;
-    \item Sometimes there are special input cases;
-    \item In general, you can solve the challenge with a small program (<~200 lines);
+    \item There is a maximum execution time, so you have to use an efficient algorithm;
+    \item Sometimes there are special cases;
+    \item In general, a small program (< 200 lines) can solve the challenge;
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Programming Challenges in the world}
+\begin{frame}{Why programming challenges?}
   \begin{itemize}
-    \item {\bf School Competitions}: Programming contests started as a way for schools to compete early in 1980s. ICPC - University
+    \item {\bf For Competitions}: Around 1980, Programming Contests started as a way for Computer Sciences universities to compete. (IOI, ICPC, etc)
     \bigskip
 
-    \item {\bf Self Improvement}: After 2000, many people use online Automated Judges to improve their programming skills and compete against each other (TopCoder, HackerRank, AtCoder, etc);
+    \item {\bf For Study}: After 2000, many people use online Automated Judges to study programming and prove their ability; (TopCoder, Codeforces, AtCoder, etc);
     \bigskip
 
-    \item {\bf Company Recruitment}: More recently, several companies (including Google, Facebook, etc) have started using programming challenges to test the technical knowledge of their candidates.
+    \item {\bf For Recruitment}: Recently, many companies use Programming Challenges to test the programming ability of candidates. candidates. (Google, Facebook, etc)\bigskip
+
+    \item {\bf For Fun}: Some people just like to have an excuse to program!
   \end{itemize}
 \end{frame}
 
 \subsection{Example}
-\begin{frame}{A challenge example: The 3n+1 problem}
+\begin{frame}{Real Example (from homework): The 3n+1 problem}
   \begin{columns}
-    \column{0.6\textwidth}
-      What can we expect from a programming challenge?
+    \column{0.55\textwidth}
+      Contents of a Programming Challenge:
       \begin{itemize}
-        \item Description;
-        \item Input and Output format;
-        \item Input and Output examples;
+        \item Problem Description;
+        \item Input Description;
+        \item Output Description;
+        \item Input/Output Example;
       \end{itemize}
-      \bigskip
 
-      Let's show how we would solve this problem (we will see more details
-      later in the class).
-    \column{0.4\textwidth}
+    \column{0.45\textwidth}
     \includegraphics[width=1\textwidth]{img/3n_problem}
   \end{columns}
 \end{frame}
 
-\begin{frame}{A challenge example: The 3n+1 problem}{Solving the problem}
+\begin{frame}{Real Example (from homework): The 3n+1 problem}{How to solve?}
   \begin{columns}
-    \column{0.6\textwidth}
-    This problem requires that we calculate the longest sequence generated
-    from the following algorithm:
+    \column{0.55\textwidth}
+    {\smaller
+    The problem wants the \structure{longest sequence size} generated by the following algorithm:
       \begin{enumerate}
         \item if $n = 1$ then STOP
         \item if $n$ is odd, then $n = 3n + 1$
@@ -163,26 +161,26 @@
       \end{enumerate}
     \medskip
 
-    For example, from 1 to 4:
+    For example, if $i = 1$ and $j = 4$:
     \begin{itemize}
-      \item 1: 1 END
-      \item 2: 2 1 END
-      \item 3: 3 10 5 16 8 4 2 1 END
-      \item 4: 4 2 1 END
+      \item n = 1: 1 END; {\bf Length 1}
+      \item n = 2: 2 1 END; {\bf Length 2}
+      \item n = 3: 3 10 5 16 8 4 2 1 END; {\bf Length 8}
+      \item n = 4: 4 2 1 END; {\bf Length 3}
     \end{itemize}
-    Maximum {\bf Cycle length} is 8 (for n = 3)
-    \column{0.4\textwidth}
+    So the {\bf maximum length} is 8 (for n = 3)}
+    \column{0.45\textwidth}
     \includegraphics[width=1\textwidth]{img/3n_problem}
   \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{A challenge example: The 3n+1 problem}{A simple solution}
+\begin{frame}[fragile]{Real Example (from homework): The 3n+1 problem}{A simple program}
 {\smaller
 \begin{verbatim}
 int main() {
-  int min = 1;
-  int max = 10;
+  int min, max;
   int maxcycle = 0;
+  cin >> min >> max;
   for (int i = min; i <= max; i++) {
     int cycle = 1;
     int n = i;
@@ -199,50 +197,49 @@ int main() {
 \end{verbatim}}
 \end{frame}
 
-\begin{frame}{A challenge example: The 3n+1 problem}{Simple solutions, simple
+\begin{frame}{Real Example (from homework): The 3n+1 problem}{Simple programs, simple
   problems}
-The solution proposed in the last slide has some problems. One problem is that
-it can be very slow! Consider the following situation:
+
+The solution in the last slide has some problems. One problem is that
+it can be very slow! Consider the following case:
 \bigskip
 
-Let the input be 1 10:
+i = 1, j = 10:
 \begin{itemize}
-  \item 1: 1 END
-  \item 2: 2 1 END
+  \item n = 1: 1 END
+  \item n = 2: 2 1 END
   ...
-  \item 7: 7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END\\
+  \item n = 7: 7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END\\
   ...
-  \item 9: 9 28 14 \alert{7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END}
-  \item 10: \alert{10 5 16 8 4 2 1 END}
+  \item n = 9: 9 28 14 \alert{7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 END}
+  \item n = 10: \alert{10 5 16 8 4 2 1 END}
 \end{itemize}
 \bigskip
 
-This simple program will repeat a lot of work. If the input is large, this
-extra work will be very slow! How can we improve this?
+A lot of work is repeated without necessity. How to make the program faster?
 \end{frame}
 
-\begin{frame}{A challenge example: The 3n+1 problem}{Memoization}
-  To solve this "repeated work" issue, we can use a technique called
-  {\bf Memoization}.
-  \medskip
-
-  The basic idea is very simple: Every time you finish a calculation,
-  store the result of this calculation in the memory. If you ever have to
-  do that calculation again, load it from memory.
-  \medskip
-
-  This technique can be very useful to reduce the amount of repeated work.
+\begin{frame}{Real Example (from homework): The 3n+1 problem}{Memoization}
+  A technique called {\bf Memoization} can solve the "repeated work" problem.
   \bigskip
 
-  In this course, we will review many techniques like this to make programs more efficient, and you will implement these techniques in the programming assignments.
+  {\bf Memoization}:
+  \begin{itemize}
+    \item Every time you finish a calculation, store the result in the memory;
+    \item Before you begin a calculation, check if it is not in the memory;
+  \end{itemize}
+  \bigskip
+
+  This technique can reduce the amount of repeated work.
+  \bigskip
+
+  In this course we will review and study many techniques like this one. You will have to implement these techniques in the homework to make it efficient.
 \end{frame}
 
 \subsection{Class Program}
 \begin{frame}{Topics in this class}
-  We will study the following topics in this semester:
-
   \begin{enumerate}
-    \item Ad Hoc Problems
+    \item Introduction Problems
     \item Data Structures
     \item Search Problems
     \item Dynamic Programming
@@ -256,23 +253,20 @@ extra work will be very slow! How can we improve this?
 \end{frame}
 
 \begin{frame}{Class Format}
-  \begin{block}{Weekly Lecture Contents}
+  \begin{block}{Weekly Schedule}
     \begin{itemize}
-      \item PDFs with information about algorithms
-      \item Videos with explanation about the classes
-      \item Programming assignments on "onlinejudge.org"
+      \item Lecture Notes and Videos: Explanation about algorithms;
+      \item TEAMS meeting with instructor to ask questions;
+      \item Solve the homework at URI Online Judge;
     \end{itemize}
   \end{block}
 
   \begin{exampleblock}{Evaluation}
     \begin{itemize}
       \item No final examination;
-      \item Weekly programming assignments;
+      \item Grade based on number of homework completed every week;
     \end{itemize}
   \end{exampleblock}
-  \bigskip
-
-  More details about these two points in the next section.
 \end{frame}
 
 \subsection{Lecturer Introduction}
@@ -280,7 +274,7 @@ extra work will be very slow! How can we improve this?
   \frametitle{About the Lecturer}
   \begin{columns}
     \column{0.4\textwidth}
-    \includegraphics[width=1\textwidth]{../img/pinhole}
+    \includegraphics[height=.8\textheight]{../img/pinhole}
     \column{0.6\textwidth}
     {\small
     \begin{itemize}
@@ -288,13 +282,13 @@ extra work will be very slow! How can we improve this?
       \item \structure{Country:} Brazil;
       \item \structure{Research Topics:}
       \begin{itemize}
-        \item Evolutionary Algorithms;
+        \item Evolutionary Computation;
         \item Artificial Life;
       \end{itemize}
       \item \structure{Hobbies:}
       \begin{itemize}
         \item Game Programming;
-        \item Astronomy;
+        \item Geocaching;
       \end{itemize}
         \medskip
 

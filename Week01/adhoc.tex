@@ -12,22 +12,22 @@
 \begin{frame}
   \frametitle{What are Ad-hoc problems?}
 
-  \emph{Ad-hoc} is an expression used to mean something used for a single purpose. In programming challenges, an \structure{ad-hoc problem} is a simple problem that you can solve by simply following the instructions.
+  \emph{Ad-hoc} means "single purpose". In programming challenges, it usually means "simple problem" or "Follow the instructions".
   \bigskip
 
-  Although ad-hoc problems are simple, it is good to practice them seriously, as we can learn skills that are useful for more complex problems too:
+  This week, we will some some simple problems, and learn skills that are useful
+  for more complex problems too:
   \bigskip
 
   \begin{itemize}
-    \item Extracting important information from the problem text;
-    \item Understanding the input and output;
-    \item Generating debug and worst case data;
-    \item Analysing problems;
+    \item How to find important information in the problem text;
+    \item How to understand the input and output;
+    \item Generating input data for debugging;
+    \item etc;
   \end{itemize}
   \bigskip
 
-  In this lecture, we will see some hints that will be useful for the
-  entire course.
+  Today's lecture focus on hints that can be used the entire course.
 \end{frame}
 
 \section{Problem Analysis}
@@ -63,6 +63,7 @@ Size: 16
 
 \begin{frame}[fragile]
   \frametitle{A simple solution for the 3n+1 problem}
+  {\smaller
 \begin{verbatim}
 while true:
   try:
@@ -79,20 +80,20 @@ while true:
       if count > max: max = count
     print (line, max)
   except EOFError: break
-\end{verbatim}
+\end{verbatim}}
 \end{frame}
 
 \begin{frame}{A Simple Solution has a Simple problem}
 
   \begin{itemize}
-    \item If you submit the simple solution in the previous slide, you will receive the result \alert{Wrong Answer} from the judge.
+    \item If you submit the program in the previous slide, you will receive the result \alert{Wrong Answer} from the judge.
     \bigskip
 
-    \item You look at the example input and output, and your program gets the correct solution for all the sample input!
-    \item You even try a few more values of $i$ and $j$ to make sure.
+    \item But the problem gets the correct input for the sample input!
+    \item Even if you try a few more $i$ and $j$, it is still correct.
     \bigskip
 
-    \item What is wrong with the simple solution? (Answer in the next slide)
+    \item What is wrong with the simple solution? \structure{(Answer in the next slide)}
   \end{itemize}
 \end{frame}
 
@@ -172,6 +173,7 @@ for x in range(i, j+1):   <-- Error is here!
 \end{frame}
 
 \begin{frame}[fragile]{Problem 3n+1}{A fixed solution for the input}
+  {\smaller
 \begin{verbatim}
 while true:
   try:
@@ -188,7 +190,7 @@ while true:
       if count > max: max = count
     print (line, max)
   except EOFError: break
-\end{verbatim}
+\end{verbatim}}
 \end{frame}
 
 \begin{frame}
@@ -442,8 +444,7 @@ In a future class, we will focus on \alert{Dynamic Programming}, which generaliz
 \begin{frame}{Task 2: Input size examples}
 
   \begin{block}{n $<$ 24}
-    Exponential algorithms will work (O($2^n$)).\\
-    Or sometimes you can just calculate all solutions.
+    Exponential algorithms will work (O($2^n$)). Or just calculate all solutions.
   \end{block}
 
   \begin{block}{n = 500}
@@ -452,8 +453,7 @@ In a future class, we will focus on \alert{Dynamic Programming}, which generaliz
   \end{block}
 
   \begin{block}{n = 10.000}
-    A square algorithm (O($n^2$)) might still work.\\
-    But beware any big constants!
+    A square algorithm (O($n^2$)) might still work. But beware any big constants!
   \end{block}
 
   \begin{block}{n = 1.000.000}
@@ -494,13 +494,10 @@ In a future class, we will focus on \alert{Dynamic Programming}, which generaliz
 #include <iostream>
 using namespace std;
 
-int main()
-{
-    int n;
-    cin >> n;
+int main() {
+    int n; cin >> n;
 
-    for (; n > 0; n--)
-    {
+    for (; n > 0; n--) {
        // Do something
     }
 }
@@ -566,7 +563,7 @@ int main()
 
   Be \alert{very careful} that the output is exactly right!
 
-  \vspace{3cm}
+  \vspace{2cm}
 
   \begin{columns}
     \column{0.2\textwidth}
@@ -817,15 +814,15 @@ Total Solutions: 8 x 7 x 6 x 5 ... = 40320
   In particular for random and large test data sets, I recommend that you create a simple script that generates random data for you. Random data is great for finding "crash" bugs.
 \end{frame}
 
-\begin{frame}
-  \frametitle{Test data website: uDebug}
-  The udebug website \url{https://www.udebug.com/} has test cases for many problems in online-judge. \alert{However, note that it does not necessarily has all test cases}!
-  \bigskip
-
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{../img/udebug_big}
-  \end{center}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Test data website: uDebug}
+%   The udebug website \url{https://www.udebug.com/} has test cases for many problems in online-judge. \alert{However, note that it does not necessarily has all test cases}!
+%   \bigskip
+%
+%   \begin{center}
+%     \includegraphics[width=0.8\textwidth]{../img/udebug_big}
+%   \end{center}
+% \end{frame}
 
 \section{Conclusion}
 \subsection{The End}
