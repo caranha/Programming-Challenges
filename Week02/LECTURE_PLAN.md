@@ -1,23 +1,29 @@
 Week 2 - Data Structures
 ========================
+# IMPORTANT (Problems) (2022?)
+- Test cases for "Army Buddies" are too weak
+- Check that the test cases for File Fragmentation is okay with Lexographic Order
+
 # TODO
 - [ ] Improve "library" section (add use examples of queue and stacks)
 - [ ] Improve "library" section (more details queues/stacks)
 - [ ] Add discussion on Fenwick tree
 
-# Problems
+# Problems (2021)
 - Army Buddies -- Choose right data structure (array)
 - Grid Successors -- Implement 2D array (implementation)
+- CD -- Implement Map for speed (implementation)
 - File Fragmentation -- Many solutions, map of bit combinations is one
 - War -- Implement 2 Union finds
 - Back to the 8 Queens
-- Football (aka Soccer) -- Implement Sorting (implementation)
-- Newspaper -- Map the cost
 - Frequent Values
+- Anagrams by Stack -- stack (library)
 
 ## Problems not used currently
-- CD -- Implement Map for speed (implementation)
-
+- Football (aka Soccer) -- Implement Sorting (implementation)
+  (Input and output too boring)
+- Newspaper -- Map the cost
+  (problems with UTF8 in input)
 
 # Lecture Outline
 Discussion of several Data sets and how they can be used in programming challenges.

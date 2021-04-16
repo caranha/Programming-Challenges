@@ -19,19 +19,6 @@
 
     \item In this lecture, we focus the {\bf description and implementation} of data structures more than on their theoretical analysis.
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Comments on the last week:}
-
-  \begin{itemize}
-    \item Numbers of Problems solved;\medskip
-
-    \item Orders of Problems;\medskip
-
-    \item Lecture Calendar for this week;
-  \end{itemize}
-  \vfill
 
   \begin{block}{Motivating Problems}
     To introduce the topics of this class, let's show three problems where the choice of data structure can make a big difference;
@@ -43,17 +30,21 @@
 
 \begin{frame}[fragile]
   \frametitle{Example 1: 8 Queen Problem (UVA 750)}
-  \includegraphics[width=0.25\textwidth]{../img/8queen}\\
-  \ppagenote{Chessboard by Lee Daniel Crocker. CC-BY-SA 3.0}
+  \begin{columns}
+    \column{.25\textwidth}
+    \includegraphics[width=1\textwidth]{../img/8queen}\\
+    \ppagenote{Chessboard by Lee Daniel Crocker. CC-BY-SA 3.0}
+    \column{.75\textwidth}
 
-  For a board of size $n \times n$, you have to find \alert{how many} safe
-  configurations of $n$ queens exist.
-  \bigskip
+    For a board of size $n \times n$, you have to find \alert{how many} safe
+    configurations of $n$ queens exist.
+    \bigskip
 
-  Because you need to count \alert{how many} configurations exist, it is
-  necessary to test {\bf all} valid configurations.
+    Because you need to count \alert{how many} configurations exist, it is
+    necessary to test {\bf all} valid configurations.
+  \end{columns}
+    \bigskip
 
-  \bigskip
 
 \begin{verbatim}
 for (int i = 0; i < #configurations; i++)
@@ -142,7 +133,7 @@ conf[2] = "01234657"
   \frametitle{Example 2: The Towers of Hanoi}
   A string with ``n'' disks, from smaller to larger.
   \begin{center}
-    \includegraphics[width=0.65\textwidth]{img/hanoi_graph}
+    \includegraphics[width=0.5\textwidth]{img/hanoi_graph}
   \end{center}
   \ppagenote{Tower of Hanoi's graph image by nonenmac}
 \end{frame}
@@ -175,7 +166,7 @@ A3: *,5       x - - - 5 - -
 \end{frame}
 
 \begin{frame}
-  \frametitle{Example 2: Army Buddies (UVA 12356)}
+  \frametitle{Example 3: Army Buddies (UVA 12356)}
   \framesubtitle{Idea 1: Linked Lists}
 
   \begin{columns}
@@ -186,7 +177,7 @@ A3: *,5       x - - - 5 - -
     We use the linked list to reduce the size of the list after each query.
     \column{0.5\textwidth}
     \begin{center}
-      \includegraphics[width=1\textwidth]{img/army-list}
+      \includegraphics[width=.8\textwidth]{img/army-list}
     \end{center}
   \end{columns}
 

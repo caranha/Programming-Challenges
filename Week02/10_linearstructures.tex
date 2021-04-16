@@ -60,7 +60,7 @@ v.push_back(6);           // v = {5,5,5,5,5,6}
 \begin{frame}[fragile]
   \frametitle{How do you reset an array?}
   \framesubtitle{Implementation matters}
-{\small
+{\smaller
 \begin{verbatim}
 #include <vector>
 #include <string.h>
@@ -70,7 +70,6 @@ memset(v, 0, 10000*__SIZEOF_INT__);       // Method 1
 fill(v.begin(), v.end(), 0);              // Method 2
 for (int i = 0; i < 10000; i++) v[i] = 0; // Method 3
 v.assign(v.size(), 0);                    // Method 4
-
 
 Method      |  executable size  |  Time Taken (in sec) |
             |  -O0    |  -O3    |  -O0      |  -O3     |
@@ -187,7 +186,6 @@ bool cmp(team a, team b) {      % Sorting Function
   if (a.point != b.point) return a.point > b.point;
   if (a.penal != b.penal) return a.penal < b.penal;
   return strcmp(a.name,b.name); }
-
 vector<team> v;
 sort(v.begin(), v.end(), cmp); // sort using cmp
 reverse(v.begin(), v.end()); // and reverse
