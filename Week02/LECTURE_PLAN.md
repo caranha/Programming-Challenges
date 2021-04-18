@@ -1,7 +1,6 @@
 Week 2 - Data Structures
 ========================
 # IMPORTANT (Problems) (2022?)
-- Test cases for "Army Buddies" are too weak
 - Check that the test cases for File Fragmentation is okay with Lexographic Order
 
 # TODO

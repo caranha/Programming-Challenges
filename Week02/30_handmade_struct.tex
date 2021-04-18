@@ -21,7 +21,7 @@
     \bigskip
 
     \item Express special relationship between data items (ex: graphs)
-  \end{itemize}
+  \end{itemize}\bigskip
 
   We will examine two data structures now: UFDS and Segment Tree
 \end{frame}
@@ -32,18 +32,18 @@
   \framesubtitle{Motivating Problem}
 
   \begin{block}{Network Connections -- UVA793}
-    Imagine a network with $n$ computers, some are connected to others.
+    We define a network with $n$ computers. Using the commands "c" and "q", we {\bf set} and {\bf test} the connection between the computers.
     \bigskip
 
-    {\bf Input:} A series of ``commands''
+    {\bf Input:} The number of computers $n$, and a sequence of commands:
     \begin{itemize}
-    \item c i j -- New Info: Computer $i$ is connected to computer $j$
-    \item q i j -- Query: Is computer $i$ connected to computer $j$?
+    \item c i j -- Make computer $i$ and $j$ connected.
+    \item q i j -- Ask if computer $i$ is connected to computer $j$. (yes/no)
     \end{itemize}
 
     \bigskip
-    {\bf Output:} The number of ``q'' with answer yes, and the number
-    of ``q'' with answer no.
+    {\bf Output:} The number of queries (q) with answer "yes", and the number
+    of queries with answer "no".
   \end{block}
 \end{frame}
 
@@ -105,7 +105,6 @@ int join(int x, int y) {     # x and y are the same group
     }
     return 0;
 }
-
 void init() { # Initialize each element as separate group
     for(int i = 0; i < MAX; i++)  { p[i] = i; r[i] = 1; }
 }
@@ -218,26 +217,25 @@ But what is the number of {\bf Values (n)} or {\bf Queries (k)} is too big?
 
 \begin{frame}[fragile]
   \frametitle{Coding the Segment Tree}
-  \framesubtitle{Tree Creation}
+  \framesubtitle{Building the Tree -- add data in array "A", index of biggest value is array "st"}
 {\smaller
 \begin{block}{}
 \begin{verbatim}
-typedef vector<int> vi; // Summarizing types that we use often.
+typedef vector<int> vi; // vector of ints, we will use this a lot here.
 
-class SegmentTree { // OOP implementation,
-private: vi st, A;  // vi: typedef vector<int> vi;
-  int n;
-  int left (int p) { return  p<<1; }  // heap-like index;
-  int right(int p) { return (p<<1) + 1; }
+class SegmentTree {     // Object-oriented implementation
+private: vi st, A;      // st - Index of biggest, A - value of contents
 
-  void build(int p, int L, int R) {   // O(n log n)
+  int left (int p) { return (p<<1); }     // index of left child;
+  int right(int p) { return (p<<1) + 1; } // index of right child;
+  void build(int p, int L, int R) {       // Build tree in O(n log n)
     if (L == R)
-      st[p] = L;                      // store the index
-    else {                            // recursive build
-      build(left(p) , L          , (L+R)/2);
-      build(right(p), (L+R)/2 + 1, R      );
+      st[p] = L;                      // At leaf, largest element is the current.
+    else {                            // recursive build the branches.
+      build(left(p) , L          , (L+R)/2);   // build left branch
+      build(right(p), (L+R)/2 + 1, R      );   // build right branch
       int p1 = st[left(p)], p2 = st[right(p)];
-      st[p] = (A[p1] <= A[p2]) ? p1 : p2;
+      st[p] = (A[p1] <= A[p2]) ? p1 : p2;      // compare branches.
   } }
 \end{verbatim}
 \end{block}}
@@ -247,24 +245,24 @@ private: vi st, A;  // vi: typedef vector<int> vi;
 
 \begin{frame}[fragile]
   \frametitle{Coding the Segment Tree}
-  \framesubtitle{Query the Tree}
+  \framesubtitle{Query the Tree -- what is the highest value between i and j?}
 {\smaller
-\begin{block}{rmq(1, 0, n-1, i, j) -- Query from i to j.}
+\begin{block}{rmq(1, 0, n-1, i, j) -- Query from i to j, bounded by L and R}
 \begin{verbatim}
 int rmq(int p, int L, int R, int i, int j) // O(log n)
 {
   if (i >  R || j <  L)
-    return -1;    // outside query range
+    return -1;    // query range is outside L/R bounds
   if (L >= i && R <= j)
-    return st[p]; // inside query range
+    return st[p]; // query range is inside L/R bounds
 
-  // compute the min position in the left and right part
+  // compute the highest value in the left and right branches
   int p1 = rmq(left(p) , L        , (L+R)/2, i, j);
   int p2 = rmq(right(p), (L+R)/2+1, R      , i, j);
 
-  if (p1 == -1) return p2;   // segment outside query
-  if (p2 == -1) return p1;   // segment outside query
-  return (A[p1] <= A[p2]) ? p1 : p2;
+  if (p1 == -1) return p2;   // left segment outside bounds
+  if (p2 == -1) return p1;   // right segment outside bounds
+  return (A[p1] <= A[p2]) ? p1 : p2; // return highest of left and right
 }
 \end{verbatim}
 \end{block}}
@@ -278,19 +276,18 @@ int rmq(int p, int L, int R, int i, int j) // O(log n)
 \begin{block}{update(1, 0, n-1, i, v) -- update index i to value v}
 \begin{verbatim}
 int update(int p, int L, int R, int idx, int new_value) {
-  int i = idx, j = idx;    //for point update i = j = idx
-  // if the curr interval does not intersect the update,
-  if (i > R || j < L) return st[p];  //return node value!
-  // if the current interval is in the update range,
-  if (L == i && R == j) {
-    A[i] = new_value;     // update the underlying array
-    return st[p] = L;     // this index
+  int i = idx, j = idx;
+  if (i > R || j < L) return st[p];  // if update ouside interval, return value!
+
+  if (L == i && R == j) {            // if update index matches interval:
+    A[i] = new_value;     // update the value array
+    return st[p] = L;     // update the leaf index.
   }
-  // compute the min pos in L/R part of the interval
-  int p1, p2;
+  int p1, p2;             // Update left and right branches
   p1=update(left(p) , L        , (L+R)/2, idx, new_value);
   p2=update(right(p), (L+R)/2+1, R      , idx, new_value);
-  // return the position where the overall minimum is
+
+  // Update and return index of current node based on branches.
   return st[p] = (A[p1] <= A[p2]) ? p1 : p2;
 }
 \end{verbatim}

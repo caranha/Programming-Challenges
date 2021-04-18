@@ -206,13 +206,11 @@ int main() {
 \begin{verbatim}
 #include <map>
 map<string, int> ages; ages.clear();
-
 ages["john"] = 40;
 ages["billy"] = 39;
 ages["andy"] = 29;
 ages["steven"] = 42;
 ages["felix"] = 33;
-
   // What is the age of andy?
 map<string, int>::iterator it = ages.find("andy");
 cout << it->second << endl;
