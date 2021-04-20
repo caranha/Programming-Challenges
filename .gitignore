@@ -8,5 +8,6 @@
 *.fls
 *.fdb_latexmk
 *.gz
+*.ent
 
 *~
