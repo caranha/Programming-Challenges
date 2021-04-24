@@ -36,58 +36,58 @@
 \end{frame}
 
 
-\begin{frame}[fragile]
-  \frametitle{Java Speed Hints}
+% \begin{frame}[fragile]
+%   \frametitle{Java Speed Hints}
+%
+%   \begin{itemize}
+%       \item Don't add strings in a loop:
+%     {\small
+% \begin{verbatim}
+% String a,b;
+% for (int i = 0; i < N; i++) { a = a + b; } // SLOW!
+% \end{verbatim}
+%     }
+%   \item Use \emph{StringBuilder} instead:
+%     {\small
+% \begin{verbatim}
+% StringBuilder sb; String a,b;
+% for (int i = 0; i < N; i++) { sb.append(b); }
+% a = sb.toString();
+% \end{verbatim}
+%     }
+%
+%   \item Java \emph{Arraylist}'s {\bf contain()} is O(n)\footnote{\url{http://stackoverflow.com/questions/10196343/hash-set-and-array-list-performances}}
+%     {\small
+% \begin{verbatim}
+% ArrayList<Int> a;
+% for (int i = 0; i < N; i++) { a.contain(b); }
+% \end{verbatim}
+%     }
+%   \item Use \emph{HashMap} instead (O(1)):
+%     {\small
+% \begin{verbatim}
+% HashMap<Int> a;
+% for (int i = 0; i < N; i++) { a.contain(b); }
+% \end{verbatim}
+%     }
+%   \end{itemize}
+% \end{frame}
 
-  \begin{itemize}
-      \item Don't add strings in a loop:
-    {\small
-\begin{verbatim}
-String a,b;
-for (int i = 0; i < N; i++) { a = a + b; } // SLOW!
-\end{verbatim}
-    }
-  \item Use \emph{StringBuilder} instead:
-    {\small
-\begin{verbatim}
-StringBuilder sb; String a,b;
-for (int i = 0; i < N; i++) { sb.append(b); }
-a = sb.toString();
-\end{verbatim}
-    }
-
-  \item Java \emph{Arraylist}'s {\bf contain()} is O(n)\footnote{\url{http://stackoverflow.com/questions/10196343/hash-set-and-array-list-performances}}
-    {\small
-\begin{verbatim}
-ArrayList<Int> a;
-for (int i = 0; i < N; i++) { a.contain(b); }
-\end{verbatim}
-    }
-  \item Use \emph{HashMap} instead (O(1)):
-    {\small
-\begin{verbatim}
-HashMap<Int> a;
-for (int i = 0; i < N; i++) { a.contain(b); }
-\end{verbatim}
-    }
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Python Speed Hints}
-  \begin{block}{}
-    Sometimes an algorithm that is accepted with C++ or Java receives "time limit exceeded" when implemented in Python (example: CD).
-  \end{block}
-  \bigskip
-
-  \begin{itemize}
-  \item Python can be 10 times slower than C++ on the worst case! So you need to make sure your algorithm is well implemented, and prune as much as possible.\bigskip
-
-  \item Read the problem carefully, and discover if it is possible to optimize the program;\bigskip
-
-  \item For example, in the problem CD the input is ordered. It is possible to use this information to prune the search for repeated number greatly! 
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Python Speed Hints}
+%   \begin{block}{}
+%     Sometimes an algorithm that is accepted with C++ or Java receives "time limit exceeded" when implemented in Python (example: CD).
+%   \end{block}
+%   \bigskip
+%
+%   \begin{itemize}
+%   \item Python can be 10 times slower than C++ on the worst case! So you need to make sure your algorithm is well implemented, and prune as much as possible.\bigskip
+%
+%   \item Read the problem carefully, and discover if it is possible to optimize the program;\bigskip
+%
+%   \item For example, in the problem CD the input is ordered. It is possible to use this information to prune the search for repeated number greatly!
+%   \end{itemize}
+% \end{frame}
 
 
 \begin{frame}{Outline for this week}

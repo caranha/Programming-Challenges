@@ -10,7 +10,7 @@
   \item Your cellphone;
   \end{itemize}\medskip
 
-  The search is characterized by the {\bf Objectice} (the thing we are searching for), and the {\bf search space} (the different places where the goal can be).
+  The search has an {\bf Objective} (what are we searching?), and the {\bf search space} (where can we search?).
 
   \begin{block}{}
     {\smaller
@@ -21,22 +21,24 @@
 
 \begin{frame}
   \frametitle{What is a ``Search Problem''?}
-    A {\bf search problem} can be described as "verify many \emph{answers} in some order until you find one or more \emph{solutions}"
-    \emph{solutions}.\bigskip
+    A {\bf search problem} is a problem that we can describe as: "check many {\bf possible answers} until you find a {\bf solution}".\bigskip
 
     \begin{itemize}
-      \item An answer to a search problem can be {\bf correct} or \alert{incorrect};\smallskip
+      \item One answer to a search problem can be {\bf correct} or {\bf incorrect};\smallskip
 
-      \item Alternatively, an answer to a search problem can have a {\bf quality score};\smallskip
+      \item In some search problems, an answer can have a {\bf quality score};\smallskip
 
-      \item The set of answers to a search problem can be {\bf sorted} by some criteria;
+      \item The {\bf set of answers} to a search problem can be {\bf sorted} by some criteria;
     \end{itemize}
     \bigskip
 
-    Many problems in programming challenges (and also in real life) can be described as search problems. This permits us to apply very simple {\bf search algorithms} to solve these problems.
+    Many problems in programming challenges (and also in real life) can be described as search problems. We can apply very simple {\bf search algorithms} to solve these problems.
 \end{frame}
 
 \begin{frame}{Search Problem Examples (from past weeks)}
+  We can {\bf calculate} the answer, which is usually very fast,\\
+   or we can {\bf search} the answer, which is usually slow.
+
   \begin{block}{Traffic Lights (Week 1)}
     {\bf Objective:} FIND the time (in seconds) when all the different lights are synchronized at green.
     \bigskip
@@ -58,24 +60,27 @@
   Any problem that can be described as a {\bf Search Problem} can also be solved using a {\bf Search Algorithm}.
   \begin{enumerate}
     \item Sort and order the search space; $n = 1$
-    \item Generate answer $n$
-    \item Test if answer $n$ is a solution to the problem;
+    \item Generate the $n^{\text{th}}$ answer: $a_n$.
+    \item Test if $a_n$ is a solution to the problem;
     \item $n = n+1$, go back to 2.
   \end{enumerate}\bigskip
 
   Some questions when you program the search algorithm:
   \begin{itemize}
-  \item How to generate one answer? How many to store in memory?
+  \item How to generate one answer? How many answers we store in memory?
   \item How many answers exist in total? How to order the search space?
-  \item Is it possible to skip some answers?
-  \item Do you need one or many solutions?
+  \item Is it possible to skip some answers? (pruning)
+  \item How many solutions are necessary?
   \end{itemize}
 \end{frame}
 
 \subsection{Example}
 \begin{frame}[fragile]{Search Problem Example}{File Fragmentation}
-  Let's apply this though process to the problem "File Fragmentation". We can solve this problem my testing every binary string of the correct size, and
-  checking if it fits all the fragments.\medskip
+  Let's use this algorithm to last week's "File Fragmentation".\medskip
+
+  We find the correct size of the answer, and we test each binary string
+  of that size.\\
+  To do that, we check if it fits all the fragments.
 
   \begin{columns}[T]
     \column{0.5\textwidth}
@@ -106,59 +111,60 @@
 \end{frame}
 
 \begin{frame}{Search Problem Example}{File Fragmentation -- Considerations}
-  Using the Generic Search algorithm, we can find a solution to the File Fragmentation problem. However, we need to be able to estimate how long this solution would take.
+  Using this {\bf Full Search} algorithm, we can find a solution to the File Fragmentation problem. However, how long does this algorithm take?\medskip
 
   \begin{itemize}
   \item \structure{What is the search space?}\\
-    The search space is every binary string $B$ of size $n$. $(O(2^n))$
+    The search space is every binary string $B$ of max size $n$. $(O(2^n))$
     \bigskip
 
-  \item \structure{How to evaluate one answer?}\\
-    We test all combinations of two our of m fragments. $O(C_{m,2})$
+  \item \structure{How to check one answer?}\\
+    We test all combinations of 2 out of $m$ fragments. $O(C_{m,2})$
     \bigskip
 
   \item \structure{What is the expected running time?}\\
-    We need to test every solution. $O(2^nC_{m,2})$
+    We need to check every solution: $2^n \times C_{m,2} =  O(2^nC_{m,2})$
   \end{itemize}
   \bigskip
 
-  Based on the values of $n$ and $m$, we can estimate the time of the algorithm.
+  We calculate the running time of the algorithm using $n$ and $m$
 \end{frame}
 
-\begin{frame}{Search Problem Example}{Let's practice!}
+\begin{frame}{Search Problem Example}{Let's practice some simple search problems!}
 
-  \begin{block}{Input}
-    You have unsorted an array $A$ with $n$ integers ($n < 10.000$). Each $a_i$ is in \{$0 \leq a_i \leq 100.000$\}.
+  \begin{block}{Consider the same input for all problems}
+    You have unsorted an array $A$ with $n$ integers ($n < 10.000$).\\
+    Each $a_i$ is in \{$0 \leq a_i \leq 100.000$\}.
   \end{block}\bigskip
 
-  For each of the problems below, calculate the expected running time of the generic search algorithm:
+  For each problem below, what is the expected running time of a full search?
   \begin{enumerate}
-  \item Find the Largest and the smallest element of $A$;
-  \item Find the $k^{th}$ smallest element of $A$;
+  \item Find the {\bf largest} and the {\bf smallest} element of $A$;
+  \item Find the {\bf $k^{th}$ smallest} element of $A$;
   \item Find the {\bf largest gap} $G$; where $x,y \in A$ and $G = |x-y|$;
-  \item Find the longest increasing subsequence (LIS) of A;\\
-    \hfill Example of LIS: A = [3,2,5,{\bf 1},4,{\bf 2},{\bf 3},{\bf 5},7,{\bf 6},{\bf 10}]
+  \item Find the {\bf longest increasing subsequence (LIS)} of A;\\
+    \hfill Example of LIS: $A = [3,2,5,\overline1,4,\overline{2, 3, 5},7,\overline{6,10}]$
   \end{enumerate}
 \end{frame}
 
 \begin{frame}{Search Problem Example}{Let's practice!}
   What is the expected running time of each problem?
   \begin{enumerate}
-  \item Find the Largest and smallest element of $A$:
+  \item {\bf Find the Largest and smallest element of $A$:}
     \begin{itemize}
-      \item $O(n)$: single pass, we cannot really go faster than this.
+      \item $O(n)$: a full pass over all numbers.
     \end{itemize}
-  \item Find the $k^{th}$ smallest elements of $A$:
+  \item {\bf Find the $k^{th}$ smallest elements of $A$:}
     \begin{itemize}
-      \item Repeat the search $k$ times: $O(nk)$, or $O(n^2)$ in worst case;
-      \item Sort A and list first $k$ elements: $O(n\text{log}n)$
+      \item Repeat the full pass $k$ times, remove smallest each time. $O(nk)$, or $O(n^2)$ in worst case;
+      \item Sort A and list first $k$ elements: $O(n\log{n})$
     \end{itemize}
-  \item Fing the largest gap:
+  \item {\bf Fing the largest gap:}
     \begin{itemize}
-    \item Try all possible pairs: $O(n^2)$
-    \item Find the smallest and largest numbers $O(n)$ (need proof?)
+    \item Try all possible pairs: Two loops: $O(n^2)$
+    \item Find the smallest and largest numbers $O(n)$ (proof: largest gap = biggest - smallest)
     \end{itemize}
-  \item Longest increasing subsequence:
+  \item {\bf Longest increasing subsequence:}
     \begin{itemize}
     \item Test all possible subsequences: $O(2^n)$
     \item Dynamic programming: $O(n^2)$
@@ -170,12 +176,18 @@
 % in the greedy section
 
 \section{Search Algorithms}
+
+\begin{frame}{}{}
+  \begin{center}
+    {\bf Part II: Search Algorithms}
+  \end{center}
+\end{frame}
+
 \begin{frame}
   \frametitle{Search Algorithm Paradigms}
-  There are many variations on the Generic Search Algorithm:
+  There are many variations on Search Algorithm:
   \bigskip
 
-  Some examples:
   \begin{itemize}
     \item Complete Search/Brute Force;
     \item Divide and Conquer;
@@ -183,10 +195,11 @@
     \item Dynamic Programming (Next week!)
     \item Heuristic Search (not in this course!)
     \item Meta-heuristic Search (not in undergraduate school!)
+    \item ... and many others.
   \end{itemize}
   \bigskip
 
-  Depending on the problem, we can use different approaches. Which approach is better depends on the problem, so let's learn them all.
+  Depending on the problem, we can use different approaches. Which approach is better depends on the problem, so let's learn some of them.
 \end{frame}
 
 
@@ -194,24 +207,31 @@
 
 \begin{frame}{Complete Search}{Definition}
 
-  The "genetic search algorithm" that we described before defines the {\bf Complete Search} algorithm. Complete Search Algorithms are expected to test all (or almost all) solutions in the search space.\bigskip
+  The search algorithm we used until now is the {\bf Complete Search}.\\
+  A Complete Search algorithm checks all the solutions in the search space of the problem.\bigskip
 
-  Complete Search algorithms are also called "{\bf Brute Force}". But because sometimes they can be the best way to solve a problem that you never solved before, we will use a "nicer" name.
+  Another name for Complete Search algorithms is {\bf Brute Force}. Brute force sounds negative, but Complete Search algorithms have some uses, so we will use a "nicer" name.
 \end{frame}
 
 
 \begin{frame}{Complete Search}{Structure}
 
-  The strucutre of a Complete Search algorithm is very simple:
+  The structure of a Complete Search algorithm is very simple:
   \bigskip
 
   \begin{itemize}
-  \item {\bf Testing all existing solutions}\\
-    This is usually implemented using either loops or recursive functions;
+    \item {\bf Define or List all possible answers}\\
+    Choose the right data structure that contains all answers.
+    \bigskip
+
+  \item {\bf Check each answer if it is a solution}\\
+    Normally using a loop or recursive function;
     \bigskip
 
   \item {\bf Prune, Prune, Prune}\\
-    They key to complete search algorithms is to cut away parts of the search space. In the program, we can do this using "break" in loops, or using early "return" clauses in recursive functions.
+    They key to a fast Complete Search algorithms is to reduce the number of answers.\\
+
+    In the program, we can do this using "break" in loops, or using early "return" clauses in recursive functions.
   \end{itemize}
 
 \end{frame}
@@ -246,11 +266,11 @@
 \begin{verbatim}
 for (int x = 0; x <= 99999; x++) {
   y = x*n;
-  digits = test(x,y);
+  digits = count_digits(x,y);
   if (digits == 1<<10 - 1) printf("%0.5d/%0.5d=%d\n",y,x,N);
 }
 
-int digits(int x, int y) {
+int count_digits(int x, int y) {
   int used = (x < 10000); % bit array: each bit mark one digit
   int tmp;
   tmp = x; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
@@ -262,17 +282,18 @@ int digits(int x, int y) {
 \end{frame}
 
 \begin{frame}{Complete Search Example: UVA 725 Division}{Prunning the Loop}
-  The algorithm in the previous slide is {\bf very wasteful}. The number tests many loops that will {\bf never} be the right answer.\bigskip
+  The algorithm in the previous slide is {\bf very slow}.\\
+  The loop tests many numbers that will {\bf never} be the right answer.\bigskip
 
   How can we prune (reduce) the number of answers that we test?\bigskip
 
   \begin{itemize}
-  \item What is the absolute minimum and maximum values of x?\\
-    \hspace{1cm} 01234 to 98765
+  \item What is the absolute minimum and maximum values of $x$?\\
+    \hspace{1cm} 01234 to 98765 \hspace{2cm} (different digits)
     \bigskip
 
-  \item Maximum for Y is 98765 too, so the real maximum for x is less:\\
-    \hspace{1cm} $x_{\text{max}} = 98766/N$, remember: $(x * y = N)$
+  \item Maximum for $y$ is also 98765, so the real maximum for $x$ is less:\\
+    \hspace{1cm} $x_{\text{max}} = 98765/N$, \hspace{1.8cm} $($remember: $x * y = N)$
     \bigskip
 
   \item Can you think of other ways to prune?
@@ -280,28 +301,28 @@ int digits(int x, int y) {
 \end{frame}
 
 \begin{frame}
-  \frametitle{Considerations about complete search}
+  \frametitle{Notes about Complete Search algorithms}
   \begin{itemize}
-  \item A bug-free complete search should ALWAYS be correct.\\
+  \item A Complete Search should always give the correct solution (if bug free)\\
     \begin{itemize}
-    \item It tests all solutions, so it should always find the correct one;
-    \item Of course, checking all solutions usually takes too long;
+    \item It checks all answers, so it should always find the correct one;
+    \item Checking all answers usually takes too long;
     \end{itemize}
 
     \bigskip
 
-  \item Maybe the Complete Search is the right solution for this problem!
+  \item For some problems, the Complete Search is the right algorithm.
     \begin{itemize}
-    \item If the problem is so small that a better solution is overkill;
-    \item If you are running out of ideas, or take too many WAs;
+    \item The problem is so small, so a Complete Search is the simplest solution.
     \item Prune, prune, prune!
     \end{itemize}
 
     \bigskip
 
-  \item If the problem is very hard, first use a complete search to know what is the answer.
+  \item For a very hard problem, a Complete Search can give you a starting point;
     \begin{itemize}
-    \item Even if the complete search is TLE, you can use it to generate test cases.
+    \item Maybe the Complete Search will be "time limited exceeded";
+    \item But you can use Complete Search to generate "test cases";
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -355,9 +376,7 @@ for (x = -100; x <= 100 && !sol; x++)
 \end{verbatim}}
 
 \begin{block}{}
-  Can you think of other ways to prune the loop?
-
-
+  QUIZ: How can we prune this loop even more?
 \end{block}
 \end{frame}
 
@@ -369,35 +388,34 @@ for (x = -100; x <= 100 && !sol; x++)
   \begin{itemize}
   \item We can change the range using the actual input values of $A,B,C$
   \item We only need one solution. We can break the loop once we find it.
-  \item We can consider the other two equations, specially equation 2.
+  \item We can use equation 2 to think of other ways to prune.
   \end{itemize}
 
   \vfill
 
-  \begin{alertblock}{}
-    The problem: ``Simple Equations -- Extreme!'' has a much
-    higher range for $A,B,C$. You need a lot of pruning to avoid a TLE!
-  \end{alertblock}
+  % \begin{alertblock}{}
+  %   The problem: ``Simple Equations -- Extreme!'' has a much
+  %   higher range for $A,B,C$. You need a lot of pruning to avoid a TLE!
+  % \end{alertblock}
 \end{frame}
 
 \begin{frame}
   \frametitle{Complete Search Tips}
-  The biggest problem with programs using ``Complete Search'' is: Will it pass the time limit?
-  \medskip
+  Main question about Complete Search: Is the program fast enough?
+  \bigskip
 
-  If you think that your program is borderline passable, it might be
-  worth to find and optimize the {\bf critical part} of the code.
+  To make your program faster, find the {\bf critical part} of the code, and improve that first!
   \vfill
 
   \begin{block}{Tip 1 -- Filtering Vs Generating}
-    {\bf Filter Programs} examine all solutions and remove
+    {\bf Filter Programs} examine all answers and remove
     incorrect ones. Generally iteractive. Generally easier to
     code. Example: Request for proposal.
 
     \bigskip
 
-    {\bf Generating Programs} gradually build solutions and
-    prune invalid partial solutions. Generally recursive. Generally
+    {\bf Generating Programs} gradually build answers and
+    prune invalid partial answers. Generally recursive. Generally
     faster. Example: 8 queens.
   \end{block}
 \end{frame}
@@ -437,14 +455,15 @@ for (x = -100; x <= 100 && !sol; x++)
       Sometimes a less obvious angle of attack may be easier.
       \bigskip
 
-      {\bf Example:} UVA 10360, Rat Attack. A 1024 x 1024 city has $n \leq 20000$ rats in some of its blocks. You have a bomb with radius $d \leq 50$. Where do you place the bomb to kill most rats?
+      {\bf Example:} "Rat Attack". A city with 1024 x 1024 blocks has $n \leq 20000$ rats in some of its blocks. You have a bomb with radius $d \leq 50$. Where do you place the bomb to kill most rats?
       \bigskip
 
-      {\bf Obvious Approach}: Check each of the $1024^2$
-      cells. Cost: $1024^2*50^2 = 2621M$ TLE
-      \medskip
+      {\bf Obvious Approach}: Check the radius of the bomb ($50^2$) at each of the $1024^2$ blocks.\\ Cost: $1024^2 \times 50^2 = 2.62\times 10^9$
+      \bigskip
 
-      {\bf Backwards Approach}: Make a 1024x1024 matrix of ``killed rats''. For each rat group, add its value to each cell in the bomb radius: $n * d^2 = 20000*2500 = 50M + 1024*1024$.
+      {\bf Backwards Approach}: Make a 1024x1024 matrix of ``killed rats''. For each rat, add it to each cell in the bomb radius.\\
+      Cost: Number of rats ($n$) and bomb radius ($d$)\\
+      $n * d^2 = 20000*2500 = 5\times10^7 + 1.048\times10^6$.
     \end{block}
 \end{frame}
 
@@ -468,14 +487,21 @@ for (x = -100; x <= 100 && !sol; x++)
 
 %%%% 3.3 Divide and conquer
 
-\subsection{Divide and Conquer}
+\section{Divide and Conquer}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part III -- Divide and Conquer, and Greedy Algorithms}
+  \end{center}
+\end{frame}
+
 \begin{frame}
   \frametitle{Divide and Conquer}
 
 
 
   Divide and Conquer (D\&C) is a problem-solving paradigm in which a
-  problem is made simpler by 'dividing' it into smaller parts.
+  problem is made simpler by 'dividing' it into smaller parts.\bigskip
 
   \begin{itemize}
   \item Divide the original problem into sub-problems;
