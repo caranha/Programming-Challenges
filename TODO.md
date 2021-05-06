@@ -19,8 +19,3 @@
 ## Week 3: Search
 - [ ] Add example on permutation search with bitmask (cinema sitting problem)
 - [ ] Add slide explaining LIS solution with Greedy
-
-## Week 4: DP
-- [ ] (Future): Add Flight Planner example (maybe add to problems)
-- [ ] (Future): Is RangeSum really DP? maybe should go to maths?
-- [ ] (Future): Include TSP DP back to the lecture.

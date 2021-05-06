@@ -1,9 +1,9 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{tikz}
 \input{../misc/beamerpreamble.tex}
 
 \subtitle[Week 4: Dynamic Programming]{Week 4 - Dynamic Programming}
-\date[2020/5/19]{2020/5/19\\{\smaller(last updated: \today)}}
+\date[]{{\smaller(last updated: \today)}}
 
 \begin{document}
 \begin{CJK}{UTF8}{ipxm}
@@ -12,11 +12,38 @@
 \maketitle
 \vfill
 
-\hfill Version 2020.1
+\hfill Version 2021.1
 \end{frame}
 
-%\input{10_introduction.tex}
-\input{20_DP.tex}
+\subsection{Outline}
+
+\begin{frame}
+  \frametitle{Review of Last Week}
+  \begin{itemize}
+  \item {\bf Search Algorithms} are defined by the systematic testing of the {\bf Search Space} of a problem;\bigskip
+
+  \item We studied three types of Search Algorithms:
+    \begin{itemize}
+    \item Complete Search
+    \item Divide and Conquer
+    \item Greedy Search
+    \end{itemize}
+  \end{itemize}
+  \bigskip
+
+  \begin{block}{}
+    This week we introduce a fourth search algorithm: {\bf Dynamic Programming}.
+    \medskip
+
+    Dynamic Programming is one of the most used algorithm in programming competitions.\medskip
+
+    The basic idea is that we can exchange "computation time" for "memory".
+  \end{block}
+\end{frame}
+
+
+\input{10_DP_intro.tex}
+\input{20_DP_problems.tex}
 \input{30_Conclusion.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
