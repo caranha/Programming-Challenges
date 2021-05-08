@@ -27,133 +27,133 @@
 %    \end{itemize}
 % \end{frame}
 
-\subsection{Problem Discussion}
-
-\begin{frame}
-   \frametitle{Problem Discussion -- At a Glance}
-   \begin{itemize}
-   \item Wedding Shopping -- Explained in Class
-   \item Jill Rides Again -- Range Sum (1D)
-   \item Largest Submatrix -- Range Sum (2D)
-   \item Is Bigger Smarter? -- Longest Increasing Subsequence
-   \item Murcia's Skyline -- Longest Increasing Subsequence
-   \item Trouble of 13 Dots -- 0-1 Knapsack
-   \item Exact Change -- Coin Change
-   \item Unidirectional TSP -- Pathfinding
-   \end{itemize}
-\end{frame}
-
+% \subsection{Problem Discussion}
+%
+% \begin{frame}
+%    \frametitle{Problem Discussion -- At a Glance}
+%    \begin{itemize}
+%    \item Wedding Shopping -- Explained in Class
+%    \item Jill Rides Again -- Range Sum (1D)
+%    \item Largest Submatrix -- Range Sum (2D)
+%    \item Is Bigger Smarter? -- Longest Increasing Subsequence
+%    \item Murcia's Skyline -- Longest Increasing Subsequence
+%    \item Trouble of 13 Dots -- 0-1 Knapsack
+%    \item Exact Change -- Coin Change
+%    \item Unidirectional TSP -- Pathfinding
+%    \end{itemize}
+% \end{frame}
+%
+% % \begin{frame}
+% %   \frametitle{Problem Hints}
+% %
+% %   \begin{itemize}
+% %   \item Wedding Shopping
+% %   \item Jill Rides Again (Range Sum (1D))
+% %   \end{itemize}
+% %
+% %   \vfill
+% %   Discussed during class -- just apply the algorithm!
+% % \end{frame}
+%
 % \begin{frame}
 %   \frametitle{Problem Hints}
 %
-%   \begin{itemize}
-%   \item Wedding Shopping
-%   \item Jill Rides Again (Range Sum (1D))
-%   \end{itemize}
+%   \begin{block}{Largest Submatrix}
+%     Find the largest patch of {\bf ones} inside a matrix of 1s and 0s.
+%   \end{block}
+%   \bigskip
 %
-%   \vfill
-%   Discussed during class -- just apply the algorithm!
+%   Hints:
+%   \begin{itemize}
+%   \item Do a range sum to find the rectangle with biggest
+%     sum (biggest number of 1).
+%   \item {\bf Key Idea}: How do you avoid adding zeroes?
+%   \end{itemize}
+%   \bigskip
+%
+%   This kind of problem sometimes appears as the initial part of a more complex problem, to \alert{calculate valid territory}.
 % \end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints}
-
-  \begin{block}{Largest Submatrix}
-    Find the largest patch of {\bf ones} inside a matrix of 1s and 0s.
-  \end{block}
-  \bigskip
-
-  Hints:
-  \begin{itemize}
-  \item Do a range sum to find the rectangle with biggest
-    sum (biggest number of 1).
-  \item {\bf Key Idea}: How do you avoid adding zeroes?
-  \end{itemize}
-  \bigskip
-
-  This kind of problem sometimes appears as the initial part of a more complex problem, to \alert{calculate valid territory}.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints}
-
-  \begin{block}{Is bigger Smarter?}
-    You have the "weight" and "intelligence" value of a set of elephants. Find the largest subset where:
-    \begin{itemize}
-    \item A - Intelligence is decreasing, and;
-    \item B - Weight is increasing
-    \end{itemize}
-  \end{block}
-  \bigskip
-
-  Hints:
-  \begin{itemize}
-  \item Think about "Dragon of Loowater" from last lesson.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints}
-  \begin{block}{Murcia Skyline}
-    Compare the size of the Longest {\bf Increasing} skyline and the longest {\bf Decreasing} skyline.
-  \end{block}
-  \bigskip
-
-  Hints:
-  \begin{itemize}
-  \item "Longest Increasing Subsequence" in this problem is modified by the {\bf building width}.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints}
-  \begin{block}{Trouble of 13 dots}
-    Find the subset of items that:
-    \begin{itemize}
-    \item Mazimize flavor;
-    \item Is inside the price budget; You can get a discount;
-    \end{itemize}
-  \end{block}
-
-  \bigskip
-
-  Hints
-  \begin{itemize}
-  \item 1-0 knapsack problem:
-  \item Be careful with special rule: {\bf the knapsack change size if price > 2000!}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints}
-  \begin{block}{Exact Change}
-    Find the smallest amount of overpay that you can do, with the
-    smallest number of coins.
-  \end{block}
-
-  \bigskip
-  Hints:
-  \begin{itemize}
-  \item Variation of the Coin Change problem discussed in Class;
-  \item Calculate all possible changes above the desired value, and find the smallest;
-  \item Order by smallest number of coins necessary;
-  \item Bottom Up algorithm is probably best;
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Problem Hints 6}
-  \begin{block}{Unidirectional TSP}
-    Find the minimal path from left to right. Up and down are connected!
-  \end{block}
-
-  \bigskip
-
-  \begin{itemize}
-  \item Very similar to the ``apple robot'' problem;
-  \item Note that when two paths have the same weight, the smaller index is best!
-  \end{itemize}
-\end{frame}
+%
+% \begin{frame}
+%   \frametitle{Problem Hints}
+%
+%   \begin{block}{Is bigger Smarter?}
+%     You have the "weight" and "intelligence" value of a set of elephants. Find the largest subset where:
+%     \begin{itemize}
+%     \item A - Intelligence is decreasing, and;
+%     \item B - Weight is increasing
+%     \end{itemize}
+%   \end{block}
+%   \bigskip
+%
+%   Hints:
+%   \begin{itemize}
+%   \item Think about "Dragon of Loowater" from last lesson.
+%   \end{itemize}
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Problem Hints}
+%   \begin{block}{Murcia Skyline}
+%     Compare the size of the Longest {\bf Increasing} skyline and the longest {\bf Decreasing} skyline.
+%   \end{block}
+%   \bigskip
+%
+%   Hints:
+%   \begin{itemize}
+%   \item "Longest Increasing Subsequence" in this problem is modified by the {\bf building width}.
+%   \end{itemize}
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Problem Hints}
+%   \begin{block}{Trouble of 13 dots}
+%     Find the subset of items that:
+%     \begin{itemize}
+%     \item Mazimize flavor;
+%     \item Is inside the price budget; You can get a discount;
+%     \end{itemize}
+%   \end{block}
+%
+%   \bigskip
+%
+%   Hints
+%   \begin{itemize}
+%   \item 1-0 knapsack problem:
+%   \item Be careful with special rule: {\bf the knapsack change size if price > 2000!}
+%   \end{itemize}
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Problem Hints}
+%   \begin{block}{Exact Change}
+%     Find the smallest amount of overpay that you can do, with the
+%     smallest number of coins.
+%   \end{block}
+%
+%   \bigskip
+%   Hints:
+%   \begin{itemize}
+%   \item Variation of the Coin Change problem discussed in Class;
+%   \item Calculate all possible changes above the desired value, and find the smallest;
+%   \item Order by smallest number of coins necessary;
+%   \item Bottom Up algorithm is probably best;
+%   \end{itemize}
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Problem Hints 6}
+%   \begin{block}{Unidirectional TSP}
+%     Find the minimal path from left to right. Up and down are connected!
+%   \end{block}
+%
+%   \bigskip
+%
+%   \begin{itemize}
+%   \item Very similar to the ``apple robot'' problem;
+%   \item Note that when two paths have the same weight, the smaller index is best!
+%   \end{itemize}
+% \end{frame}
 
 %\subsection{Extra}
 %\begin{frame}
