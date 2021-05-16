@@ -2,26 +2,32 @@
 
 \section{Graph Basics}
 
-\subsection{Definition}
+\begin{frame}
+  \begin{center}
+    {\bf Part I -- Graph Basics}
+  \end{center}
+\end{frame}
+
+\subsection{Definitions}
+
 \begin{frame}
   \frametitle{What is a graph?}
 
-  \begin{block}{}
-    A graph $G = \{V,E\}$ is composed of a set of {\bf vertices} $V$, which are connected to a set of {\bf edges} $E$. Each edge connects exactly two vertices.
-  \end{block}
-
   \begin{columns}[T]
     \column{0.6\textwidth}
-    Edge and vertices characteristics:
+    \begin{block}{}
+      A graph $G = \{V,E\}$ is composed of a set of {\bf vertices} $V$, which are connected to a set of {\bf edges} $E$. Each edge connects exactly two vertices.
+    \end{block}\bigskip
+
     \begin{itemize}
     \item An edge can be {\bf directed} or {\bf undirected};
     \item An edge or a vertice can have {\bf weights} or {\bf labels};
-    \item {\bf Self-edges} and {\bf multi-edges};
+    \item {\bf Self-edge}: edge between $v_i$ and $v_i$;
+    \item {\bf Multi-edge}: two edges with same end-vertices;
     \item A graph can be {\bf connected} or {\bf disconnected};
     \end{itemize}
+
     \column{0.4\textwidth}
-
-
     \begin{tikzpicture}[scale=.8,auto,swap]
       \tikzset{edge/.style = {->,>=latex'}}
       \node[vertex] (a) at (0,0) {};
@@ -53,8 +59,35 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Common questions about graphs}
-  Some tasks are common across graph problems:
+\begin{frame}{Graphs in Computer Science}
+  Graph Data structures show relationships between data;\\
+  They are used in many problems:\bigskip
+
+  \begin{itemize}
+    \item Geography and Maps;
+    \begin{itemize}
+      \item Pathing between locations;
+      \item Cycles and Tours;
+    \end{itemize}
+    \item Human Networks;
+    \begin{itemize}
+      \item Social Networks;
+      \item Citation Clusters;
+    \end{itemize}
+    \item State Machines;
+    \begin{itemize}
+      \item Program Pipelines;
+      \item Library Requirements;
+    \end{itemize}
+    \item Natural Language;
+    \begin{itemize}
+      \item Graph Grammars;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Common graph tasks in an algorithm}
   \begin{itemize}
     \item Test if a path exist between vertice $V_i$ and $V_j$ (test if they are {\bf connected})
     \item Test the shortest path between vertice $V_i$ and $V_j$
@@ -63,19 +96,24 @@
       \item Test if there is more than one path
     \end{itemize}
     \item Add or remove vertices or edges from a graph;
-    \item Test characteristics of a graph;
-    \item etc.;
+    \item Test some characteristics of a graph;
+    \begin{itemize}
+      \item Longest path? Shortest path?
+      \item Does it have a {\bf Cycle}?
+      \item Vertice with maximum number of vertices?
+      \item etc...
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \subsection{Example Problem}
 
-\begin{frame}[fragile]{UVA 11902 -- Dominator}
+\begin{frame}[fragile]{Programming Challenge Example}{Dominator}
   \begin{block}{}
-    A vertice $V_i$ {\bf dominates} $V_j$ if all paths $V_0 \to V_j$ must include $V_i$.
+    Definition: A vertice $V_i$ {\bf dominates} $V_j$ if all paths $V_0 \to V_j$ must include $V_i$.
     \begin{itemize}
       \item {\bf input}: A directed graph $\{V,E\}$;
-      \item {\bf output}: A table with which vertices dominate each other;
+      \item {\bf output}: A table with the DOMINATE relationship
     \end{itemize}
   \end{block}
 \begin{columns}[T]
@@ -84,42 +122,39 @@
       \input{graphs/dominator.tex}
     \end{center}
       \column{0.3\textwidth}
-      {\bf Input}
 \begin{verbatim}
-1
-5
-0 1 1 0 0
-0 0 0 1 0
-0 0 0 1 0
-0 0 0 0 1
-0 0 0 0 0
+Input: 1
+       5
+       0 1 1 0 0
+       0 0 0 1 0
+       0 0 0 1 0
+       0 0 0 0 1
+       0 0 0 0 0
 \end{verbatim}
 \column{0.3\textwidth}
-{\bf Output}
 {\smaller
 \begin{verbatim}
-Case 1:
-+---------+
-|Y|Y|Y|Y|Y|
-+---------+
-|N|Y|N|N|N|
-+---------+
-|N|N|Y|N|N|
-+---------+
-|N|N|N|Y|Y|
-+---------+
-|N|N|N|N|Y|
-+---------+
+Output: Case 1:
+        +---------+
+        |Y|Y|Y|Y|Y|
+        +---------+
+        |N|Y|N|N|N|
+        +---------+
+        |N|N|Y|N|N|
+        +---------+
+        |N|N|N|Y|Y|
+        +---------+
+        |N|N|N|N|Y|
+        +---------+
 \end{verbatim}}
   \end{columns}
 \end{frame}
 
-
-\begin{frame}[fragile]{UVA 11902 -- Dominator}
-  \begin{block}{{\bf Quiz: How do we solve this problem?}}
+\begin{frame}[fragile]{Programming Challenge Example}{Dominator}
+  \begin{block}{}
     \begin{itemize}
-      \item How do we store the graph from the input?
-      \item How do we determine "dominator" status?
+      \item Which data structure should be used?
+      \item How to calculate the "DOMINATE" status of a vertice?
     \end{itemize}
   \end{block}
   \begin{columns}[T]
@@ -128,42 +163,40 @@ Case 1:
         \input{graphs/dominator.tex}
       \end{center}
         \column{0.3\textwidth}
-        {\bf Input}
-  \begin{verbatim}
-  1
-  5
-  0 1 1 0 0
-  0 0 0 1 0
-  0 0 0 1 0
-  0 0 0 0 1
-  0 0 0 0 0
-  \end{verbatim}
-  \column{0.3\textwidth}
-  {\bf Output}
-  {\smaller
-  \begin{verbatim}
-  Case 1:
-  +---------+
-  |Y|Y|Y|Y|Y|
-  +---------+
-  |N|Y|N|N|N|
-  +---------+
-  |N|N|Y|N|N|
-  +---------+
-  |N|N|N|Y|Y|
-  +---------+
-  |N|N|N|N|Y|
-  +---------+
-  \end{verbatim}}
+\begin{verbatim}
+Input: 1
+       5
+       0 1 1 0 0
+       0 0 0 1 0
+       0 0 0 1 0
+       0 0 0 0 1
+       0 0 0 0 0
+\end{verbatim}
+\column{0.3\textwidth}
+{\smaller
+\begin{verbatim}
+Output: Case 1:
+        +---------+
+        |Y|Y|Y|Y|Y|
+        +---------+
+        |N|Y|N|N|N|
+        +---------+
+        |N|N|Y|N|N|
+        +---------+
+        |N|N|N|Y|Y|
+        +---------+
+        |N|N|N|N|Y|
+        +---------+
+\end{verbatim}}
     \end{columns}
 \end{frame}
 
 \subsection{Graph Data Structure}
 
 
-\begin{frame}[fragile]{Storing the Dominator Graph}
+\begin{frame}[fragile]{Data Structure for Graph 1}
 
-\begin{block}{Adjacency Matrix: stores the connection between certices}
+\begin{block}{Adjacency Matrix: stores the connection between vertices}
 \begin{verbatim}
 int adj[100][100];
 
@@ -176,28 +209,26 @@ for (int i = 0; i < n; i++)
     \item \structure{Pros}:
     \begin{itemize}
       \item Easy to program;
-      \item Quickly access any edge;
+      \item Access to edge $e_{ij}$ is quick;
     \end{itemize}
     \item \alert{Cons}:
       \begin{itemize}
       \item Cannot store multigraph;
       \item Wastes memory with sparse graphs;
-      \item Time $O(V)$ to calculate number of neighbors;
+      \item Time $O(V)$ to calculate number of neighbors of vertice $v_i$;
       \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Storing the Dominator Graph}
-
+\begin{frame}[fragile]{Data Structure for Graph 2}
 
   \begin{block}{Adjacency List: stores edge list for each Vertex}
       {\smaller
 \begin{verbatim}
-typedef pair<int,int> edge; // pair: <neighbor, weight>
-typedef vector<edge> neighb;// all neighbors of V_i
-vector<neighb> AdjList;     // all V_i
-
+typedef pair<int,int> edge;           // pair: <neighbor, weight>
+typedef vector<edge> neighb;          // all neighbors of V_i
+vector<neighb> AdjList;               // all V_i
 int e;
 for (int i = 0; i < n; i++)
   for (int j = 0; j < n; j++)
@@ -213,15 +244,15 @@ for (int i = 0; i < n; i++)
     \end{itemize}
   \item {\bf Cons}:
   \begin{itemize}
-    \item $O(\log(V))$ to test if two vertices are adjacent;
-    \item Code can be more complex;
+    \item $O(\log(V))$ to test if two vertices are adjacent; (QUIZ: Why log(V)?)
   \end{itemize}
 \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Storing the Dominator Graph}
+\begin{frame}[fragile]{Data Structure for Graph 3}
   \begin{block}{Edge List}
+    {\smaller
     \begin{verbatim}
     pair <int,int> edge; // Edge between i and j
     vector<pair <int,edge>> Elist; // All edges;
@@ -230,45 +261,43 @@ for (int i = 0; i < n; i++)
     for (int i = 0; i < n; i++)
       for (int j = 0; j < n; j++)
         cin >> e;
-        if (e == 1)
-          Elist.push_back(pair(1, pair(i,j)));
-    \end{verbatim}
+        if (e == 1) Elist.push_back(pair(1, pair(i,j)));
+    \end{verbatim}}
     \begin{itemize}
-      \item Not very common;
-      \item Has to sort edges to find the neighbors of a Vertice;
-      \item Used for specialized algorithms, such as Minimum Spanning Tree;
+      \item Not very common, used in specialized algorithms (ex:MST);
+      \item To find if two vertices are neighbors, list must be sorted;
     \end{itemize}
   \end{block}
 \end{frame}
 
 
-\subsection{BFS, DFS}
+\subsection{Graph Search: BFS, DFS}
 \begin{frame}
   \frametitle{Graph Search: BFS and DFS}
     \begin{itemize}
-    \item Basic algorithms to visit every vertice in a graph.
-    \item Many graph algorithms require BFS or DFS;
-    \item So learn to do these with your eyes closed;
+    \item Basic Question: from vertice $v_s$, can we reach $v_e$?
+    \item Many graph algorithms start from a graph search;
+    \item Two types: BFS, DFS;
     \end{itemize}
 
   \begin{block}{Depth First Search -- DFS}
     \begin{itemize}
-      \item Visit the first edge in the next vertice;
-      \item No guarantee of order, tends to go away from start;
-      \item Easy to implement with recursion;
+      \item Visit the first edge available;
+      \item Vertice order is not guaranteed;
+      \item Easy to implement with recursion or stack;
     \end{itemize}
   \end{block}
 
   \begin{block}{Breadth First Search -- BFS}
     \begin{itemize}
-      \item First visit the vertices closer to starting point;
-      \item Place new edges on a FIFO, and search with a loop;
+      \item First visit the vertices close to the starting point;
+      \item Place new vertices on a list, and visit them with a loop;
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{BFS/DFS: Visualization}
+  \frametitle{BFS and DFS: Visualize the difference}
   \begin{columns}[t]
     \column{0.5\textwidth}
     \begin{exampleblock}{DFS}
@@ -369,12 +398,11 @@ queue<int> q;          // list of vertices to visit;
 q.push(start_vertice); // Start BFS
 
 while(!q.empty()) {
-  int u = q.front(); q.pop();
-  bfs_vis[u] = 1;
+  int u = q.front(); q.pop(); bfs_vis[u] = 1;
   // Do something...
   for (int i = 0; i < AdjList[v].size(); i++) {
     edge e = AdjList[v][i];
-    if (bfs_vis[e.first] == 0)
+    if (bfs_vis[e.first] == 0)   // Check if node is visited
       q.push(e.first);
   }
 }
@@ -392,7 +420,9 @@ while(!q.empty()) {
     \item A BFS/DFS implemented with {\bf Adjacency Matrix}, costs $O(V^2)$.
     \begin{itemize}
       \item That's because to visit every edge of a vertice in an Adjacency Matrix, it costs $O(V)$.
-    \end{itemize}
+    \end{itemize}\bigskip
+
+    \item Adjacency List is faster, {\bf if the graph is sparse (has few edges)}
   \end{itemize}
 \end{frame}
 
@@ -401,39 +431,40 @@ while(!q.empty()) {
 \begin{frame}[fragile]{Solving the Dominator Problem with DFS}
   \begin{exampleblock}{}
     \begin{itemize}
-      \item $V_j$ is dominated by $V_j$, if all paths from $S$ to $V_j$ pass through $V_i$;
-      \item In other words, you cannot access $V_j$ from $S$, if $V_i$ is not available;
-      \item {\bf Algorithm:} Remove $V_i$, and test if you can access $V_j$;
+      \item $v_j$ is dominated by $v_j$, if all paths from $v_0$ to $v_j$ pass through $v_i$;
+      \item In other words, you cannot access $v_j$ from $v_0$, if $v_i$ is not available;
+      \item {\bf Algorithm:} Remove $v_i$, and test if you can access $v_j$ from $v_0$;
     \end{itemize}
   \end{exampleblock}\bigskip
 
   \input{graphs/dominator.tex}
 \end{frame}
 
-\begin{frame}[fragile]{Solving the Dominator Problem with DFS}
+\begin{frame}[fragile]{Solving the Dominator Problem with DFS}{Use DFS/BFS N times}
+
   \begin{columns}
     \column{0.4\textwidth}
     \input{graphs/dominator.tex}
     \column{0.6\textwidth}
 
-    \begin{exampleblock}{Solution: DFS $N$ Times (BFS OK too)}
+    \begin{exampleblock}{}
 {\smaller
 \begin{verbatim}
-// Modified DFS: never visits V_i;
-boolean DFS2(S,i);
+// Modified DFS: does not visit vertex v_i;
+boolean DFS2(S,i) {...};
 
-// init: Processing Root node
+// initialization: which nodes v_0 can reach?
 DFS2(0,-1);
 for (int j = 0; j < N; j++)
-  if (VISITED[j])
-    DOMINATED[0][j] == 1;
+  if (VISITED[j]) { DOMINATED[0][j] = 1; }
 
+// check DOMINATED relationship of each v_i
 for (int i = 1; i < N; i++) {
   memset(VISITED,0,sizeof(VISITED));
   DFS2(0,i);
   for (int j = 0; j < N; j++)
     if (!VISITED[j] && DOMINATED[0][j])
-      DOMINATED[i][j] == 1;
+      DOMINATED[i][j] = 1;
 }
 \end{verbatim}}
     \end{exampleblock}
@@ -612,8 +643,13 @@ for (int i = 1; i < N; i++) {
 
 \section{Common Graph Problems}
 
-\begin{frame}{Common Graph Problems}
-  In this section, we will review several common problems involving graphs in Programming Challenges.\bigskip
+\begin{frame}{}
+  \begin{center}
+    {\bf Part II: Common Graph Problems}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Common Graph Problems in Competitive Programming}
 
   Most of these can be solved with small modifications to DFS or BFS.\bigskip
 
@@ -621,17 +657,18 @@ for (int i = 1; i < N; i++) {
     \item Connected Components;
     \item Flood Fill;
     \item Topological Sort;
-    \item Bipartite Checking;
-    \item Articulation Vertices;
-    \item Strongly Connected Components;
+    \item Bipartite Checking;\bigskip
+
+    \item Articulation Vertices; \hfill Next Video
+    \item Strongly Connected Components; \hfill Next Video
   \end{itemize}
 \end{frame}
 
 
 \subsection{Connected Components}
-\begin{frame}{Connected Components}
+\begin{frame}{Connected Components (undirected graph)}
   \begin{block}{Definition}
-    A {\bf connected component} of a (undirected) graph is a subset of vertices $C^k$ where every $V_i \in C^k$ is reachable.\bigskip
+    A {\bf connected component} of a graph is a subset of vertices $C^k$ where every pair of vertices $v_i, v_j \in C^k$ is connected.\bigskip
   \end{block}
 
   \vfill
@@ -641,14 +678,14 @@ for (int i = 1; i < N; i++) {
       \node[vertex] (b) at (0,0) {b};
       \node[vertex] (c) at (2,1) {c};
       \node[vertex] (d) at (4,0) {d};
-      \node[vertex] (e) at (4,1) {e};
-      \node[vertex] (1) at (8,2) {1};
-      \node[vertex] (2) at (9,0) {2};
+      \node[vertex] (e) at (6,1) {e};
+      \node[vertex] (f) at (8,2) {f};
+      \node[vertex] (g) at (9,0) {g};
       \draw[edge] (a) to (b);
       \draw[edge] (b) to (c);
       \draw[edge] (c) to (a);
       \draw[edge] (c) to (d);
-      \draw[edge] (1) to (2);
+      \draw[edge] (f) to (g);
     \end{tikzpicture}
   \end{center}
 \end{frame}
@@ -666,52 +703,59 @@ for (int i = 1; i < N; i++) {
   {\bf Quiz:} How do you implement this?
 \end{frame}
 
-\begin{frame}[fragile]{Connected Components}{Algorithm}
+\begin{frame}[fragile]{Connected Components}{Finding Connected Components using BFS/DFS}
   We can find all connected components by looping through all vertices, and running BFS/DFS on each unvisited vertice;
 
+\begin{columns}
+  \column{0.7\textwidth}
   \begin{exampleblock}{}
 \begin{verbatim}
+int dfs_vis[];          // visited vertices
+
 int cables = 0;
 for (int = 0; i < N; i++)
-   if (dfs_vis[i] == 0) // New component!
+   if (dfs_vis[i] == 0) // found new component
    {
-      dfs(i);           // Visit vertices
+      dfs(i);           // visit more vertices
       cables += 1;
    }
 cout << "Need "<< cables - 1 <<".\n";
 \end{verbatim}
   \end{exampleblock}
-
-\begin{center}
+  \column{0.3\textwidth}
+  \begin{center}
   \begin{tikzpicture}[scale=1,auto,swap]
     \node[vertex] (a) at (0,0) {0};
-    \node[vertex] (b) at (0,1) {1};
-    \node[vertex] (c) at (1,0) {2};
-    \node[vertex] (d) at (1,1) {3};
-    \node[vertex] (e) at (2,0) {4};
-    \node[vertex] (f) at (2,1) {5};
+    \node[vertex] (b) at (2,0) {1};
+    \node[vertex] (c) at (0,2) {2};
+    \node[vertex] (d) at (2,2) {3};
+    \node[vertex] (e) at (0,4) {4};
+    \node[vertex] (f) at (2,4) {5};
     \draw[edge] (a) to (b);
     \draw[edge] (a) to (c);
     \draw[edge] (b) to (c);
     \draw[edge] (d) to (f);
   \end{tikzpicture}
 \end{center}
+\end{columns}
+
 \end{frame}
 
-\begin{frame}[fragile]{Connected Components}{UFDS Variant}
-
-  You could also count Connected Components using the {\bf UFDS} data structure from lecture 2.\bigskip
-
-  It costs $O(E)$ to build the UFDS, and $O(V)$ to count the number of components.\bigskip
-
-  If your problem is dynamic and includes several additions to the graph edges, this might be a good choice, because it is cheaper to recalculate the CCs.
-\end{frame}
+%% Maybe add back later
+% \begin{frame}[fragile]{Connected Components}{UFDS Variant}
+%
+%   You could also count Connected Components using the {\bf UFDS} data structure from lecture 2.\bigskip
+%
+%   It costs $O(E)$ to build the UFDS, and $O(V)$ to count the number of components.\bigskip
+%
+%   If your problem is dynamic and includes several additions to the graph edges, this might be a good choice, because it is cheaper to recalculate the CCs.
+% \end{frame}
 
 \subsection{Flood Fill}
 
 \begin{frame}[fragile]{Flood Fill}
-  \begin{block}{Problem: The Biggest Island}
-    You want to build a large in Minecraft. For this, you need to find the biggest island in the map.\bigskip
+  \begin{block}{Problem: Find The Biggest Island}
+    You want to find the biggest island in a game map to build a castle.
 
     {\bf Input:} A 2D representation of the map:
 \begin{verbatim}
@@ -725,7 +769,7 @@ cout << "Need "<< cables - 1 <<".\n";
 ....................................
 \end{verbatim}
   \end{block}
-  \hfill Is this a graph problem?
+  \hfill Can we solve this as a graph problem?
 \end{frame}
 
 \begin{frame}{Implicit Graphs}
@@ -783,8 +827,7 @@ cout << "Need "<< cables - 1 <<".\n";
 \end{frame}
 
 
-\begin{frame}[fragile]{Flood Fill}{Implementation}
-  "Biggest Island" can be solved with BFS/DFS modifying labels;
+\begin{frame}[fragile]{Flood Fill}{Finding the "Biggest Island" with BFS/DFS and modifying labels}
 
   {\smaller
   \begin{exampleblock}{}
@@ -792,11 +835,11 @@ cout << "Need "<< cables - 1 <<".\n";
 int dr[] = {1,1,0,-1,-1,-1,0,1}; // neighbors for a grid
 int dc[] = {0,1,1,1,0,-1,-1,-1}; // with diagonals;
 
-int floodfill(int y, int x) {  // size of one position
+int floodfill(int y, int x) {    // size of one position
   if (y < 0 || y >= R || x < 0 || x >= C) return 0;
   if (grid[y][x] != '#') return 0;
   int size = 1;
-  grid[y][x] = '.';    // CHANGE THE MAP (**key**)
+  grid[y][x] = '.';              // Change the map to mark visited nodes
   for (int d = 0; d < 8; d++)
      size += floodfill(y+dr[d], x+dc[d]);
   return ans;
@@ -813,8 +856,9 @@ for (int i = 0; i < C; i++)
 \subsection{Topological Sort}
 
 \begin{frame}[fragile]{Topological Sort}
-  \begin{block}{Problem: Preparing a Curriculum}
-    You have a list of courses and requisites. Choose an {\bf ordering} of topics that respect all requisites.
+  \begin{block}{Example Problem: Preparing a Curriculum}
+    You have a list of courses and requisites.\\
+    Choose an {\bf ordering} of topics that respect all requisites.
     \bigskip
 
     {\bf Input}: list M topics, and N pairs of topics;\\
@@ -825,24 +869,24 @@ for (int i = 0; i < C; i++)
 \begin{verbatim}
 ** Example Input:
 5 4 Graphs DP Search Flow Programming
-Programming Search
-Search DP
-Graph Flow
-Search Graph
+Programming -> Search
+Search -> DP
+Graph -> Flow
+Search -> Graph
 
 ** Example Output:
-Course: Programming Search DP Graph Flow
+Course: Programming -> Search -> DP -> Graph -> Flow
 \end{verbatim}
 
   }
 \end{frame}
 
 \begin{frame}{Topological Sort Definition}
-  In a {\bf directed graph}, a topological sort is an ordering of vertices where $V_i \prec V_j$ {\bf iff} there is no path $V_j \to V_i$.\bigskip
+  A {\bf topological sort} is an ordering of vertices where $v_i \prec v_j$ only if there is no path $v_j \to v_i$.\bigskip
   \begin{center}
     \input{graphs/toposortgraph.tex}
   \end{center}
-  For this graph, a topological sort would be $a \prec b \prec c \prec d \prec e$.\bigskip
+  For this graph, one possible topological sort is $a \prec b \prec c \prec d \prec e$.\bigskip
 
   \begin{itemize}
     \item Toposorts are {\bf not unique}:
@@ -850,7 +894,7 @@ Course: Programming Search DP Graph Flow
       \item $a \prec c \prec b \prec d \prec e$ is also a toposort.
     \end{itemize}
     \item A graph only has a toposort if it has {\bf no cycles}.
-    \item To find the toposort, we use {\bf in-degrees and out-degrees}:
+    \item To find the toposort, we use {\bf in-degrees and out-degrees} of each vertex:
     \begin{itemize}
       \item $a$ -- In-deg: 0; Out-deg: 2;
       \item $d$ -- In-deg: 2; Out-deg: 1;
@@ -859,27 +903,28 @@ Course: Programming Search DP Graph Flow
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Topological Sort Algorithm}
+\begin{frame}[fragile]{Finding Topological Sort -- Khan's Algorithm}
 
-  {\bf Khan's algorithm} can be used to find the toposort of a graph. It is composed of a {\bf BFS} where we keep track of the in-degrees of a vertex before adding it to the visit queue.
+Modified BFS: Vertices are only added to the queue if they in-degree is 0.
 
 \begin{exampleblock}{}
   {\smaller
 \begin{verbatim}
 queue<int> q; vector<int> toposort;
-vector<int> in-deg; // initialize to 0 for all N;
+vector<int> in-deg;                 // initialize to 0 for all N;
 
 for (int i = 0; i < EdgeList.size(); i++)
-  in-deg[EdgeList[i].second]++;
+  in-deg[EdgeList[i].second]++;     // calculate in-degrees based on edge list.
 for (int i = 0; i < N; i++)
-  if (in-deg[i] == 0) q.push(i); // queue in-deg = 0;
+  if (in-deg[i] == 0) q.push(i);    // add vertices with in-deg = 0 to queue
 
 while (!q.empty()) {
-  u = q.front(); q.pop(); toposort.push_back(u); // Do something
+  u = q.front(); q.pop(); toposort.push_back(u); // Add top of queue to toposort
   for (int i = 0; i < EdgeList[u].size(); i++) {
-    d = EdgeList[u][i].first; in-deg[d]--;
+    d = EdgeList[u][i].first; in-deg[d]--;       // remove edges from visited.
     if (in-deg[d] == 0) q.push(d); // queue in-deg = 0;
-} }
+  }
+}
 \end{verbatim}}
   \end{exampleblock}
 \end{frame}
@@ -890,13 +935,13 @@ while (!q.empty()) {
   \end{center}
   {\bf In-deg list:}
   \begin{itemize}
-    \item a:
-    \item b:
-    \item c:
-    \item d:
-    \item e:
+    \item<2-> iteration 1: (a,0), (b,1), (c,1), (d,2), (e,1)\hfill visit a
+    \item<3-> iteration 2: (b,0), (c,0), (d,2), (e,1)\hfill visit b
+    \item<4-> iteration 3: (c,0), (d,1), (e,1), \hfill visit c
+    \item<5-> iteration 4: (d,0), (e,1)\hfill visit d
+    \item<6-> iteration 5: (e,0)\hfill visit e
   \end{itemize}
-  {\bf Toposort:}
+  {\bf Toposort: \only<2->{a,} \only<3->{b,} \only<4->{c,} \only<5->{d,} \only<6->{e}}
 \end{frame}
 
 % \begin{frame}
@@ -929,7 +974,7 @@ while (!q.empty()) {
 
 \begin{frame}[fragile]
   \frametitle{Bipartite Check Algorithm}
-  We can check if a graph is bipartite using a BFS/DFS. Every time we visit a vertice, we mark it "0" or "1". If two adjacent vertices are of the same colors, the graph is not bipartite.
+  Visit all vertices using BFS/DFS. Every time we visit a vertice, we mark it "0" or "1". If two adjacent vertices are of the same colors, the graph is not bipartite.
 
   {\smaller
   \begin{exampleblock}{}
@@ -1001,7 +1046,12 @@ while (!q.empty() && isBipartite) {
   \end{columns}
 \end{frame}
 
-\subsection{Articulation Points}
+\section{Articulation Points}
+\begin{frame}
+  \begin{center}
+    {\bf Part III -- Articulation Points}
+  \end{center}
+\end{frame}
 
 \begin{frame}
   \frametitle{Articulation Points and Bridges}
@@ -1038,18 +1088,17 @@ while (!q.empty() && isBipartite) {
   \frametitle{Problems and Naive Algorithm}
   \begin{exampleblock}{Example Problems}
     \begin{itemize}
-      \item Find nodes that can be/can not removed from a graph;
-      \item Add extra nodes to "reinforce" a graph;
-      \item Measure the reliability of a network;
-      \item etc;
+      \item Find vertices that can be removed from a graph to "break" it;
+      \item Add extra edges to "reinforce" a graph;
+      \item Measure the reliability of a network, etc;
     \end{itemize}
   \end{exampleblock}\medskip
 
-  \begin{block}{Complete Search algorithm for Articulation Points $O(V^2+VE)$}
+  \begin{block}{Complete Search algorithm to find Articulation Points: $O(V\times(V+E)) = O(V^2+VE)$}
   \begin{enumerate}
     \item Run DFS/BFS, and count the number of CC in the graph;
     \item For each vertex $v_i$, remove $v_i$ and run DFS/BFS again;
-    \item If the number of CC increases, $v$ is an articulation point;
+    \item If the number of CC increases, $v_i$ is an articulation point;
   \end{enumerate}
   \end{block}
 \end{frame}
@@ -1058,22 +1107,24 @@ while (!q.empty() && isBipartite) {
   \begin{exampleblock}{Find Articulation Points/Bridges in a single DFS pass: $O(V+E)$}
     Main idea: Track loops to detect articulations:
     \begin{itemize}
-    \item {\bf dfs\_num[i]}: iteration number (DFS order)
-    \item {\bf dfs\_low[i]}: lowest dfs\_num reachable from $i$;
-      \begin{itemize}
-        \item (not counting direct parent);
-      \end{itemize}
-    \end{itemize}
-    For any $u,v$, if low[$v$] >= num[$u$], $u$ is an articulation node (except root)
-    For any $u,v$, if low[$v$] > num[$u$], $e_{u,v}$ is a bridge;
+    \item {\bf dfs\_num[i]}: vector with visitation order from DFS;
+    \item {\bf dfs\_low[i]}: vector with lowest dfs\_num reachable from $v_i$;\hfill
+    \end{itemize}\bigskip
+
+    For any $u,v$, if low[$v$] >= num[$u$], then $u$ is an articulation node (except root)\bigskip
+
+    For any $u,v$, if low[$v$] > num[$u$], $e_{u,v}$ is a bridge; (articulation edge)
   \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Tarjan's DFS variant for Articulation point (O(V+E))}
+
   \begin{center}
     \includegraphics[width=0.9\textwidth]{../img/graph_articulation}
   \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Tarjan's Algorithm for Articulation Point}{Simulation}
-
+\begin{frame}{Tarjan's Algorithm for Articulation Point}{Simulation}
   \begin{columns}
     \column{.55\textwidth}
     \begin{tikzpicture}[scale=1.3,auto,swap]
@@ -1096,59 +1147,40 @@ while (!q.empty() && isBipartite) {
       \draw[edge] (c) to (h);
     \end{tikzpicture}
     \column{.45\textwidth}
-{\smaller
-\begin{verbatim}
-    DFS_NUM   DFS_LOW
-
- 0
-
- 1
-
- 2
-
- 3
-
- 4
-
- 5
-
- 6
-
- 7
-\end{verbatim}}
+    \begin{itemize}
+      \item dfs\_num: 0; dfs\_low: 0
+      \item<2-> dfs\_num: 1; dfs\_low: 0
+      \item<3-> dfs\_num: 2; dfs\_low: 0
+      \item<4-> dfs\_num: 3; dfs\_low: 0
+      \item<5-> dfs\_num: 4; dfs\_low: 4
+      \item<6-> dfs\_num: 5; dfs\_low: 5
+      \item<7-> dfs\_num: 6; dfs\_low: 5
+      \item<8-> dfs\_num: 7; dfs\_low: 5
+    \end{itemize}
   \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]{Tarjan's Algorithm for Articulation Point}{Implementation}
-{\tiny
+{\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
 void articulation(u){
-   dfs_num[u] = dfs_low[u] = IterationCounter++;  // update num[u], init low[u]
-   for (int i = 0; i < AdjList[u].size(); i++){
+   dfs_num[u] = dfs_low[u] = IterationCounter++; // update num[u], init low[u]
+   for (int i = 0; i < AdjList[u].size(); i++){  // Do DFS on each edge from u
       v = AdjList[u][i];
-      if (dfs_num[v.first] == UNVISITED) {        // DFS tree edge
-         dfs_parent[v.first] = u;                 // store parent
-         if (u == 0) rootTreeEdge++;              // special case for root node
+      if (dfs_num[v.first] == UNVISITED) {       // DFS tree edge
+         dfs_parent[v.first] = u;                // store parent
+         if (u == 0) rootTreeEdge++;             // special case for root vertex
+         articulation(v.first);                  // visit next vertex
 
-         articulation(v.first);                   // visit next
-
-         // This code happens AFTER we finish the DFS from u;
+         // After we finish the DFS from u, we check if u is articulation.
          if (dfs_low[v.first] >= dfs_num[u])
-            articulation_vertex[u] = true;        // do something
-         if (dfs_low[v.first > dfs_num[u]])
-            bridge[u][v.first] = true;            // do something
+            articulation_vertex[u] = true;       // u is articulation
          dfs_low[u] = min(dfs_low[u],dfs_low[v.first])
       }
-      else if (v.first != dfs_parent[u])          // found a cycle edge
+      else if (v.first != dfs_parent[u])         // found a cycle edge
          dfs_low[u] = min(dfs_low[u],dfs_num[v.first]);
-  } // for j;
-} // articulation(u);
-
-// Starting the algorithm from the main program:
-articulation(0);
-if (rootTreeEdge > 1)
-  articulation_vertex[0] = true;                  // special case for root
+}  }
 \end{verbatim}
   \end{exampleblock}}
 \end{frame}
@@ -1189,7 +1221,7 @@ if (rootTreeEdge > 1)
       \vspace{0.1cm}
     \end{exampleblock}
     \column{0.5\textwidth}
-    \begin{exampleblock}{Three Strongly Connected Components (directed)}
+    \begin{exampleblock}{Three SCC (directed)}
       \vspace{0.1cm}
       \begin{center}
         \begin{tikzpicture}[scale=1.1,auto,swap]
@@ -1234,7 +1266,7 @@ if (rootTreeEdge > 1)
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Algorithm for Finding SCCs}{Simulation}
+\begin{frame}[fragile]{Algorithm for Finding SCCs}{Do this simulation yourself!}
   \begin{center}
     \begin{tikzpicture}[scale=1.1,auto,swap]
       \tikzset{edge/.style = {->,>=latex'}}
@@ -1272,6 +1304,12 @@ dfs_sum
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}
+  \begin{center}
+    {\bf Part 4: Minimum Spanning Tree}
+  \end{center}
+\end{frame}
+
 \subsection{Spanning Tree}
 \begin{frame}
   \frametitle{Minimum Spanning Trees (MST) -- Definition}
@@ -1287,6 +1325,7 @@ dfs_sum
   \end{block}
 
   \begin{columns}[T]
+    Graph\\
     \column{0.3\textwidth}
     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
       \node[vertex] (a) at (0,0) {};
@@ -1303,6 +1342,7 @@ dfs_sum
       \draw[edge] (d) -- node[label] {$9$} (e);
     \end{tikzpicture}
     \column{0.3\textwidth}
+    Spanning Tree
     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
       \node[vertex] (a) at (0,0) {};
       \node[vertex] (b) at (1,1) {};
@@ -1318,6 +1358,7 @@ dfs_sum
       \draw[red edge] (d) -- node[label] {$9$} (e);
     \end{tikzpicture}
     \column{0.3\textwidth}
+    Minimum Spanning Tree
     \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
       \node[vertex] (a) at (0,0) {};
       \node[vertex] (b) at (1,1) {};
@@ -1489,23 +1530,21 @@ cout << "MST Cost: " << mst_cost << "\n"
 {\smaller
 \begin{exampleblock}{}
 \begin{verbatim}
-vector <int> taken;
-priority_queue <pair <int,int>> pq;
+vector <int> taken; priority_queue <pair <int,int>> pq;
 
 void process (int v) {
    taken[v] = 1;
    for (int j = 0; j < (int)AdjList[v].size(); j++) {
       pair <int,int> ve = AdjList[v][j];
       if (!taken[ve.first])
-         pq.push(pair <int,int> (-ve.second,-ve.second)
+         pq.push(pair <int,int> (ve.first, ve.second))
 }}
-taken.assign(V,0);
-process(0);
+taken.assign(V,0); process(0);
 mst_cost = 0;
 
 while (!pq.empty()) {
   vector <int,int> pq.top(); pq.pop();
-  u = -front.secont, w = -front.first;
+  u = front.first, w = front.second;
   if (!taken[u]) mst_cost += w, process(u);
 }
 \end{verbatim}

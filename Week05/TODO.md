@@ -1,7 +1,4 @@
 # TODO
-  - [X] 169 aspect ratio
-  - [ ] Define Breaks
-  - [ ] Double check slide code;
+  - [ ] Change the illustrations of Articulation Points / Tarjan's algo.
 
   - [ ] Improve discussion between toposort and dynamic programming
-  - [ ] Replace Tarjan's illustration figure with my own.
