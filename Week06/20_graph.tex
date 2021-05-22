@@ -1,5 +1,11 @@
 \section{Single Source Shortest Path}
 
+\begin{frame}
+  \begin{center}
+    {\bf Part I - Single Source Shortest Path}
+  \end{center}
+\end{frame}
+
 \subsection{Definitions}
 \begin{frame}
   \frametitle{SSSP: Single Source Shortest Path}
@@ -133,14 +139,14 @@ while (!pq.empty()) {
 \begin{frame}[fragile]{Dijkstra with Lazy deletion: Simulation}
   Dijkstra visits vertices: 2, 1, 3, 0, 4; in order
   \begin{columns}[T]
-    \column{0.7\textwidth}
+    \column{0.6\textwidth}
     \begin{center}
-      \includegraphics[width=\textwidth]{../img/dijkstra_halim}
+      \includegraphics[width=.9\textwidth]{../img/dijkstra_halim}
       \ppagenote{Dijkstra Image from "Competitive Programming 3", Steven Halim}
     \end{center}
-    \column{.3\textwidth}
+    \column{.4\textwidth}
 \begin{verbatim}
- PQ(0):   PQ(1):
+ PQ:
 \end{verbatim}
   \end{columns}
 \end{frame}
@@ -227,7 +233,7 @@ while (!pq.empty()) {
 \end{frame}
 
 \begin{frame}
-  \frametitle{UVA 11367 -- Full Tank: Simulation}
+  \frametitle{UVA 11367 -- Full Tank: Simulation of Graph Transformation}
 
     \begin{center}
       \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
@@ -294,10 +300,10 @@ while (!pq.empty()) {
 
   \begin{exampleblock}{Pseudocode (uses EdgeList data structure)}
 \begin{verbatim}
-vector<int> dist(V, INF); dist[s] = 0;// Start Condition
-int edges[E][3];                   // Edge list (i,j,w)
-for (int i = 0; i < V - 1; i++)    // repeat V-1 times
- for (int u = 0; u < E; u++) {     // for all edges
+vector<int> dist(V, INF); dist[s] = 0;  // Start Condition
+int edges[E][3];                        // Edge list (i,j,w)
+for (int i = 0; i < V - 1; i++)         // repeat V-1 times
+ for (int u = 0; u < E; u++) {          // for all edges
   dist[edges[u][1]] = min(dist[edges[u][1]],
                           dist[edges[u][0]]+edges[u][2]);
  }
@@ -358,6 +364,13 @@ for (int i = 0; i < V - 1; i++)    // repeat V-1 times
 
 
 \section{APSP}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part II -- All Parts Shortest Paths}
+  \end{center}
+\end{frame}
+
 \subsection{All Pairs Shortest Path}
 \begin{frame}
   \frametitle{APSP: All Pairs Shortest Path}
@@ -386,10 +399,7 @@ for (int i = 0; i < V - 1; i++)    // repeat V-1 times
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{The Floyd-Warshall Algorithm -- $O(V^3)$}
-
-Only four lines of code!
+\begin{frame}[fragile]{The Floyd-Warshall Algorithm -- $O(V^3)$}{Only four lines of code!}
 
   \begin{exampleblock}{}
 \begin{verbatim}
@@ -429,10 +439,10 @@ for (int k=0; k < V; k++) // loop order
   \end{block}
 
   \begin{center}
-    \includegraphics<1>[width=0.7\textwidth]{../img/fw_halim1}
-    \includegraphics<2>[width=0.7\textwidth]{../img/fw_halim2}
-    \includegraphics<3>[width=0.7\textwidth]{../img/fw_halim3}
-    \includegraphics<4>[width=0.7\textwidth]{../img/fw_halim4}
+    \includegraphics<1>[height=0.5\textheight]{../img/fw_halim1}
+    \includegraphics<2>[height=0.5\textheight]{../img/fw_halim2}
+    \includegraphics<3>[height=0.5\textheight]{../img/fw_halim3}
+    \includegraphics<4>[height=0.5\textheight]{../img/fw_halim4}
   \end{center}
   \ppagenote{Floyd-Warshall Image from "Competitive Programming", Steven Halim}
 \end{frame}
@@ -491,7 +501,7 @@ AdjMat[i][j]=min(AdjMat[i][j],max(AdjMat[i][k],AdjMat[k][j]);
 
 \begin{frame}
   \begin{center}
-    {\bf Network Max Flow}
+    {\bf Part III - Network Max Flow}
   \end{center}
 \end{frame}
 
@@ -503,7 +513,7 @@ AdjMat[i][j]=min(AdjMat[i][j],max(AdjMat[i][k],AdjMat[k][j]);
   \end{block}
 
   \begin{center}
-    \includegraphics[width=.55\textwidth]{../img/maxflow_wiki}
+    \includegraphics[width=.45\textwidth]{../img/maxflow_wiki}
     \ppagenote{Network Flow Image CC-BY-SA 3.0 by Maksim}
   \end{center}
 
@@ -551,15 +561,14 @@ AdjMat[i][j]=min(AdjMat[i][j],max(AdjMat[i][k],AdjMat[k][j]);
 % {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-// Initialize Residual Graph
-int residual[V][V];
-memset(residual,0,sizeof(residual))
-for (int i; i < V;i++)
-  for (int j; j < V;j++)
-    if residual[i][j] = AdjMat[i][j];
-mf = 0;  // Max flow counter
-while (P = FindPath(s,t)) { // Find new path;
-   m = P.min_weight; // minimum edge in P
+int residual[V][V];                   // Initialize Residual Graph
+memset(residual, 0, sizeof(residual))
+for (int i; i < V; i++)
+  for (int j; j < V; j++)
+    residual[i][j] = AdjMat[i][j];
+mf = 0;                               // Max flow counter
+while (P = FindPath(s, t)) {          // Find new path;
+   m = P.min_weight;                  // minimum edge in P
    for (edge (v,u) in P) {
       residual[v][u] -= m;
       residual[u][v] += m;
@@ -613,8 +622,7 @@ The Ford Fulkerson method does not specify an algorithm for finding a path in th
 {\smaller
 \begin{block}{Pseudocode}
 \begin{verbatim}
-boolean BFS(s, t, p) { }
-// Finds shortest (by edge #) path from s to t and store in p
+boolean BFS(s, t, p) { } // Finds shortest (by edge #) path from s to t and store in p
 
 mf = 0
 while BFS(s,t,p) do {
@@ -793,98 +801,98 @@ B3 1234;\\
   \end{block}
 \end{frame}
 
-\section{Graph Problem Examples}
-
-\begin{frame}{A few more Graph problem example}
-
-  One interesting thing about graph problems is that they come in great variety.\bigskip
-
-  \begin{itemize}
-    \item Many different graph algorithms;
-    \item Many different ways to represent a problem as a graph;
-    \item Many different problem types;
-  \end{itemize}\bigskip
-
-  Let's see some extra problems to discuss these variations.
-\end{frame}
-
-\begin{frame}{Fishmonger -- Shortest path on a DAG}
-  \begin{block}{Problem Description}
-    A fish seller must go from city $v_0$ to city $v_{n-1}$, before the time $t$. The seller must also pay the minimum ammount of toll.\bigskip
-
-    \begin{itemize}
-      \item Every edge has a {\bf toll cost} and a {\bf time cost};
-      \item The number of cities is $\leq 50$, and the time $t$ is $\leq 1000$.
-    \end{itemize}
-  \end{block}\bigskip
-
-  This is a $SSSP$ problem, but with two costs: \emph{time} and \emph{toll}.\medskip
-
-  {\bf Quiz}: How do you find the minimal path for both costs?
-\end{frame}
-
-\begin{frame}
-  \frametitle{Fishmonger -- Shortest path on a DAG}
-
-  \begin{block}{Graph Transformation}
-    Similar to "full tank", we each vertex $v_i$ into $t$ new vertices, where $v_{i,t}$ indicates that you reached vertice $v_{i}$ with $t$ time left.\bigskip
-
-    Each edge is modified: The edges no longer have a time cost, but they instead directionally connect $v_{i,t} \to v_{j,t'}$.
-  \end{block}
-
-  \begin{itemize}
-    \item This transformation multiplies the number of nodes to ($V\times T$);
-    \item However, the new graph is now a DAG;
-    \item Because the graph is a DAG, it is possible to solve the search using {\bf Top-Down Dynamic Programming}:
-    \begin{itemize}
-      \item Recursive function: \emph{find(v,t)}, finds minimum cost $c$
-      \item Table size: $V\times T$
-    \end{itemize}
-    \item In fact, it is not even necessary to \emph{explicitely} transform the graph. An implicit transformation inside the recursive function is enough!
-  \end{itemize}
-\end{frame}
-% TODO: Pseudocode for Fishmonger
-
-\begin{frame}[fragile]
-  \frametitle{Titanic (UVA 11380) -- Network Flow}
-
-  \begin{block}{Problem Outline}
-    Given the map of an accident, calculate how many people escape.
-  \end{block}
-
-\begin{verbatim}
-Map explanation:
-# -- large wood: safe, P people can escape;
-@ -- large iceberg: anyone can pass;
-. -- ice: breaks after 1 person pass;
-* -- initial position: 1 person. Breaks like ice;
-~ -- freezing water: no one can pass;
-\end{verbatim}
-
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{../img/uva11380_halim}
-  \end{center}
-  \ppagenote{Image from \emph{Competitive Programming, 3rd edition}}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Titanic (UVA11380) -- Network Flow}
-  \begin{block}{Graph Modeling}
-    Number of escaped people = Max Flow of the graph. But how do we create the flow graph?
-  \end{block}
-  One example:
-  \begin{itemize}
-    \item Every non-water cell has two vertices: "In" and "Out";
-    \item Connect "In" and "Out" vertices with cell capacity:
-    \begin{itemize}
-      \item Iceberg and wood: Infinite
-      \item ice and initial position: 1
-    \end{itemize}
-    \item Connect every "Out" vertex with other nearby "In" vertices with infinite capacity;
-    \item Connect "Super Source" with all "initial positions" with capacity 1;
-    \item Connect all "Wood" with "Super Sink", with capacity P.
-  \end{itemize}
-\end{frame}
+% \section{Graph Problem Examples}
+%
+% \begin{frame}{A few more Graph problem example}
+%
+%   One interesting thing about graph problems is that they come in great variety.\bigskip
+%
+%   \begin{itemize}
+%     \item Many different graph algorithms;
+%     \item Many different ways to represent a problem as a graph;
+%     \item Many different problem types;
+%   \end{itemize}\bigskip
+%
+%   Let's see some extra problems to discuss these variations.
+% \end{frame}
+%
+% \begin{frame}{Fishmonger -- Shortest path on a DAG}
+%   \begin{block}{Problem Description}
+%     A fish seller must go from city $v_0$ to city $v_{n-1}$, before the time $t$. The seller must also pay the minimum ammount of toll.\bigskip
+%
+%     \begin{itemize}
+%       \item Every edge has a {\bf toll cost} and a {\bf time cost};
+%       \item The number of cities is $\leq 50$, and the time $t$ is $\leq 1000$.
+%     \end{itemize}
+%   \end{block}\bigskip
+%
+%   This is a $SSSP$ problem, but with two costs: \emph{time} and \emph{toll}.\medskip
+%
+%   {\bf Quiz}: How do you find the minimal path for both costs?
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Fishmonger -- Shortest path on a DAG}
+%
+%   \begin{block}{Graph Transformation}
+%     Similar to "full tank", we each vertex $v_i$ into $t$ new vertices, where $v_{i,t}$ indicates that you reached vertice $v_{i}$ with $t$ time left.\bigskip
+%
+%     Each edge is modified: The edges no longer have a time cost, but they instead directionally connect $v_{i,t} \to v_{j,t'}$.
+%   \end{block}
+%
+%   \begin{itemize}
+%     \item This transformation multiplies the number of nodes to ($V\times T$);
+%     \item However, the new graph is now a DAG;
+%     \item Because the graph is a DAG, it is possible to solve the search using {\bf Top-Down Dynamic Programming}:
+%     \begin{itemize}
+%       \item Recursive function: \emph{find(v,t)}, finds minimum cost $c$
+%       \item Table size: $V\times T$
+%     \end{itemize}
+%     \item In fact, it is not even necessary to \emph{explicitely} transform the graph. An implicit transformation inside the recursive function is enough!
+%   \end{itemize}
+% \end{frame}
+% % TODO: Pseudocode for Fishmonger
+%
+% \begin{frame}[fragile]
+%   \frametitle{Titanic (UVA 11380) -- Network Flow}
+%
+%   \begin{block}{Problem Outline}
+%     Given the map of an accident, calculate how many people escape.
+%   \end{block}
+%
+% \begin{verbatim}
+% Map explanation:
+% # -- large wood: safe, P people can escape;
+% @ -- large iceberg: anyone can pass;
+% . -- ice: breaks after 1 person pass;
+% * -- initial position: 1 person. Breaks like ice;
+% ~ -- freezing water: no one can pass;
+% \end{verbatim}
+%
+%   \begin{center}
+%     \includegraphics[width=0.7\textwidth]{../img/uva11380_halim}
+%   \end{center}
+%   \ppagenote{Image from \emph{Competitive Programming, 3rd edition}}
+% \end{frame}
+%
+% \begin{frame}
+%   \frametitle{Titanic (UVA11380) -- Network Flow}
+%   \begin{block}{Graph Modeling}
+%     Number of escaped people = Max Flow of the graph. But how do we create the flow graph?
+%   \end{block}
+%   One example:
+%   \begin{itemize}
+%     \item Every non-water cell has two vertices: "In" and "Out";
+%     \item Connect "In" and "Out" vertices with cell capacity:
+%     \begin{itemize}
+%       \item Iceberg and wood: Infinite
+%       \item ice and initial position: 1
+%     \end{itemize}
+%     \item Connect every "Out" vertex with other nearby "In" vertices with infinite capacity;
+%     \item Connect "Super Source" with all "initial positions" with capacity 1;
+%     \item Connect all "Wood" with "Super Sink", with capacity P.
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Prime Pairing -- Bipartite Graph Flow}

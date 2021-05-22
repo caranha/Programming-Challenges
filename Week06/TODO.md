@@ -1,11 +1,7 @@
 # TODO
+## Break Lecture in Parts
 
-## Publishing
-- [ ] Select problems for next week
-- [ ] Move materials around for next week (String problems)
-
-
-## FUTURE
+## Future
 - [ ] Replace Dijkstra simulation image with separate images and queue values;
 - [ ] Add graph animation for Ford-Fulkerson
 - [ ] Add more detailed code for Edmond-carp;
