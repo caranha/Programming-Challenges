@@ -431,7 +431,7 @@ while(!q.empty()) {
 \begin{frame}[fragile]{Solving the Dominator Problem with DFS}
   \begin{exampleblock}{}
     \begin{itemize}
-      \item $v_j$ is dominated by $v_j$, if all paths from $v_0$ to $v_j$ pass through $v_i$;
+      \item $v_j$ is dominated by $v_i$, if all paths from $v_0$ to $v_j$ pass through $v_i$;
       \item In other words, you cannot access $v_j$ from $v_0$, if $v_i$ is not available;
       \item {\bf Algorithm:} Remove $v_i$, and test if you can access $v_j$ from $v_0$;
     \end{itemize}
@@ -1189,7 +1189,7 @@ void articulation(u){
 
 \begin{frame}{Strongly Connected Components}
     \begin{block}{Definition}
-      Given a {\bf directed} graph $G(V,E)$, a {\bf Strongly Connected Component (SCC)} is a subset of vertices $V_1$ where for every pair of vertices $v_i, v_i \in V_1$, there is both a path $v_i \to v_j$ and a path $v_j \to v_i$.
+      Given a {\bf directed} graph $G(V,E)$, a {\bf Strongly Connected Component (SCC)} is a subset of vertices $V_1$ where for every pair of vertices $v_i, v_j \in V_1$, there is both a path $v_i \to v_j$ and a path $v_j \to v_i$.
     \end{block}
 
 
@@ -1258,7 +1258,7 @@ void articulation(u){
   \begin{itemize}
     \item Every time we visit a new vertex $u$, we put $u$ in a stack $S$;
     \item Only update dfs\_low for vertices with the "visited" flag = 1;
-    \item After visiting all edges of $u$, check if "dfs\_num[$u$] == dfs\_min[$u$]";
+    \item After visiting all edges of $u$, check if "dfs\_num[$u$] == dfs\_low[$u$]";
     \item If the condition is true, $u$ is the root of a new SCC.
     \item Pop all vertices in $S$ until (and including) $u$;
     \item Add all popped vertices to the SCC.
@@ -1297,7 +1297,7 @@ void articulation(u){
 
 dfs_low
 
-dfs_sum
+dfs_num
 \end{verbatim}
 
 \end{frame}
