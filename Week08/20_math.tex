@@ -24,7 +24,7 @@
     \begin{itemize}
       \item {\bf C++ STL} does not have native support to bignum. You have to program yourself;
       \begin{itemize}
-        \item unsigned long long: $2^{64} < 10^20$
+        \item unsigned long long: $2^{64} < 10^{20}$
       \end{itemize}
       \item {\bf Java} has the "BigInteger" class, which contains several useful operations on large numbers;
       \item {\bf Python} handles BigNums natively, so a special class is not necessary;
@@ -32,28 +32,25 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Example of Java's "Big Integer" class}
-  {10925 -- Krakovia: Calculate sum and division using large integers}
+\begin{frame}[fragile]{Sum and Division using Java's "Big Integer" class}
 
-  {\smaller
+{\smaller
 \begin{block}{}
 \begin{verbatim}
-import java.util.Scanner;
-import java.math.BigInteger;
+import java.util.Scanner; import java.math.BigInteger;
 class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    int caseNo = 1;
     while (true) {
       int N = sc.nextInt(), F = sc.nextInt();
       if (N == 0 && F == 0) break;
-      BigInteger sum = BigInteger.ZERO;     // Bignum Constant
+      BigInteger sum = BigInteger.ZERO;                  // Bignum Constant
       for (int i = 0; i < N; i++) {
-        BigInteger V = sc.nextBigInteger(); // Bignum I/O
-        sum = sum.add(V); }
-      System.out.println("Bill #" + (caseNo++)
-        + " costs " + sum + ": each friend should pay "
-        + sum.divide(BigInteger.valueOf(F)) + "\n" );}
+        BigInteger V = sc.nextBigInteger();              // Bignum I/O
+        sum = sum.add(V); }                              // Bignum Addition
+      System.out.println(
+        "Total " + sum + ": Division: "
+        + sum.divide(BigInteger.valueOf(F)) + "\n" );}   // Bignum division.
   }
 }
 \end{verbatim}
@@ -117,10 +114,12 @@ isPrime = BI.isProbablePrime(int certainty)
 
   \begin{itemize}
   \item Problem: Input and store a large $n$, and calculate $n\%131071$.
-  \item Alternatives. Which is easier?
+  \bigskip
+
+  \item Two approaches:
   \begin{itemize}
-    \item Use some BigNum data structure to store $n$?
-    \item Use modulo arithmetic to calculate the result without bignum?
+    \item Use a BigNum data structure to store $n$, and calculate.
+    \item Use modulo arithmetic to calculate the result {\bf without} BigNum.
   \end{itemize}
 
   \end{itemize}
@@ -133,14 +132,14 @@ isPrime = BI.isProbablePrime(int certainty)
 \section{Number Theory}
 \begin{frame}{Part II: Number Theory}
 
-  Number Theory is the part of mathematics that studies the relationships between {\bf integer numbers}.\bigskip
+  Number Theory studies the relationships between {\bf integer numbers}.\bigskip
 
   It is a large and fascinating field of study, but for the purposes of programming contests, in this lecture we will focus on three topics:\bigskip
 
   \begin{itemize}
-  \item Primality: How to decide if a number is prime;
-  \item Division and Remainders: The division relationship between integers;
-  \item Sequences: Recurrence relations between sets of numbers;
+  \item {\bf Primality}: How to decide if a number is prime;
+  \item {\bf Division and Remainders}: The division relationship between integers;
+  \item {\bf Sequences}: Recurrence relations between sets of numbers;
   \end{itemize}
 \end{frame}
 
@@ -149,12 +148,15 @@ isPrime = BI.isProbablePrime(int certainty)
 \begin{frame}
   \frametitle{Primality Testing}
 
-    {\bf Prime Numbers} are natural numbers ($\geq 0$) that are only divisible by 1 and by themselves: $2,3,5,7,11,13,\ldots$\bigskip
+    {\bf Prime Numbers} are integers ($> 1$) that are only divisible by 1 and by themselves: $2,3,5,7,11,13,\ldots$\bigskip
 
     {\bf Question:} How do you write a (simple) program to test if $N$ is prime?
     \begin{itemize}
 
-      \item Complete Search: For each $d \in 2..N-1$, test if $N\%d == 0$. This requires $O(N)$ divisions.\medskip
+      \item Complete Search: For each $d \in 2..N-1$, test if $N\%d == 0$.
+      \begin{itemize}
+        \item This requires $O(N)$ divisions.\medskip
+      \end{itemize}
 
       \item Pruning the search:
       \begin{itemize}
@@ -164,7 +166,7 @@ isPrime = BI.isProbablePrime(int certainty)
         $O(\frac{\sqrt{N}}{\ln(\sqrt{N})})$
       \end{itemize}\medskip
 
-      \item Can we calculate these primes easily?
+      \item Can we calculate all primes between 2 and $\sqrt{N}$ easily?
     \end{itemize}
 \end{frame}
 
@@ -179,16 +181,18 @@ isPrime = BI.isProbablePrime(int certainty)
     \item Number of prime numbers between 1 and $\sqrt{10^{10}} \approx 9500$
   \end{itemize}\bigskip
 
-  So if we can find these primes, we can calculate the primality of "programming contest"-sized numbers quickly!\bigskip
+  If we have a "list of prime numbers", we can calculate primality of
+  many large numbers very quickly.\bigskip
 
-  A simple algorithm for finding sets of primes quickly is the {\bf Sieve of Eratosthenes}.
+
+  A simple algorithm to find a list of primes is {\bf Sieve of Eratosthenes}.
 \end{frame}
 
 
 
 \begin{frame}[fragile]{Sieve of Eratosthenes}
 
-    \begin{block}{Idea}
+    \begin{block}{}
       \begin{itemize}
       \item Initialize "Sieve" vector of size $\sqrt{N}$, all TRUE;
       \item Loop on Sieve. If Sieve[i] is TRUE, add $i$ to prime list
@@ -244,7 +248,7 @@ def sieve(k):                 ## Find all primes up to k
 \begin{frame}
   \frametitle{Prime Factorization}
 
-  {\bf Fundamental Theorem of Arithmetic:} Every natural number $N$ can be written as a {\bf unique multiplication of primes}. Example:
+  Every natural number $N$ can be written as a {\bf unique multiplication of primes}\footnote{Fundamental Theorem of Arithmetics}. Example:
 
   \begin{equation*}
     1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2
@@ -255,7 +259,7 @@ def sieve(k):                 ## Find all primes up to k
       N=p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}, p_i \text{ is prime}
     \end{equation*}
 
-  (Prime) Factorization is a key issue in Cryptography, so fast factorization is an important research problem. In this course, we focus on simpler algorithms:\bigskip
+  (Prime) Factorization is a key issue in Cryptography, so fast factorization is an important research problem. For programming challenges, we use two simple approaches:\bigskip
 
   \begin{itemize}
     \item {\bf Full search}: create a list of primes (with sieve) and test if each of them divides $N$.
@@ -271,16 +275,16 @@ def sieve(k):                 ## Find all primes up to k
   {\smaller
   \begin{exampleblock}{}
 \begin{verbatim}
-vi primeFactors(ll N) {   // remember: vi is vector<int>
-  vi factors;             //           ll is long long
-  ll PF_idx = 0, PF = sieve[PF_idx];     // sieve is prime list
-  while (PF * PF <= N) {           // remember, N gets smaller;
-    while (N % PF == 0) {          // Remove PF^x from N
+vector<int> primeFactors(ll N) {
+  vector<int> factors;
+  long PF_idx = 0, PF = sieve[PF_idx];   // sieve is a precomputed prime list
+  while (PF * PF <= N) {                 // remember, N gets smaller;
+    while (N % PF == 0) {                // Remove PF^x from N
       N /= PF; factors.push_back(PF);
     }
-    PF = primes[PF_idx++];             // only consider primes!
+    PF = primes[PF_idx++];               // only consider primes!
   }
-  if (N != 1) factors.push_back(N); // special case: N is prime
+  if (N != 1) factors.push_back(N);      // special case: N is prime
   return factors;
 }
 \end{verbatim}
@@ -290,18 +294,19 @@ vi primeFactors(ll N) {   // remember: vi is vector<int>
 \begin{frame}{Full Factorization}
   In some cases, we want to know {\bf all} numbers that divide a certain number $N$.\bigskip
 
-  We can calculate the full factorization of $N$ from its prime factorization. In fact, the full factorization of $N$ is the set of all unique combinations of prime factors.\bigskip
+  We can calculate the full factorization of $N$ from its prime factorization.\\
+  In fact, the full factorization of $N$ is the set of all unique combinations of prime factors.\bigskip
 
   Example:
   \begin{itemize}
     \item $1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2$
-    \item Number of factors of 1200: $5\times2\times3 = 30$
-    \item Examples:
+    \item Number of factors of 1200: $5(2^4)\times2(3^1)\times3(5^2) = 30$
     \begin{itemize}
-      \item $2^3 \times 3^0 \times 5^1 = 40$,
-      \item $2^2 \times 3^1 \times 5^2 = 300$,
-      \item $2^1 \times 3^1 \times 5^1 = 30$,
-      \item $2^4 \times 3^1 \times 5^0 = 48$,
+      \item $2^0 \times 3^0 \times 5^1 = 5$,
+      \item $2^0 \times 3^0 \times 5^2 = 25$,
+      \item $2^0 \times 3^1 \times 5^0 = 3$,
+      \item $2^0 \times 3^1 \times 5^1 = 15$,
+      \item $2^0 \times 3^1 \times 5^2 = 75$,
       \item $\ldots$
     \end{itemize}
   \end{itemize}
@@ -383,10 +388,10 @@ int gcdExtended(int a, int b, int *x, int *y)  {
 
 \begin{frame}{Diophantine Equation Problem Example}
     \begin{block}{Problem Example}
-      With 839 yens, you want to buy Chocolate Candy and Vanilla Candy.
+      With 839 yens, you want to buy Candy X and Candy Y.
       \begin{itemize}
-        \item Chocolate Candy costs $x=25$ yens.
-        \item Vanilla Candy costs $y=18$ yens.
+        \item Candy X costs $x=25$ yens.
+        \item Candy Y costs $y=18$ yens.
       \end{itemize}
       How many candies can you buy?
     \end{block}
@@ -394,16 +399,16 @@ int gcdExtended(int a, int b, int *x, int *y)  {
     \begin{enumerate}
       \item Calculate $d, x_0, y_0$ from extended GCD:
       \begin{itemize}
-        \item $d = 1, x_0 = -5, y_0 = 7$ or $25\times(-5) + 18\times(7) = 1$
+        \item $d = 1, x_0 = -5, y_0 = 7$. This means that $25\times(-5) + 18\times(7) = 1$
       \end{itemize}
       \item Is $d|c$? {\bf Yes}. Continue.
       \item Multiply both sides of the equation by $\frac{c}{d}$:
       \begin{itemize}
-        \item $25 \times (-4195) + 18\times(5873) = 839$
+        \item $25 \times (-5 \times 839) + 18\times(7 \times 839) = 839$
       \end{itemize}
       \item It is impossible to buy negative candies, so we iterate on $n$ to find
       \begin{itemize}
-        \item $x_n = x_0 + (b/d)n$ and $y_n = y_0 - (a/d)n$
+        \item $x_n = x_0 + (y/d)n$ and $y_n = y_0 - (x/d)n$
       \end{itemize}
       \item At $n = 234$ we find: $25 \times 17 + 18 \times 23 = 839$
     \end{enumerate}
@@ -486,13 +491,12 @@ int gcdExtended(int a, int b, int *x, int *y)  {
   \end{block}
 
   \begin{block}{Pisano's period}
-    The last digits of the Fibonacci sequence repeat with a fixed period!\bigskip
+    The last digits of the Fibonacci sequence repeat with a fixed period!\smallskip
 {\smaller
 \begin{verbatim}
  Digits        | Period      || Digits        | Period
  last digit    | 60 numbers  || last 3 digits | 1500 numbers
  last 2 digits | 300 numbers || last 4 digits | 15000 numbers
-
 F(6)   =                             8
 F(66)  =                27777890035288
 F(366) =  1380356 ... 8899086435571688
@@ -513,7 +517,7 @@ F(366) =  1380356 ... 8899086435571688
       \item $B_5 = (a+b)^5 = 1a^5 + 5a^4b + 10a^3b^2 + 10a^2b^3 + 5ab^4 + 1b^5 = \{1,5,10,10,5,1\}$
     \end{itemize}\bigskip
 
-    Many times, we are interested in the k-th number of the n-binomial, written as $C(n,k)$ or $^nC_k$. Example: $C(5,2) = 10$.
+    Many times, we are interested in the k-th number of the n-binomial,\\ written as $C(n,k)$ or $^nC_k$. Example: $C(5,2) = 10$.
   \end{block}
 \end{frame}
 
@@ -546,16 +550,12 @@ F(366) =  1380356 ... 8899086435571688
 
 \begin{verbatim}
 1
-
 1 1
-
 1 2 1
-
 1 3 3 1
-
 1 4 6 4 1
-
 1 5 10 10 5 1
+1 6 15 20 15 6 1
 \end{verbatim}
 \end{frame}
 
@@ -619,6 +619,27 @@ F(366) =  1380356 ... 8899086435571688
     \end{itemize}
   \end{block}
 \end{frame}
+
+\subsection{Summary}
+\begin{frame}{Class Summary}
+
+In this lecture, we discussed challenges in math-focused problems:
+
+\begin{itemize}
+  \item Large Integers and Log Operations;
+  \item Number Theory:
+  \begin{itemize}
+    \item Primality Testing and Prime Number Sieve;
+    \item Factorization;
+    \item Diaphantyne Equation and Linear Combinations;
+  \end{itemize}
+  \item Common Combinatorics Sequences in Programming Challenges;
+\end{itemize}
+\bigskip
+
+Next Week we will discuss geometry problems!
+\end{frame}
+
 
 % TODO: Check if this makes sense
 % \begin{frame}

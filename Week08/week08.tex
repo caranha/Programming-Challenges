@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes}
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=10pt,inner sep=0pt]
@@ -13,7 +13,7 @@
 \input{../misc/beamerpreamble.tex}
 
 \subtitle[Week 8: Mathematics]{Week 8 - Mathematics}
-\date[2020/6/16]{2020/6/16\\{\smaller(last updated: \today)}}
+\date[]{{\smaller(last updated: \today)}}
 
 \begin{document}
 \begin{CJK}{UTF8}{ipxm}
@@ -22,10 +22,33 @@
 \maketitle
 \vfill
 
-\hfill Version 2020.1
+\hfill Version 2021.1
 \end{frame}
 
-\input{10_introduction.tex}
+\section{Introduction}
+
+\subsection{Outline}
+\begin{frame}{Math Problems: Lecture Outline}
+
+  Every computer program requires some amount of mathematics. So what does {\bf "Math Problems"} mean in Programming Challenges?\bigskip
+
+  Here we describe two kinds of problems as {\bf "Math Problems"}:
+
+  \begin{block}{The Challenge is The Implementation of Mathematical Concepts}
+    \begin{itemize}
+      \item Problems with Big Numbers (above variable limits)
+      \item Problems with Geometry (next lecture!)
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{The Challenge Requires Mathematical Planning Before Programming}
+    In this case, it is sometimes possible to solve the entire problem in paper and quickly implement a solution to the problem.
+    \begin{itemize}
+      \item Number Theory (primality testing, factorization, rings)
+      \item Combinatorics (sequences, counting, recurrences)
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
 \input{20_math.tex}
 \input{30_conclusion.tex}
 

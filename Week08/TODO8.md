@@ -1,4 +1,7 @@
 # TODO:
+- [ ] This lecture needs major restructuring -- Remake this lecture based on
+      CP4
+
 # Future
 - [ ] In combinatorics, add example problem: Steps
 - [ ] Future topics (from Halim's book) Cycle finding, Game Theory
