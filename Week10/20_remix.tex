@@ -59,16 +59,14 @@
 \begin{frame}[fragile]
   \frametitle{UVA 10937 -- Blackbeard the Pirate}
 
-  {\smaller
-
-    \begin{block}{Breaking the problem into parts}
-      One way to solve this problem is to break it into two parts:
+    \begin{block}{One way to solve this problem is to break it into two parts:}
       \begin{enumerate}
       \item Extract a weighted distance graph from the input map
       \item Solve the TSP for the graph
       \end{enumerate}
     \end{block}
 
+    {\smaller
 \begin{verbatim}
 10 10
 ~~~~~~~~~~       ~ -- Water, can't cross
@@ -180,7 +178,7 @@
       Exactly what we need! The path for all treasure!
   \end{block}
   \begin{center}
-    \includegraphics[width=0.6\textwidth]{../img/tsp_example}
+    \includegraphics[width=0.5\textwidth]{../img/tsp_example}
   \end{center}
 
   In the graph above, we have $n=4$ cities and the minimal tour is
@@ -226,8 +224,6 @@
 
 \begin{frame}
   \frametitle{DP approach to TSP (1) -- Idea}
-
-  {\smaller
     \begin{block}{}
       \begin{itemize}
       \item We have already visited the cities $S = \{s_1,s_2,\ldots,s_n\}, s_i \neq 0$
@@ -238,19 +234,18 @@
       DP induction: shortest\_path($S$,$s_k$)
     \end{block}
     \begin{center}
-      \includegraphics[width=0.7\textwidth]{img/DP_TSP}
+      \includegraphics[width=0.4\textwidth]{img/DP_TSP}
     \end{center}
-  }
 \end{frame}
 
 \begin{frame}
-  \frametitle{DP approach to TSP (2) -- Recurrence}
+  \frametitle{DP approach to TSP (2) -- DP Recurrence}
 
   {\smaller
     \begin{center}
-      \includegraphics[width=0.5\textwidth]{img/DP_TSP}
+      \includegraphics[width=0.35\textwidth]{img/DP_TSP}
     \end{center}
-    \begin{block}{DP Recurrence}
+    \begin{block}{}
       \begin{itemize}
       \item We have visited all cities, and must return to the origin:\\
         shortest\_path($S_{\text{all}},s_k$) = $D(s_k,0)$
@@ -267,7 +262,6 @@
 \begin{frame}
   \frametitle{DP approach to TSP (3) -- Implementation}
 
-  {\smaller
     \begin{exampleblock}{}
       \begin{itemize}
       \item Our DP table is (\emph{all sets},\emph{all cities}) -- $2^n * n$
@@ -280,7 +274,6 @@
       \item TSP using DP: $O(2^n*n^2)$ -- Still low, but much better!
       \end{itemize}
     \end{exampleblock}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -346,7 +339,7 @@ visit(p,v):
 
   {\smaller
     \begin{center}
-      \includegraphics[width=0.6\textwidth]{../img/cuttingsticks}
+      \includegraphics[width=0.55\textwidth]{../img/cuttingsticks}
       \begin{itemize}
       \item Sequence 1: 25, 50, 75. Cost: 100 + 75 + 50 = 225
       \item Sequence 2: 50, 25, 75. Cost: 100 + 50 + 50 = 200
@@ -400,10 +393,9 @@ visit(p,v):
 \begin{frame}
   \frametitle{UVA 1231 -- ACORN}
 
-  {\smaller
   \begin{columns}
     \column{0.4\textwidth}
-    \includegraphics[width=1.2\textwidth]{img/acorn}
+    \includegraphics[width=1\textwidth]{img/acorn}
     \column{0.6\textwidth}
 
     \begin{itemize}
@@ -420,24 +412,20 @@ visit(p,v):
     \end{itemize}
   \end{columns}
 
-  \bigskip
-
   \begin{block}{}
     \begin{itemize}
       \item First, it is worth to think about the full search size;
       \item But this problem smells of DP -- can you think of a {\bf transition} and a {\bf state table}?
     \end{itemize}
   \end{block}
-  }
 \end{frame}
 
 \begin{frame}
   \frametitle{UVA 1231 -- ACORN -- Simple Recurrence}
-  {\smaller
   \begin{columns}[T]
-    \column{0.2\textwidth}
-    \includegraphics[width=1.2\textwidth]{img/acorn}
-    \column{0.8\textwidth}
+    \column{0.3\textwidth}
+    \includegraphics[width=1\textwidth]{img/acorn}
+    \column{0.7\textwidth}
     \begin{block}{Simple Recurrence}
       \begin{itemize}
       \item acorn$[t_i][h]$ -- number of acorns in tree {\bf $t_i$} at height {\bf $h$}
@@ -461,13 +449,11 @@ visit(p,v):
   \begin{center}
     \alert{QUIZ:} What is the problem with this recurrence?
   \end{center}
-  }
 \end{frame}
 
 \begin{frame}
   \frametitle{UVA 1231 -- ACORN -- Better DP table}
 
-  {\smaller
     \begin{alertblock}{}
       The DP table of last slide is A[H][T], with size $2000*2000=4M$.
       Each function call is $O(H*T*T)$, so total complexity is
@@ -498,7 +484,6 @@ visit(p,v):
       \item $\text{dp}[i] = \text{max}_{1\leq j\leq T}(\text{acorn}[j][i])$
       \end{itemize}
     \end{block}
-  }
 \end{frame}
 
 %\begin{frame}
@@ -510,7 +495,7 @@ visit(p,v):
 \begin{frame}
   \frametitle{UVA 295 -- Fatman!}
   \begin{center}
-    \includegraphics[width=0.6\textwidth]{img/fatman}
+    \includegraphics[width=0.5\textwidth]{img/fatman}
   \end{center}
 
   {\smaller
@@ -522,8 +507,6 @@ visit(p,v):
       \item Obstacles are {\bf points} with $0 \leq x_i \leq L, 0\leq y_i \leq W$;
       \end{itemize}
     \end{block}
-
-    \alert{QUIZ:} How do you solve this problem? (to 4 decimal places)
   }
 \end{frame}
 
@@ -533,13 +516,9 @@ visit(p,v):
     \includegraphics[width=0.5\textwidth]{img/fatman}
   \end{center}
 
-  {\smaller
   One way to solve some problems is to break them down into smaller
   components.
 
-  \bigskip
-
-  We can break this problem into two sub-problems:
   \begin{block}{}
   \begin{enumerate}
   \item Is it possible for a circle of radius $R, 0 \leq R \leq W$ to pass?
@@ -548,13 +527,11 @@ visit(p,v):
   \end{block}
 
   \alert{QUIZ}: Assume that (1) is ``fast enough'', how do we solve (2)?
-  }
 \end{frame}
 
 \begin{frame}
   \frametitle{UVA 295 -- Fatman -- Binary Search}
 
-  {\smaller
     \begin{block}{}
       \begin{itemize}
       \item Is it possible for a circle of size $0 \leq R \leq W$ to pass?
@@ -577,23 +554,19 @@ visit(p,v):
     \bigskip
 
     \alert{QUIZ:} How can we test $T(R)$ ``fast enough''?
-  }
 \end{frame}
 
 \begin{frame}
   \frametitle{UVA 295 -- Fatman -- Squeezing through}
 
-  {\smaller
     \begin{center}
-      \includegraphics[width=0.5\textwidth]{img/fatman}
+      \includegraphics[width=0.4\textwidth]{img/fatman}
     \end{center}
 
     \begin{itemize}
     \item R can pass between two objects $i$ and $j$ if \emph{euclid}$(i,j) \geq R$
     \item R can pass between an object $i$ and a wall if $y_i \geq R || y_i \leq W-R$
     \end{itemize}
-
-    \bigskip
 
     \begin{exampleblock}{Algorithm for T(R)}
       \begin{itemize}
@@ -602,7 +575,6 @@ visit(p,v):
       \item If there is a {\bf path} between both walls, \alert{R cannot pass};
       \end{itemize}
     \end{exampleblock}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -618,15 +590,12 @@ def test(R):
   for i in range(len(N)):  # N is list (x,y) of obstacles
     if (N[i][1] < R): nb[0].append(i+1)
     if (W - N[i][1] < R): nb[len(N)+1].append(i+1)
-    if (i+1) in nb[0] and (i+1) in nb[len(N)+1]: return 0
-       # quick check 1
-  if not (len(nb[0]) and len(nb[len(N)+1]): return 1
-       # quick check 2
+    if (i+1) in nb[0] and (i+1) in nb[len(N)+1]: return 0  # quick check 1
+  if not (len(nb[0]) and len(nb[len(N)+1]): return 1       # quick check 2
 
   for i in range(len(N)):
     for j in range(len(N)):
       if dist(N[i],N[j]) < R: nb[i+1].append(j+1)
-
   ... next we test the graph ...
 \end{verbatim}
   \end{block}
@@ -698,8 +667,6 @@ Output 2: 100 / 100 / 100 / 100 100 (max 200)
 \begin{frame}[fragile]
   \frametitle{UVA 714 -- Copying books -- Decomposition approach}
 
-  {\smaller
-
 \begin{verbatim}
 9 3
 Input 1: 100 200 300 400 500 600 700 800 900
@@ -721,7 +688,6 @@ Output 2: 100 / 100 / 100 / 100 100 (max 200)
       \item \alert{QUIZ:} What is a ``fast enough'' algorithm for T(max)?
       \end{itemize}
     \end{itemize}
-  }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -766,8 +732,6 @@ def test(M):
 \subsection{Messages}
 \begin{frame}
   \frametitle{Take-home messages}
-
-  {\smaller
     \begin{block}{Composite Problems}
       Many interesting problems use a combination of algorithms:
       \begin{itemize}
@@ -786,7 +750,6 @@ def test(M):
       \item The feasibility test is simple to perform; (code-simple)
       \end{itemize}
   \end{alertblock}
-  }
 \end{frame}
 
 \subsection{A careful Approach}
