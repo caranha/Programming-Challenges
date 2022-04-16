@@ -5,50 +5,50 @@
 \begin{frame}
   \centering
   {\huge
-    Week 1 -- Part 1: Class Introduction
+    What is the objective of this course
   }
 \end{frame}
 
 \begin{frame}
   \frametitle{Outline}
   \begin{enumerate}
-    \item Class Summary
-    \item What are programming Challenges?
-    \item Initial Example
-    \item Class Program
+    \item Course Objective
+    \item What is a Programming Challenge?
+    \item Course Topics
     \item Lecturer Introduction
     \item Extra: ICPC
   \end{enumerate}
 \end{frame}
 
-\subsection{Class Summary}
-\begin{frame}{Part I: Class Summary}
+\subsection{Class Objective}
+\begin{frame}{Class Objective}
   \begin{itemize}
-    \item In this class, you will \structure{practice your algorithm skills by writing many programs};
+    \item Course Objective: \alert{Improve your algorithm skill by writing many programs};
     \bigskip
 
-    \item \structure{Key Idea:} Solve challenges with programs
-    \begin{itemize}
-      \item Read the problem and choose the right algorithm;
-      \item Choose the implementation and data structure;
+    \item \alert{Key Idea:} Write programs that solve challenges (puzzles)
+    \begin{enumerate}
+      \item Read the problem and understand the puzzle;
+      \item Choose the algorithm and implement;
       \item Run the program and check the correct result;
-    \end{itemize}
+      \item Repeat many times
+    \end{enumerate}
     \medskip
 
-    \item In the 1st and 2nd year, we learn the \structure{theory} of many algorithm. In this lecture, we learn the \structure{practice} of these algorithms.
+    \item In this lecture, we want to \alert{use in practice} the algorithms that we
+    learned in the 1st and 2nd year.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Algorithms: Theory x Implementation}
+\begin{frame}{Algorithms: Theory vs. Implementation}
   \begin{exampleblock}{}
-  It is very different to implement an algorithm in the classroom, and to implement an algorithm to solve a problem:
+  Why is this a good idea? When we apply a textbook algorithm to a puzzle, we learn many new things:
   \end{exampleblock}
   \begin{itemize}
-    \item \structure{Data Structure}: You need to implement the function to read the input and store it in a data structure;
-    \item \structure{Special Cases}: Special cases in the input can cause bugs or make the problem more complex;
-    \item \structure{Large Input}: If the input is very large, the implementation
-    needs to be efficient, or the program will run forever;
-    \item \structure{Debugging}: It can be hard to debug if the input is very hard, you need to learn how to make a \structure{test input};
+    \item \alert{Input/Output}: How to transform the input data to a format that the algorithm understands;
+    \item \alert{Input Size}: If the input is very large, a wrong program or algorithm can be very slow;
+    \item \alert{Special Cases}: How to think about special cases that can cause bugs or errors in the program;
+    \item \alert{Debugging}: How to find the source of bugs in your program, specially if the bug is because of a {\bf special case?};
   \end{itemize}
 \end{frame}
 
@@ -79,10 +79,10 @@
 \begin{frame}{What this class expects of you}
   \begin{exampleblock}{Estimated classwork:}
     \begin{itemize}
-      \item You need basic programming knowledge in C++;
+      \item You need basic programming knowledge (in C, C++, Java or Python);
       \medskip
 
-      \item Complete 2-4 program assignments per week;
+      \item Complete 2 or more program assignments per week;
       \begin{itemize}
         \item Average of 4 hours of study per week;
         \item A lot of time with debug and creating test cases;
@@ -100,20 +100,19 @@
 \end{frame}
 
 \subsection{What are Programming Challenges?}
-\begin{frame}{What kind of problem is a "Programming Challenge?"}
-  A "Programming Challenge" gives you a problem, and you have to write a program to find the solution. Think of it as a {\bf programming puzzle}:
+\begin{frame}{What kind of assignment?}
+  A "Programming Challenge" is a puzzle problem that needs to be solved by writing
+  a program.\vfill
 
-  \begin{block}{Simple Example}
-    You want to schedule a pair dance club. Your friends give you their possible dates and times (Fri 14:00-15:00). What time do you choose to make the maximum number of pairs?
-  \end{block}
-  \bigskip
+  The program {\bf reads the input}, and must write the {\bf correct output},
+  following the rule of the puzzle {\bf exactly}.\vfill
 
-  \begin{itemize}
-    \item Usually Programming challenges have a "story";
-    \item There is a maximum execution time, so you have to use an efficient algorithm;
-    \item Sometimes there are special cases;
-    \item In general, a small program (< 200 lines) can solve the challenge;
-  \end{itemize}
+  {\bf You don't know all the input}. You must make sure that your program
+  can solve {\bf Any acceptable input}.\vfill
+
+  There is a {\bf running time limit} so your program must be efficient.\vfill
+
+  In general, a correct program will be small (< 200 lines).
 \end{frame}
 
 
@@ -132,7 +131,7 @@
 \end{frame}
 
 \subsection{Example}
-\begin{frame}{Real Example (from homework): The 3n+1 problem}
+\begin{frame}{Example: The 3n+1 problem}
   \begin{columns}
     \column{0.55\textwidth}
       Contents of a Programming Challenge:
@@ -148,7 +147,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Real Example (from homework): The 3n+1 problem}{How to solve?}
+\begin{frame}{Example: The 3n+1 problem}{What is the problem?}
   \begin{columns}
     \column{0.55\textwidth}
     {\smaller
@@ -174,7 +173,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Real Example (from homework): The 3n+1 problem}{A simple program}
+\begin{frame}[fragile]{Example: The 3n+1 problem}{A simple program}
 {\smaller
 \begin{verbatim}
 int main() {
@@ -197,11 +196,10 @@ int main() {
 \end{verbatim}}
 \end{frame}
 
-\begin{frame}{Real Example (from homework): The 3n+1 problem}{Simple programs, simple
+\begin{frame}{Example: The 3n+1 problem}{Simple programs, simple
   problems}
 
-The solution in the last slide has some problems. One problem is that
-it can be very slow! Consider the following case:
+If you try to run this program with large inputs, it will be very slow! Why?
 \bigskip
 
 i = 1, j = 10:
@@ -219,7 +217,7 @@ i = 1, j = 10:
 A lot of work is repeated without necessity. How to make the program faster?
 \end{frame}
 
-\begin{frame}{Real Example (from homework): The 3n+1 problem}{Memoization}
+\begin{frame}{Example: The 3n+1 problem}{Memoization}
   A technique called {\bf Memoization} can solve the "repeated work" problem.
   \bigskip
 
@@ -237,9 +235,9 @@ A lot of work is repeated without necessity. How to make the program faster?
 \end{frame}
 
 \subsection{Class Program}
-\begin{frame}{Topics in this class}
+\begin{frame}{Topics in this course}
   \begin{enumerate}
-    \item Introduction Problems
+    \item Introduction
     \item Data Structures
     \item Search Problems
     \item Dynamic Programming
@@ -250,23 +248,6 @@ A lot of work is repeated without necessity. How to make the program faster?
     \item Geometry Problems
     \item Final Remix
   \end{enumerate}
-\end{frame}
-
-\begin{frame}{Class Format}
-  \begin{block}{Weekly Schedule}
-    \begin{itemize}
-      \item Lecture Notes and Videos: Explanation about algorithms;
-      \item TEAMS meeting with instructor to ask questions;
-      \item Solve the homework at URI Online Judge;
-    \end{itemize}
-  \end{block}
-
-  \begin{exampleblock}{Evaluation}
-    \begin{itemize}
-      \item No final examination;
-      \item Grade based on number of homework completed every week;
-    \end{itemize}
-  \end{exampleblock}
 \end{frame}
 
 \subsection{Lecturer Introduction}

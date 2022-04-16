@@ -51,16 +51,11 @@ This course does not implement a final examination. The evaluation is based on w
 The student must complete at least 2 short programming assignments every week (out of 8 possible choices). To achieve an "A" grade, the student must complete at least 4 programming assignments per week.
 
 ## Reference Materials
-1. Steven Halim, Felix Halim,"Competitive Programming", 3rd edition.
+1. Steven Halim, Felix Halim,"Competitive Programming", 4th edition.
 2. Steven S. Skiena, Miguel A. Revilla,"Programming Challenges", Springer, 2003
 3. 秋葉拓哉、 岩田陽一、 北川宜稔,『プログラミングコンテストチャレンジブック』
 
 Lecture notes and videos will also be distributed online.
-
-## Office Hours:
-Tue/Thu 9:00 to 11:30, SB1012 (Advanced Research Building B
-
-Also please use the Forums functionality in Manaba.
 
 ## Other notes:
 Lectures are held in Japanese. Class materials are in English. Reports and communication with the professor are accepted in either language.

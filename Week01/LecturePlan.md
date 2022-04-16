@@ -1,16 +1,48 @@
 Week 1: Introduction and AdHoc Problems
 =======================================
 
-# TODO:
-- Improve course intro
-  - Motivation: Not to "explain" algorithms, but to "use" them
-  - Gym analogy (Brain Gym)
-- Change discussion about input code
-  - Three input patterns
-  - Two trivial: number of cases and special condition
-  - One special: EOF - example of code to deal with EOF
+# Outline
+In the first week, the problems are very
+easy, so you can practice the style of
+problems, and how to use an automated judge.
 
-# Problem discussion
+In this lecture, I want to give you some
+hints that will be useful for the entire course.
+
+# Thinking, testing by hand, then coding
+- Think first, and then program, this helps avoid bugs.
+
+- Google Translate or DeepL helps
+- Looking for keywords also helps
+
+# Problem Size and algorithm analysis (1.3.3)
+- When thinking about the problem, we need to think about problem size.
+
+- Example 1: 3n+1 problem and problem size
+- Example 2: 8 queen and data size
+
+- Table of algorithm analysis (beware of new server!)
+
+# Writing test Cases (1.3.5)
+- extend the basic cases
+- write "extreme cases" (max case, etc)
+- write cases where you think a bug might be
+- write random cases
+
+# Dealing with IO
+## Standard IO Types (https://github.com/stevenhalim/cpbook-code/tree/master/ch1/ch1IO.cpp)
+
+# TODO: In 2023!
+## Basic String Skills(https://github.com/stevenhalim/cpbook-code/tree/master/ch1/basic_string.cpp)
+
+## Be careful of output:
+- Case
+- Number of decimal places: Round up or down
+- Tie breakers
+
+# How to ask for help
+
+
 
 # Lecture Contents
 ## Outline/Goals
