@@ -1,0 +1,247 @@
+\section{Linear Data Structures}
+
+\begin{frame}
+  \begin{center}
+    {\large
+    Part II -- Linear Data Structures (Arrays)\bigskip
+
+    CP4 -- Section 2.2
+    }
+  \end{center}
+\end{frame}
+
+\subsection{Basics}
+
+\begin{frame}{Arrays are your friend}
+  Arrays are the simplest data structure, but they are also the most used one.\bigskip
+
+  \begin{itemize}
+    \item They are easy to use;
+    \item They are very fast;
+    \item They have many abilities;
+    \item Complex data structures can be programmed as array + special functions;
+  \end{itemize}\bigskip
+
+  It is important to know how to use arrays in your programming language.\medskip
+
+  \begin{block}{}
+    Sometimes it is better to use a quick array than implement a complex DS!
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{1D arrays in C++: Basic Usage}
+
+  {\small
+\begin{verbatim}
+# include <vector.h>
+
+int arr[5] = {7,7,7};  // arr = {7,7,7,0,0} -- Fixed Size
+vector<int> v(5, 5);   // v = {5,5,5,5,5}   -- size increases as necessary
+int x = arr[2] + v[2]; // x = 12            -- Access them the same way.
+
+arr[5] = 5;            // Runtime Error - Index Out of Bounds
+cout << v[7];          // This returns 0! Be careful!
+
+v.push_back(6);        // v = {5,5,5,5,5,6} - Increase the size (double)
+\end{verbatim}
+  }
+
+  \begin{alertblock}{}
+    \alert{\bf Warning:} "Index out of bounds" is a  common source of Runtime Errors (RTE)
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Understand your library: Many ways to do the same thing.}
+  \framesubtitle{Example: How do you reseat an array?}
+{\smaller
+\begin{verbatim}
+#include <vector>
+#include <string.h>
+vector<int> v(10000,7)
+
+memset(v, 0, 10000*__SIZEOF_INT__);       // Method 1
+fill(v.begin(), v.end(), 0);              // Method 2
+for (int i = 0; i < 10000; i++) v[i] = 0; // Method 3
+v.assign(v.size(), 0);                    // Method 4
+
+Method      |  executable size  |  Time Taken (in sec) |
+            |  -O0    |  -O3    |  -O0      |  -O3     |
+------------|---------|---------|-----------|----------|
+1. memset   | 17 kB   | 8.6 kB  | 0.125     | 0.124    |
+2. fill     | 19 kB   | 8.6 kB  | 13.4      | 0.124    |
+3. manual   | 19 kB   | 8.6 kB  | 14.5      | 0.124    |
+4. assign   | 24 kB   | 9.0 kB  | 1.9       | 0.591    |
+\end{verbatim}
+}
+\end{frame}
+
+\subsection{Sorting and Searching}
+
+\begin{frame}{Sorting in Arrays}
+
+{\bf Sorting an array} is a frequent operation in programming challenges:
+\begin{itemize}
+  \item Take the highest, lowest, median elements;
+  \item Pre-computation step in many algorithms (binary search, greedy, etc);
+\end{itemize}\bigskip
+
+How do we sort?
+\begin{itemize}
+  \item Use the sort function from the standard library -- $O(n\log n)$;\\
+  \hfill Most cases.\medskip
+
+  \item Make a simple sort algorithm by hand (bubble/selection sort) -- $O(n^2)$\\
+  \hfill When you need to sort with special conditions.\medskip
+
+  \item Special sort for specific data (bucket/radix sort) -- $O(n)$.\\
+  \hfill Very large amount of data.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Sorting using the standard library}
+
+\begin{verbatim}
+  #include<iostream>
+  #include<algorithm>
+  #include<vector>
+
+  using namespace std;
+  int main() {
+      int n, t; vector<int> values;
+      cin >> n;
+
+      for (int i=0; i<n; i++) { cin >> t; values.push_back(t); }
+
+      sort(values.begin(), values.end())
+      cout << values[n/2] << endl;       // find the median value
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Sorting with a specific function}
+
+You can define a comparison function to sort in special cases (multiple variables, etc);
+
+
+\begin{verbatim}
+struct team{ string name; int point; int penal;
+             team(string _n, int _po, int _pe) :
+               name(_n), point(_p), penalty(_g){} };
+
+bool cmp(team a, team b) {      % Sorting Function
+  if (a.point != b.point)     return a.point > b.point;
+  if (a.penalty != b.penalty) return a.penalty < b.penalty;
+  return strcmp(a.name, b.name);
+}
+
+vector<team> v;
+sort(v.begin(), v.end(), cmp); // sort using cmp
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Binary Search in Sorted Arrays -- $O(\log n)$}
+
+{\small
+\begin{verbatim}
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int main () {
+  int n, t, search; vector<int> v;
+  cin >> n >> search;  // Find "search" in an array with "n" elements
+
+  for (int i=0; i<n; i++) { cin >> t; v.push_back(t); }
+  sort (v.begin(), v.end()); // Need to sort before binary search!
+
+  vector<int>::iterator low, up;
+  low = lower_bound (v.begin(), v.end(), search); // lowest index
+  up  = upper_bound (v.begin(), v.end(), search); // highest index
+  cout << "Between" << (low-v.begin()) << " and " << (up-v.begin());
+}
+\end{verbatim}}
+\end{frame}
+
+\subsection{Counting Sort}
+% TODO: Add implementation of bucket sort
+\begin{frame}{Special $O(n + k)$ sorting: Counting Sort}
+  If we have to sort a large ($n$) quantity of numbers, but there is a small variation ($k$) of values, we can use {\bf counting sort} (or bucket sort).\medskip
+
+  \begin{enumerate}
+    \item Let $A$ be the input array, with possible values $K = \{k_0, k_1, \ldots, k_K\}$
+    \item Let $F$ be a \emph{cumulative frequency array}. $F[0]$ is the number of times $k_0$ happens in $A$, $F[1] = F[0] +$ number of times $k_1$ happens in $A$, and so on...
+
+    \item Proccess $A$ element by element, starting from the back.
+    \item If $A[j] == k_i$, place $A[j]$ in the $F[i]$ position of the new array, and decrease $F[i]$ by 1.
+  \end{enumerate}\bigskip
+
+  Counting sort only works when $k$ is not very big.
+
+\end{frame}
+
+
+\subsection{Stacks, Queues and Deques}
+\begin{frame}
+  \frametitle{Stacks, Queues and Deques}
+
+  These are special variants on vectors. They are highly optimized for inserting and removing from the start and the end of the array.\bigskip
+
+  \begin{itemize}
+    \item {\bf stack}: \emph{push()} and \emph{pop()}: Add and remove from the top of stack; \emph{top()}: Check top of stack; \emph{empty()}: Check if stack is empty.\medskip
+
+    \item {\bf queue}: \emph{push()} and \emph{pop()}: Add to the back, remove from the front; \emph{front()}, \emph{back()}: check front and back; \emph{empty()}
+    \medskip
+
+    \item {\bf deque}: \emph{pop\_front(), push\_front(), pop\_back(), push\_back()}; \emph{front(), back(), empty()}
+  \end{itemize}
+  \bigskip
+
+  \begin{block}{}
+    We will use these variants for many algorithms in the future (graphs, geometry). Check your 2nd year Data Structures material for details!
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Example of Using Stack}
+
+  {\bf Input}: A string containing "(" and ")". Example: "(())()(()()())"\\
+  {\bf Output}: "balanced" or "unbalanced"
+
+{\small
+\begin{verbatim}
+#include <stack>
+stack<char> s;
+char c;
+
+while(cin >> c) {
+  if (c == '(') s.push(c);
+  else {
+    if (s.size() == 0) { s.push('*'); break; }
+    s.pop();
+  }
+}
+cout << (s.size() == 0 ? "balanced" : "unbalanced");
+\end{verbatim}}
+\end{frame}
+
+\subsection{Conclusion}
+
+\begin{frame}{More Code Examples}
+  The Github repository of the textbook has more code examples:
+
+  \begin{block}{Basic Arrays}
+    \url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/lineards/resizeable_array.cpp}
+  \end{block}
+
+  \begin{block}{Sort, Binary Search and Permutation}
+    \url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/lineards/array_algorithms.cpp}
+  \end{block}
+
+  \begin{block}{Stack, Queue, Deque}
+    \url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/lineards/list.cpp}
+  \end{block}
+
+\end{frame}

@@ -1,0 +1,139 @@
+\section{Non Linear Data structures}
+\begin{frame}
+  \begin{center}
+    {\large Part III -- Non Linear Data Structures
+
+    CP4 -- Section 2.3
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Non-Linear Data Structures}
+
+  {\bf Non-Linear Data Structures} refer to Data Structures that are implemented as trees (balanced trees, red-black trees, etc).\bigskip
+
+  They often have some useful property, such as being really fast for ordered insertion, deletion or update.\bigskip
+
+  These Data Structures are usually available as part of the {\bf standard libraries}, so today we will just remember them and check how to use them.\bigskip
+
+  \begin{block}{}
+    It is still useful to understand how they work. Review your 2nd year DS material, and check the link at the end of this video.
+  \end{block}
+\end{frame}
+
+\subsection{Priority Queues}
+
+\begin{frame}[fragile]{Priority Queue}
+Access the maximum element in $O(1)$, and insert/delete in $O(\log n)$.
+
+\begin{verbatim}
+#include <utility>     // pair
+#include <queue>       // priority_queue
+using namespace std;
+typedef pair<int, string> is;
+
+priority_queue<is> pq;
+pq.push(make_pair(100, "john")); // insertion in O(log n)
+pq.push({10, "billy"});          // alternative way with {}
+pq.push({20, "andy"});
+pq.push({2000, "grace"});
+
+is first = pq.top(); pq.pop();  // first = (2000, grace)
+is second = pq.top(); pq.pop(); // second = (100, john)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Priority Queue}
+  Priority Queue is useful for a large variety of problems.\vfill
+
+  We will use PQ in the future for:
+  \begin{itemize}
+    \item Dijkstra Algorithm
+    \item Minimum Spanning Tree (Prim's, Krushkal's Algorithms)
+    \item etc...
+  \end{itemize}
+\end{frame}
+
+\subsection{Sets and Maps}
+
+\begin{frame}{Sets and Maps: Accessing Very Large sets}
+
+  Imagine that we have two very large sets:
+  \begin{itemize}
+    \item Set size: $10^7$
+    \item Element size: $10^{12}$ (\bf UNIQUE)
+  \end{itemize}
+
+  If we want to identify the common elements of the two sets, we would need a data structure that can access large amounts of unique data quickly.
+
+  \begin{block}{C++ Data Structures}
+    \begin{itemize}
+      \item {\bf unordered\_set}: Store unique keys. Search/Insert/Delete in $O(1)$, no order.
+      \item {\bf unordered\_map}: Store key/data, Search/Insert/Delete in $O(1)$, no order.
+      \item {\bf set}: Store unique keys. Search/Insert/Delete in $O(1)$.
+      \item {\bf map}: Store key/data, Search/Insert/Delete in $O(1)$.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Unordered Map/Set Example}
+
+{\small
+\begin{verbatim}
+#include <unordered_map>
+using namespace std;
+unordered_map<string, int> mapper;
+
+mapper["john"]   = 78; mapper["billy"]  = 69; mapper["andy"]   = 80;
+mapper["steven"] = 77; mapper["felix"]  = 82; mapper["grace"]  = 75;
+
+for (auto &[key, value] : mapper) // Results are in mixed order
+  printf("%s %d\n", key.c_str(), value);
+
+printf("steven's score is %d\n", mapper["steven"]);
+if (mapper.find("andy") == mapper.end())
+  printf("not found\n");
+
+mapper.clear();
+\end{verbatim}}
+\end{frame}
+
+
+\begin{frame}[fragile]{Map/Set Example}
+
+{\smal
+\begin{verbatim}
+#include <set>
+using namespace std;
+set<int> uv;
+
+uv.insert(78); uv.insert(69); uv.insert(80);
+uv.insert(77); uv.insert(82); uv.insert(75);
+printf("%d\n", *uv.find(77));  // O(log n) search
+
+for (auto it = uv.begin(); it != uv.lower_bound(77); it++)
+  printf("%d,", *it); // returns [69, 75] (before 77)
+for (auto it = uv.lower_bound(77); it != uv.end(); it++)
+  printf("%d,", *it); // returns [77, 78, 80, 81, 82]
+
+used_values.clear();
+\end{verbatim}}
+\end{frame}
+
+\begin{frame}{Some Extra Code}
+
+See more examples in the textbook Github.
+
+\begin{block}{Priority Queue}
+\url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/nonlineards/priority_queue.cpp}
+\end{block}
+
+\begin{block}{Maps and Sets}
+\url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/nonlineards/unordered_map_unordered_set.cpp}
+
+\url{https://github.com/stevenhalim/cpbook-code/blob/master/ch2/nonlineards/map_set.cpp}
+\end{block}
+
+Visualization of Data Structures: 
+\url{https://visualgo.net/}
+\end{frame}

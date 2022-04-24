@@ -1,0 +1,91 @@
+\section{Introduction}
+\subsection{Outline}
+
+\begin{frame}
+  \begin{center}
+    {\large
+    Introduction\bigskip
+
+    CP4 -- Chapter 2.1}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Motivation}
+
+  Choosing the right data structure is very important when writing a program:\medskip
+
+  \begin{itemize}
+    \item How easy is it to program?
+    \item How fast are the operations?
+    \item Does it have all the abilities necessary for my algorithm?
+  \end{itemize}\bigskip
+
+  In this lecture, we review some data structures that are useful for programming challenges.\medskip
+
+  Most of these data structures are available in the standard library. A few you have to
+  program by hand.
+\end{frame}
+
+\begin{frame}{How to choose a data structure?}
+  {Main Operations of a Data Structure}
+  Think about which operations you need for your program:\medskip
+
+  \begin{columns}
+    \column{0.5\textwidth}
+  \begin{itemize}
+    \item Inserting new data once;
+    \item Inserting new data after acessing;
+    \item Accessing data in order;
+    \item Accessing data out of order;
+    \item Re-ordering data;
+  \end{itemize}
+  \column{0.5\textwidth}
+  \begin{itemize}
+    \item Updating data;
+    \item Deleting data;
+    \item Finding data by position;
+    \item Finding data by content;
+    \item Summarizing data;
+  \end{itemize}
+\end{columns}\bigskip
+
+Different data structures will be better or
+worse at these operations.\medskip
+
+You want to use {\bf the simplest} data structure that can do what you need.
+\end{frame}
+
+\begin{frame}{Data Structures and Standard Libraries}
+  Most data structures that we use on programming contests are available in the {\bf Standard Libraries}. It is important to know how to use the standard library of your language.\bigskip
+
+  However, some specialist data structures are not available, so we have to code them by hand. Sometimes, we also have a modified version of a standard DS.\bigskip
+
+  \begin{block}{Personal Code Library}
+    When you write many programs, you will discover that you write similar code many times. It is useful to store this code in a "Personal Library" file.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Topics we are studying today}
+\begin{block}{Linear Data Structures}
+  The STL array, sorting on arrays,
+  searching, Deques and stacks
+\end{block}
+
+\begin{block}{Non-Linear Data Structures}
+  Priority Queues and Sets/Hashes
+\end{block}
+\begin{block}{Hand Crafted Data Structures}
+  Union-Find Disjoint Set
+  % (TODO) DSes for Dynamic Range Query\\
+  % (TODO) Bitmask Indexes\\
+\end{block}
+\end{frame}
+
+\begin{frame}{Topics we are NOT studying today}
+  \begin{alertblock}{Data Structure Theory}
+    In this lecture we are interested in \emph{remembering, using and implementing} Data Structures that are useful in Programming Challenges. It is important to know them at a theoretical level, but please review the 2nd year DS lecture.
+  \end{alertblock}
+  \begin{alertblock}{Big Number}
+    In the past, we used to have a module on Big Number. Today, just use Python.
+  \end{alertblock}
+\end{frame}
