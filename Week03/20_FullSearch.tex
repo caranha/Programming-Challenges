@@ -1,0 +1,216 @@
+\section{Complete Search}
+
+\begin{frame}{}{}
+  \begin{center}
+    {\bf Part II: Complete Search}
+  \end{center}
+\end{frame}
+
+% Full search - Talk about the problems listed, then "calculatingDartScores" (recursive)
+% - remove hints
+
+
+
+\begin{frame}{Idea of Complete Search}
+
+  In the Complete Search algorithm, we loop through all possibilities, until
+  we find the correct answer.\bigskip
+
+  Some people call this algorithm {\bf Brute Force}. This name is negative,
+  but sometimes a Complete Search is very useful.\bigskip
+
+  \begin{block}{How to think of a complete search algorithm}
+    \begin{itemize}
+      \item Find the loop that checks all possibilities; (or a recursive function)
+      \item Write the program to check if a possibility is correct or not;
+      \item {\bf PRUNING}: Remove from the loop cases that are impossible;
+      \begin{itemize}
+        \item Use "break", "continue" or good loop limits.
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Example 1}
+\begin{frame}{Complete Search Example: Division}
+
+  \begin{block}{Problem Summary}
+    Input: One integer $N$.\\
+    Output: All pairs of numbers with 5 digits ($abcde$ and $fghij$) that satisfy:
+    \begin{enumerate}
+      \item $fghij / abcde = N$
+      \item $a,b,c,d,e,f,g,h,i,j$ are all different.
+    \end{enumerate}
+  \end{block}\bigskip
+
+  {\bf Example:} $N = 62$
+  \medskip
+
+  79546 / 01283 = 62\\
+  94736 / 01528 = 62\\
+  \bigskip
+
+  \begin{block}{}
+    Think: How can you solve this problem using {\bf Complete Search}?
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Complete Search Example: Division}{Naive Solution}
+  \begin{block}{}
+    Let abcde = $x$, fghij = $y$. Loop all $x$ from 0 to 99999, calculate $y = x*n$.\\
+    Test if all digits of $x$ and $y$ are different.
+  \end{block}
+
+{\smaller
+\begin{verbatim}
+for (int x = 0; x <= 99999; x++) {
+  y = x*n;
+  digits = count_digits(x,y);
+  if (digits == 1<<10 - 1) printf("%0.5d/%0.5d=%d\n",y,x,N);
+}
+
+int count_digits(int x, int y) {
+  int used = (x < 10000); % bit array: each bit mark one digit
+  int tmp;
+  tmp = x; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
+  tmp = y; while (tmp) {used |= 1 << (tmp%10); tmp /= 10; }
+  return used;
+}
+\end{verbatim}
+  }
+\end{frame}
+
+\begin{frame}{Complete Search Example: Division}{Prunning the Loop}
+  The naive algorithm tests many numbers that {\bf will never be the answer}. (eg: x = 00021).\bigskip
+
+  We can {\bf prune} the loop, to test a smaller number of cases.\bigskip
+
+  \begin{itemize}
+  \item Prune 1: Minimum and Maximum values of $x$:\\
+    \hspace{1cm} $x_{min}: 01234$, $x_{max}: 98765$.\hfill Other values have repeated digits!
+    \bigskip
+
+  \item Prune 2: Consider $y = x * N$. The maximum of $y$ is also 98765, so maximum of $x$ is:\\
+    \hspace{1cm} $x_{max}: 98765 / N$
+    \bigskip
+
+  \item Can you think of other ways to prune?
+  \end{itemize}
+\end{frame}
+
+\subsection{Reflection}
+\begin{frame}
+  \frametitle{Notes about Complete Search algorithms}
+  \begin{itemize}
+  \item A Complete Search should always give the correct solution\\
+    \begin{itemize}
+    \item It checks all cases, so it should always find the correct one;
+    \end{itemize}
+
+    \bigskip
+
+  \item For some problems, the Complete Search is the right algorithm.
+    \begin{itemize}
+    \item If the problem is small, use Complete search, no need for complex algorithm;
+    \item Prune, prune, prune to make the problem small;
+    \end{itemize}
+
+    \bigskip
+
+  \item For a very hard problem, a Complete Search can give you a starting point;
+    \begin{itemize}
+    \item Even if Complete Search is "Time Limited Exceeded",\\
+    you can use it to check test cases;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Example 2}
+\begin{frame}
+  \frametitle{Complete Search Example 2: Simple Equations}
+  \begin{block}{Problem Summary}
+    {\bf Input:} A, B, C, $1 \leq A,B,C \leq 10000$.\bigskip
+
+    Find $x,y,z$ so that:
+    \begin{itemize}
+    \item $x+y+z=A$,
+    \item $x*y*z=B$,
+    \item $x^2+y^2+z^2=C$,
+    \end{itemize}
+
+    \bigskip
+  \end{block}
+  \bigskip
+
+  To solve this problem we can loop and test on of x, y, z (3-nested loop).
+  \bigskip
+
+  But what should be the minimum and maximum value of the loops?
+\end{frame}
+
+% First take x^2+y^2+z^2 = C. Since maximum C is 10000, and X,Y,Z must be
+% different, the maximum range of x is -100 to 100. The Reasoning goes for
+% Y and Z. With this we can do a triple loop with about 8M operations.
+
+\begin{frame}[fragile]{Complete Search Example 2: Simple Equations}{Initial Pruning}
+  \begin{block}{}
+    Consider $x^2 + y^2 + z^2 = C$.\medskip
+
+    Since $C \leq 10000$, and $x^2,y^2,z^2 \geq 0$, if $y =
+    z = 0$ then the range for $x$ must be $-100, 100$.
+  \end{block}
+
+{\smaller
+\begin{verbatim}
+int x,y,z;
+for (x = -100; x <= 100 && !sol; x++)
+  for (y = -100; y <= 100 && !sol; y++)
+    for (z = -100; z <= 100 && !sol; z++)
+      if (y != x && z != x && z != y &&
+          x + y + z == A && x * y * z == B &&
+          x*x + y*y + z*z == C) {
+             printf("%d %d %d\n", x,y,z);
+             exit(0);
+          }
+\end{verbatim}}
+
+\begin{block}{}
+  QUESTION: How can we prune this loop even more?
+\end{block}
+\end{frame}
+
+\begin{frame}{Complete Search Example 2: Simple Equations}{More Pruning}
+  There are many other ways that we can prune the loop:
+
+  \medskip
+
+  \begin{itemize}
+  \item We can change the range using the actual input values of $A,B,C$
+  \item We only need one solution. We can break the loop once we find it.
+  \item We can use equation 2 to think of other ways to prune.
+  \end{itemize}
+
+  \vfill
+
+  % \begin{alertblock}{}
+  %   The problem: ``Simple Equations -- Extreme!'' has a much
+  %   higher range for $A,B,C$. You need a lot of pruning to avoid a TLE!
+  % \end{alertblock}
+\end{frame}
+
+\subsection{Example 3}
+\begin{frame}{Complete Search Example 3: Calculating Dart Scores}
+  \begin{block}{Problem Summary}
+    \begin{itemize}
+      \item Given a score $S$, $1\leq S \leq 180$, find three dart scores that add to $S$.
+      \item One dart score can be $1$ to $20$, "double" and "triple"
+    \end{itemize}
+  \end{block}
+  \vfill
+
+  \begin{itemize}
+    \item For this program, maybe it is easier to use recursion than loop.
+    \item Function: "findscore(S, darts)". Print the score when you return.
+    \item How to prune this search?
+  \end{itemize}
+\end{frame}

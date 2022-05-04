@@ -1,0 +1,171 @@
+\section{Introduction}
+
+\begin{frame}{}{}
+  \begin{center}
+    {\bf Part I: Introduction}
+  \end{center}
+\end{frame}
+
+
+% Introduction - Talk about Examples in list, and then chooseICPCteams
+
+
+\begin{frame}{Outline}
+
+  This week, we study "Search Based" approaches to programming challenges:
+  \bigskip
+
+  \begin{itemize}
+    \item Complete Search (Brute Force)\bigskip
+
+    \item Divide and Conquer\bigskip
+
+    \item Greedy Search\bigskip
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Definition of Search Algorithm}
+\begin{frame}{What is Search?}
+  In daily life, we {\bf search} for things all the time:
+
+  \begin{itemize}
+  \item Where are the keys of your bycicle;
+  \item Where is your wallet;
+  \item Where is your cellphone;
+  \end{itemize}\medskip
+
+  Every search has:
+  \begin{itemize}
+    \item An {\bf Objective}: what are we searching;
+    \item A {\bf Search Space}: where we are searching;
+  \end{itemize}
+
+  \begin{block}{}
+    {\smaller
+    \hfill \emph{The thing you search is always in the last place you look}}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{What is a ``Search Algorithm''?}
+    The search algorithm {\bf list all possibilities} (using a loop or recursion), and
+    {\bf test them one by one} until the correct solution is found.\bigskip
+
+    \begin{itemize}
+      \item The correct solution can be unique or not;\smallskip
+
+      \item Sometimes, we can calculate the {\bf distance} to the correct solution;\smallskip
+
+      \item Sometimes, we can list the possibilities {\bf in different orders};
+    \end{itemize}
+    \bigskip
+
+    Many problems (in programming challenge and real life) can be described as
+    search problems. Search can be slow, but we always find a solution (someday).
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{The Generic Search Algorithm}
+  This is the general idea of any {\bf Search Algorithm}:\smallskip
+  \begin{enumerate}
+    \item Sort the possibilities, and choose the first one: $i = 1$;
+    \item Test if solution $a_i$ is correct;
+    \item If $a_i$ is not correct, $i = i+1$, and go back to 2.
+  \end{enumerate}\bigskip
+
+  How can we make the search algorithm better?
+  \begin{itemize}
+  \item What is the size of the search space? (space of possibilities)
+  \item What is the best order for the seach space?
+  \item Can we reduce the search space?
+  \end{itemize}
+\end{frame}
+
+\subsection{Example}
+\begin{frame}{Search Algorithm Example "Black Friday"}
+
+  \begin{block}{}
+    \begin{itemize}
+      \item You have $n$ numbers between 1 and 6 ($1 \leq n \leq 100$)
+      \item What is the highest number that is not repeated?
+      \item Example: $A = \{3, 5, 4, 5, 6, 1, 2, 3, 1, 6\}$, Solution: 4
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Solution 1 ($O(N+6)$)}
+    \begin{itemize}
+      \item Create count array C (from 1 to 6)
+      \item Loop array A, and count the numbers, adding their value to C
+      \item Loop array C, and print highest $i$ so that $C_i == 1$
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Solution 2 ($O(N\log N + N)$)}
+    \begin{itemize}
+      \item Sort Array A;
+      \item Loop Array A, if $A_i \neq A_{i+1} \neq A_{i+2}$, that is the solution
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+
+\subsection{Searching An Array}
+\begin{frame}{Looping, Sorting and Searching an Array for many problems}
+
+  \begin{block}{Consider the following input array:}
+    Array $A$ with $n$ {\bf unsorted} random integers. $n < 10.000$, $0 \leq a_i \leq 100.000$
+  \end{block}\bigskip
+
+  For each problem, think {\bf how do you loop the array} and {\bf how much time it takes}
+  \begin{enumerate}
+  \item Find the {\bf largest} and the {\bf smallest} element of $A$;
+  \item Find the {\bf $k^{th}$ smallest} element of $A$;
+  \item Find the {\bf largest gap} $G$; $G = |a_i-a_j|$;
+  \item Find the {\bf longest increasing subsequence (LIS)} of A;\\
+    \hfill Example of LIS: $A = [3,2,5,\overline1,4,\overline{2, 3, 5},7,\overline{6,10}]$
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Looping, Sorting and Searching an Array for many problems}
+
+  \begin{enumerate}
+  \item {\bf Find the Largest and smallest element of $A$:}
+    \begin{itemize}
+      \item Loop through $A$ one time, keep track of $a_{max}$, $a_{min}$, cost: $O(n)$.
+    \end{itemize}
+  \item {\bf Find the $k^{th}$ smallest elements of $A$:}
+    \begin{itemize}
+      \item Loop through $A$, $k$ times, remove smallest each time. Cost: $O(nk)$, worst case: $O(n^2)$
+      \item Sort A, return $A[k]$. Cost: $O(n\log n)$
+    \end{itemize}
+  \item {\bf Find the largest gap:}
+    \begin{itemize}
+    \item Try all possible pairs: Loop $i$, Loop $j$, keep max $|a_i-a_j|$. Cost: $O(n^2)$
+    \item Think: Largest gap = biggest - smallest. Find the smallest and largest: $O(n)$.
+    \end{itemize}
+  \item {\bf Longest increasing subsequence:}
+    \begin{itemize}
+    \item Test all possible subsequences: $O(2^n)$ -- We will make this fast next week.
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Search Algorithm Paradigms}
+%   There are many variations on Search Algorithm:
+%   \bigskip
+%
+%   \begin{itemize}
+%     \item Complete Search/Brute Force;
+%     \item Divide and Conquer;
+%     \item Greedy Approach;
+%     \item Dynamic Programming (Next week!)
+%     \item Heuristic Search / Meta-heuristic Search (Research!)
+%   \end{itemize}
+%   \bigskip
+%
+%   Depending on the problem, we can use different approaches. Which approach is better depends on the problem, so let's learn some of them.
+% \end{frame}

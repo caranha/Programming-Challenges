@@ -18,6 +18,7 @@ algorithm knowledge through implementation.
 - **Week02** -- Data Structures
   - [Lecture notes](Week02/week02.pdf)
 - **Week03** -- Search Problems
+  - [Lecture notes](Week03/week03.pdf)
 - **Week04** -- Dynamic Programming
 - **Week05** -- Graphs Problems I
 - **Week06** -- Graphs Problems II
