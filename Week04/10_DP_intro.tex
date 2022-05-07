@@ -1,4 +1,4 @@
-\section{Introduction to Dynamic Programming}
+\section{Introduction}
 
 \begin{frame}
   \begin{center}
@@ -6,28 +6,60 @@
   \end{center}
 \end{frame}
 
-\subsection{Definitions}
-\begin{frame}
-  \frametitle{What is Dynamic Programming (DP)?}
+\begin{frame}{Search Algorithms and Dynamic Programming}
 
-  \structure{DP} is a \structure{Search Algorithm} based on the idea of {\bf Storing Partial Solutions in Memory}.
+  \begin{itemize}
+  \item {\bf Search Algorithms} explore the search space of a problem in a systematic manner;\bigskip
 
+  \item Last week we studied three types of Search Algorithms:
+    \begin{itemize}
+    \item Complete Search
+    \item Binary Search
+    \item Greedy Search
+    \end{itemize}
   \bigskip
 
-  \begin{block}{Basic Idea of DP}
+  \item This week, we study a new search algorithm: {\bf Dynamic Programming (DP)}.
+  \bigskip
+
+  \item The key idea of DP is:
+  \end{itemize}
+
+  \begin{block}{}
+    Store partial calculation in memory, to avoid duplicated work. (Related to Memoization)
+  \end{block}
+\end{frame}
+
+\subsection{Standard DP Algorithm}
+\begin{frame}{Standard Dynamic Programming (DP) Algorithm}
+
+  \begin{block}{}
     \begin{itemize}
-      \item Create a {\bf DP table}. The dimensions are the parameters of a recursive function that generates the solution to the problem; \bigskip
+      \item Create a {\bf DP table}:
+      \begin{itemize}
+        \item The DP table stores {\bf partial calculation}
+        \item The rows and columns of the table are the {\bf parameters} of the calculation;
+      \end{itemize}\medskip
 
-      \item First fill in the table with the starting conditions;\bigskip
+      \item Option 1: {\bf Top Down DP}:
+      \begin{itemize}
+        \item Write a {\bf recursive function} to calculate the answer;
+        \item In the function, first test if the answer exist;
+      \end{itemize}\medskip
 
-      \item Next use the recursive function (or a for loop) to fill the rest of the table;\bigskip
+      \item Option 2: {\bf Bottom Up DP}:
+      \begin{itemize}
+        \item {\bf Loop} through all the table (usually 2D loop);
+        \item In the loop, write each value of the table;
+        \item Return the answer in the end.
+      \end{itemize}\medskip
 
-      \item Find the answer;
+      \item Choosing the {\bf DP table} is usually the hard part of the problem.
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}{What is Dynamic Programming (DP)?}{Characteristics}
+\begin{frame}{When do we use Dynamic Programming (DP)?}
 
   \begin{block}{If a problem requires {\bf optimization} or {\bf counting}, then it "smells of DP"}
 
@@ -38,13 +70,15 @@
     \end{itemize}
   \end{block}
 
-  \begin{exampleblock}{What is the running cost of DP?}
-    The algorithm evaluates each element of the DP table.\medskip
-
-    So the cost of a DP algorithm is proportional to the {\bf size of the DP table.}
+  \begin{exampleblock}{What is the cost of running DP?}
+    \begin{itemize}
+      \item Let the size of the DP table T be $(a,b)$
+      \item Then let the cost of processing T[i,j] be $O(c)$
+      \item Cost of DP: $O(abc)$ \hfill(can be pruned in some cases!)
+    \end{itemize}
   \end{exampleblock}
 
-  You can prove a DP algorithm to be correct using {\bf Proof by Induction}.
+  You can prove the correctness of a DP algorithm using {\bf Proof by Induction}.
 \end{frame}
 
 \subsection{Example Problem I}
@@ -56,16 +90,16 @@
     \begin{columns}
       \column{0.7\textwidth}
     \begin{itemize}
-      \item There are $C$ classes of items;
-      \item Each class has $K_c$ options;
-      \item Each option ($K_{c,i}$) has a different cost;
+      \item There are $C$ classes of items ($k_0, k_2, \ldots, k_{c-1}$);
+      \item Each class $k_i$ has $N_i$ options;
+      \item Each option $j$ of class $k_i$ has a cost $v_{i,j}$;
       \bigskip
 
-      \item Buy one item from each Class;
-      \item Maximize the total cost, but {\bf do not} exceed the budget $M$;
+      \item You must buy 1 item from each class;
+      \item Maximize the total cost, but {\bf do not} exceed $M$;
       \bigskip
 
-      \item Limits: $M \leq 200$, $1 < C \leq 20$, $0 < K_c \leq 20$
+      \item Limits: $M \leq 200$, $0 < C \leq 20$, $0 < N_i \leq 20$
     \end{itemize}
 
       \column{0.3\textwidth}
@@ -78,27 +112,27 @@
 \end{frame}
 
 \begin{frame}{Problem Example: Wedding Shopping}{Solution Example}
-  \begin{block}{Sample case 1: $C=3, K_c = \{3,2,4\}$}
+  \begin{block}{Sample case 1: $C=3, N_i = \{3,2,4\}$}
   \begin{tabular}{|c|cccc|}
-    Class & 1 & 2 & 3 & 4\\
+    Class & 0 & 1 & 2 & 3\\
     \hline
-    $K_0$ & 6 & 4 & 8 & \\
-    $K_1$ & 5 & 10 & & \\
-    $K_2$ & 1 & 5 & 3 & 5\\
+    $k_0$ & 6 & 4 & 8 & \\
+    $k_1$ & 5 & 10 & & \\
+    $k_2$ & 1 & 5 & 3 & 5\\
   \end{tabular}
   \end{block}
   \medskip
 
   If the budget is $M=20$, the answer is $19$. Three ways to reach this answer:
   \begin{itemize}
-    \item $8(K_{0,2})+10(K_{1,1})+1(K_{2,0})$
-    \item $6(K_{0,0})+10(K_{1,1})+3(K_{2,2})$
-    \item $4(K_{0,1})+10(K_{1,1})+5(K_{2,1} \text{ or } K_{2,3})$
+    \item $8(v_{0,2})+10(v_{1,1})+1(v_{2,0})$
+    \item $6(v_{0,0})+10(v_{1,1})+3(v_{2,2})$
+    \item $4(v_{0,1})+10(v_{1,1})+5(v_{2,1} \text{ or } v_{2,3})$
   \end{itemize}
   \bigskip
 
   However, if the budget is $M=9$, There is no solution for the problem.\\
-  Because the minimum possible cost is $10$, or $4(K_{0,1})+5(K_{1,0})+1(K_{2,0})$
+  Because the minimum possible cost is $10$ ($4(v_{0,1})+5(v_{1,0})+1(v_{2,0}))$
 \end{frame}
 
 \begin{frame}[fragile]{Problem Example: Wedding Shopping}{Complete Search Solution}
@@ -109,32 +143,33 @@
 
 {\smaller
 \begin{verbatim}
-shop(m,g):                 // Recursive function. Returns the money used
+shop(m, g):                // Recursive function. Returns the money used
                            // after start buying from category "g"
   if (m > M) return -1     // End case -- we spend more money than the budget.
   if (g == C) return m     // End case -- we bought all categories.
                            //             Return the total money used.
   for each i in Kc:
-    totals[i] = shop(m + price[g][i], g+1) // try buying item i at category g.
+    totals[i] = shop(m + v[g][i], g+1) // try buying item i at category g.
 
   return max(totals)       // Return the value of the best item.
 
-shop(0,0)                  // Start condition: buying from category 0
-                           // No money used.
+// First call of the recursive function: Start at category 0 with no money spent.
+result = shop(0,0)
 \end{verbatim}
 }
 \end{frame}
 
 \begin{frame}{Problem Example: Wedding Shopping}{Complete Search Solution -- Time Limited Exceeded :-(}
 
-  In the worst case, there are a total of $20^{20}$ possible choices. So the complete solution will not solve this problem...\bigskip
+  In the worst case, there are a total of $20^{20}$ possible combinations/choices.\\
+  So the complete search will be TLE...\bigskip
 
-  \begin{block}{Problem: Too many overlapping subproblems}
+  \begin{block}{Problem: Too many repeated subproblems}
     \medskip
     \begin{columns}[T]
       \column{0.4\textwidth}
       \hspace{.5cm}\begin{tabular}{|c|cccc|}
-        Class & 1 & 2 & 3 & 4\\
+        Class & 0 & 1 & 2 & 3\\
         \hline
         0 & 6 & 4 & 8 & 12\\
         1 & 4 & 6 & 6 & 2\\
@@ -157,18 +192,18 @@ shop(0,0)                  // Start condition: buying from category 0
 \end{frame}
 
 
-\begin{frame}
-  \frametitle{Wedding Shopping -- the DP approach}
+\begin{frame}{Wedding Shopping using DP}
 
-  When a problem has this characteristic ({\bf repeated sub-structures}), it is a strong hint that DP is a good solution.
+  When a problem has this characteristic ({\bf repeated sub-problems}),\\
+  it is a strong hint we should use DP.
   \bigskip
 
-  First, we create a {\bf DP table} using the parameters of the "shop(m,g)" function.\bigskip
+  First, we create a {\bf DP table} using the parameters of the "shop(m, g)" function.\bigskip
 
-  Remember: "shop(m,g)" always returns the same value.
+  Remember: "shop(m, g)" always returns the same value.
 
   \begin{block}{How big is the table?}
-    The table stores all possible calls of \emph{shop(m,g)}, so the table size is $|M| \times |C|$.
+    The table stores all possible calls of \emph{shop(m, g)}, so the table size is $|M| \times |C|$.
     \bigskip
 
     Remember that $0 \leq M \leq 200$ and $1 < C \leq 20$, so our table has \alert{$201*20=4020$ states}.
@@ -214,15 +249,15 @@ shop(0,0)                  // Start condition: buying from category 0
 \begin{block}{}
 {\smaller
 \begin{verbatim}
-memset(table, -2, sizeof(table))  //-1 = "no result", -2 = "not visited"
+memset(table, -2, sizeof(table))  //-1 = "no result", -2 = "not visited yet"
 
-shop(m,g):
+shop(m, g):
   if (m > M) return -1                      // End States are the same;
   if (g == C) return m
   if (table[m][g] != -2) return table[m][g] // Check if the result is in memory
 
   for each i in Kc:                         // Calculate as before;
-    totals[i] = shop(m + price[g][i], g+1)
+    totals[i] = shop(m + v[g][i], g+1)
 
   table[m][g] = max(totals)                 // Store new result in table;
   return table[m][g]
@@ -258,32 +293,32 @@ shop(0,0)                                   // That's the only change!
 
 \begin{frame}{Wedding Shopping -- Bottom-up DP}{One possible solution}
 
-  Example: M=10, \alert<2>{$K_0=\{2,4\}$}, \alert<3>{$K_1=\{4,6\}$}, \alert<4>{$K_2=\{1,3,2,1\}$}
+  Example: M=10, \alert<2>{$v_{0,x}=\{2,4\}$}, \alert<3>{$v_{1,x}=\{4,6\}$}, \alert<4>{$v_{2,x}=\{1,3,2,1\}$}
   \bigskip
 
   \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
     \hline
-    M & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+    M -> & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
     \hline
-    $g=0$ & X & & & & & & & & & & \\
-    $g=1$ & & & \only<2->{X} & & \only<2->{X} & & & & & & \\
-    $g=2$ & & & & & & & \only<3->{X} & & \only<3->{X} & & \only<3->{X}\\
-    $g=3$ & & & & & & & & \only<4->{X} & \only<4->{X} & \only<4->{X} & \only<4->{X}\\
+    $i=0$ & X & & & & & & & & & & \\
+    $i=1$ & & & \only<2->{X} & & \only<2->{X} & & & & & & \\
+    $i=2$ & & & & & & & \only<3->{X} & & \only<3->{X} & & \only<3->{X}\\
+    $i=3$ & & & & & & & & \only<4->{X} & \only<4->{X} & \only<4->{X} & \only<4->{X}\\
     \hline
   \end{tabular}
 
   \begin{itemize}
-  \item {\bf Start state}: We use no money, so mark $T(0,0)$ as "unprocessed".
-  \item {\bf Transition Function} (from category c to category c+1):
+  \item {\bf Start state}: We use no money, so mark $T(0,0)$ as "reached (X)".
+  \item {\bf Table Loop} Loop $i$ on all categories (0 to $C-1$):
     \begin{itemize}
-      \item Loop on money: $i = 0\to m$
-      \item If $T(g,i)$ is marked as "unprocessed"
+      \item Loop $j$ on all money: $j = 0\to M$
+      \item If $T(i,j)$ is "reached (X)":
       \begin{itemize}
-        \item Loop: $j = 0\to |K_c|$
-        \item Mark $T(s+1,i+K_{c,j})$ as "unprocessed"
+        \item Loop $f$ on all item costs (0 to $k_i-1$):
+        \item Mark $T(i+1, j+v_{i,f})$ as "reached (X)"
       \end{itemize}
     \end{itemize}
-  \item {\bf Solution}: The solution is the maximum column marked when $g = C$
+  \item {\bf Solution}: The solution is the maximum column marked when $i = C$
   \end{itemize}
 \end{frame}
 
@@ -294,12 +329,12 @@ shop(0,0)                                   // That's the only change!
 
   \begin{tabular}{|c||c|c|c|c|c|c|c|c|c|c|c|c|}
     \hline
-    M & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+    M -> & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
     \hline
-    $s=0$ & X & & & & & & & & & & \\
-    $s=1$ & & & X & & X & & & & & & \\
-    $s=2$ & & & & & & & X & & X & & X\\
-    $s=3$ & & & & & & & & X & X & X & X\\
+    $i=0$ & X & & & & & & & & & & \\
+    $i=1$ & & & X & & X & & & & & & \\
+    $i=2$ & & & & & & & X & & X & & X\\
+    $i=3$ & & & & & & & & X & X & X & X\\
     \hline
   \end{tabular}
   {\smaller
@@ -308,17 +343,18 @@ shop(0,0)                                   // That's the only change!
 memset(table,0,sizeof(table))
 table[0][0] = 1
 
-for g in (0 to C-1)
-  for i in (0 to M-1):
-    if table[g][i] == 1:
-       for k in (0 to K[g]-1):
-          table[g + 1][i + cost[g][k]] = 1 // Don't forget out of bounds check!
+for i in (0 to C-1)
+  for j in (0 to M):
+    if table[i][j] == 1:
+       for f in (0 to K[i]-1):
+          table[i + 1][j + cost[i][f]] = 1 // Don't forget out of bounds check!
 \end{verbatim}
   \end{block}}
 \end{frame}
 
+\subsection{DP Considerations}
 \begin{frame}
-  \frametitle{DP: Top-down or Bottom-up?}
+  \frametitle{DP: Should you use Top-down or Bottom-up?}
 
   \begin{block}{Top-Down}
     {\bf Pros:} Easy to implement, just add memory to a recursive search. Only computes the visited states of the DP table. \medskip
@@ -327,25 +363,23 @@ for g in (0 to C-1)
   \end{block}
 
   \begin{block}{Bottom-Up}
-    {\bf Pros:} Faster if you will visit the entire DP table anyway. It is possible to save memory by discarding old rows.\medskip
+    {\bf Pros:} Faster if you have to visit most of the table. It is possible to save memory by discarding old rows.\medskip
 
     {\bf Cons:} Harder to think the algorithm. If the DP table is sparse, the loop will visit every state.
   \end{block}
 \end{frame}
 
-\subsection{DP Example 2}
-
 \begin{frame}{Finding the Decision Set with DP}
 
-  In the example we studied, the program only returns the total money used.\bigskip
+  This example program only returns the total money used.\bigskip
 
-  In some problems, we also need to output the {\bf optimal solution} (for example, optimal path). How do we do that?
+  Sometimes we also need to output the {\bf optimal solution}. How do we do that?
   \bigskip
 
   It is not very hard. You need TWO tables:
   \begin{itemize}
-    \item Table 1: The DP table (memory table);
-    \item Table 2: The "Parent" table, which indicate what was the previous choice.
+    \item Table 1: The DP table (same as before);
+    \item Table 2: The "Parent" table, which indicates the previous choice.
   \end{itemize}
   \bigskip
 
@@ -357,12 +391,14 @@ for g in (0 to C-1)
   \end{block}
 \end{frame}
 
+\subsection{DP Example 2}
+
 \begin{frame}{Example 2: Apple Field}
   \begin{block}{}
   {\smaller
-  A farmer has an apple field, and a robot to collect the apples. However, the robot can only move {\bf one left} or {\bf one down}. The robot starts at position $(0,0)$, and ends at $(n,n)$.\medskip
+  A farmer has an apple field, and a robot to collect the apples. However, the robot can only move {\bf right} or {\bf down}. The robot starts at position $(0,0)$, and ends at $(n,n)$.\medskip
 
-  You know how many apples are in each cell. What is the path with maximum apples?
+  You know how many apples are in each cell (A[i][k]). What is the path with maximum apples?
 }
   \end{block}
 
@@ -387,7 +423,7 @@ for g in (0 to C-1)
     How many different paths are possible?
   \end{block}
   \begin{itemize}
-    \item A path has $n$ steps left (0), and $n$ steps down (1), in any order.
+    \item A path has $n$ steps right (0), and $n$ steps down (1), in any order.
     \bigskip
 
     \item A path is a string with size $2n$, $n$ "0"s, and $n$ "1"s.
@@ -399,8 +435,8 @@ for g in (0 to C-1)
     \end{itemize}
   \end{itemize}\bigskip
 
-  Like in the "Wedding Shopping" problem, we have {\bf overlapping subproblems}.
-  \bigskip
+  Like in the "Wedding Shopping" problem, we have {\bf repeating subproblems}:
+  \medskip
 
   For example, the optimal path from $(x,y)$ to $(n,n)$ is always the same, regardless of the path from $(0,0)$ to $(x,y)$. So let's try DP!
 \end{frame}
@@ -410,20 +446,20 @@ for g in (0 to C-1)
   \begin{itemize}
   \item {\bf DP table and Parent table:}
   \begin{itemize}
-    \item The DP table is a $n+1\times n+1$ table. At every position, we have the maximum number of apples from $(0,0)\to(x,y)$.
-    \item The Parent table is a $n+1\times n+1$ table. At every position, we store the last-1 cell (up or right) of $(0,0)\to(x,y)$.
+    \item The DP table is a $n+1\times n+1$ table. At each position $(x,y)$, we store the maximum number of apples from $(0,0)\to(x,y)$.
+    \item The Parent table is a $n+1\times n+1$ table. At each position, we store the back step (up or left) of the optimal path to $(x,y)$.
   \end{itemize}
 
   \item {\bf Initial Condition:} (DP table only)
   \begin{itemize}
-    \item To avoid special treatment of the first row and first column, we include a "boundary" at the top and right of the table. Every cell at the boundary has "0" apples
+    \item To avoid special treatment of the first row and first column, we include a "boundary" at the top and left sides of the table. Every cell at the boundary has "0" apples
   \end{itemize}
 
   \item {\bf Transition:}
   \begin{itemize}
-    \item We double loop over the DP table (row $\to$ column, or vice-versa). For every cell $(x,y)$:\\
-    $DP[x][y] = \text{apple}[x][y] + \text{max}(DP[x-1][y],DP[x][y-1])$\\
-    $\text{Parent}[x][y] = (DP[x-1][y] > DP[x][y-1]?\leftarrow:\uparrow)$
+    \item We double loop over the DP table (row $\to$ column). For every cell $(x,y)$:\\
+    $DP[x][y] = A[x][y] + \text{max}(DP[x-1][y],DP[x][y-1])$\\
+    $\text{Parent}[x][y] = \text{if } DP[x-1][y] > DP[x][y-1]: \text{"left"}, \text{ else }\text{"top"}$
   \end{itemize}
   \end{itemize}
 \end{frame}
@@ -432,20 +468,20 @@ for g in (0 to C-1)
   {\smaller
   \begin{block}{}
 \begin{verbatim}
-int apple[m+1][n+1];     // Input Data. Board index is from 1 to n
+int A[n+1][n+1];     // Input Data. Index is (1, 1) to (n, n)
 
-int DP[m+1][n+1];                      // DP Table
-DP[0][0..n+1] and DP[0..m+1][0] = 0;   // Initial states;
+int DP[n+1][n+1];                      // DP Table
+DP[0][0..n+1] and DP[0..n+1][0] = 0;   // Initial states;
 
-int parent[m+1][n+1];               // Parent Table;
+int parent[n+1][n+1];                  // Parent Table;
 
-for (int i = 1; i < m+1; i++) {
+for (int i = 1; i < n+1; i++) {
   for (int j = 1; j < n+1; j++) {
-    DP[m][n] = apple[m][n] + max(DP[m][n-1], DP[m-1][n]);  // Update DP
-    if (DP[m][n-1] > DP[m-1][n]):                          // Update Parent
-       parent[m][n] = "left";
+    DP[i][j] = A[i][j] + max(DP[i][j-1], DP[i-1][j]);  // Update DP
+    if (DP[i][j-1] > DP[i-1][j]):                      // Update Parent
+       parent[i][j] = "left";
     else:
-       parent[m][n] = "up";
+       parent[i][j] = "up";
   }
 }
 \end{verbatim}
@@ -457,14 +493,13 @@ for (int i = 1; i < m+1; i++) {
 
 \begin{frame}[fragile]{Example 2: Apple Field}{Simulating the algorithm}
 
-{\smaller
 \begin{verbatim}
-DP[m][n] = apple[m][n] + max(DP[m][n-1], DP[m-1][n]);
-if (DP[m][n-1] > DP[m-1][n]):
-   parent[m][n] = "left";
+DP[i][j] = apple[i][j] + max(DP[i][j-1], DP[i-1][j]);
+if (DP[i][j-1] > DP[i-1][j]):
+   parent[i][j] = "left";
 else:
-   parent[m][n] = "up";
- \end{verbatim}}
+   parent[i][j] = "up";
+ \end{verbatim}
 
 \begin{columns}
   \column{0.3\textwidth}
