@@ -1,0 +1,406 @@
+\begin{frame}
+  \begin{center}
+    {\bf Part 4: Minimum Spanning Tree}
+  \end{center}
+\end{frame}
+
+\subsection{Spanning Tree}
+\begin{frame}
+  \frametitle{Minimum Spanning Trees (MST) -- Definition}
+
+  \begin{block}{}
+    A {\bf Spanning Tree} is a subset $E'$ from graph $G$ so
+    that all vertices are connected without cycles.
+
+    \medskip
+
+    A \structure{Minimum Spanning Tree} is a spanning tree where the
+    sum of edge's weights is minimal.
+  \end{block}
+
+  \begin{columns}[T]
+    Graph\\
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+    \column{0.3\textwidth}
+    Spanning Tree
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[red edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[red edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[red edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+    \column{0.3\textwidth}
+    Minimum Spanning Tree
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[red edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[red edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[red edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Usage Cases for Minimum Spanning Trees}
+  \begin{block}{}
+    \begin{itemize}
+      \item Problems with MST often ask for a minimal cost to connect all elements in a graph (e.g. minimal infrastructure cost).\medskip
+
+      \item {\bf Variations:} Maximum Spanning Tree, Spanning Forest, Force some edges in advance;
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Main algorithms for MST}
+    Two greedy algorithms that add edges to MST:
+    \begin{itemize}
+      \item {\bf Kruskal Algorithm}: based on edge list;
+      \item {\bf Prim's Algorithm}: based on vertex list;
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kruskal's Algorithm}
+  \begin{block}{Outline}
+    Kruskal's algorithms sorts all edges by their weight, and try to add each edge to the MST, checking whether adding that edge would create a cycle.
+  \end{block}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{enumerate}
+    \item Sort all edges;
+    \item If smallest edge does not create a cycle, add to MST;
+    \item If smallest edge creates a cycle, remove it from list;
+    \item Go to 2;
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+      \draw<2->[red edge] (b) -- node[label] {$2$} (c);
+      \draw<3->[red edge] (a) -- node[label] {$4$} (b);
+      \draw<4->[black edge] (a) -- node[label] {$4$} (c);
+      \draw<4->[red edge] (a) -- node[label] {$6$} (d);
+      \draw<5->[red edge] (a) -- node[label] {$6$} (e);
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Kruskal's Algorithm -- Implementation}
+{\smaller
+\begin{exampleblock}{}
+\begin{verbatim}
+vector<pair<int, pair<int,int>> Edgelist;
+sort(Edgelist.begin(),Edgelist.end());
+int mst_cost = 0;
+UnionFind UF(V);
+  // note 1: Pair object has built-in comparison;
+  // note 2: Need to implement UnionSet class;
+
+for (int i = 0; i < Edgelist.size(); i++) {
+   pair <int, pair <int,int>> front = Edgelist[i];
+   if (!UF.isSameSet(front.second.first,
+                     front.second.second)) {
+      mst_cost += front.first;
+      UF.unionSet(front.second.first,front.second.second)
+   }}
+
+cout << "MST Cost: " << mst_cost << "\n"
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prim's Algorithm}
+  {\small
+  \begin{block}{Outline}
+    Prim's algorith adds nodes to the MST one at a time, and keeps the
+    edges connected to those nodes in a \structure{priority queue}. It
+    then tests each edge in the priority queue to add more nodes to
+    the MST, avoiding cycles.
+  \end{block}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{enumerate}
+    \item Add node 0 to MST;
+    \item Add all edges from new node to Priority Queue;
+    \item Visit smallest edge in Queue;
+    \item If the edge leades to a new node, add it to MST;
+    \item Add new edges to Queue;
+    \item Go to 3;
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (2,0) {};
+      \node[vertex] (d) at (1,-1) {};
+      \node[vertex] (e) at (0,-2) {};
+      \draw[edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[edge] (c) -- node[label] {$8$} (d);
+      \draw[edge] (a) -- node[label] {$6$} (e);
+      \draw[edge] (d) -- node[label] {$9$} (e);
+      \uncover<2->{
+      \node[red vertex] (a1) at (0,0) {};
+      \draw[black edge] (a) -- node[label] {$4$} (b);
+      \draw[black edge] (a) -- node[label] {$4$} (c);
+      \draw[black edge] (a) -- node[label] {$6$} (d);
+      \draw[black edge] (a) -- node[label] {$6$} (e);
+      }
+
+      \uncover<3->{
+        \node[red vertex] (c1) at (2,0) {};
+        \draw[red edge] (a) -- node[label] {$4$} (c);
+        \draw[black edge] (c) -- node[label] {$8$} (d);
+        \draw[black edge] (b) -- node[label] {$2$} (c);
+      }
+      \uncover<4->{
+        \node[red vertex] (b1) at (1,1) {};
+        \draw[red edge] (b) -- node[label] {$2$} (c);
+      }
+
+      \uncover<5->{
+        \node[red vertex] (d1) at (1,-1) {};
+        \draw[red edge] (a) -- node[label] {$6$} (d);
+        \draw[black edge] (d) -- node[label] {$9$} (e);
+      }
+
+      \uncover<6->{
+        \node[red vertex] (e1) at (0,-2) {};
+        \draw[red edge] (a) -- node[label] {$6$} (e);
+      }
+    \end{tikzpicture}
+  \end{columns}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Prim's Algorithm -- Implementation}
+{\smaller
+\begin{exampleblock}{}
+\begin{verbatim}
+vector <int> taken; priority_queue <pair <int,int>> pq;
+
+void process (int v) {
+   taken[v] = 1;
+   for (int j = 0; j < (int)AdjList[v].size(); j++) {
+      pair <int,int> ve = AdjList[v][j];
+      if (!taken[ve.first])
+         pq.push(pair <int,int> (ve.first, ve.second))
+}}
+taken.assign(V,0); process(0);
+mst_cost = 0;
+
+while (!pq.empty()) {
+  vector <int,int> pq.top(); pq.pop();
+  u = front.first, w = front.second;
+  if (!taken[u]) mst_cost += w, process(u);
+}
+\end{verbatim}
+\end{exampleblock}
+}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST variant 1 -- Maximum Spanning tree}
+
+    \begin{block}{}
+      The \structure{Maximum Spanning Tree} variant requires the spanning tree to have maximum possible weight.\bigskip
+
+
+      It is very easy to implement the Maximum MST:
+      \begin{itemize}
+        \item {\bf Kruskal}: Reverse the sort of the edge list;
+        \item {\bf Prim}: Invert the weight of the priority queue;
+      \end{itemize}
+    \end{block}
+
+  \medskip
+
+  \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (1,1) {};
+      \node[vertex] (c) at (0,2) {};
+      \node[vertex] (d) at (-1,1) {};
+      \node[vertex] (e) at (-2,0) {};
+      \draw[red edge] (a) -- node[label] {$4$} (b);
+      \draw[edge] (b) -- node[label] {$2$} (c);
+      \draw[edge] (a) -- node[label] {$4$} (c);
+      \draw[edge] (a) -- node[label] {$6$} (d);
+      \draw[red edge] (c) -- node[label] {$8$} (d);
+      \draw[red edge] (a) -- node[label] {$6$} (e);
+      \draw[red edge] (d) -- node[label] {$9$} (e);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST variant 2 -- Minimum Spanning Subgraph, Forest}
+    \begin{block}{}
+      In this variant, a subset of edges or vertices are pre-selected.
+
+      \begin{itemize}
+      \item In the case of pre-selected vertices, add them to the
+        ``taken'' list in Kruskal's algorithm before starting;
+      \item In the case of edges, add the end vertices to the
+        ``taken'' list;
+      \end{itemize}
+    \end{block}\bigskip
+
+    \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+        \node[blue vertex] (a) at (0,0) {};
+        \node[vertex] (b) at (1,1) {};
+        \node[vertex] (c) at (2,2) {};
+        \node[vertex] (d) at (3,1) {};
+        \node[vertex] (e) at (4,0) {};
+        \node[blue vertex] (f) at (4,2) {};
+        \node[vertex] (g) at (5,0) {};
+        \node[vertex] (h) at (6,2) {};
+        \node[blue vertex] (i) at (6,1) {};
+        \draw[red edge] (a) -- node[label] {$2$} (b);
+        \draw[red edge] (a) -- node[label] {$1$} (d);
+        \draw[edge] (d) -- node[label] {$4$} (c);
+        \draw[edge] (d) -- node[label] {$8$} (e);
+        \draw[edge] (d) -- node[label] {$3$} (f);
+        \draw[red edge] (c) -- node[label] {$3$} (f);
+        \draw[edge] (f) -- node[label] {$6$} (g);
+        \draw[red edge] (e) -- node[label] {$4$} (g);
+        \draw[red edge] (f) -- node[label] {$1$} (h);
+        \draw[red edge] (g) -- node[label] {$3$} (i);
+      \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST Variant 3 -- Second Best MST}
+  \begin{block}{Problem Definition}
+    Suppose that you are required to calculate an alternative solution to an MST problem. In this case, you need to find the second cheapest spanning tree.
+  \end{block}
+  \bigskip
+
+  Simple Algorithm:
+  \begin{itemize}
+    \item Calculate the MST (using Kruskal or Prim);
+    \item For every edge $e_i$ in the MST:
+    \begin{itemize}
+      \item Remove $e_i$ from $E$;
+      \item Calculate a new MST;
+    \end{itemize}
+    \item Choose the best among the new MSTs as the second-best MST.
+  \end{itemize}
+  \bigskip
+
+  {\bf QUIZ}: How to generalize this algorithm for the n-th best spanning tree?
+\end{frame}
+
+\begin{frame}
+  \frametitle{MST Variant 4 -- Minmax path cost}
+
+  \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=1.2]
+        \node[red vertex] (a) at (0,0) {0};
+        \node[vertex] (b) at (1,1) {1};
+        \node[vertex] (c) at (1,-1) {2};
+        \node[vertex] (d) at (2,0) {3};
+        \node[vertex] (e) at (3,1) {4};
+        \node[vertex] (f) at (3,-1) {5};
+        \node[red vertex] (g) at (4,0) {6};
+        \draw[black edge] (a) -- node[label] {$50$} (b);
+        \draw[red edge] (a) -- node[label] {$60$} (c);
+        \draw[edge] (b) -- node[label] {$120$} (d);
+        \draw[black edge] (b) -- node[label] {$90$} (e);
+        \draw[red edge] (c) -- node[label] {$50$} (f);
+        \draw[red edge] (d) -- node[label] {$80$} (f);
+        \draw[red edge] (d) -- node[label] {$70$} (g);
+        \draw[black edge] (e) -- node[label] {$40$} (g);
+        \draw[edge] (f) -- node[label] {$140$} (g);
+      \end{tikzpicture}
+    \end{center}
+
+  \begin{block}{Problem Definition}
+    {\bf Regular Cost} for a path is the sum of weights of all edges in the path.\bigskip
+
+    {\bf Minmax Cost} for a path is the maximum weight among all its edges.\bigskip
+
+    Find the path $v_i \to v_j$ with the smallest {\bf minmax cost}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Finding the Minmax path with MST}
+
+  \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\tiny},scale=1.2]
+        \node[red vertex] (a) at (0,0) {0};
+        \node[vertex] (b) at (1,1) {1};
+        \node[vertex] (c) at (1,-1) {2};
+        \node[vertex] (d) at (2,0) {3};
+        \node[vertex] (e) at (3,1) {4};
+        \node[vertex] (f) at (3,-1) {5};
+        \node[red vertex] (g) at (4,0) {6};
+        \draw[red edge] (a) -- node[label] {$50$} (b);
+        \draw[red edge] (a) -- node[label] {$60$} (c);
+        \draw[edge] (b) -- node[label] {$120$} (d);
+        \draw[edge] (b) -- node[label] {$90$} (e);
+        \draw[red edge] (c) -- node[label] {$50$} (f);
+        \draw[red edge] (d) -- node[label] {$80$} (f);
+        \draw[red edge] (d) -- node[label] {$70$} (g);
+        \draw[red edge] (e) -- node[label] {$40$} (g);
+        \draw[edge] (f) -- node[label] {$140$} (g);
+      \end{tikzpicture}
+    \end{center}
+
+  \begin{exampleblock}{Algorithm}
+    \begin{itemize}
+      \item Generate the MST for the graph $G$.
+      \item Find the path $v_i \to v_j$ inside the MST.
+    \end{itemize}\bigskip
+
+    That's it!
+  \end{exampleblock}
+\end{frame}

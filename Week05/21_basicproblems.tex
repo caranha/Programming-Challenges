@@ -1,0 +1,403 @@
+
+\section{Common Graph Problems}
+
+\begin{frame}{}
+  \begin{center}
+    {\bf Part II: Common Graph Problems}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Common Graph Problems in Competitive Programming}
+
+  Let's see some common problems that can be solved using DFS or BFS.\bigskip
+
+  \begin{itemize}
+    \item Connected Components;
+    \item Flood Fill;
+    \item Topological Sort;
+    \item Bipartite Checking;
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Connected Components}
+\begin{frame}{Connected Components (undirected graph)}
+  A {\bf connected component} of a graph is a subset of vertices $C \subset V$ where every pair of vertices $v_i, v_j \in C$ is connected.\bigskip
+
+  The graph below has 3 connected components (abcd, e, fg)\bigskip
+
+
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (a) at (0,2) {a};
+      \node[vertex] (b) at (0,0) {b};
+      \node[vertex] (c) at (2,1) {c};
+      \node[vertex] (d) at (4,0) {d};
+      \node[vertex] (e) at (6,1) {e};
+      \node[vertex] (f) at (8,2) {f};
+      \node[vertex] (g) at (9,0) {g};
+      \draw[edge] (a) to (b);
+      \draw[edge] (b) to (c);
+      \draw[edge] (c) to (a);
+      \draw[edge] (c) to (d);
+      \draw[edge] (f) to (g);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Connected Components}
+  \begin{block}{Problem Example: Extra cables}
+    There is a network of $N$ computers. Some of the computers are connected by cables. Computers connected by cables, even if indirectly, are said to be on the {\bf same network}.
+    \bigskip
+
+    What is the minimum number of cables that you need to make sure that all $N$ computers are part of the same network?
+  \end{block}\bigskip
+
+  {\bf Solution:} Count the number of Connected Components ($C$), the answer is $C-1$.\bigskip
+
+  {\bf Quiz:} How do you implement this?
+\end{frame}
+
+\begin{frame}[fragile]{Connected Components}{Finding Connected Components using BFS/DFS}
+  We can find all connected components by looping through all vertices, and running BFS/DFS on each unvisited vertice;
+
+\begin{columns}
+  \column{0.7\textwidth}
+  \begin{exampleblock}{}
+\begin{verbatim}
+int dfs_vis[];          // visited vertices
+
+int cables = 0;
+for (int = 0; i < N; i++)
+   if (dfs_vis[i] == 0) // found new component
+   {
+      dfs(i);           // visit more vertices
+      cables += 1;
+   }
+cout << "Need "<< cables - 1 <<".\n";
+\end{verbatim}
+  \end{exampleblock}
+  \column{0.3\textwidth}
+  \begin{center}
+  \begin{tikzpicture}[scale=1,auto,swap]
+    \node[vertex] (a) at (0,0) {0};
+    \node[vertex] (b) at (2,0) {1};
+    \node[vertex] (c) at (0,2) {2};
+    \node[vertex] (d) at (2,2) {3};
+    \node[vertex] (e) at (0,4) {4};
+    \node[vertex] (f) at (2,4) {5};
+    \draw[edge] (a) to (b);
+    \draw[edge] (a) to (c);
+    \draw[edge] (b) to (c);
+    \draw[edge] (d) to (f);
+  \end{tikzpicture}
+\end{center}
+\end{columns}
+
+\end{frame}
+
+%% Maybe add back later
+% \begin{frame}[fragile]{Connected Components}{UFDS Variant}
+%
+%   You could also count Connected Components using the {\bf UFDS} data structure from lecture 2.\bigskip
+%
+%   It costs $O(E)$ to build the UFDS, and $O(V)$ to count the number of components.\bigskip
+%
+%   If your problem is dynamic and includes several additions to the graph edges, this might be a good choice, because it is cheaper to recalculate the CCs.
+% \end{frame}
+
+\subsection{Flood Fill}
+
+\begin{frame}[fragile]{Flood Fill}
+  \begin{block}{Problem: Find The Biggest Island}
+    You want to find the biggest island in a game map to build a castle.
+
+    {\bf Input:} A 2D representation of the map:
+\begin{verbatim}
+....................................
+.###.......###.....#.....###.####...
+.#####....#####.##.#####.##....#....
+.###........###..#...##..#....###...
+......###.......###...####...##.....
+....####.............######.....###.
+....####.......#.......###......###.
+....................................
+\end{verbatim}
+  \end{block}
+  \hfill Can we solve this as a graph problem?
+\end{frame}
+
+\begin{frame}{Implicit Graphs}
+  \begin{columns}
+    \column{0.7\textwidth}
+    \begin{itemize}
+      \item {\bf Implict Graphs} are data that suggest graph organization. Examples:
+      \begin{itemize}
+        \item grids (NSWE connections)
+        \item maps (distance = weights)
+      \end{itemize}\bigskip
+
+      \item In some problems, it is not necessary to store the entire graph from the beginning;\bigskip
+
+      \item {\bf Grid Floodfill}: Painting images, Walkable tiles in videogames, etc;
+      \item Algorithm is just BFS/DFS with vertex labels;
+    \end{itemize}
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (00) at (0,0) {};
+      \node[vertex] (01) at (0,1) {};
+      \node[vertex] (02) at (0,2) {};
+      \node[vertex] (03) at (0,3) {};
+      \node[vertex] (04) at (0,4) {};
+      \node[vertex] (05) at (0,5) {};
+      \node[vertex] (10) at (1,0) {};
+      \node[vertex] (11) at (1,1) {};
+      \node[vertex] (12) at (1,2) {};
+      \node[vertex] (13) at (1,3) {};
+      \node[vertex] (14) at (1,4) {};
+      \node[vertex] (15) at (1,5) {};
+      \node[vertex] (20) at (2,0) {};
+      \node[vertex] (21) at (2,1) {};
+      \node[vertex] (22) at (2,2) {};
+      \node[vertex] (23) at (2,3) {};
+      \node[vertex] (24) at (2,4) {};
+      \node[vertex] (25) at (2,5) {};
+      \draw[edge] (00) to (01);\draw[edge] (00) to (10);
+      \draw[edge] (01) to (02);\draw[edge] (01) to (11);
+      \draw[edge] (02) to (03);\draw[edge] (02) to (12);
+      \draw[edge] (03) to (04);\draw[edge] (03) to (13);
+      \draw[edge] (04) to (05);\draw[edge] (04) to (14);
+      \draw[edge] (10) to (11);\draw[edge] (10) to (20);
+      \draw[edge] (11) to (12);\draw[edge] (11) to (21);
+      \draw[edge] (12) to (13);\draw[edge] (12) to (22);
+      \draw[edge] (13) to (14);\draw[edge] (13) to (23);
+      \draw[edge] (14) to (15);\draw[edge] (14) to (24);
+      \draw[edge] (20) to (21);\draw[edge] (21) to (22);
+      \draw[edge] (22) to (23);\draw[edge] (23) to (24);
+      \draw[edge] (24) to (25);\draw[edge] (15) to (25);
+      \draw[edge] (05) to (15);
+    \end{tikzpicture}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Flood Fill}{Finding the "Biggest Island" with BFS/DFS and modifying labels}
+
+  {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+int dr[] = {1,1,0,-1,-1,-1,0,1}; // neighbors for a grid
+int dc[] = {0,1,1,1,0,-1,-1,-1}; // with diagonals;
+
+int floodfill(int y, int x) {    // size of one position
+  if (y < 0 || y >= R || x < 0 || x >= C) return 0;
+  if (grid[y][x] != '#') return 0;
+  int size = 1;
+  grid[y][x] = '.';              // Change the map to mark visited nodes
+  for (int d = 0; d < 8; d++)
+     size += floodfill(y+dr[d], x+dc[d]);
+  return ans;
+}
+biggest = 0;
+for (int i = 0; i < C; i++)
+  for (int j = 0; j < R; j++)
+    biggest = max(biggest, floodfill(i,j));
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\subsection{Topological Sort}
+
+\begin{frame}[fragile]{Topological Sort}
+  \begin{block}{Example Problem: Preparing a Curriculum}
+    You have a list of courses and requisites.\\
+    Choose an {\bf ordering} of topics that respect all requisites.
+    \bigskip
+
+    {\bf Input}: list M topics, and N pairs of topics;\\
+    {\bf Output}: Sorted list of all topics;
+  \end{block}
+
+{\smaller
+\begin{verbatim}
+** Example Input:
+5 4 Graphs DP Search Flow Programming
+Programming -> Search
+Search -> DP
+Graph -> Flow
+Search -> Graph
+
+** Example Output:
+Course: Programming -> Search -> DP -> Graph -> Flow
+\end{verbatim}
+
+  }
+\end{frame}
+
+\begin{frame}{Topological Sort Definition}
+  A {\bf topological sort} is an ordering of vertices where $v_i \prec v_j$ only if there is no path $v_j \to v_i$.\bigskip
+  \begin{center}
+    \input{graphs/toposortgraph.tex}
+  \end{center}
+  For this graph, one possible topological sort is $a \prec b \prec c \prec d \prec e$.\bigskip
+
+  \begin{itemize}
+    \item Toposorts are {\bf not unique}:
+    \begin{itemize}
+      \item $a \prec c \prec b \prec d \prec e$ is also a toposort.
+    \end{itemize}
+    \item A graph only has a toposort if it has {\bf no cycles}.
+    \item To find the toposort, we use {\bf in-degrees and out-degrees} of each vertex:
+    \begin{itemize}
+      \item $a$ -- In-deg: 0; Out-deg: 2;
+      \item $d$ -- In-deg: 2; Out-deg: 1;
+      \item $e$ -- In-deg: 1; Out-deg: 0;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Finding Topological Sort -- Khan's Algorithm}
+
+Modified BFS: Vertices are only added to the queue if they in-degree is 0.
+
+\begin{exampleblock}{}
+  {\smaller
+\begin{verbatim}
+queue<int> q; vector<int> toposort;
+vector<int> in-deg;                 // initialize to 0 for all N;
+
+for (int i = 0; i < EdgeList.size(); i++)
+  in-deg[EdgeList[i].second]++;     // calculate in-degrees based on edge list.
+for (int i = 0; i < N; i++)
+  if (in-deg[i] == 0) q.push(i);    // add vertices with in-deg = 0 to queue
+
+while (!q.empty()) {
+  u = q.front(); q.pop(); toposort.push_back(u); // Add top of queue to toposort
+  for (int i = 0; i < EdgeList[u].size(); i++) {
+    d = EdgeList[u][i].first; in-deg[d]--;       // remove edges from visited.
+    if (in-deg[d] == 0) q.push(d); // queue in-deg = 0;
+  }
+}
+\end{verbatim}}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Khan's Algorithm}{Simulation}
+  \begin{center}
+    \input{graphs/toposortgraph.tex}
+  \end{center}
+  {\bf In-deg list:}
+  \begin{itemize}
+    \item<2-> iteration 1: (a,0), (b,1), (c,1), (d,2), (e,1)\hfill visit a
+    \item<3-> iteration 2: (b,0), (c,0), (d,2), (e,1)\hfill visit b
+    \item<4-> iteration 3: (c,0), (d,1), (e,1), \hfill visit c
+    \item<5-> iteration 4: (d,0), (e,1)\hfill visit d
+    \item<6-> iteration 5: (e,0)\hfill visit e
+  \end{itemize}
+  {\bf Toposort: \only<2->{a,} \only<3->{b,} \only<4->{c,} \only<5->{d,} \only<6->{e}}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Topological Sort and Bottom-Up Dynamic Programming}
+%
+%   %TODO
+%   What is the relationship between Topological Sort and Bottom-up DP?
+%
+%   \bigskip
+%
+%   Bottom-up DP are Topological sorts on Tables!
+% \end{frame}
+
+\subsection{Bipartite Checking}
+\begin{frame}{Bipartite Graphs}{Definition}
+  \begin{columns}
+    \column{.7\textwidth}
+      Intuitively, a {\bf Bipartite Graph} is one that we can separate between a "left" side and a "right" side.\bigskip
+
+      More generally, a graph $(V,E)$ is bipartite if you can completely partition its vertices in two subsets: $V_1$ and $V_2$, so that {\bf there are no edges} connecting two vertices in the same subset.\bigskip
+
+      Bipartite graphs appear in a large number of algorithms. In particular, {\bf flow graphs} (next week) are bipartite graphs.\bigskip
+
+      Most neural networks are bipartite graphs too!\\
+      {\bf Quiz:} How do you test if a graph is bipartite?
+    \column{.3\textwidth}
+    \input{graphs/bipartite_static.tex}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Bipartite Check Algorithm}
+  Visit all vertices using BFS/DFS. Every time we visit a vertice, we mark it "0" or "1". If two adjacent vertices are of the same colors, the graph is not bipartite.
+
+  {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+queue<int> q; q.push(s);
+vector<int> color(V, -1); color[s] = 0; // Starting vertex
+bool isBipartite = True;
+
+while (!q.empty() && isBipartite) {
+   int u = q.front(); q.pop();
+   for (int j=0; j < adj_list[u].size(); j++) {
+      v = adj_list[u][j].first;
+      if (color[v] == -1) {
+         color[v] = 1 - color[i];        // Coloring new vertex
+         q.push(v.first);}
+      else if (color[v.first] == color[u]) {
+         isBipartite = False;            // Bipartite collision
+}}}
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bipartite Check -- Visualization}
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \begin{exampleblock}{Testing Bipartite property}
+      \vspace{0.1cm}
+      \begin{center}
+        \begin{tikzpicture}[scale=1.3,auto,swap]
+          \node[vertex] (a) at (0,0) {};
+          \node[vertex] (b) at (2,0) {};
+          \node[vertex] (c) at (0,-1) {};
+          \node[vertex] (d) at (1,-2) {};
+          \node[vertex] (e) at (0,-2) {};
+          \node[vertex] (f) at (2,-2) {};
+          \node[vertex] (g) at (2,-3) {};
+          \node[vertex] (h) at (1,-4) {};
+          \draw[edge] (a) to (b);
+          \draw[edge] (a) to (c);
+          \draw[edge] (b) to (f);
+          \draw[edge] (c) to (d);
+          \draw[edge] (c) to (e);
+          \draw[edge] (f) to (h);
+          \draw[edge] (e) to (h);
+          \draw[edge] (f) to (g);
+          \uncover<2->{\node[red vertex] (a1) at (0,0) {};}
+          \uncover<3->{\node[blue vertex] (b1) at (2,0) {};}
+          \uncover<3->{\node[blue vertex] (c1) at (0,-1) {};}
+          \uncover<4->{\node[red vertex] (d1) at (1,-2) {};}
+          \uncover<4->{\node[red vertex] (e1) at (0,-2) {};}
+          \uncover<4->{\node[red vertex] (f1) at (2,-2) {};}
+          \uncover<5->{\node[blue vertex] (g1) at (2,-3) {};}
+          \uncover<5->{\node[blue vertex] (h1) at (1,-4) {};}
+        \end{tikzpicture}
+      \end{center}
+      \vspace{0.1cm}
+    \end{exampleblock}
+    \column{0.5\textwidth}
+    \uncover<6->{
+    \begin{exampleblock}{Rearranging the nodes}
+      \vspace{0.1cm}
+      \begin{center}
+        \input{graphs/bipartite_static.tex}
+      \end{center}
+      \vspace{0.1cm}
+    \end{exampleblock}}
+  \end{columns}
+\end{frame}

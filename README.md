@@ -22,6 +22,7 @@ algorithm knowledge through implementation.
 - **Week04** -- Dynamic Programming
   - [Lecture notes](Week04/week04.pdf)
 - **Week05** -- Graphs Problems I
+  - [Lecture notes](Week05/week05.pdf)
 - **Week06** -- Graphs Problems II
 - **Week07** -- String Manipulation
 - **Week08** -- Math Problems

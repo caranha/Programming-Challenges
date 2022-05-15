@@ -1,0 +1,646 @@
+\section{introduction}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part I -- Graph Introduction}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Graph Algorithms: Week 5 and 6}
+  \begin{block}{Graphs Part I (This Week)}
+    \begin{itemize}
+    \item Graphs Data Structure;
+    \item Depth First Search and Breadth First Search;
+    \item Graph Search Problems (DFS and BFS);
+    \item Minimum Spanning Tree: Kruskal and Prim Algorithms;
+    \end{itemize}
+  \end{block}
+  \begin{block}{Graphs Part II (Next Week)}
+    \begin{itemize}
+    \item Single Sourse Shortest Path (Djikstra);
+    \item All Pairs Shortest Path (Floyd-Warshall);
+    \item Network Flow;
+    \item Bipartite Graph Matching;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Definitions}
+\begin{frame}
+  \frametitle{What is a graph?}
+
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    \begin{block}{}
+      A graph $G = \{V,E\}$ is composed of a set of {\bf vertices} $V$, which are connected to a set of {\bf edges} $E$. Each edge connects exactly two vertices.
+    \end{block}\bigskip
+
+    \begin{itemize}
+    \item An edge can be {\bf directed} or {\bf undirected};
+    \item An edge or a vertice can have {\bf weights} or {\bf labels};
+    \item {\bf Self-edge}: edge between $v_i$ and $v_i$;
+    \item {\bf Multi-edge}: two edges with same end-vertices;
+    \item A graph can be {\bf connected} or {\bf disconnected};
+    \end{itemize}
+
+    \column{0.4\textwidth}
+    \begin{tikzpicture}[scale=.8,auto,swap]
+      \tikzset{edge/.style = {->,>=latex'}}
+      \node[vertex] (a) at (0,0) {};
+      \node[vertex] (b) at (2,3) {};
+      \node[vertex] (c) at (4,2) {};
+      \node[vertex] (d) at (4,0) {};
+      \draw[edge] (a) to (b);
+      \draw[edge] (a) to[bend left] (c);
+      \draw[edge] (c) to[bend left] (a);
+      \draw[edge] (d) to (c);
+      \draw[edge] (d) to[loop left] (d);
+      \draw[edge] (d) to[loop right] (d);
+    \end{tikzpicture}
+
+    \vspace{.5cm}
+
+    \begin{tikzpicture}[scale=1,auto,swap]
+      \node[vertex] (a) at (0,2) {a};
+      \node[vertex] (b) at (0,0) {b};
+      \node[vertex] (c) at (2,1) {c};
+      \node[vertex] (d) at (4,0) {d};
+      \node[vertex] (e) at (4,1) {e};
+      \draw[edge] (a) -- node[weight] {$7$} (b);
+      \draw[edge] (b) -- node[weight] {$-2$} (c);
+      \draw[edge] (c) -- node[weight] {$3$} (a);
+      \draw[edge] (c) -- node[weight] {$5$} (d);
+    \end{tikzpicture}
+
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Graphs in Computer Science}
+  Graph Data structures show relationships between data;\\
+  They are used in many problems:\bigskip
+
+  \begin{itemize}
+    \item Geography and Maps;
+    \begin{itemize}
+      \item Pathing between locations;
+      \item Cycles and Tours;
+    \end{itemize}
+    \item Human Networks;
+    \begin{itemize}
+      \item Social Networks;
+      \item Citation Clusters;
+    \end{itemize}
+    \item State Machines;
+    \begin{itemize}
+      \item Program Pipelines;
+      \item Library Requirements;
+    \end{itemize}
+    \item Natural Language;
+    \begin{itemize}
+      \item Graph Grammars;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Common graph tasks in an algorithm}
+  \begin{itemize}
+    \item Test if a path exist between vertice $V_i$ and $V_j$ (test if they are {\bf connected})
+    \item Test the shortest path between vertice $V_i$ and $V_j$
+    \begin{itemize}
+      \item With or without weights
+      \item Test if there is more than one path
+    \end{itemize}
+    \item Add or remove vertices or edges from a graph;
+    \item Test some characteristics of a graph;
+    \begin{itemize}
+      \item Longest path? Shortest path?
+      \item Does it have a {\bf Cycle}?
+      \item Vertice with maximum number of vertices?
+      \item etc...
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Example Problem}
+
+\begin{frame}[fragile]{Programming Challenge Example}{Dominator}
+  \begin{block}{}
+    Definition: A vertice $V_i$ {\bf dominates} $V_j$ if all paths $V_0 \to V_j$ must include $V_i$.
+    \begin{itemize}
+      \item {\bf input}: A directed graph $\{V,E\}$;
+      \item {\bf output}: A table with the DOMINATE relationship
+    \end{itemize}
+  \end{block}
+\begin{columns}[T]
+  \column{0.4\textwidth}
+    \begin{center}
+      \input{graphs/dominator.tex}
+    \end{center}
+      \column{0.3\textwidth}
+\begin{verbatim}
+Input:
+       5
+       0 1 1 0 0
+       0 0 0 1 0
+       0 0 0 1 0
+       0 0 0 0 1
+       0 0 0 0 0
+\end{verbatim}
+\column{0.3\textwidth}
+{\smaller
+\begin{verbatim}
+Output:
+0 -> 0, 1, 2, 3, 4
+1 -> 1
+2 -> 2
+3 -> 3, 4
+4 -> 4
+\end{verbatim}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Programming Challenge Example}{Dominator}
+  \begin{block}{}
+    \begin{itemize}
+      \item Which data structure should be used?
+      \item How to calculate the "DOMINATE" status of a vertice?
+    \end{itemize}
+  \end{block}
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+      \begin{center}
+        \input{graphs/dominator.tex}
+      \end{center}
+        \column{0.3\textwidth}
+\begin{verbatim}
+Input:
+       5
+       0 1 1 0 0
+       0 0 0 1 0
+       0 0 0 1 0
+       0 0 0 0 1
+       0 0 0 0 0
+\end{verbatim}
+\column{0.3\textwidth}
+{\smaller
+\begin{verbatim}
+Output:
+0 -> 0, 1, 2, 3, 4
+1 -> 1
+2 -> 2
+3 -> 3, 4
+4 -> 4
+\end{verbatim}}
+    \end{columns}
+\end{frame}
+
+\subsection{Graph Data Structure}
+
+
+\begin{frame}[fragile]{Data Structure for Graph 1}
+
+\begin{block}{Adjacency Matrix: stores the connection between vertices}
+\begin{verbatim}
+int adj[100][100];
+
+for (int i = 0; i < n; i++)
+  for (int j = 0; i < n; j++)
+    cin >> adj[i][j]; // 0 if no edge, 1 if edge
+\end{verbatim}
+
+  \begin{itemize}
+    \item \structure{Pros}:
+    \begin{itemize}
+      \item Easy to program;
+      \item Access to edge $e_{ij}$ is quick;
+    \end{itemize}
+    \item \alert{Cons}:
+      \begin{itemize}
+      \item Cannot store multigraph;
+      \item Wastes memory with sparse graphs;
+      \item Time $O(V)$ to calculate number of neighbors of vertice $v_i$;
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Data Structure for Graph 2}
+
+  \begin{block}{Adjacency List: stores edge list for each Vertex}
+      {\smaller
+\begin{verbatim}
+typedef pair<int,int> edge;           // pair: <neighbor, weight>
+typedef vector<edge> neighb;          // all neighbors of V_i
+vector<neighb> AdjList;               // all V_i
+int e;
+for (int i = 0; i < n; i++)
+  for (int j = 0; j < n; j++)
+    cin >> e;
+    if (e == 1) { AdjList[i].push_back(pair(j,1)); }
+\end{verbatim}}
+
+\begin{itemize}
+  \item {\bf Pro}:
+    \begin{itemize}
+      \item Memory efficient if the graph is sparse;
+      \item Can store multigraph;
+    \end{itemize}
+  \item {\bf Cons}:
+  \begin{itemize}
+    \item $O(\log(V))$ to test if two vertices are adjacent; (QUIZ: Why log(V)?)
+  \end{itemize}
+\end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Data Structure for Graph 3}
+  \begin{block}{Edge List}
+    {\smaller
+    \begin{verbatim}
+    pair <int,int> edge; // Edge between i and j
+    vector<pair <int,edge>> Elist; // All edges;
+
+    int e;
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
+        cin >> e;
+        if (e == 1) Elist.push_back(pair(1, pair(i,j)));
+    \end{verbatim}}
+    \begin{itemize}
+      \item Not very common, used in specialized algorithms (ex:MST);
+      \item To find if two vertices are neighbors, list must be sorted;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\subsection{Graph Search: BFS, DFS}
+\begin{frame}
+  \frametitle{Graph Search: BFS and DFS}
+    \begin{itemize}
+    \item Graph Search Question: from vertice $v_s$, can we reach $v_e$?
+    \item Many graph algorithms start from a graph search;
+    \item Two basic algorithms for search: BFS, DFS;
+    \end{itemize}
+
+  \begin{block}{Depth First Search -- DFS}
+    \begin{itemize}
+      \item Visit the first edge available;
+      \item Vertice order is not guaranteed;
+      \item Easy to implement with recursion or stack;
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Breadth First Search -- BFS}
+    \begin{itemize}
+      \item First visit the vertices close to the starting point;
+      \item Place new vertices on a list, and visit them with a loop;
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{BFS and DFS: Visualize the difference}
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \begin{exampleblock}{DFS}
+      \vspace{0.1cm}
+      \begin{center}
+      \begin{tikzpicture}[scale=1.3,auto,swap]
+        \node[vertex] (a) at (0,0) {};
+        \node[vertex] (b) at (2,0) {};
+        \node[vertex] (c) at (0,-1) {};
+        \node[vertex] (d) at (1,-2) {};
+        \node[vertex] (e) at (0,-2) {};
+        \node[vertex] (f) at (2,-2) {};
+        \node[vertex] (g) at (2,-3) {};
+        \node[vertex] (h) at (1,-4) {};
+        \draw[edge] (a) to (b);
+        \draw[edge] (a) to (c);
+        \draw[edge] (a) to (f);
+        \draw[edge] (b) to (f);
+        \draw[edge] (c) to (d);
+        \draw[edge] (c) to (e);
+        \draw[edge] (f) to (h);
+        \draw[edge] (e) to (h);
+        \draw[edge] (f) to (g);
+        \draw<2->[red edge] (a) to (b);
+        \draw<3->[red edge] (b) to (f);
+        \draw<4->[red edge] (f) to (g);
+        \draw<5->[red edge] (f) to (h);
+        \draw<6->[red edge] (h) to (e);
+        \draw<7->[red edge] (e) to (c);
+        \draw<8->[red edge] (c) to (d);
+      \end{tikzpicture}
+      \end{center}
+      \vspace{0.1cm}
+    \end{exampleblock}
+    \column{0.5\textwidth}
+    \begin{block}{BFS}
+      \vspace{0.1cm}
+      \begin{center}
+      \begin{tikzpicture}[scale=1.3,auto,swap]
+        \node[vertex] (a) at (0,0) {};
+        \node[vertex] (b) at (2,0) {};
+        \node[vertex] (c) at (0,-1) {};
+        \node[vertex] (d) at (1,-2) {};
+        \node[vertex] (e) at (0,-2) {};
+        \node[vertex] (f) at (2,-2) {};
+        \node[vertex] (g) at (2,-3) {};
+        \node[vertex] (h) at (1,-4) {};
+        \draw[edge] (a) to (b);
+        \draw[edge] (a) to (c);
+        \draw[edge] (a) to (f);
+        \draw[edge] (b) to (f);
+        \draw[edge] (c) to (d);
+        \draw[edge] (c) to (e);
+        \draw[edge] (f) to (h);
+        \draw[edge] (e) to (h);
+        \draw[edge] (f) to (g);
+        \draw<2->[red edge] (a) to (b);
+        \draw<3->[red edge] (a) to (f);
+        \draw<4->[red edge] (a) to (c);
+        \draw<5->[red edge] (f) to (g);
+        \draw<6->[red edge] (f) to (h);
+        \draw<7->[red edge] (c) to (d);
+        \draw<8->[red edge] (c) to (e);
+      \end{tikzpicture}
+      \end{center}
+      \vspace{0.1cm}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{DFS Implementation}
+  \begin{exampleblock}{DFS (Using Adjacency List)}
+\begin{verbatim}
+vector<int> dfs_vis; // visited nodes, init to 0
+
+void dfs(int v) {
+   dfs_vis[v] = 1;
+   for (int i; i < AdjList[v].size(); i++)
+   {
+      edge u = AdjList[v][i]; // u = neighb, weight
+      // do something...
+      if (dfs_vis[u.first] == 0)
+         dfs(v.first);
+   }
+}
+dfs(start_vertice);
+\end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{BFS Implementation}
+  \begin{exampleblock}{BFS (Using adjacency List)}
+\begin{verbatim}
+vector<int> bfs_vis;   // visited nodes; init to 0
+queue<int> q;          // list of vertices to visit;
+q.push(start_vertice); // Start BFS
+
+while(!q.empty()) {
+  int u = q.front(); q.pop(); bfs_vis[u] = 1;
+  // Do something...
+  for (int i = 0; i < AdjList[v].size(); i++) {
+    edge e = AdjList[v][i];
+    if (bfs_vis[e.first] == 0)   // Check if node is visited
+      q.push(e.first);
+  }
+}
+\end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{BFS and DFS}{Computational Cost}
+
+  In the full BFS and DFS, you need to check every vertice and every edge in the graph:\bigskip
+
+  \begin{itemize}
+    \item A BFS/DFS implemented with {\bf Adjacency List}, costs $O(V+E)$.\bigskip
+
+    \item A BFS/DFS implemented with {\bf Adjacency Matrix}, costs $O(V^2)$.
+    \begin{itemize}
+      \item That's because to visit every edge of a vertice in an Adjacency Matrix, it costs $O(V)$.
+    \end{itemize}\bigskip
+
+    \item Adjacency List is faster, {\bf if the graph is sparse (has few edges)}
+  \end{itemize}
+\end{frame}
+
+\subsection{Solving the Dominator Problem}
+
+\begin{frame}[fragile]{Solving the Dominator Problem with DFS}
+  \begin{exampleblock}{}
+    \begin{itemize}
+      \item $v_j$ is dominated by $v_i$, if all paths from $v_0$ to $v_j$ pass through $v_i$;
+      \item In other words, you cannot access $v_j$ from $v_0$, if $v_i$ is not available;
+      \item {\bf Algorithm:} Remove $v_i$, and test if you can access $v_j$ from $v_0$;
+    \end{itemize}
+  \end{exampleblock}\bigskip
+
+  \input{graphs/dominator.tex}
+\end{frame}
+
+\begin{frame}[fragile]{Solving the Dominator Problem with DFS}{Use DFS/BFS N times}
+
+  \begin{columns}
+    \column{0.4\textwidth}
+    \input{graphs/dominator.tex}
+    \column{0.6\textwidth}
+
+    \begin{exampleblock}{}
+{\smaller
+\begin{verbatim}
+// Modified DFS: does not visit vertex v_i;
+boolean DFS2(S,i) {...};
+
+// initialization: which nodes v_0 can reach?
+DFS2(0,-1);
+for (int j = 0; j < N; j++)
+  if (VISITED[j]) { DOMINATED[0][j] = 1; }
+
+// check DOMINATED relationship of each v_i
+for (int i = 1; i < N; i++) {
+  memset(VISITED,0,sizeof(VISITED));
+  DFS2(0,i);
+  for (int j = 0; j < N; j++)
+    if (!VISITED[j] && DOMINATED[0][j])
+      DOMINATED[i][j] = 1;
+}
+\end{verbatim}}
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \subsection{Graph Terms}
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (1)}
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item A Graph $G$ is made of a set of \structure{vertices} $V$
+%%         and \structure{edges} $E$.
+%%       \item Edges can be \structure{directed}\\ (has source and destination vertices);
+%%       \item Edges can be \structure{weighted} or not\\ (all weigths = 1);
+%%       \item Sets of nodes can be \structure{connected}\\ or \structure{disconnected}
+%%       \item Directed Graphs can be \structure{Strongly Connected}
+%%       \item Edges can be \structure{self-edges}, and/or \structure{multiple edges}
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \tikzset{edge/.style = {->,>=latex'}}
+%%         \node[vertex] (a) at (0,0) {};
+%%         \node[vertex] (b) at (2,3) {};
+%%         \node[vertex] (c) at (4,2) {};
+%%         \node[vertex] (d) at (4,0) {};
+%%         \draw[edge] (a) to (b);
+%%         \draw[edge] (a) to[bend left] (c);
+%%         \draw[edge] (c) to[bend left] (a);
+%%         \draw[edge] (d) to (c);
+%%         \draw[edge] (d) to[loop left] (d);
+%%         \draw[edge] (d) to[loop right] (d);
+%%       \end{tikzpicture}
+
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (a) at (0,2) {a};
+%%         \node[vertex] (b) at (0,0) {b};
+%%         \node[vertex] (c) at (2,1) {c};
+%%         \node[vertex] (d) at (4,0) {d};
+%%         \node[vertex] (e) at (4,1) {e};
+%%         \draw[edge] (a) -- node[weight] {$7$} (b);
+%%         \draw[edge] (b) -- node[weight] {$-2$} (c);
+%%         \draw[edge] (c) -- node[weight] {$3$} (a);
+%%         \draw[edge] (c) -- node[weight] {$5$} (d);
+%%       \end{tikzpicture}
+
+%%     \end{columns}
+%%   }
+%% \end{frame}
+
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (2)}
+
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item A \structure{path} is a set of vertices connected by edges;
+%%       \item A \structure{cycle} is a path with first and last vertices identical;
+%%       \item \structure{Labelled} graphs and \structure{Isomorphic} graphs;
+%%       \item A \structure{tree} is a acyclical, undirected graph;
+%%       \item A \structure{spanning tree} is a subset of edges from E'
+%%         that form a tree, connecting all nodes $V \in G$;
+%%       \item A \alert{spamming tree} houses very noisy insects in summer;
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (s) at (0,0) {a};
+%%         \node[vertex] (a1) at (-1,-1) {b};
+%%         \node[vertex] (a2) at (1,-1) {c};
+%%         \node[vertex] (b1) at (-1,-2) {d};
+%%         \node[vertex] (b2) at (0,-2) {e};
+%%         \draw[edge] (s) to (a1);
+%%         \draw[edge] (s) to  (a2);
+%%         \draw[edge] (a1) to  (b1);
+%%         \draw[edge] (a1) to  (b2);
+%%         \draw[black edge] (b1) to (b2);
+%%         \draw[black edge] (a2) to (b2);
+%%       \end{tikzpicture}
+
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=1,auto,swap]
+%%         \node[vertex] (s) at (0,0) {e};
+%%         \node[vertex] (a1) at (-1,-1) {d};
+%%         \node[vertex] (a2) at (1,-1) {b};
+%%         \node[vertex] (b1) at (-1,-2) {c};
+%%         \node[vertex] (b2) at (0,-2) {a};
+%%         \draw[edge] (s) to (a1);
+%%         \draw[edge] (s) to  (a2);
+%%         \draw[edge] (a1) to  (b1);
+%%         \draw[edge] (a1) to  (b2);
+%%         \draw[black edge] (b1) to (b2);
+%%         \draw[black edge] (a2) to (b2);
+%%       \end{tikzpicture}
+%%   \end{columns}}
+
+%% \end{frame}
+
+%% \begin{frame}
+%%   \frametitle{Quick Review of Graph Terms (3)}
+
+%%   {\smaller
+%%     \begin{block}{}
+%%       You probably know all of these. If not, ask questions!
+%%     \end{block}
+
+%%     \begin{columns}[T]
+%%       \column{0.6\textwidth}
+%%       \begin{itemize}
+%%       \item The \structure{degree} of a node is the number of edges
+%%         connected to it;
+%%       \item Directed graphs have \structure{in-degrees} and
+%%         \structure{out-degrees};
+%%       \item A \structure{bipartite} graph can be divided in two sets
+%%         of unconnected vertices;
+%%       \item A \structure{Match} or \structure{Pairing} is a set of
+%%         edges that connects the nodes in the bipartite graph;
+%%       \end{itemize}
+%%       \column{0.4\textwidth}
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \node[vertex] (a) at (0,0) {deg: 2};
+%%         \node[vertex] (b) at (2,1) {};
+%%         \node[vertex] (c) at (2,-1) {};
+%%         \node[vertex] (d) at (4,0) {in,out:1};
+%%         \draw[edge] (a) to (b);
+%%         \draw[edge] (a) to (c);
+%%         \tikzset{edge/.style = {->,>=latex'}}
+%%         \draw[edge] (c) to (d);
+%%         \draw[edge] (d) to (b);
+%%       \end{tikzpicture}
+
+%%       \vspace{.5cm}
+
+%%       \begin{tikzpicture}[scale=.8,auto,swap]
+%%         \node[vertex] (a1) at (0,0) {};
+%%         \node[vertex] (b1) at (0,2) {};
+%%         \node[vertex] (a2) at (1,0) {};
+%%         \node[vertex] (b2) at (2,2) {};
+%%         \node[vertex] (a3) at (3,0) {};
+%%         \node[vertex] (b3) at (3,2) {};
+%%         \node[vertex] (a4) at (5,0) {};
+%%         \node[vertex] (b4) at (4,2) {};
+%%         \draw[red edge] (a1) to (b1);
+%%         \draw[red edge] (a2) to (b3);
+%%         \draw[red edge] (a3) to (b4);
+%%         \draw[red edge] (a4) to (b2);
+%%         \draw[edge] (a1) to (b1);
+%%         \draw[edge] (a1) to (b2);
+%%         \draw[edge] (a2) to (b1);
+%%         \draw[edge] (a2) to (b3);
+%%         \draw[edge] (a2) to (b4);
+%%         \draw[edge] (a3) to (b1);
+%%         \draw[edge] (a3) to (b4);
+%%         \draw[edge] (a4) to (b3);
+%%         \draw[edge] (a4) to (b2);
+%%       \end{tikzpicture}
+%%   \end{columns}}
+%% \end{frame}
