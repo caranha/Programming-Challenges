@@ -1,0 +1,196 @@
+
+
+\section{String Algorithms with DP} % (6.5)
+
+\begin{frame}
+  \begin{center}
+    {\bf Part II: Strings and DP}
+  \end{center}
+\end{frame}
+
+\begin{frame}{String Algorithms with Dynamic Programming}
+  \begin{block}{}
+    Some string problems can be described as a {\bf search problem}. In this section, we will introduce two string tasks that can be solved with DP algorithms:\bigskip
+
+    \begin{itemize}
+    \item String Alignment/Edit Distance
+    \item Longest Common Subsequence
+    \end{itemize}
+  \end{block}
+  \bigskip
+
+  It is interesting to note that substring matching is also a search problem, and that KMP / Z-algorithms can be seen as a kind of memoization.
+\end{frame}
+
+\subsection{String Alignment}
+\begin{frame}[fragile]{String DP: String Alignment}
+
+The {\bf String Alignment}\footnote{Also called Edit Distance or Levenhstein Distance, used by spellchecking algorithms!} problem is defined as follows. Align two strings, A and B, with the maximum "alignment score":\bigskip
+
+\begin{itemize}
+  \item Character A[i] and B[i] match: do nothing, score +2
+  \item Character A[i] and B[i] mismatch: replace A[i], score -1
+  \item Insert a space in A[i]: score -1 (equals to delete B[i])
+  \item Insert a space in B[i]: score -1 (equals to delete A[i])
+\end{itemize}
+
+\begin{verbatim}
+   Original    non-optimal    optimal
+A: ACAATCC   | A_CAATCC     | A_CAATCC
+B: AGCATGC   | AGCATGC_     | AGCA_TGC
+score:       | 2-22--2- = 4 | 2-22-2-2 = 7
+\end{verbatim}\bigskip
+\end{frame}
+
+
+\begin{frame}[fragile]{String Alignment: Bottom Up DP}
+
+  The {\bf Complete Search} approach requires recursively testing each of the three options for each A[i] (Total cost: $O(3^n)$).\bigskip
+
+  We can solve this in $O(n^2)$ using DP:
+
+  \begin{itemize}
+    \item $V(i,j)$: optimal score for prefix $A[1..i],B[1..j]$
+    \item Start condition:
+    \begin{itemize}
+      \item $V(0,0) = 0$ \hspace{1cm} (Do nothing)
+      \item $V(i,0) = -1\times i$, $V(0,j) = -1\times j$ \hfill (delete A or B)
+    \end{itemize}
+    \item Recurrence: $V(i,j) = \text{max}(C_1, C_2, C_3)$, where
+    \begin{itemize}
+      \item $C_1 = V(i-1, j-1) + \text{score}(A[i],B[j])$ \hfill score of match or mismatch;
+      \item $C_2 = V(i-1,j) + \text{score}(A[i],\_)$ \hfill delete $A[i]$;
+      \item $C_3 = V(i,j-1) + \text{score}(\_,B[j])$ \hfill delete $B[j]$;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{String Alignment: Bottom Up DP}{Simulation Matching AGCATGC and ACAATCC}
+
+\begin{itemize}
+  \item Recurrence: $V(i,j) = \text{max}(C_1, C_2, C_3)$, where
+  \begin{itemize}
+    \item $C_1 = V(i-1, j-1) + \text{score}(A[i],B[j])$ \hfill score of match or mismatch;
+    \item $C_2 = V(i-1,j) + \text{score}(A[i],\_)$ \hfill delete $A[i]$;
+    \item $C_3 = V(i,j-1) + \text{score}(\_,B[j])$ \hfill delete $B[j]$;
+  \end{itemize}
+\end{itemize}
+
+\begin{verbatim}
+   |  _ |  A |  G |  C |  A |  T |  G |  C |
+ _ |  0 | -1 | -2 | -3 | -4 | -5 | -6 | -7 |
+ A | -1 |
+ C | -2 |
+ A | -3 |
+ A | -4 |
+ T | -5 |
+ C | -6 |
+ C | -7 |
+\end{verbatim}
+
+\end{frame}
+
+
+\subsection{Longest Common Subsequence in String}
+
+\begin{frame}[fragile]
+  \frametitle{Problem 2: Longest Common Subsequence in Strings}
+    \begin{block}{Problem Definition}
+      Given strings $A$ and $B$, what is their longest common subsequence?\medskip
+
+\begin{verbatim}
+A  :   'ACAATCC'     - A_CAAT_CC
+B  :   'AGCATGC'     - AGCA_TGC_
+LCS:    AC AT C      - A_CA_T_C_ : ACATC
+\end{verbatim}
+    \end{block}\bigskip
+
+  \begin{itemize}
+    \item We can solve LCS using a modification of String Aligment;
+    \item Use String Alignment DP, with different scores:
+    \begin{itemize}
+      \item Cost of Mismatch: $-\infty$
+      \item Cost of insert/deletion: $0$
+      \item Cost of Matching: $1$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem 3: Longest Palindrome}
+    \begin{block}{Problem Description}
+      A {\bf palindrome} is a string $S$ where $S = \text{rev}(S)$. For example: MADAM.\bigskip
+
+      Given a string $T$, what is the {\bf longest palindrome} that you can create by deleting characters from $T$?
+    \end{block}
+
+    Examples:
+    \begin{itemize}
+    \item ADA\alert{\bf M} -- ADA
+    \item MADAM -- MADAM
+    \item NEVERODDOREVEN\alert{\bf ING} -- NEVERODDOREVEN
+    \item RACE\alert{\bf F1}CAR\alert{\bf FAST} -- RACECAR
+    \end{itemize}\bigskip
+
+    {\bf QUIZ:} Can you solve with Full Search? String Alignment DP? Others?
+  \end{frame}
+
+\begin{frame}
+  \frametitle{Longest Palindrome}
+    \begin{block}{Problem Description}
+      Given a string $S$ of size up to $N = 1000$ characters, what is the
+      longest palindrome that you can make by deleting characters from $S$?
+    \end{block}
+
+    DP Solution:
+    \begin{itemize}
+    \item State Table:
+      {\smaller
+      \begin{itemize}
+      \item len(i,j) - The largest palindrome found between $i$ and $j$
+      \end{itemize}}
+    \item Start Conditions:
+      {\smaller
+      \begin{itemize}
+        \item If $l=r$ then len$(l,r)=1$.
+        \item If $r=l+1 \text{ and } S[l]=S[r]$, len$(l,r)=2$, else len$(l,r)=1$.
+      \end{itemize}}
+    \item Transition:
+      {\smaller
+      \begin{itemize}
+        \item If $S[l]=S[r]$, then len$(l,r)=2+\text{len}(l+1,r-1)$;
+        \item else $\text{len}(l,r) = \text{max}(\text{len}(l+1,r),\text{len}(l,r-1))$
+      \end{itemize}}
+    \end{itemize}
+
+    This DP has complexity $O(n^2)$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Longest Palindrome}
+
+  Longest Palindrome DP: Diagonal Table Top Down
+
+  {\smaller
+\begin{verbatim}
+
+       len(l,r)               len(l,r)         transition:
+      final state           initial state   - If A[l] == A[r]: len(diag)+2
+                                            - If A[1] != A[r]: max(left,down)
+  R A C E F 1 C A R     R A C E F 1 C A R
+
+R 1 1 1 1 1 1 3 5 7   R 1 1
+A   1 1 1 1 1 3 5 5   A   1 1
+C     1 1 1 1 3 3 3   C     1 1
+E       1 1 1 1 1 1   E       1 1
+F         1 1 1 1 1   F         1 1
+1           1 1 1 1   1           1 1
+C             1 1 1   C             1 1
+A               1 1   A               1 1
+R                 1   R                 1
+
+\end{verbatim}
+
+  }
+\end{frame}

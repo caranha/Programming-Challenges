@@ -1,0 +1,232 @@
+
+\section{Sequences}
+\begin{frame}
+  \begin{center}
+  {\bf Part III -- Sequences}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Sequences}
+    Some programming challenges involves the calculation of well known number sequences.\bigskip
+
+    We usually focus this calculation on two forms:
+    \begin{itemize}
+    \item {\bf Recurrent Form}: The recurrent form of a sequence $F$ calculates $F_n$ based on its antecessor values: $F_{n-1}, F_{n-2},\ldots$.
+    \begin{itemize}
+      \item Recurrent forms are usually implemented using {\bf Dynamic Programming};\bigskip
+    \end{itemize}
+
+    \item {\bf Closed Form}: The closed form of a sequence $F$ calculates $F_n$ {\bf without} using the antecessor values of the sequence.
+    \begin{itemize}
+      \item Formula for F(n);
+    \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Sequence Examples}
+\begin{frame}
+  \frametitle{Sequence Example: Triangular Numbers}
+  \begin{block}{Definition}
+    {\bf Triangular Numbers} is the sequence where $T_n$ is the sum of all inegers from $1$ to $n$. Example:\medskip
+
+    $T_1=1, T_2=1+2=3, \ldots, T_7=1+2+3+4+5+6+7=28$\\
+    Trivial, right?
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item {\bf Recurrent Form:} $T(n) = T(n-1) + n$
+    \begin{itemize}
+      \item The recurrent form can be calculated with a loop or recursion;
+    \end{itemize}\bigskip
+    \item {\bf Closed Form:} $T(n) = \frac{n(n+1)}{2}$
+    \begin{itemize}
+      \item The closed form can be calculated at once;
+      \item It can be used to estimate how fast a sequence grows. In this case, $T_n$ is $O(N^2)$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{A more famous sequence: Fibonacci Numbers}
+
+  \begin{block}{Definition}
+    The Fibonacci number $F_n$ is the sum of the two numbers before it.\medskip
+
+    $0, 1, 1, 2, 3, 5, 8, 13, 21, 34, \ldots$
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Recurrent Form:
+    \begin{itemize}
+      \item Starting Values: $F_0 = 0$, $F_1 = 1$
+      \item Recurrence: $F_n = F_{n-1} + F_{n-2}$
+    \end{itemize}\bigskip
+
+    \item Be careful when implementing recurrences with multiple terms;
+    \begin{itemize}
+      \item If using recursive functions, {\bf memoization/DP} is necessary to avoid wasted calculation;
+      \item In general, each term in a recurrence requires a starting value;
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Bonus: Fibonacci Facts}
+  \begin{block}{Closed Form for the Fibonacci Numbers:}
+    \begin{equation*}
+      F(n) = \frac{1}{\sqrt{5}}\left(\left(\frac{1+\sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)^n\right)
+    \end{equation*}
+    The second term of the closed form tends to 0 when $n$ is large!
+  \end{block}
+
+  \begin{block}{Pisano's period}
+    The last digits of the Fibonacci sequence repeat with a fixed period!\smallskip
+{\smaller
+\begin{verbatim}
+ Digits        | Period      || Digits        | Period
+ last digit    | 60 numbers  || last 3 digits | 1500 numbers
+ last 2 digits | 300 numbers || last 4 digits | 15000 numbers
+F(6)   =                             8
+F(66)  =                27777890035288
+F(366) =  1380356 ... 8899086435571688
+\end{verbatim}}
+  \end{block}
+\end{frame}
+
+% What are binomial numbers (equations)
+% How do we calculate them (closed form and DP)
+% Where do we use them? (Number of Choices)
+
+\begin{frame}{Binomial Coefficient}
+  \begin{block}{Definition}
+    {\bf Binomial Coefficients} are the set of numbers that correspond to the expansion of a binomial:\bigskip
+
+    \begin{itemize}
+      \item $B_3 = (a+b)^3 = 1a^3 + 3a^2b + 3ab^2 + b^3 = \{1,3,3,1\}$
+      \item $B_5 = (a+b)^5 = 1a^5 + 5a^4b + 10a^3b^2 + 10a^2b^3 + 5ab^4 + 1b^5 = \{1,5,10,10,5,1\}$
+    \end{itemize}\bigskip
+
+    Many times, we are interested in the k-th number of the n-binomial,\\ written as $C(n,k)$ or $^nC_k$. Example: $C(5,2) = 10$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Binomial Coefficient}{Interpretation and Recurrent Form}
+  The common interpretation of $C(n,k)$ is "I have to select A or B $n$ times, how many different ways can I choose A $k$ times?"
+  \begin{itemize}
+    \item How many binary strings with $n$ digits have $k$ ones?
+    \item How many paths exist
+  \end{itemize}\bigskip
+
+  Using this definition, we can define the recurrent form of the Binomial:
+  \begin{itemize}
+    \item I have to choose A $k$ times out of $n$
+    \begin{itemize}
+      \item If I choose A $k-1$ times out of $n-1$, I choose A again.
+      \item If I choose A $k$ times out of $n-1$, I choose B.
+    \end{itemize}
+    \item $C(n,k) = C(n-1,k-1) + C(n-1,k)$
+    \item Don't forget to use DP to implement this!
+  \end{itemize}\bigskip
+\end{frame}
+
+\begin{frame}[fragile]{Pascal's Triangle}
+  The recurrent form of the binomials:
+  \begin{equation*}
+    C(n,k) = C(n-1,k-1) + C(n-1,k)
+  \end{equation*}
+
+  Can also be observed by laying out the numbers:
+
+\begin{verbatim}
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+1 6 15 20 15 6 1
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Closed Form for the Binomial}
+  The closed form for $C(n,k)$ is:\bigskip
+
+    \begin{equation*}
+      C(n,k) = \frac{n!}{(n-k)!k!}
+    \end{equation*}\bigskip
+
+  Be careful! As you remember, the value of $n!$ can become very big,
+  very fast. It might be better to calculate the binomial using the recurrent
+  form, to avoid overflow.
+\end{frame}
+
+\begin{frame}{The Catalan Numbers}
+  \begin{block}{Motivating Problem}
+    Given $n$ pairs of parenthesis, how many different balanced expressions can you create?\bigskip
+
+    \begin{itemize}
+      \item n = 0: . = 1
+      \item n = 1: () = 1
+      \item n = 2: ()(), (()) = 2
+      \item n = 3: ((())), ()(()), (())(), (()()), ()()() = 5
+      \item n = 4: 14
+      \item n = 5: 42
+    \end{itemize}
+  \end{block}\bigskip
+
+  This sequence is known as the {\bf Catalan Numbers}, and it appears in
+  several recursive combinatory problems.
+\end{frame}
+
+\begin{frame}{The Catalan Numbers}{Recurrent Form}
+  The {\bf Recurrent form} of the catalan number can be derived from the parenthesis definition:\bigskip
+
+  \begin{itemize}
+    \item If we define $c_k$ as an expression with k parenthesis, we can break it down into: $c_k = (c_a)c_b$, where $k = a + b + 1$. \medskip
+
+    \item Varying the values of $a$ and $b$, and counting all possible variations gives us the recurrent form:\medskip
+
+    \item $c_{n+1} = \sum_{i=0}^n c_ic_{n-i}$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Closed Form and Usage}
+  The closed form of the Catalan Numbers is:
+  \begin{equation*}
+    c_n = \frac{1}{n+1}C(2n,n)
+  \end{equation*}
+  Be careful of calculating factorials in $C(2n,n)$\bigskip
+
+  \begin{block}{Other uses of Catalan Numbers}
+    \begin{itemize}
+    \item Number of ways you can triangulate a poligon with $n+2$ sides;
+    \item Number of monotonic paths on an $nxn$ grid that do not pass above
+      the diagonal.
+    \item Number of distinct binary trees with $n$ vertices
+    \item Etc...
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+% TODO: Check if this makes sense
+% \begin{frame}
+%   \frametitle{Integer Partition}
+%   \begin{block}{}
+%     f(5,5) = (5),(4,1),(3,2),(3,1,1),(2,2,1),(2,1,1,1),(1,1,1,1,1)
+%   \end{block}
+%   \begin{block}{Definition and calculation}
+%     $f(n,k)$ -- number of ways that we can sum $n$, using integers
+%     equal or less than $k$.
+%
+%     \bigskip
+%
+%     \structure{Recurrence:}
+%     \begin{itemize}
+%     \item $f(n,k) = f(n-k,k) + f(n, k+1)$
+%     \item $f(1,1) = 1$; $f(n,k) = 0$ if $k > n$
+%     \end{itemize}
+%   \end{block}
+% \end{frame}

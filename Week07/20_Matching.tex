@@ -1,0 +1,224 @@
+
+
+\section{String Matching}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part I: String Matching}
+  \end{center}
+\end{frame}
+
+\subsection{Basics}
+
+\begin{frame}[fragile]{The String Matching Problem}
+  \begin{block}{Definition}
+    Given a string $T$ (also called {\bf text}), we want to test if the substring $P$ (also called {\bf pattern}) exists in $T$.
+    \bigskip
+
+    If $P$ exists in $T$, we want to know the {\bf index} of the start of $P$ in $T$.
+  \end{block}\bigskip
+
+  Example:
+\begin{verbatim}
+T: STEVEN EVENT
+
+P: EVE            indexes: 2 and 7
+P: EVENT          indexes: 7
+P: EVENING        indexes: -1 or NULL
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{String Matching and Libraries}
+
+  \begin{block}{String Matching with the standard functions}
+    \begin{itemize}
+      \item C/C++: strstr(T,P) or T.find(P)
+      \item Python: T.find(P)
+      \item Java: T.indexOf(P)
+    \end{itemize}
+  \end{block}
+
+  Using the standard library is usually bug-free, but sometimes you need to code string search by hand:
+  \begin{itemize}
+    \item Specific Matching Function (ex: "1" == "I", "0" == "O");
+    \item Match in multiple directions (graph, grind);
+    \item Match multiple strings at once;
+    \item etc...
+  \end{itemize}\bigskip
+\end{frame}
+
+\begin{frame}[fragile]{String Matching: Complete Search}
+
+  For every character $T_i$, test if $P$ begins at that position.\bigskip
+
+\begin{verbatim}
+for (int i = 0; i < |T|; i++)
+  bool match = true;
+  for (int j = 0; j < |P| && match; j++)
+    if (i+j >= |T| || P[j] != T[i+j])
+      match = false;
+  if (match)
+    printf("Match P at index %d\n", i);
+\end{verbatim}
+
+{\bf Number of Steps}:
+  \begin{itemize}
+    \item Average case: $O(|T|)$ -- For natural T and small P;
+    \item Worst case: $O(|T|\times|P|)$;
+    \begin{itemize}
+      \item T = AAAAAAAAAAAAB
+      \item P = AAAAAAAB
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Knuth-Morris-Pratt}
+\begin{frame}[fragile]
+  \frametitle{The Knuth-Morris-Pratt (KMP) Algorithm}
+
+  \begin{itemize}
+    \item Complete Search can be very expensive if the prefix of $P$ happens many times in $T$.
+    \item In 1977, Knuth, Morris and Pratt developed an algorithm that {\bf uses these prefixes} to realize fast string matching.
+  \end{itemize}
+
+  \begin{block}{Basic Idea}
+    \begin{itemize}
+    \item The KMP algorithm identifies "borders" in the partial match between $P$ and $T$.
+    \item These borders are characterized by identical prefixes and sufixes in the T-P match.
+    \item The algorithm uses these matches to advance the indexes of $T$ and $P$, greatly reducing the number of comparisons.
+  \end{itemize}
+  \end{block}
+  The KMP algorithm is O(P+T).
+\end{frame}
+
+\begin{frame}[fragile]{KMP Algorithm -- Simulation}
+
+{\smaller
+\begin{verbatim}
+              1         2         3         4         5
+    012345678901234567890123456789012345678901234567890
+T = I DO NOT LIKE SEVENTY SEV BUT SEVENTY SEVENTY SEVEN
+P = SEVENTY SEVEN
+// for i from 0 to 13, KMP works like full search
+
+                  SEVENTY SEVEN
+// Here, the collision is at i=25, j = 11, But because "SEV" is
+// a "border", i stays the same and j is rewinded to 3
+
+                                  SEVENTY SEVEN
+// Here we find a match with i=43, j=13; SEVEN is a border, so j
+// is rewinded to 5, and i is kept the same. The algorithm
+// continues matching at i=44, j=5 ("T")
+
+                                          SEVENTY SEVEN
+// KMP finds a second match
+\end{verbatim}}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{KMP Algorithm -- Rewind Array}
+
+\begin{block}{}
+To avoid repeated matches, the KMP algorithm builds a {\bf rewind table} $b$ (back).
+
+\begin{verbatim}
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3
+P =  S E V E N T Y   S E V E N \0
+b = -1 0 0 0 0 0 0 0 0 1 2 3 4 5
+\end{verbatim}
+
+Following the table $b$, we know that if we find a mismatch at $j = 11$, then we need to rewing $j$ to $b[11] = 3$ to continue matching.\bigskip
+
+The text index $i$, on the other hand, will stay the same, and go forward by 1 if $b[j] = -1$.
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{KMP Algorithm -- PseudoCode}
+
+  {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+char T[MAX_N], P[MAX_N];    int b[MAX_N], n, m;
+
+void kmpPreprocess() {                         // Create the Back Array
+  int i = 0, j = -1; b[0] = -1;
+  while (i < m) {
+     while (j >= 0 && P[i] != P[j]) j = b[j];
+     i++; j++;
+     b[i] = j; }}
+
+void kmpSearch() {                             // Search the substring
+  int i = 0, j = 0;
+  while (i < n) {
+     while (j >= 0 && T[i] != P[j]) j = b[j];
+     i++; j++;
+     if (j == m) {
+        printf("P is found at index %d in T\n", i - j);
+        j = b[j]; }}}
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\subsection{Z algorithm}
+
+\begin{frame}[fragile]{String Matching with the Z-Algorithm}
+  Another alogirthm that performs string matcfhing in linear time is the {\bf Z algorithm}.\bigskip
+
+  The Z algorithm first makes a {\bf Search String} $S = P + 'S' + T$.\\
+  The Z algorithm next constructs a {\bf Z array} of "prefix lengths".\\
+  For every index $i\in S$, $Z[i]$ is the size of the prefix of $S$ that begins in $i$.\bigskip
+
+\begin{verbatim}
+T = AASABAABAAT, P = AAB, S = P + '$' + T
+
+... Build Z Array ...
+S   = AAB$AASABAABAAT
+Z[S]= X10021010310210
+               ^
+               String matched here. Z[i] = Len(P)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Z-Algorithm -- Pseudocode}
+  \begin{block}{}
+{\smaller
+\begin{verbatim}
+void Zarray(string S, int Z[]) {
+    int n = S.length(); int L, R, k;
+    L = R = 0;             // Prefix counters
+    for (int i = 1; i < n; i++) {
+        if (i > R) {       // Full search of prefix
+            L = R = i;
+            while (R < n && S[R] == S[R-L]) R++;
+            Z[i] = R-L; R--;
+        } else {           // Inside prefix candidate
+            k = i-L;
+            if (Z[k] < R-i+1) Z[i] = Z[k]; // no extension
+            else {                         // prefix extension
+                L = i;
+                while (R < n && S[R] == S[R-L]) R++;
+                Z[i] = R-L; R--;
+}   }   }   }
+\end{verbatim}}
+  \end{block}
+
+{\smaller {\bf Simulation:}
+\url{https://personal.utdallas.edu/~besp/demo/John2010/z-algorithm.htm}}
+
+\end{frame}
+
+\begin{frame}{Z algorithm or KMP algorithm?}
+  Should you use the Z algorithm or the KMP algorithm?\bigskip
+
+  \begin{itemize}
+    \item Both algorithms have the same time complexity: $O(T+P)$\bigskip
+
+    \item Which algorithm is easier to understand?
+    \begin{itemize}
+      \item KMP calculates a recursive suffix state machine for P;
+      \item Z-algorithm calculates a substring size array for T;
+    \end{itemize}\bigskip
+  \end{itemize}
+\end{frame}

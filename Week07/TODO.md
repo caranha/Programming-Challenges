@@ -1,11 +1,15 @@
 # TODO
-- [ ] Important: Explanation of KMP is bad. Replace KMP simulation.
-- [ ] Important: Review/Test KMP code and improve explanation
+- [ ] Rethink the content of this class based on chapter 6 in the book.
+- [ ] Even without rethinking content, the material needs improvement with several simulations.
 
-- [ ] Explanation of Z algorithm is not very good. 
-- [ ] Include Z-algorithm animation on video next time.
+- [ ] Important: KMP Improvement
+  - Re-write the code and explanation of KMP from scratch
 
-- [ ] Important: Include simulation with tables for Suffix Array "solving problems"
+- [ ] Important: Z algorithm
+  - There are a lot of typos on Z algorithm slides
+  - Add animation to Z algorithm
 
-- [ ] Add suffx Tree / Suffix Array code sample
-- [ ] Replace Suffix Tree / Suffix Array figures
+- [ ] Add simulation of string alignment DP table and palindrome DP table
+
+- [ ] Suffix Array: Need simulation of using suffix array for it to make sense. Also need context for the problems.
+

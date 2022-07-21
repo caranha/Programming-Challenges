@@ -1,0 +1,132 @@
+\section{All Pairs Shortest Path}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part III: Floyd-Warshall (All Pairs Shortest Path)}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{APSP: All Pairs Shortest Path}
+
+  Consider the following problem:
+
+  \begin{block}{Commandos}
+    Consider a graph $G(V,E)$, with a starting vertex $v_s$ and an end vertex $v_t$. You must send a group of commands to visit every vertex in the graph.\bigskip
+
+    Calculate the minimum time to complete all visits, if you can send the commandos in parallel.
+  \end{block}
+
+  {\bf Quiz:} How do you solve this problem?
+\end{frame}
+
+\begin{frame}{APSP: Commandos Problem}
+  \begin{itemize}
+  \item To solve this problem, you need to calculate, for each vertex $v_i$, the shortest path $v_s \to v_i \to v_t$. The solution is the largest of these paths.\bigskip
+
+  \item One simple way to program this is to loop through all vertices $v_i$, and calculate Dijkstra$(v_s,v_i)$ + Dijkstra$(v_i,v_t$);
+  \begin{itemize}
+    \item The cost would be about $O(V(E+V))$;
+  \end{itemize}\bigskip
+
+  \item There is a {\bf simpler} (but not cheaper!) algorithm to solve this problem.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{The Floyd-Warshall Algorithm -- $O(V^3)$}{Only four lines of code!}
+
+  \begin{exampleblock}{}
+\begin{verbatim}
+int AdjMat[V][V]; // Adjacency Matrix
+// Initialization: AdjMat[i][j] contains cost
+// of i->j edge, or INF if no edge.
+
+for (int k=0; k < V; k++) // loop order
+  for (int i=0; i < V; i++)
+    for (int j=0; j < V; j++)
+      AdjMat[i][j] = min(AdjMat[i][j],
+                         AdjMat[i][k]+AdjMat[k][j]);
+
+// AdjMat[i][j]: cost of minimum path i -> j
+\end{verbatim}
+  \end{exampleblock}
+
+  \begin{itemize}
+  \item Algorithm is slower! So only use it on small graphs;
+  \item Very easy to program: Fewer bugs!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How does Floyd Warshall work?}
+
+  \begin{block}{}
+    \begin{itemize}
+      \item The basic idea of FW, is Bottom-up dynamic programming;
+      \item For every vertex $v_k$, the shortest path between $v_i$ and $v_j$ is either:
+      \begin{itemize}
+        \item The current shortest path $v_i \to v_j$ or;
+        \item The new shortest path $v_i \to v_k \to v_j$;
+      \end{itemize}
+      \item Every iteration $k$, FW adds $v_k$ to all other existing paths.
+    \end{itemize}
+  \end{block}
+
+  \begin{center}
+    \includegraphics<1>[height=0.5\textheight]{../img/fw_halim1}
+    \includegraphics<2>[height=0.5\textheight]{../img/fw_halim2}
+    \includegraphics<3>[height=0.5\textheight]{../img/fw_halim3}
+    \includegraphics<4>[height=0.5\textheight]{../img/fw_halim4}
+  \end{center}
+  \ppagenote{Floyd-Warshall Image from "Competitive Programming", Steven Halim}
+\end{frame}
+
+\begin{frame}[fragile]{Getting more from Floyd Warshall -- 1}
+  \begin{block}{I want to print the shortest path from Floyd Warshall}
+To print the shortest path in FW, we add a 2D matrix $p$, where $p[i][j]$ is the last node on the shortest path from i to j
+{\smaller
+\begin{verbatim}
+// Initialize parent matrix
+for (int i = 0; i < V; i++)
+  for (int j = 0; j < V; j++)
+    p[i][j] = i;
+
+// Floyd Warshall
+for (int k = 0; k < V; k++)
+  for (int i = 0; i < V; i++)
+    for (int j = 0; j < v; j++)
+      if (AdjMat[i][k] + AdjMat[k][j] < AdjMat[i][j]) {
+        AdjMat[i][j] = AdjMat[i][k] + AdjMat[k][j];
+        p[i][j] = p[k][j];      // Update parent Matrix
+      }
+\end{verbatim}}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Getting more from Floyd Warshall -- 2}
+
+  \begin{itemize}
+  \item If we only want to know if $v_i$ is connected to $v_j$, we can use FW with bitwise operations -- much faster:
+  \begin{verbatim}
+  AdjMat[i][j] |= AdjMat[i][k] && AdjMat[k][j];
+  \end{verbatim}
+
+  \item We can use FW instead of MST to find the minmax path:
+  {\smaller\begin{verbatim}
+AdjMat[i][j]=min(AdjMat[i][j],max(AdjMat[i][k],AdjMat[k][j]);
+\end{verbatim}}\medskip
+
+  \item We can use FW to find SCCs:
+  \begin{itemize}
+    \item If AdjMat[i][j] $> 0$ AND AdjMat[j][i] $> 0$, $v_i$ and $v_j$ are in same SCC;
+  \end{itemize}\medskip
+
+  \item Use FW to detect negative cycles (or minimum cycles):
+  \begin{itemize}
+    \item for $i = 0\to V$, check AdjMat[i][i];
+    \item If negative: negative loop;
+    \item Else: minimum loop.
+  \end{itemize}
+  \end{itemize}
+\end{frame}

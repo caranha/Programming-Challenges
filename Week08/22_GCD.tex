@@ -1,0 +1,150 @@
+
+\section{GCD and Friends}
+\begin{frame}
+  \begin{center}
+  {\bf Part II -- GCD}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Modulo Arithmetic}
+
+  Modulo Arithmetic is a way to operate in very large number without using bignum.\bigskip
+
+  For some problems, the final result is small (modulo $n$) but the intermediate results are too large. In these cases, we use modulo arithmetic to avoid storing these large intermediate results.\bigskip
+
+  \begin{block}{Modulo Arithmetic Reminder}
+    \begin{enumerate}
+    \item $(a+b)\%n = ((a\%n)+(b\%n)+n)\%n$
+    \item $(a*b)\%n = ((a\%n)*(b\%n))\%n$
+    \item $(a^p)\%n = ((a^{p/2}\%n)*(a^{p/2}\%n)*(a^{p\%2}\%n))\%n$
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\subsection{Example Problem}
+\begin{frame}{Example Problem}
+  \begin{block}{}
+    Your receive as input a {\bf large binary number} (up to 100 digits). You need to calculate if the number is divisible by 131071 (a prime number).
+  \end{block}\bigskip
+
+  \begin{itemize}
+  \item Problem: Input and store a large $n$, and calculate $n\%131071$.
+  \bigskip
+
+  \item Two approaches:
+  \begin{itemize}
+    \item Use a BigNum data structure to store $n$, and calculate.
+    \item Use modulo arithmetic to calculate the result {\bf without} BigNum.
+  \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Modular Inverse}
+  The {\bf Modular Inverse} of $a$ is the number $a^{-1}$ so that $a\times a^{-1} \equiv 1 \mod n$. \medskip
+
+  How do we find $a^{-1}\mod n$?
+  \begin{itemize}
+    \item If $n$ is prime, then $b^{-1} \equiv b^{n-2}\mod n$
+    \item If $n$ is not prime, but gcd($n,b$) = 1, then $b^{-1} \equiv b^{\Phi(n)-1} \mod n$
+  \end{itemize}\bigskip
+
+  We can use the extended GCD to calculate this.
+
+\end{frame}
+
+
+\subsection{Greatest Common Divisor}
+\begin{frame}[fragile]
+  \frametitle{Extended Euclid Algorithm}
+
+  For integers $a$ and $b$, the {\bf greatest common divisor} GCD(a,b) is the largest integer $d$ so that $d|a$ and $d|b$. Euclid's algorithm can quickly calculate $d$ for a,b ($O(\log_{10}a)$).\bigskip
+
+  The {\bf Extended Euclid's Algorithm}\footnote{Also called "The Pulverizer"}, calculate's $x_0$ and $y_0$ so that $a\times x_0 + b\times y_0 = d$.
+
+{\smaller
+    \begin{exampleblock}{}
+\begin{verbatim}
+int extEuclid(int a, int b, int &x, int &y)  {
+  int xx = y = 0; int yy = x = 1;
+  while (b) {
+    int q = a/b;
+    int t = b; b = a%b; a = t;
+    t = xx; xx = x - q*xx; x = t;
+    t = yy; yy = y - q*yy; y = t;
+  }
+  return a; // GCD, xa + by = d;
+}
+\end{verbatim}
+    \end{exampleblock}
+}
+\end{frame}
+
+
+\begin{frame}{Extended GCD and the Diophantine Equation}
+
+  One very useful property of $d =$ GCD$(a,b)$ is that {\bf $d$ divides every integer combination of $a$ and $b$}. In other words: For every $ax+by = c$, if x and y are integers, then $d|c$.\footnote{The proof for this is very cool}.\bigskip
+
+  We can use this property to calculate the integer solutions of the {\bf Diophantine Equation}: $xa+yb = c$\bigskip
+
+  \begin{itemize}
+    \item If $d|c$ is not true, there are no integer solutions.
+    \item If $d|c$ is true, there are infinite integer solutions:
+    \begin{itemize}
+      \item The first solution $(x_0, y_0)$ is calculated from the extended GCD.
+      \item Other solutions $(x_n,y_n)$ can be derived as: $x_n = x_0 + (b/d)n, y_n = y_0 - (a/d)n$, where $n$ is an integer.
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Diophantine Equation Problem Example}
+    \begin{block}{Problem Example}
+      With 839 yens, you want to buy Candy X and Candy Y.
+      \begin{itemize}
+        \item Candy X costs $x=25$ yens.
+        \item Candy Y costs $y=18$ yens.
+      \end{itemize}
+      How many candies can you buy?
+    \end{block}
+
+    \begin{enumerate}
+      \item Calculate $d, x_0, y_0$ from extended GCD:
+      \begin{itemize}
+        \item $d = 1, x_0 = -5, y_0 = 7$. This means that $25\times(-5) + 18\times(7) = 1$
+      \end{itemize}
+      \item Is $d|c$? {\bf Yes}. Continue.
+      \item Multiply both sides of the equation by $\frac{c}{d}$:
+      \begin{itemize}
+        \item $25 \times (-5 \times 839) + 18\times(7 \times 839) = 839$
+      \end{itemize}
+      \item It is impossible to buy negative candies, so we iterate on $n$ to find
+      \begin{itemize}
+        \item $x_n = x_0 + (y/d)n$ and $y_n = y_0 - (x/d)n$
+      \end{itemize}
+      \item At $n = 234$ we find: $25 \times 17 + 18 \times 23 = 839$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Extended GCD to calculate modular inverse}
+  Let's calculate $x$ so that $b\times x \equiv 1 \mod n$.\medskip
+
+  This is equivalent to $bx = 1 + ny \to bx - ny = 1$, for any $y$. We feed
+  these values to the extended GCD.
+  \begin{block}{}
+\begin{verbatim}
+int mod(int a, int m) { return ((a%m) + m)%m; }
+
+int modInverse(int b, int m) {
+  int x, y;
+  int d = extEuclid(b, m, x, y);
+  if (d != 1) return -1;  // inverse only exists if gcd(b,m) = 1;
+
+  // b*x + m*y == 1, so apply (mod m) to x to obtain b^-1
+  return mod(x, m);
+}
+\end{verbatim}
+  \end{block}
+\end{frame}

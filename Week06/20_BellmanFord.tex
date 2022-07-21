@@ -1,0 +1,111 @@
+\section{Negative Loops}
+
+\begin{frame}
+  \begin{center}
+    {\bf Part II - Bellman-Ford (Negative Loops);}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{A Problem with Dijkstra}
+
+    \begin{block}{}
+      Djikstra can have difficulty when the graph includes a {\bf negative loop}!
+    \end{block}
+
+    \begin{center}
+      \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+        \node[red vertex] (s) at (0,0) {s};
+        \node[vertex] (0) at (1,1) {a};
+        \node[vertex] (1) at (2,0) {b};
+        \node[vertex] (e) at (4,0) {e};
+        \draw[edge] (s) -- node[label] {-2} (0);
+        \draw[edge] (s) -- node[label] {2} (1);
+        \draw[edge] (1) -- node[label] {-2} (0);
+      \draw[edge] (1) -- node[label] {2} (e);
+      \end{tikzpicture}
+    \end{center}
+
+    \begin{itemize}
+    \item Our Dijkstra implementation will add smaller and smaller costs to the priority queue:
+    \begin{itemize}
+      \item $s \to a$: -2, -4, -6, -8...
+    \end{itemize}
+
+    \item Other implementations will have different problems because negative loop breaks the {\bf Greedy Property}.
+    \begin{itemize}
+      \item But what is the size of the path when a negative loop exists?
+    \end{itemize}
+
+    \item {\bf Bellman Ford's algorithm} is a slower SSSP algorithm that {\bf detects negative loops};
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Bellman Ford's Algorithm -- ($O(VE)$)}
+  {\smaller
+  \begin{itemize}
+    \item The main idea is to propagate the weight of every edge $i\to j$, $V-1$ times.
+
+    \item The vector of distances from $s$, \emph{dist}, starts with dist[s]=0, and dist[!s]=INF;
+
+    \item Each iteration, non-inf values of dist propagate;
+
+    \item Because the algorithm has a finite number of loops, it always terminates;
+    \item Algorithm stabilizes at iteration $V-1$. If dist changes after that, we have detected an infinite loop.
+  \end{itemize}
+
+  \begin{exampleblock}{Pseudocode (uses EdgeList data structure)}
+\begin{verbatim}
+vector<int> dist(V, INF); dist[s] = 0;  // Start Condition
+int edges[E][3];                        // Edge list (i,j,w)
+for (int i = 0; i < V - 1; i++)         // repeat V-1 times
+ for (int u = 0; u < E; u++) {          // for all edges
+  dist[edges[u][1]] = min(dist[edges[u][1]],
+                          dist[edges[u][0]]+edges[u][2]);
+ }
+\end{verbatim}
+\end{exampleblock}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bellman Ford Simulation: Regular Graph}
+  \begin{center}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[red vertex] (s) at (0,0) {s};
+      \node[vertex] (0) at (2,1) {a};
+      \node[vertex] (1) at (4,1) {b};
+      \node[vertex] (2) at (3,-1) {c};
+      \node[vertex] (e) at (6,0) {t};
+      \tikzset{edge/.style = {->, >=latex'}}
+      \draw[edge] (2) to node[label] {$1$} (s);
+      \draw[edge] (0) to node[label] {$2$} (2);
+      \draw[edge] (s) to node[label] {$1$} (0);
+      \draw[edge] (0) to node[label] {$3$} (1);
+      \draw[edge] (1) to node[label] {$2$} (e);
+      \draw[edge] (2) to node[label] {$2$} (e);
+    \end{tikzpicture}
+  \end{center}
+  \vspace{10cm}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bellman Ford Simulation: Negative Loop}
+  \begin{center}
+    \begin{tikzpicture}[transform shape,label/.style={thin, draw=black, align=center,fill=white,font=\smaller},scale=1.1]
+      \node[red vertex] (s) at (0,0) {s};
+      \node[vertex] (0) at (2,1) {a};
+      \node[vertex] (1) at (4,1) {b};
+      \node[vertex] (2) at (3,-1) {c};
+      \node[vertex] (e) at (6,0) {t};
+      \tikzset{edge/.style = {->, >=latex'}}
+      \draw[edge] (2) to node[label] {$-4$} (s);
+      \draw[edge] (0) to node[label] {$2$} (2);
+      \draw[edge] (s) to node[label] {$1$} (0);
+      \draw[edge] (0) to node[label] {$3$} (1);
+      \draw[edge] (1) to node[label] {$2$} (e);
+      \draw[edge] (2) to node[label] {$2$} (e);
+    \end{tikzpicture}
+  \end{center}
+  \vspace{10cm}
+\end{frame}

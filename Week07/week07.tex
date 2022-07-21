@@ -12,7 +12,7 @@
 
 \input{../misc/beamerpreamble.tex}
 
-\subtitle[Week 7: Strings]{Week 7 - String Manipulation}
+\subtitle[Week 7: Strings]{Week 7 - String Problems}
 \date[]{{\smaller(last updated: \today)}}
 
 \begin{document}
@@ -22,12 +22,59 @@
 \maketitle
 \vfill
 
-\hfill Version 2021.1
+\hfill Version 2022.1
 \end{frame}
 
-\input{10_introduction.tex}
-\input{20_string.tex}
-\input{30_conclusion.tex}
+\section{Introduction}
+
+\begin{frame}{Topics for this week}
+  Topics for this week:
+  \begin{itemize}
+    \item String Matching;
+    \begin{itemize}
+      \item Naive search;
+      \item KMP;
+      \item Z-Algorithm;
+    \end{itemize}
+    \item Strings algorithms with DP;
+    \begin{itemize}
+      \item Edit Distance
+      \item Common substring
+      \item Palindromes
+    \end{itemize}
+    \item Suffix Trie
+    \begin{itemize}
+      \item Suffix Tree; -- idea
+      \item Suffix Array; -- Implementation
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why Study String Problems?}
+    \begin{exampleblock}{}
+      The manipulations of string is a common task in real life applications such as:
+
+      \begin{itemize}
+        \item Analysis of Bioinformatics Gene Data;
+        \item Pre-processing/wrangling, of API data (ex: JSON)
+        \item Text processing from human interfaces (natural language)
+      \end{itemize}
+    \end{exampleblock}
+
+    \begin{block}{Characteristics of String Problems}
+      \begin{itemize}
+      \item "Parsing" of inputs with special rules;
+      \item Using Dynamic Programming for finding patterns;
+      \item Special data structures for storing patterns;
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\input{20_Matching.tex}
+\input{21_StringDP.tex}
+\input{22_SuffixArray.tex}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{../misc/lastslide.tex}

@@ -1,0 +1,202 @@
+
+\section{Primality}
+\begin{frame}
+  \begin{center}
+  {\bf Part I -- Primality}
+  \end{center}
+\end{frame}
+
+
+\subsection{Primality Testing}
+\begin{frame}
+  \frametitle{Primality Testing}
+
+    {\bf Question:} How do you write a (simple) program to test if $N$ is prime?\bigskip
+
+    \begin{itemize}
+
+      \item Complete Search: For each $d \in 2..N-1$, test if $N\%d == 0$.
+      \begin{itemize}
+        \item This requires $O(N)$ divisions.\medskip
+      \end{itemize}
+
+      \item Pruning (reducing) the Complete Search:
+      \begin{itemize}
+        \item Search only from 2 to $\sqrt{N}$: $O(\sqrt{N})$
+        \item Search only 2, and {\bf odd} numbers from 3 to $\sqrt{N}$: $O(\frac{\sqrt{N}}{2})$
+        \item Search only {\bf prime} numbers from 2 to $\sqrt{N}$:
+        $O(\frac{\sqrt{N}}{\ln(\sqrt{N})})$
+      \end{itemize}\medskip
+
+      \item How do we quickly calculate a set of small prime numbers?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Primality Testing: Finding {\bf Sets} of primes}
+
+  \begin{block}{The Prime Number Theorem (simplified)}
+    There are approximately $\frac{N}{\log{N}-1}$ prime numbers between 1 and $N$
+  \end{block}\bigskip
+
+  \begin{itemize}
+    \item Number of prime numbers between 1 and $\sqrt{10^6}$ = 168
+    \item Number of prime numbers between 1 and $\sqrt{10^{10}} \approx 9500$
+  \end{itemize}\bigskip
+
+  With a list of small prime numbers, we can test the primality of large numbers quickly.\bigskip
+
+
+  A simple algorithm to find a list of primes is {\bf Sieve of Eratosthenes}.
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Sieve of Eratosthenes}
+
+    \begin{enumerate}
+      \item Initialize Vector "sieve" of size $\sqrt{N}$, all TRUE; Loop on Vector.
+      \item If sieve[i] is TRUE, add $i$ to prime list;
+      \item Set all multiples of $i$, sieve[$i*m$] to FALSE;
+    \end{enumerate}
+
+    {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+def sieve(k):                 ## Find all primes up to k
+   primes = []                ## List of primes found
+   sieve = [1]*(k+1)          ## set all elements of "sieve" to true;
+   sieve[0] = sieve[1] = 0    ## 0,1 trivially not primes
+   for i in range(k+1):       ## Loops on the sieve;
+      if (sieve[i] == 1):     ## Found a new prime
+         primes.append(i)     ## Add to prime list
+         j = i*i              ## Remove multiples of i (Quiz: Why not i*2?)
+         while (j < k+1):     ## Costs O(loglogN)
+            sieve[j] = 0      ## Remove multiples from sieve
+            j += i
+   return primes              ## list of primes
+\end{verbatim}
+  \end{exampleblock}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Sieve of Eratosthenes: Computation Cost}
+
+    \begin{itemize}
+      \item The cost of calculating the Sieve for $k$ is $O(k\log\log k)$
+      \item The cost of full search for $N$ is $O(\sqrt{N}/2)$
+      \item Why use sieve and not the full search?
+    \end{itemize}
+
+    \begin{block}{Amortized Complexity}
+      Do a complex calculation once, use result many times:
+      \begin{itemize}
+      \item If we are only testing {\bf ONE PRIME}, the full search is better.
+      \item But, if the problem requires many primes to be tested, the sieve is better.
+        \begin{itemize}
+        \item If $N$ < $k$, checking the sieve table costs $O(1)$.
+        \item We can pre-calculate the sieve table when initalizing the program;
+        \end{itemize}
+      \end{itemize}
+    \end{block}\bigskip
+
+    When do we need to calculate multiple primes? Prime factorization!
+\end{frame}
+
+\subsection{Prime Factorization}
+\begin{frame}
+  \frametitle{Prime Factorization}
+
+  Every natural number $N$ can be written as a {\bf unique multiplication of primes}\footnote{Fundamental Theorem of Arithmetics}. Example:
+
+  \begin{equation*}
+    1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2
+  \end{equation*}
+
+  In other words, for $N$, the prime number factorization of $N$ is:
+    \begin{equation*}
+      N=p_1^{e_1}p_2^{e_2}\ldots p_n^{e_n}, p_i \text{ is prime}
+    \end{equation*}
+
+  (Prime) Factorization is a key issue in Cryptography, so fast factorization is an important research problem. For programming challenges, we use two simple approaches:\bigskip
+
+  \begin{itemize}
+    \item {\bf Full search}: create a list of primes (with sieve) and test if each of them divides $N$.
+    \item {\bf Divide and Conquer:} Find the smallest prime $p_i$ from sieve that divides $N$. Replace $N$ with $N|p_i$. Repeat until $p_i > \sqrt{N}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Prime factorization: Divide and conquer approach}
+
+  This algorithm is reasonably fast if $N$ is composed of several small prime factors.
+
+  {\smaller
+  \begin{exampleblock}{}
+\begin{verbatim}
+vector<int> primeFactors(ll N) {
+  vector<int> factors;
+  long PF_idx = 0, PF = sieve[PF_idx];   // sieve is a precomputed prime list
+  while (PF * PF <= N) {                 // remember, N gets smaller;
+    while (N % PF == 0) {                // Remove PF^x from N
+      N /= PF;
+      factors.push_back(PF);
+    }
+    PF = primes[PF_idx++];               // only consider primes!
+  }
+  if (N != 1) factors.push_back(N);      // special case: N is prime
+  return factors;
+}
+\end{verbatim}
+  \end{exampleblock}}
+\end{frame}
+
+\begin{frame}{Full Factorization}
+  In some cases, we want to know {\bf all} numbers that divide a certain number $N$.\bigskip
+
+  We can calculate the full factorization of $N$ from its prime factorization.\\
+  In fact, the full factorization of $N$ is the set of all unique combinations of prime factors.\bigskip
+
+  Example:
+  \begin{itemize}
+    \item $1200 = 2\times2\times2\times2\times3\times5\times5 = 2^4\times3\times5^2$
+    \item Number of factors of 1200: $5(2^4)\times2(3^1)\times3(5^2) = 30$
+    \begin{itemize}
+      \item $2^0 \times 3^0 \times 5^1 = 5$,
+      \item $2^0 \times 3^0 \times 5^2 = 25$,
+      \item $2^0 \times 3^1 \times 5^0 = 3$,
+      \item $2^0 \times 3^1 \times 5^1 = 15$,
+      \item $2^0 \times 3^1 \times 5^2 = 75$,
+      \item $\ldots$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Factorization Problem Example: 10139 -- Factovisors}
+
+    \begin{block}{Problem summary}
+      Check if $m$ divides $n!$ ($1 \leq m,n \leq 2^{31}-1$)
+    \end{block}
+
+    The factorial of $n \leq 2^{31}-1$ is a HUGE number. Fortunately, it is not necessary to calculate this number at all. Consider that:
+
+    \begin{itemize}
+    \item $F_m$: primefactors(m)
+    \item $F_{n!}$: $\cup$(primefactors(1), primefactors(2) $\ldots$, primefactors(n))
+    \end{itemize}
+
+    We can say that $m$ divides $n!$ iff $F_m \subset F_{n!}$.\bigskip
+
+    Examples:
+    \begin{itemize}
+    \item $m = 48, n=6, n! = 2\times3\times4\times5\times6$\\
+      $F_m = \{2,2,2,2,3\}, F_{n!} = \{2,3,2,2,5,2,3\}$
+
+  \medskip
+
+    \item $m = 25, n=6, n! = 2\times3\times4\times5\times6$\\
+      $F_m = \{5,5\}, F_{n!} = \{2,3,2,2,5,2,3\}$
+
+    \end{itemize}
+\end{frame}
