@@ -1,8 +1,6 @@
 These are the lecture notes for the "Programming Challenges" undergraduate
 class at the University of Tsukuba.
 
-_last change: 2022/05/07 -- Lecture 4 Uploaded
-
 # Course Outline:
 In this course, we study several algorithms by solving programming competition
 style challenges. The mail goal is to improve our programming skill and
@@ -24,11 +22,15 @@ algorithm knowledge through implementation.
 - **Week05** -- Graphs Problems I
   - [Lecture notes](Week05/week05.pdf)
 - **Week06** -- Graphs Problems II
+  - [Lecture notes](Week06/week06.pdf)
 - **Week07** -- String Manipulation
+  - [Lecture notes](Week07/week07.pdf)
 - **Week08** -- Math Problems
+  - [Lecture notes](Week08/week08.pdf)
 - **Week09** -- Geometry Problems
+  - [Lecture notes](Week09/week09.pdf)
 - **Week10** -- Final Problem Remix
-
+  - [Lecture notes](Week10/week10.pdf)
 
 # References:
 

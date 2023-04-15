@@ -42,50 +42,51 @@
 
 \begin{frame}{Algorithms: Theory vs. Implementation}
   \begin{exampleblock}{}
-  Why is this a good idea? When we apply a textbook algorithm to a puzzle, we learn many new things:
+    When we implement an algorithm in a hard program we learn many things:
   \end{exampleblock}
   \begin{itemize}
-    \item \alert{Input/Output}: How to transform the input data to a format that the algorithm understands;
-    \item \alert{Input Size}: If the input is very large, a wrong program or algorithm can be very slow;
-    \item \alert{Special Cases}: How to think about special cases that can cause bugs or errors in the program;
-    \item \alert{Debugging}: How to find the source of bugs in your program, specially if the bug is because of a {\bf special case?};
+    \item \alert{Input/Output}: How to prepare the input data for the algorithm to use it;
+    \item \alert{Input Size}: Relationship between input size, algorithm, and program speed;
+    \item \alert{Special Cases}: Difficult Input Data that causes bugs;
+    \item \alert{Debugging}: How to find bugs by yourself;
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Automated Judging}
+\begin{frame}{Automated Judging (AJ)}
   \begin{exampleblock}{}
   In this lecture we use {\bf Automated Judges (AJ)} to check if your homework is correct.
   \end{exampleblock}
 
   \begin{itemize}
-    \item An AJ is a website that proposes programming puzzles, and receive solutions;
+  \item An AJ receives a program, and evaluate if the output is correct;
     \begin{itemize}
       \item Ex: AtCoder, Aizu Online Judge, Topcoder, Codeforces, etc.
     \end{itemize}\bigskip
 
-    \item The AJ receives your program; compile it; and grade it;\bigskip
+    \item The AJ tests your program with a set of {\bfTest Cases} (Hidden Input Data)\bigskip
 
-    \item The AJ test your program with a set of \structure{Hidden Inputs}\bigskip
-
-    \item The AJ gives you the result: \structure{Correct} or \alert{Incorrect}
+    \item The AJ gives a result: \structure{Correct} or \alert{Incorrect}
     \begin{itemize}
-      \item If the result is incorrect, it will not tell you why;
-      \item You have to create debug cases by yourself;
-      \item But, you can submit a new version as many times as you want;
+      \item When the result is incorrect, \alert{it does not say the reason}.
+      \item You have to debug the program yourself (crate tests case!);
+      \item After you debug the program, you can submit again;
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{What this class expects of you}
-  \begin{exampleblock}{Estimated classwork:}
+  \begin{exampleblock}{}
     \begin{itemize}
-      \item You need basic programming knowledge (in C, C++, Java or Python);
+    \item You have basic programming knowledge (C++, Java or Python);
+      \begin{itemize}
+      \item If you don't know how to program, this class will be very hard.
+      \end{itemize}
       \medskip
 
-      \item Complete 2 or more program assignments per week;
+    \item To pass the course, you need to do homework every week;
       \begin{itemize}
-        \item Average of 4 hours of study per week;
-        \item A lot of time with debug and creating test cases;
+        \item Average of 4 hours of study / week;
+        \item A lot of time on debugging;
         \item (Atcoder difficulty: 300 to 500)
       \end{itemize}
       \medskip
@@ -93,41 +94,26 @@
       \item Homework starts easy, but becomes harder later in the course;
       \medskip
 
-      \item No final exam: only assignments!
+      \item No final exam.
     \end{itemize}
   \end{exampleblock}
   \hfill {\bf Hint: Do your homework early!}
 \end{frame}
 
 \subsection{What are Programming Challenges?}
-\begin{frame}{What kind of assignment?}
-  A "Programming Challenge" is a puzzle problem that needs to be solved by writing
-  a program.\vfill
+\begin{frame}{Homework: What are Programming Challenges?}
 
-  The program {\bf reads the input}, and must write the {\bf correct output},
-  following the rule of the puzzle {\bf exactly}.\vfill
+  It is a puzzle that you solve by writing a program.
+  \bigskip
 
-  {\bf You don't know all the input}. You must make sure that your program
-  can solve {\bf Any acceptable input}.\vfill
-
-  There is a {\bf running time limit} so your program must be efficient.\vfill
+  The program reads the input, and must write the correct output.
+  \begin{itemize}
+  \item Difficulty 1: The output must be \alert{exactly} correct.
+  \item Difficulty 2: The test input is \alert{not known}.
+  \item Difficulty 3: There is a maximum \alert{execution time}.
+  \end{itemize}\bigskip
 
   In general, a correct program will be small (< 200 lines).
-\end{frame}
-
-
-\begin{frame}{Why programming challenges?}
-  \begin{itemize}
-    \item {\bf For Competitions}: Around 1980, Programming Contests started as a way for Computer Sciences universities to compete. (IOI, ICPC, etc)
-    \bigskip
-
-    \item {\bf For Study}: After 2000, many people use online Automated Judges to study programming and prove their ability; (TopCoder, Codeforces, AtCoder, etc);
-    \bigskip
-
-    \item {\bf For Recruitment}: Recently, many companies use Programming Challenges to test the programming ability of candidates. candidates. (Google, Facebook, etc)\bigskip
-
-    \item {\bf For Fun}: Some people just like to have an excuse to program!
-  \end{itemize}
 \end{frame}
 
 \subsection{Example}
@@ -143,7 +129,7 @@
       \end{itemize}
 
     \column{0.45\textwidth}
-    \includegraphics[width=1\textwidth]{img/3n_problem}
+    \includegraphics[width=1\textwidth]{img/3n_problem_label}
   \end{columns}
 \end{frame}
 
@@ -179,16 +165,16 @@
 int main() {
   int min, max;
   int maxcycle = 0;
-  cin >> min >> max;
-  for (int i = min; i <= max; i++) {
-    int cycle = 1;
-    int n = i;
+  cin >> min >> max;                           // Read i and j
+  for (int a = min; a <= max; i++) {           // Loop from i to j
+    int cycle = 1;               
+    int n = a;
     while (n != 1) {
-      if (n % 2 == 0) { n = n / 2; }
+      if (n % 2 == 0) { n = n / 2; }           // calculate n
       else { n = n*3 + 1; }
-      cycle++;
+      cycle++;                                 // increase cycle size
     }
-    if (cycle > maxcycle) maxcycle = cycle;
+    if (cycle > maxcycle) maxcycle = cycle;    // keep max cycle
   }
   cout << min << " " << max << " " << maxcycle << "\n";
   return 0;
@@ -202,7 +188,7 @@ int main() {
 If you try to run this program with large inputs, it will be very slow! Why?
 \bigskip
 
-i = 1, j = 10:
+Consider the inputs: i = 1, j = 10:
 \begin{itemize}
   \item n = 1: 1 END
   \item n = 2: 2 1 END
@@ -214,24 +200,25 @@ i = 1, j = 10:
 \end{itemize}
 \bigskip
 
-A lot of work is repeated without necessity. How to make the program faster?
+There is a lot of repetition!  How to make the program faster?
 \end{frame}
 
 \begin{frame}{Example: The 3n+1 problem}{Memoization}
-  A technique called {\bf Memoization} can solve the "repeated work" problem.
+  We use \alert{Memoization} to make the program faster
   \bigskip
 
   {\bf Memoization}:
   \begin{itemize}
     \item Every time you finish a calculation, store the result in the memory;
-    \item Before you begin a calculation, check if it is not in the memory;
+    \item Before you begin a calculation, check if the result is not in the memory;
   \end{itemize}
   \bigskip
 
   This technique can reduce the amount of repeated work.
   \bigskip
 
-  In this course we will review and study many techniques like this one. You will have to implement these techniques in the homework to make it efficient.
+  In this course we will review and study many techniques like this one.\\
+  You will have to implement these techniques in the homework to make it efficient.
 \end{frame}
 
 \subsection{Class Program}
@@ -279,6 +266,25 @@ A lot of work is repeated without necessity. How to make the program faster?
   \end{columns}
 \end{frame}
 
+\begin{frame}{Why programming challenges?}
+  \begin{itemize}
+  \item {\bf For Competitions}: Competitive programming started around
+    1980 in the US. Today, many universities in the world compete,
+    including Tsukuba.
+    \bigskip
+
+  \item {\bf For Study}: Recently, many people use Automated Judges to
+    study and improve programming ability (AtCoder, Codeforces, etc);
+    \bigskip
+
+  \item {\bf For Recruitment}: Also, many companies today use
+    programming challenges in their recruitment.\bigskip
+
+  \item {\bf For Fun}: It is fun to solve puzzles and to program!
+  \end{itemize}
+\end{frame}
+
+
 \subsection{ICPC}
 \begin{frame}{Extra: Join the Tsukuba ICPC Team!}{What is ICPC?}
   \hfill \includegraphics[width=0.4\textwidth]{img/icpclogo}\\
@@ -305,12 +311,10 @@ A lot of work is repeated without necessity. How to make the program faster?
 
     \item \alert{Schedule:}
     \begin{itemize}
-      \item National Preliminary Competition in July
-      \item Japanese Regional Competition in October
-      \item Asian Semi-final in December
-      \item World Final April next year
+      \item First Online Contest in July
+      \item Japanese National Contest in November
+      \item World Final Next Year (June?)
     \end{itemize}
-      (\alert{Dates may change this year because of nCov-19})
     \medskip
     \item Contact me if you're interested!
   \end{itemize}

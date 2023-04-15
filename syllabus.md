@@ -1,10 +1,10 @@
-# Programming Challenges Syllabus (GB21802)
+# Programming Challenges Syllabus (GB20602)
 
 ## Basic Data:
 - 2 credits, 3rd and 4th year,
 - Spring AB, Tue 3,4
 - **Lecturer**: Claus Aranha
-- **Class Type**: Lecture
+- **Class Type**: Lecture / Flipped Classroom
 
 ## Outline:
 We will study several algorithms using programming challenges. This lecture is
@@ -30,25 +30,27 @@ techniques.
 Algorithms, Programming, Problem Solving, Programming Contests
 
 ## Lecture Plan
-1. Course Introduction - What are programming contests? - Introductory Problems	 	 
+1. Course Introduction, General Ideas for Solving Problems 	 
 2. Data Structures:1D Vector, 2D Vector, Sets, Tree Structures, UFDS	 	 
 3. Search Methods: Full Search, Binary Search, Greedy Search	 	 
 4. Dynamic Programming: Grid Search, MaxSum, LIS, MaxSum, TSP	 	 
 5. Graph I:Graph Structure, BFS, DFS, Flood Fill, TopoSort, Spanning Tree	 	 
 6. Graph II:Shortest Paths, Flow	 	 
-7. Mathematics: Number Theory, Combinatoric Problems	 	 
-8. Geometry: Lines, Angles, Circles, Triangles, Polygons	 	 
-9. Strings: String Matching, Edit Distance, Suffix Array	 	 
+7. Strings: String Matching, Edit Distance, Suffix Array	 	 
+8. Mathematics: Number Theory, Combinatoric Problems	 	 
+9. Geometry: Lines, Angles, Circles, Triangles, Polygons	 	 
 10. Final Remix: Problems using multiple of the algorithms studies in this course.	 	 
 
 ## Course Requirements
 Basic programming concepts (Compiling, loops, if-then-else operators, etc.) [C, C++ or Java]
 
 ## Evaluation Criteria
-This course does not implement a final examination. The evaluation is based on weekly programming assignments.
+This course does not implement a final examination. The evaluation is
+based on weekly programming assignments.
 
 ## Study time and expected work outside the classroom:
-The student must complete at least 2 short programming assignments every week (out of 8 possible choices). To achieve an "A" grade, the student must complete at least 4 programming assignments per week.
+The student must complete at least 2 short programming assignments
+every week (out of 8 possible choices) to pass the course. 
 
 ## Reference Materials
 1. Steven Halim, Felix Halim,"Competitive Programming", 4th edition.
@@ -58,4 +60,5 @@ The student must complete at least 2 short programming assignments every week (o
 Lecture notes and videos will also be distributed online.
 
 ## Other notes:
-Lectures are held in Japanese. Class materials are in English. Reports and communication with the professor are accepted in either language.
+Lectures are held in Japanese. Class materials are in English. Reports
+and communication with the professor are accepted in either language.
