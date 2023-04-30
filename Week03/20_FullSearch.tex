@@ -214,3 +214,63 @@ for (x = -100; x <= 100 && !sol; x++)
     \item How to prune this search?
   \end{itemize}
 \end{frame}
+
+\subsection{Permutation}
+
+\begin{frame}[fragile]{Complete Search: Permutation}
+  A cool type of complete search problems are ``permutation''
+  problems.
+
+  \begin{columns}[t]
+    \column{0.7\textwidth}
+    \begin{block}{How to Loop all Permutations in C++}
+\begin{verbatim}
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  string s = "aranha";
+  sort(s.begin(), s.end());
+
+  do {
+    cout << s << endl;
+  } while(next_permutation(s.begin(),s.end());
+}
+\end{verbatim}
+    \end{block}
+    \column{0.3\textwidth}
+\begin{verbatim}
+% ./a.out
+aaahnr
+aaahrn
+aaanhr
+aaanrh
+aaarhn
+aahanr
+aaharn
+aahnar
+...
+\end{verbatim}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Complete Search: Permutation}{Problem Example: Dreamer}
+  Link: https://open.kattis.com/problems/dreamer\bigskip
+
+  \begin{itemize}
+  \item \alert{Problem:} You receive a set of 8 digits, and you want to know the
+  earliest date after 01-01-2001.\bigskip
+
+  \item \alert{How to solve:} List all digit permutations (8 digits: 40320), check
+    if date is valid. Keep the smallest date after 01-01-2001.\bigskip
+
+  \item \alert{pitfalls:} Be careful of Leap years!
+  \end{itemize}
+
+  \vfill
+
+  \begin{block}{}
+    Permutations take $O(n!)$. Be careful of time limit exceeded.
+  \end{block}
+\end{frame}
+
