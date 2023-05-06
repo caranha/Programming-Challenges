@@ -1,22 +1,27 @@
-# 2023:
-- Keep using Kattis (I hope)
-- Limit the number of students
-- Change grading criteria to 2-C, 3-B, 5-A, 7-A+
-
-# Future
-- Keep the material as is. Add the following.
-- Write scripts for videos if possible
+# General:
+- Limit the number of students to 70
+- Reconsider the grading criteria
+- Improve problems selection
+- Translate problems to Japanese
 
 ## Week 1
-- [ ] Change to "Solving Hints" (Debugging, Data, etc)
-- [ ] Add "training problems"
+- [ ] Add 2-3 "training problems", and solve/comment them on the material.
+- [ ] Improve the "Solving Hints" wrt Debugging, Creating data sets, etc.
 
 ## Week 2:
-- [ ] Add "training problems"
-- [ ] Add "segment tree/fenwick tree" (Maybe 2024)
+- [ ] Add 2-3 "training problems", and solve/comment them on the material
+- [ ] Add section on "segment tree / fenwick tree"
 
 ## Week 3:
-	- [ ] Add "permutation search" (Important!)
+- [ ] Reduce "training problems" to 2-3, and solve/comment them on the material
+- [ ] Re-record the video to discuss the section on permutation
 
 ## Week 4:
-- [ ] Add TSP
+(Important)
+- [ ] Re-record the video with the improved code for Knapsack and CoinChange
+
+- [ ] Add a TSP section (solving with bitmask search)
+- [ ] Re-record the video with the TSP section
+
+- [ ] Reduce "training problems" to 2-3, and solve/comment them on the material
+
