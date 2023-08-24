@@ -18,6 +18,7 @@
 
 ## Week 4:
 (Important)
+- Re-select problems: Tight and keyboard are hard to understand, compared to nickola and restaurant orders
 - [ ] Re-record the video with the improved code for Knapsack and CoinChange
 
 - [ ] Add a TSP section (solving with bitmask search)
