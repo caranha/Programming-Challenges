@@ -5,99 +5,113 @@
 \begin{frame}
   \centering
   {\huge
-    What is the objective of this course
+    Course Introduction
   }
 \end{frame}
 
-\begin{frame}
-  \frametitle{Outline}
-  \begin{enumerate}
-    \item Course Objective
-    \item What is a Programming Challenge?
-    \item Course Topics
-    \item Lecturer Introduction
-    \item Extra: ICPC
-  \end{enumerate}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Outline}
+%   \begin{enumerate}
+%     \item Course Objective
+%     \item What is a Programming Challenge?
+%     \item Course Topics
+%     \item Lecturer Introduction
+%     \item Extra: ICPC
+%   \end{enumerate}
+% \end{frame}
 
 \subsection{Class Objective}
-\begin{frame}{Class Objective}
+\begin{frame}{What is the goal of this course?}
   \begin{itemize}
-    \item Course Objective: \alert{Improve your algorithm skill by writing many programs};
+    \item \alert{Course Objective}: Improve your skill by writing many programs;
     \bigskip
 
-    \item \alert{Key Idea:} Write programs that solve challenges (puzzles)
+    \item \alert{How?} Write a program that solves a puzzle (programming challenge)
+      \medskip
     \begin{enumerate}
-      \item Read the problem and understand the puzzle;
-      \item Choose the algorithm and implement;
-      \item Run the program and check the correct result;
-      \item Repeat many times
+      \item Read and understand the puzzle;
+      \item Think what program solves the puzzle;
+      \item Write the program;
+      \item Test the result of the program;
     \end{enumerate}
     \medskip
 
-    \item In this lecture, we want to \alert{use in practice} the algorithms that we
-    learned in the 1st and 2nd year.
+    \item \alert{Why?} 
+    \begin{enumerate}
+      \item We use in practice the algorithms learned in the second year.
+      \item We learn how the algorithm works in practice.
+      \item We learn how to debug from data.
+    \end{enumerate}
+
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Algorithms: Theory vs. Implementation}
-  \begin{exampleblock}{}
-    When we implement an algorithm in a hard program we learn many things:
-  \end{exampleblock}
-  \begin{itemize}
-    \item \alert{Input/Output}: How to prepare the input data for the algorithm to use it;
-    \item \alert{Input Size}: Relationship between input size, algorithm, and program speed;
-    \item \alert{Special Cases}: Difficult Input Data that causes bugs;
-    \item \alert{Debugging}: How to find bugs by yourself;
-  \end{itemize}
-\end{frame}
+% \begin{frame}{Learning Algorithms: Theory vs. Implementation}
+%   \begin{exampleblock}{}
+%     When we implement an algorithm in a hard program we learn many things:
+%   \end{exampleblock}
+%   \begin{itemize}
+%     \item \alert{Input/Output}: How to prepare the input data for the algorithm to use it;
+%     \item \alert{Input Size}: Relationship between input size, algorithm, and program speed;
+%     \item \alert{Special Cases}: Difficult Input Data that causes bugs;
+%     \item \alert{Debugging}: How to find bugs by yourself;
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}{Automated Judging (AJ)}
+\begin{frame}{Automated Judge (AJ)}
   \begin{exampleblock}{}
-  In this lecture we use {\bf Automated Judges (AJ)} to check if your homework is correct.
+    This course uses an \alert{Automated Judge (AJ)} to check your homework.
   \end{exampleblock}
 
   \begin{itemize}
-  \item An AJ receives a program, and evaluate if the output is correct;
+  \item An AJ is a program that checks if code is correct:
     \begin{itemize}
       \item Ex: AtCoder, Aizu Online Judge, Topcoder, Codeforces, etc.
     \end{itemize}\bigskip
 
-    \item The AJ tests your program with a set of {\bfTest Cases} (Hidden Input Data)\bigskip
+  \item The AJ checks your program agains \alert{Secret Test Data}.\bigskip
 
-    \item The AJ gives a result: \structure{Correct} or \alert{Incorrect}
-    \begin{itemize}
-      \item When the result is incorrect, \alert{it does not say the reason}.
-      \item You have to debug the program yourself (crate tests case!);
-      \item After you debug the program, you can submit again;
-    \end{itemize}
+  \item The AJ tells you if your code is \alert{correct or incorrect}.
   \end{itemize}
+
+  \begin{alertblock}{When your program is incorrect: Be Careful!}
+    \begin{itemize}
+      \item Debug your program carefully;
+      \item Create your own test data;
+      \item Think before submitting again;
+    \end{itemize}
+  \end{alertblock}
 \end{frame}
 
-\begin{frame}{What this class expects of you}
+\begin{frame}{Class Requirements}
   \begin{exampleblock}{}
     \begin{itemize}
     \item You have basic programming knowledge (C++, Java or Python);
       \begin{itemize}
-      \item If you don't know how to program, this class will be very hard.
+      \item This is a hard \alert{programming} class
+      \item Data structures and algorithms are important
       \end{itemize}
       \medskip
 
-    \item To pass the course, you need to do homework every week;
+    \item You will do homework every week;
       \begin{itemize}
-        \item Average of 4 hours of study / week;
-        \item A lot of time on debugging;
-        \item (Atcoder difficulty: 300 to 500)
+        \item Minimum 2 programs per week; 
+        \item Debug carefully;
       \end{itemize}
       \medskip
 
-      \item Homework starts easy, but becomes harder later in the course;
+      \item You will not copy the homework;
+      \begin{itemize}
+        \item Copy homework from other students will be penalized;
+        \item Copy homework from the internet will be penalized;
+        \item Penalties include failing the course, and failing the semester;
+      \end{itemize}
       \medskip
 
-      \item No final exam.
+      \item No final exam -- only homework
     \end{itemize}
   \end{exampleblock}
-  \hfill {\bf Hint: Do your homework early!}
+  \hfill {Hint: Do your homework early!}
 \end{frame}
 
 \subsection{What are Programming Challenges?}
@@ -117,7 +131,7 @@
 \end{frame}
 
 \subsection{Example}
-\begin{frame}{Example: The 3n+1 problem}
+\begin{frame}{Programming Challenge Example: "The 3n+1 problem"}
   \begin{columns}
     \column{0.55\textwidth}
       Contents of a Programming Challenge:
@@ -137,14 +151,14 @@
   \begin{columns}
     \column{0.55\textwidth}
     {\smaller
-    The problem wants the \structure{longest sequence size} generated by the following algorithm:
+    What is the longest sequence generated by this function?
       \begin{enumerate}
+        \item input n
         \item if $n = 1$ then STOP
         \item if $n$ is odd, then $n = 3n + 1$
         \item else $n = n/2$
-        \item GOTO 1
+        \item GOTO 2
       \end{enumerate}
-    \medskip
 
     For example, if $i = 1$ and $j = 4$:
     \begin{itemize}
@@ -153,9 +167,9 @@
       \item n = 3: 3 10 5 16 8 4 2 1 END; {\bf Length 8}
       \item n = 4: 4 2 1 END; {\bf Length 3}
     \end{itemize}
-    So the {\bf maximum length} is 8 (for n = 3)}
+    So between n=1 and n=4, the maximum is 8 (n = 3)}
     \column{0.45\textwidth}
-    \includegraphics[width=1\textwidth]{img/3n_problem}
+    \includegraphics[width=1\textwidth]{img/3n_problem_label}
   \end{columns}
 \end{frame}
 

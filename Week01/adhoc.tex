@@ -9,45 +9,51 @@
   }
 \end{frame}
 
-\begin{frame}{Hints and Tricks for Programming Challenges}
-  In the first week of this course, the problems are very easy.\vfill
+\begin{frame}[t]{Week 1: Tips for Programming Challenges}
 
-  \begin{itemize}
-    \item I want you to get used with the style of problem;
-    \item I want you to get used to the online judge;
-  \end{itemize}\vfill
+  First week: 7 Easy problems (1 long problem)! What do you need to learn?
+  \bigskip
 
-  So in the lecture today, I want to give some {\bf general hints} to solve Programming Challenges.\bigskip
+  \begin{enumerate}
+    \item How to read a program challenge? (Problem style)
+    \item How to use the Automated Judge? (Input and Output)
+    \item How to debug? (Thinking and Debug Data)
+  \end{enumerate}
+  \bigskip
 
-  These hints will be useful for the entire course.
+  The class one material contains \alert{General Tips} for this course.
+  \medskip
+
+  These Tips will be useful for the rest of the course. Learn them well!
 \end{frame}
 
 \begin{frame}{Topics for today}
   \begin{itemize}
-    \item Hint 1: Reading the problem;
-    \item Hint 2: Problem size and algorithm analysis;
-    \item Hint 3: Writing test cases;
-    \item Hint 4: Input/Output;
-    \item Hint 5: How to ask for help;
+    \item Tip 1: Reading the problem;
+    \item Tip 2: Problem size and algorithm analysis;
+    \item Tip 3: Writing test cases;
+    \item Tip 4: Input/Output;
+    \item Tip 5: How to ask for help;
   \end{itemize}
 \end{frame}
 
-\section{Hint 1: Reading the Problem}
-\begin{frame}{Hint 1: Reading, Thinking, then Coding}
+\section{Tip 1: Reading the Problem}
+\begin{frame}{Tip 1: Reading, Thinking, then Coding}
 
   \begin{columns}
     \column{0.7\textwidth}
     \begin{itemize}
-    \item Before you start coding, think about the problem, and write the solution on paper.\medskip
+    \item It is very important to \alert{read and understand the problem} before start coding.
 
+    \item If you completely understand the problem, you can avoid small mistakes.
+    
+    \item Maybe read the \alert{Input and Output} first!
 
-    \item Draw the problem on paper, and answer some input examples by hand.\medskip
+    \item Try to solve the problem \alert{on paper}
 
-    \item {\bf Do not start programming until you understand the problem}.\medskip
-
-    \item It is hard to fix a wrong idea after you start programming.\medskip
-
-    \item There are 8 problems every week -- you don't need to solve them in order!
+    \item If you don't understand the problem, ask for help!
+    
+    \item Quickly read all 8 problems before starting. Different people like different problems.
     \end{itemize}
     \column{0.3\textwidth}
     \includegraphics[width=\textwidth]{../img/textmarker}
@@ -59,45 +65,45 @@
   \hfill {\tiny Image by Guido ``random'' Alvarez, released as CC-BY-2.0}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Tricks for reading the problem}
+% \begin{frame}
+%   \frametitle{Tricks for reading the problem}
 
-  \begin{alertblock}{}
-    Reading problems in English is hard :-(
-  \end{alertblock}
+%   \begin{alertblock}{}
+%     Reading problems in English is hard :-(
+%   \end{alertblock}
 
-  \begin{itemize}
-    \item Don't worry: deepl and google translate can help!
-    \begin{itemize}
-      \item Be careful, sometimes they are wrong...
-    \end{itemize}\medskip
+%   \begin{itemize}
+%     \item Don't worry: deepl and google translate can help!
+%     \begin{itemize}
+%       \item Be careful, sometimes they are wrong...
+%     \end{itemize}\medskip
 
-    \item Separate {\bf story} from {\bf problem}
-    \begin{itemize}
-      \item Look for keywords: Maximum, Total, Cost, Rules, Number, Constraint, etc...
-    \end{itemize}\medskip
+%     \item Separate {\bf story} from {\bf problem}
+%     \begin{itemize}
+%       \item Look for keywords: Maximum, Total, Cost, Rules, Number, Constraint, etc...
+%     \end{itemize}\medskip
 
-    \item Read the {\bf Input} and {\bf Output} section first!
-    \begin{itemize}
-      \item Sometimes you can understand the problem just from input/output.
-      \item But be careful of special rules!
-    \end{itemize}\medskip
+%     \item Read the {\bf Input} and {\bf Output} section first!
+%     \begin{itemize}
+%       \item Sometimes you can understand the problem just from input/output.
+%       \item But be careful of special rules!
+%     \end{itemize}\medskip
 
-    \item Understanding a little English is good for Computer Science;
+%     \item Understanding a little English is good for Computer Science;
 
-  \end{itemize}
-\end{frame}
+%   \end{itemize}
+% \end{frame}
 
-\section{Hint 2: Problem Size and Algorithm Analysis}
+\section{Tip 2: Think about the problem size!}
 
 \begin{frame}{Hint 2: Be careful of problem size!}
-  One common case of wrong problem: Your program is too slow.\bigskip
+  Some of the secret input sizes are very big. \bigskip
 
-  Before writing the program, you need to think about the {\bf input size}.\bigskip
+  If your program is too slow, you cannot solve big input sizes.\bigskip 
 
-  If the input size is {\bf too big}, the wrong algorithm can be {\bf too slow}.\bigskip
+  When you read the problem, \alert{pay attention to the input size}.\bigskip
 
-  Let's see two examples.
+  Think about the \alert{the number of loops} that your program uses!
 \end{frame}
 
 
@@ -105,37 +111,36 @@
 
 \subsection{Revisiting the 3n+1 problem}
 
-\begin{frame}[fragile]{Problem Size Example: The 3n+1 problem}{Problem outline}
+\begin{frame}[fragile]{Program is too slow: Example 1}
 
   \begin{block}{}
-    Calculate the {\bf Maximum Cycle Length} between any two numbers $i$ and $j$.
+    Calculate the {\bf Maximum Execution Length} between any two numbers $i$ and $j$.
   \end{block}
   \smallskip
 
 \begin{verbatim}
-Cycle of (n)
+Execution of (n)
 1. print n
 2. if n == 1 then STOP
 3. if n is odd then n = 3n + 1
 4. else n = n/2
 5. GOTO 2
 
-Example: Cycle of (22)
-22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 -- Cycle Length = 16
+Example: Execution of (22)
+22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1 -- Execution Length = 16
 \end{verbatim}
-For {\bf ONE} cycle, the problem is small and easy.
+For {\bf ONE} input, the problem is small and easy.
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{A simple solution for the 3n+1 problem}
   \begin{columns}
     \column{0.4\textwidth}
-    Easy solution: loop until n == 1 and count the loops (lines 9-12).\bigskip
+    Simple solution: loop until n == 1 and count the loops (lines 9-12).\bigskip
 
-    However, This program can be really slow,
-    if you have to {\bf Calculate the solution for many different cycles.}\bigskip
+    However, for large input, this program is too slow.\bigskip
 
-    Remember: The problem wants the {\bf MAXIMUM} cycle length between $i$ and $j$
+    \alert{Remember}: You have to execute the program for \alert{every input} between $i$ and $j$
     \column{0.6\textwidth}
   {\smaller
 \begin{verbatim}
@@ -163,13 +168,14 @@ For {\bf ONE} cycle, the problem is small and easy.
   \frametitle{Large input in the 3n+1 problem}
 
     \begin{itemize}
-      \item Objective: Calculate the largest cycle between $i$ and $j$. For a large input:
+      \item Objective: Calculate the largest execution between $i$ and $j$. For a large input:
     \begin{verbatim}
-Input: 1 10000 <-- Largest cycle between 1 and 10000?
-Output: 262    <-- Largest cycle is 262 steps
+Input: 1 10000 <-- Largest between 1 and 10000?
+Output: 262    <-- Largest is 262 steps
     \end{verbatim}
 
-      \item 262 steps for 1 cycle is short. But for 10000 cycles: $262\times10000 = 2,000,000$ steps!\medskip
+      \item 262 steps for 1 execution is short.\\
+      But for 10000 inputs: $262\times10000 = 2,000,000$ steps!\medskip
 
       \item Can we make it faster?
 
@@ -181,7 +187,7 @@ Output: 262    <-- Largest cycle is 262 steps
   \frametitle{Make 3n+1 faster by removing repetition}
 
   \begin{itemize}
-    \item Some examples of cycle calculation (A(n)) -- Note the repetition:
+    \item Some examples of calculating (A(n)) -- Note the repetition:
 \begin{verbatim}
 A(22):  22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
 A(11):  11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
@@ -291,44 +297,44 @@ Total Solutions: 8 x 7 x 6 x 5 ... = 40320  --  OK!
   \end{itemize}
 \end{frame}
 
-\begin{frame}{How many steps is too slow?}{$lt$ 10.000.000 steps is a good goal}
+% \begin{frame}{How many steps is too slow?}{$lt$ 10.000.000 steps is a good goal}
 
-  \begin{block}{n $<$ 24}
-    Almost anything works: Brute force! (Maybe not factorial)
-  \end{block}
+%   \begin{block}{n $<$ 24}
+%     Almost anything works: Brute force! (Maybe not factorial)
+%   \end{block}
 
-  \begin{block}{n = 500}
-    Cubic algorithms are too big (O($n^3$) = 125.000.000).
-    Maybe O($n^2\text{log}n$).
-  \end{block}
+%   \begin{block}{n = 500}
+%     Cubic algorithms are too big (O($n^3$) = 125.000.000).
+%     Maybe O($n^2\text{log}n$).
+%   \end{block}
 
-  \begin{block}{n = 10.000}
-    A square algorithm (O($n^2$)) is still okay. Be careful of big constants!
-  \end{block}
+%   \begin{block}{n = 10.000}
+%     A square algorithm (O($n^2$)) is still okay. Be careful of big constants!
+%   \end{block}
 
-  \begin{block}{n = 1.000.000}
-    O($n$log$n$) = 13.000.000. We might need a linear algorithm!
-  \end{block}
-\end{frame}
-
-
+%   \begin{block}{n = 1.000.000}
+%     O($n$log$n$) = 13.000.000. We might need a linear algorithm!
+%   \end{block}
+% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\item Hint 3: Writing test cases;
 \section{Hint 3: Writing test cases}
 
 \begin{frame}{Hint 3: Write testcases!}
-  The description of a problem includes \alert{Example Input}.\bigskip
 
-  However, to be accepted, your program also has to solve the {\bf Hidden Input}.\bigskip
+  The description of a problem includes \alert{Sample Input}.\bigskip
 
-  Many times, your program will not be accepted because {\bf You do not solve Hidden Input Case correctly}.
+  However, the judge checks your program with \alert{Test Input}.\bigskip
 
   \begin{exampleblock}{Example: 3n+1 Problem}
-    In the Example Input, $i$ is always $< j$.\medskip
+    Sample Input: always $i < j$.\medskip
 
-    But in the Hidden Input, sometimes $i > j$!\medskip
-  \end{exampleblock}
+    Hidden Input: sometimes $i > j$!\medskip
+  \end{exampleblock}\bigskip
+
+  \alert{The Test Input is more difficult than the Sample Input}!
+
 \end{frame}
 
 % Extend basic Cases
@@ -336,44 +342,44 @@ Total Solutions: 8 x 7 x 6 x 5 ... = 40320  --  OK!
 % write cases where you think a bug might be
 % write random cases
 
-\begin{frame}{Examples of Trick Hidden Input}
+\begin{frame}{The Test Input is more difficult than the Sample Input!}
 
     \begin{itemize}
-      \item The input is negative; the input is zero, the input is the maximum value;
-      \item The input is out of order, the input is in reversed order;
-      \item The input is repeated;\medskip
+      \item Input is Negative; Input is Minimum; Input is Maximum;
+      \item Input is out of order, Input is in reverse order;
+      \item Input is repeated;\medskip
 
-      \item Graph is disconnected; graph is fully connected;
+      \item Graph is disconnected; Graph is fully connected;
       \item Lines are parallel; Points are in the same place;
       \item Angle is 0; Area is 0;\medskip
-
-      \item A string input is very long;
-      \item A string input has space or newlines;
     \end{itemize}
 
     \begin{block}{}
-      Read the input rule carefully. If it is not forbidden, then it is allowed!
+      Read the input rule carefully.\medskip
+      
+      Create your own \alert{Debug Input}
     \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Hidden Input: Generating your own Input}
+  \frametitle{Creating Debug Input}
 
-  Of course, you cannot see the hidden input. But you can {\bf create your own input!}\medskip
+  Create and test a \alert{Debug Input} before submitting the program!\bigskip
 
-  I highly recommend that you create your own input to test your program.\medskip
+  Many wrong programs can be fixed if you create debug input before submitting.\bigskip
 
-  \begin{exampleblock}{Input Creating List}
+  Again: \alert{Create Debug Input!}
+
+  \begin{exampleblock}{Ideas for Debug Input (checklist)}
     \begin{itemize}
-      \item Simple Input ;
-      \item Maximum Value Input;
-      \item Tricky Case Input;
-      \item Random Input (using scripts)
+      \item Simple Debug Input;
+      \item Debug Input with maximum value;
+      \item Debug Input with tricky cases;
+      \item Random Debug Input Input (use scripts!);
     \end{itemize}
   \end{exampleblock}
 
-  Creating test data for your programs is in research and in work.\\
-  Let's learn how to create test data in this course!
+  Creating debug input is an important skill for research and work!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -392,9 +398,7 @@ Total Solutions: 8 x 7 x 6 x 5 ... = 40320  --  OK!
 
 \section{Hint 4: Input and Output}
 \begin{frame}
-  \frametitle{Hint 4: Read the Input and Output carefully}
-  Reading the Input is \alert{very important} (as we saw in 3n+1)
-  \bigskip
+  \frametitle{Tip 4: Read the Input and Output description carefully}
 
   \begin{itemize}
   \item What is the stop condition?
@@ -422,7 +426,7 @@ Total Solutions: 8 x 7 x 6 x 5 ... = 40320  --  OK!
 
 
 \begin{frame}[fragile]
-  \frametitle{There are 3 common standards for input}
+  \frametitle{There are 3 common stop conditions}
 
   \begin{enumerate}
   \item Read $N$, then read $N$ queries;
@@ -475,22 +479,23 @@ while (cin >> a >> b;) { // Do something! }
 
 \section{Hint 5: How to ask for help}
 
-\begin{frame}{Hint 5: How to ask for help}
-  \begin{block}{}
-  When you are stuck, it is okay to ask for help to your friend, or to the teacher.\medskip
+\begin{frame}{Tip 5: How to ask for help}
 
-  If you give information about your problem, it is easier for other people to help you.
-  \end{block}\bigskip
+  When you are stuck, it is okay to ask for help from the teacher or from your friends.\bigskip
 
-  \begin{itemize}
+  When you ask for help, add as much information as you can about your problem.\bigskip
+
+  (This is a training for bug reporting as well!)\bigskip
+
+  \begin{block}{Help Checklist}
+  \begin{enumerate}
     \item Send your current code. (Do not send screenshot!)\medskip
 
-    \item Explain the idea of your code.\medskip
+    \item Explain the idea of your program.\medskip
 
-    \item Send the Test Input you created.\medskip
-
-    \item Explain the idea of the test input your created.
-  \end{itemize}
+    \item Explain the Debug Input you used.\medskip
+  \end{enumerate}
+  \end{block}
 \end{frame}
 
 \section{Conclusion}
