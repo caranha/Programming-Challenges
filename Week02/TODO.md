@@ -1,15 +1,13 @@
 
-# 2023 tasks
-- Add section on Bitmask
-- Add section on Fenwick Tree and Segment Tree
+# Detailed Tasks
+- [ ] Add section on Bitmask
+- [ ] Add section on Fenwick Tree and Segment Tree
   (Requires bitmask section)
 
-- Choose better problems (Adjust difficulty)
-
-- Add kattis motivating problem for set/map
-- Add kattis motivating problem for UFDS
-- Add Bucket Sort code
-
+- [ ] Choose better problems (Adjust difficulty)
+  - Add kattis motivating problem for set/map
+  - Add kattis motivating problem for UFDS
+  - Add Bucket Sort code
 
 # Problems
 - baloni: Easy Introductory Problem
